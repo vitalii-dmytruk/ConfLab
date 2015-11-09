@@ -1,0 +1,74 @@
+buildscript {
+    ext {
+        springBootVersion = '1.2.5.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("io.spring.gradle:dependency-management-plugin:0.5.2.RELEASE")
+        classpath("org.flywaydb:flyway-gradle-plugin:3.2.1")
+
+    }
+}
+
+plugins {
+    id 'com.craigburke.bower-installer' version '2.1.4'
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'org.flywaydb.flyway'
+
+//noinspection GroovyUnusedAssignment
+sourceCompatibility = 1.8
+//noinspection GroovyUnusedAssignment
+targetCompatibility = 1.8
+//noinspection GroovyUnusedAssignment
+mainClassName = 'com.intelliarts.conflab.ConfLabApp'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-web")
+    runtime("org.postgresql:postgresql:9.4-1201-jdbc41")
+}
+
+bower {
+    installBase = 'src/main/resources/static/lib'
+
+    dependencies {
+        'jquery'('2.1.x') {
+            source 'dist/*'
+        }
+
+        'underscore'('1.8.x') {
+            source 'underscore*'
+        }
+
+        'backbone'('1.2.x') {
+            source 'backbone*'
+        }
+
+        'marionette'('2.4.x') {
+            source 'lib/backbone.marionette*'
+        }
+
+        'requirejs'() {
+            source 'require.js'
+        }
+
+        'requirejs-text'()
+    }
+
+    additional = [
+            name: 'ConfLab'
+    ]
+}
+
+assemble.dependsOn(bowerInstall)
