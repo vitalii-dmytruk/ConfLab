@@ -54,6 +54,12 @@ bower {
             source 'underscore*'
         }
 
+        'bootstrap'('3.3.x') {
+            source 'dist/js/bootstrap*' >> 'js/'
+            source 'dist/css/*' >> 'css/'
+            source 'dist/fonts/**' >> 'fonts/'
+        }
+
         'backbone'('1.2.x') {
             source 'backbone*'
         }
