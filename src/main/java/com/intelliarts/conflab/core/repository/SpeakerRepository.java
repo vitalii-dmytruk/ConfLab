@@ -8,5 +8,5 @@ import java.util.Optional;
 @Repository
 public interface SpeakerRepository extends BaseRepository<SpeakerEntity, Long> {
 
-    Optional<SpeakerEntity> getByName(String name);
+    Optional<SpeakerEntity> findByEmail(String email);
 }

@@ -34,9 +34,9 @@ public class SpeakerService {
         return mapper.map(entity, Speaker.class);
     }
 
-    public Speaker findByName(String name) {
-        Optional<SpeakerEntity> entity = speakerRepository.getByName(name);
-        return toApi(entity.orElseThrow(() -> new EntityNotFoundException("Speaker with name '" + name + "' not found.")));
+    public Speaker findByEmail(String email) {
+        Optional<SpeakerEntity> entity = speakerRepository.findByEmail(email);
+        return toApi(entity.orElseThrow(() -> new EntityNotFoundException("Speaker with email '" + email + "' not found.")));
     }
 
     public List<Speaker> getAll() {

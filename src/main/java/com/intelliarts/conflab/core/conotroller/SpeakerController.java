@@ -29,11 +29,11 @@ public class SpeakerController {
     }
 
 
-    @RequestMapping(value = "/speaker/{name}",
+    @RequestMapping(value = "/speaker/{email}",
                     method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Speaker getById(@PathVariable String name) {
-        return speakerService.findByName(name);
+    public Speaker getByEmail(@PathVariable String email) {
+        return speakerService.findByEmail(email);
     }
 
     @RequestMapping(value = "/speakers",
