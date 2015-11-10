@@ -15,7 +15,7 @@ public class StageEntity {
     @SequenceGenerator(name = "stage_seq", sequenceName = "stage_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "stage_seq")
     @Column
-    private Long   id;
+    private Integer   id;
 
     @Column(nullable = false)
     private String title;
@@ -24,11 +24,11 @@ public class StageEntity {
     private int    capacity;
 
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
