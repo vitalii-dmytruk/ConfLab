@@ -18,12 +18,23 @@ public class SpeakerService {
     @Autowired
     private SpeakerRepository speakerRepository;
     @Autowired
-    private ModelMapper mapper;
+    private ModelMapper       mapper;
 
     public Speaker create(Speaker speaker) {
         SpeakerEntity entity = toEntity(speaker);
         SpeakerEntity createdEntity = speakerRepository.save(entity);
         return toApi(createdEntity);
+    }
+
+    public Speaker findByEmail(String email) {
+        Optional<SpeakerEntity> entity = speakerRepository.findByEmail(email);
+        return toApi(
+                entity.orElseThrow(() -> new EntityNotFoundException("Speaker with email '" + email + "' not found.")));
+    }
+
+    public List<Speaker> getAll() {
+        List<SpeakerEntity> speakerEntities = speakerRepository.findAll();
+        return speakerEntities.stream().map(this::toApi).collect(Collectors.toList());
     }
 
     private SpeakerEntity toEntity(Speaker speaker) {
@@ -32,15 +43,5 @@ public class SpeakerService {
 
     private Speaker toApi(SpeakerEntity entity) {
         return mapper.map(entity, Speaker.class);
-    }
-
-    public Speaker findByEmail(String email) {
-        Optional<SpeakerEntity> entity = speakerRepository.findByEmail(email);
-        return toApi(entity.orElseThrow(() -> new EntityNotFoundException("Speaker with email '" + email + "' not found.")));
-    }
-
-    public List<Speaker> getAll() {
-        List<SpeakerEntity> speakerEntities = speakerRepository.findAll();
-        return speakerEntities.stream().map(this::toApi).collect(Collectors.toList());
     }
 }
