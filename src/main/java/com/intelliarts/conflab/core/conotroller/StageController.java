@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
+@RequestMapping("/stages")
 public class StageController {
     @Autowired
     private StageService stageService;
 
-    @RequestMapping(value = "/stage",
-                    method = RequestMethod.POST,
+    @RequestMapping(method = RequestMethod.POST,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
@@ -28,8 +28,7 @@ public class StageController {
         return stageService.create(stage);
     }
 
-    @RequestMapping(value = "/stages",
-                    produces = MediaType.APPLICATION_JSON_VALUE,
+    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE,
                     method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public List<Stage> getSpeakers() {
