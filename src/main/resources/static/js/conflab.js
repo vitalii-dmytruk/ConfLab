@@ -3,8 +3,9 @@ require([
     'menu/MenuService',
     'header/HeaderService',
     'profile/ProfileRouter',
-    'conferences/ConferencesRouter'
-], function (C2CApplication, MenuService, HeaderService, ProfileRouter, ConferencesRouter) {
+    'conferences/ConferencesRouter',
+    'speakers/SpeakersRouter'
+], function (C2CApplication, MenuService, HeaderService, ProfileRouter, ConferencesRouter, SpeakersRouter) {
 
     'use strict';
 
@@ -26,6 +27,10 @@ require([
         });
 
         app.conferences = new ConferencesRouter({
+            container: app.layout.getRegion('main')
+        });
+
+        app.speakers = new SpeakersRouter({
             container: app.layout.getRegion('main')
         });
 

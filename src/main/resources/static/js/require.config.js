@@ -7,6 +7,7 @@ var require = {
         "header"             : 'js/header',
         "profile"            : 'js/profile',
         "conferences"        : 'js/conferences',
+        "speakers"           : 'js/speakers',
         "text"               : 'lib/requirejs-text/text',
         "jquery"             : 'lib/jquery/jquery.min',
         "select2"            : 'lib/select2/select2',
