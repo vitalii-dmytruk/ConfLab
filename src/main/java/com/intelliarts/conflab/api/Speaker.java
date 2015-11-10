@@ -14,7 +14,7 @@ public class Speaker {
 
     private String about;
 
-    @Email
+    @Email(message = "'${validatedValue}' is not valid email address.")
     @NotBlank(message = "Email address is not specified.")
     private String email;
 
