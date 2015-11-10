@@ -22,7 +22,8 @@ public class SpeakerController {
 
     @RequestMapping(value = "/speaker",
                     method = RequestMethod.POST,
-                    consumes = MediaType.APPLICATION_JSON_VALUE)
+                    consumes = MediaType.APPLICATION_JSON_VALUE,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Speaker create(@RequestBody @Validated Speaker speaker) {
         return speakerService.create(speaker);
@@ -30,14 +31,16 @@ public class SpeakerController {
 
 
     @RequestMapping(value = "/speaker/{email}",
-                    method = RequestMethod.GET)
+                    method = RequestMethod.GET,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public Speaker getByEmail(@PathVariable String email) {
         return speakerService.findByEmail(email);
     }
 
     @RequestMapping(value = "/speakers",
-                    method = RequestMethod.GET)
+                    method = RequestMethod.GET,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public List<Speaker> getSpeakers() {
         return speakerService.getAll();
