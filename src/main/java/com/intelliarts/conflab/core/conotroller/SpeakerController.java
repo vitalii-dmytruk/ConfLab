@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
+@RequestMapping("/speakers")
 public class SpeakerController {
     @Autowired
     private SpeakerService speakerService;
 
-    @RequestMapping(value = "/speaker",
-                    method = RequestMethod.POST,
+    @RequestMapping(method = RequestMethod.POST,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
@@ -30,7 +30,7 @@ public class SpeakerController {
     }
 
 
-    @RequestMapping(value = "/speaker/{email}",
+    @RequestMapping(value = "/{email}",
                     method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
@@ -38,8 +38,7 @@ public class SpeakerController {
         return speakerService.findByEmail(email);
     }
 
-    @RequestMapping(value = "/speakers",
-                    method = RequestMethod.GET,
+    @RequestMapping(method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public List<Speaker> getSpeakers() {
