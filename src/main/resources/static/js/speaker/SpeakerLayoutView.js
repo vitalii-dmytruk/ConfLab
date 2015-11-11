@@ -1,6 +1,6 @@
 define([
     'backbone.marionette',
-    'text!profile/ProfileLayoutTemplate.html'
+    'text!speaker/SpeakerLayoutTemplate.html'
 ], function (Marionette, template) {
 
     'use strict';

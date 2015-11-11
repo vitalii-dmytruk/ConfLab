@@ -41,8 +41,8 @@ public class MappingService<A, E> {
         return mapper.map(entity, apiClass);
     }
 
+    @SuppressWarnings("unchecked")
     private <T> Class<T> getClassFromParameters(int index) {
-        //noinspection unchecked
         return (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[index];
     }
 }

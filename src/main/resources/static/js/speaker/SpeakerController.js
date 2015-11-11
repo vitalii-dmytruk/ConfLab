@@ -11,12 +11,12 @@ define([
             this.container = options.container;
         },
 
-        profile: function () {
+        speaker: function () {
             var self = this;
 
-            require(['profile/ProfileLayoutView'], function (ProfileLayoutView) {
-                self.container.show(new ProfileLayoutView());
-                Radio.channel('menu').request('activate', {path: 'profile'});
+            require(['speaker/SpeakerLayoutView'], function (SpeakerLayoutView) {
+                self.container.show(new SpeakerLayoutView());
+                Radio.channel('menu').request('activate', {path: 'speaker'});
             });
 
         }

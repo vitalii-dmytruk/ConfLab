@@ -1,23 +1,23 @@
 require([
-    'backbone',
-    'core/ConfLabsApplication',
-    'menu/MenuService',
-    'header/HeaderService',
+    'core/ConfLabsApp',
     'core/HomepageRouter',
+    'header/HeaderService',
+    'menu/MenuService',
     'profile/ProfileRouter',
+    'speaker/SpeakerRouter',
     'conferences/ConferencesRouter',
-    'speakers/SpeakersRouter',
     'auth/AuthRouter',
-    'auth/session/SessionService'
-], function (Backbone, C2CApplication, MenuService, HeaderService, HomepageRouter, ProfileRouter, ConferencesRouter,
-             SpeakersRouter, AuthRouter, SessionService) {
+    'auth/session/SessionService',
+    'backbone'
+], function (C2CApplication, HomepageRouter, HeaderService, MenuService, ProfileRouter, SpeakersRouter, ConferencesRouter,
+             AuthRouter, SessionService) {
 
     'use strict';
 
     $(function () {
         var app;
 
-        app = new C2CApplication();
+        app = new ConfLabApp();
 
         app.session = new SessionService();
 
@@ -41,7 +41,7 @@ require([
             container: app.layout.getRegion('main')
         });
 
-        app.speakers = new SpeakersRouter({
+        app.speakers = new SpeakerRouter({
             container: app.layout.getRegion('main')
         });
 
