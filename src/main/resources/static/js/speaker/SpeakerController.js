@@ -14,13 +14,12 @@ define([
         speaker: function () {
             var self = this;
 
-            require(['speaker/SpeakerLayoutView'], function (SpeakerLayoutView) {
-                self.container.show(new SpeakerLayoutView());
+            require(['speaker/SpeakerPageView', 'speaker/SpeakerCollection'], function (SpeakerPageView, SpeakerCollection) {
+                var collection = new SpeakerCollection();
+                self.container.show(new SpeakerPageView({collection: collection}));
                 Radio.channel('menu').request('activate', {path: 'speaker'});
             });
-
         }
-
     });
 
 });
