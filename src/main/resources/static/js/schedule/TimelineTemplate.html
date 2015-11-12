@@ -1,0 +1,51 @@
+<!doctype html>
+<head>
+    <meta charset="utf-8">
+    <title>Sortable timeline</title>
+    <link rel="stylesheet" href="../../lib/basscss/basscss.css">
+    <script type="text/javascript" src="../../lib/jquery/jquery.js"></script>
+    <script src="../../lib/html.sortable/html.sortable.js"></script>
+</head>
+<body>
+<div class="js-grid sortable grid clearfix ml4 myn1" data-sortable-id="1" aria-dropeffect="move">
+    <div class="col col-4 px2 py1" data-item-sortable-id="1" draggable="true" role="option" aria-grabbed="false"
+         style="display: block;">
+        <div class="bg-maroon py3 yellow center">1</div>
+    </div>
+    <div class="col col-4 px2 py1" data-item-sortable-id="1" draggable="true" role="option" aria-grabbed="false">
+        <div class="bg-maroon py3 yellow center">2</div>
+    </div>
+    <div class="col col-4 px2 py1" data-item-sortable-id="1" draggable="true" role="option" aria-grabbed="false">
+        <div class="bg-green py3 yellow center">3</div>
+    </div>
+    <div class="col col-4 px2 py1" data-item-sortable-id="1" draggable="true" role="option" aria-grabbed="false"
+         style="display: block;">
+        <div class="bg-darken-2 py3 black center">4</div>
+    </div>
+    <div class="col col-4 px2 py1" data-item-sortable-id="1" draggable="true" role="option" aria-grabbed="false"
+         style="display: block;">
+        <div class="bg-orange py3 yellow center">5</div>
+    </div>
+    <div class="col col-12 px2 py1" data-item-sortable-id="1" draggable="true" role="option" aria-grabbed="false"
+         style="display: block;">
+        <div class="bg-blue py3 yellow center">6</div>
+    </div>
+</div>
+
+<div class="js-grid sortable grid clearfix ml4 myn1" data-sortable-id="1" aria-dropeffect="move">
+    <div class="col col-4 px2 py1" data-item-sortable-id="1" draggable="true" role="option" aria-grabbed="false"
+         style="display: block;">
+        <div class="bg-darken-2 py3 red center">4</div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $('.js-grid').sortable({
+            forcePlaceholderSize: true,
+            placeholderClass: 'col col-4 border border-maroon',
+            dragImage: null
+        });
+    });
+</script>
+</body>
+</html>

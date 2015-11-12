@@ -60,6 +60,10 @@ bower {
             source 'dist/fonts/**' >> 'fonts/'
         }
 
+        'basscss'('7.0.x')
+
+        'html.sortable'('0.3.x')
+
         'backbone'('1.2.x') {
             source 'backbone*'
         }
