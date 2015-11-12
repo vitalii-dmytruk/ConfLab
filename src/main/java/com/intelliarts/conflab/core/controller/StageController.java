@@ -1,4 +1,4 @@
-package com.intelliarts.conflab.core.conotroller;
+package com.intelliarts.conflab.core.controller;
 
 import com.intelliarts.conflab.api.Stage;
 import com.intelliarts.conflab.core.service.StageService;
