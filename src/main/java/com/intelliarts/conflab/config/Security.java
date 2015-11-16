@@ -21,9 +21,10 @@ public class Security extends WebSecurityConfigurerAdapter {
         http.httpBasic()
             .and()
             .authorizeRequests()
-            .antMatchers("/lib/**", "/js/**", "/css/**", "/login", "/logout", "/").permitAll()
+            .antMatchers("/lib/**", "/js/**", "/css/**", "/favicon.ico", "/login", "/logout", "/").permitAll()
             .anyRequest().authenticated()
-            .and().csrf().disable();
+            .and().csrf().disable()
+            .logout().logoutSuccessUrl("/");
     }
 
     @Override
