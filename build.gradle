@@ -50,6 +50,8 @@ bower {
             source 'dist/*'
         }
 
+        'jqueryui'()
+
         'underscore'('1.8.x') {
             source 'underscore*'
         }
@@ -79,7 +81,7 @@ bower {
         'backbone.stickit'('0.9.2') {
             source 'backbone.stickit.js'
         }
-        
+
         'requirejs'() {
             source 'require.js'
         }
