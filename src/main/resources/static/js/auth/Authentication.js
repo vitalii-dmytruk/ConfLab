@@ -23,7 +23,7 @@ define([
                 headers: {
                     'Authorization': 'Basic ' + btoa(username + ':' + password)
                 },
-                success: function(data) { self.user.set(data.toJSON());}
+                success: _.bind(self.onSignIn, self)
             });
         },
 
@@ -36,7 +36,13 @@ define([
             });
         },
 
+        onSignIn: function(userData) {
+            this.user.set(userData.toJSON());
+            Backbone.history.navigate('', {trigger: true});
+        },
+
         onSignOut: function() {
+            Backbone.history.navigate('', {trigger: true});
             this.user.clear();
         },
 

@@ -13,7 +13,7 @@ define([
 
         login: function() {
             var self = this;
-            require(['LoginView'], function(LoginView){
+            require(['auth/LoginView'], function(LoginView){
                 self.container.show(new LoginView({model: self.application.authentication}));
             });
         }

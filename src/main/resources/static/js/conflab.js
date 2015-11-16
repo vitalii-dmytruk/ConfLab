@@ -2,13 +2,15 @@ require([
     'core/ConfLabsApplication',
     'menu/MenuService',
     'header/HeaderService',
+    'core/HomepageRouter',
     'profile/ProfileRouter',
     'conferences/ConferencesRouter',
     'speakers/SpeakersRouter',
     'auth/Authentication',
     'auth/LoginRouter',
     'auth/LogoutRouter'
-], function (C2CApplication, MenuService, HeaderService, ProfileRouter, ConferencesRouter, SpeakersRouter, Authentication, LoginRouter, LogoutRouter) {
+], function (C2CApplication, MenuService, HeaderService, HomepageRouter, ProfileRouter, ConferencesRouter,
+             SpeakersRouter, Authentication, LoginRouter, LogoutRouter) {
 
     'use strict';
 
@@ -25,6 +27,10 @@ require([
 
         app.header = new HeaderService({
             container: app.layout.getRegion('header')
+        });
+
+        app.home = new HomepageRouter({
+            container: app.layout.getRegion('main')
         });
 
         app.profile = new ProfileRouter({
