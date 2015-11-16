@@ -10,6 +10,11 @@
 </div>
 <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
     <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">logout</a></li>
+
+        <% if (isAuthenticated) { %>
+        <li><div style="padding-top: 15px; padding-bottom: 15px;">Hello, <strong><%= username %></strong></div></li>
+        <% } %>
+        <% var action = isAuthenticated ? 'logout' : 'login' %>
+        <li><a href="#<%= action %>"><%= action %></a></li>
     </ul>
 </div>

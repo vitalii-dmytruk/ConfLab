@@ -4,8 +4,11 @@ require([
     'header/HeaderService',
     'profile/ProfileRouter',
     'conferences/ConferencesRouter',
-    'speakers/SpeakersRouter'
-], function (C2CApplication, MenuService, HeaderService, ProfileRouter, ConferencesRouter, SpeakersRouter) {
+    'speakers/SpeakersRouter',
+    'auth/Authentication',
+    'auth/LoginRouter',
+    'auth/LogoutRouter'
+], function (C2CApplication, MenuService, HeaderService, ProfileRouter, ConferencesRouter, SpeakersRouter, Authentication, LoginRouter, LogoutRouter) {
 
     'use strict';
 
@@ -13,6 +16,8 @@ require([
         var app;
 
         app = new C2CApplication();
+
+        app.authentication = new Authentication();
 
         app.menu = new MenuService({
             container: app.layout.getRegion('menu')
@@ -33,6 +38,15 @@ require([
         app.speakers = new SpeakersRouter({
             container: app.layout.getRegion('main')
         });
+
+        app.login = new LoginRouter({
+            container: app.layout.getRegion('main'),
+            application: app
+        });
+
+        app.logout = new LogoutRouter({application: app});
+
+        app.authentication.initSessionUser();
 
         app.start();
 

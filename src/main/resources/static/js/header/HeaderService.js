@@ -1,7 +1,8 @@
 define([
     'common/Service',
-    'header/HeaderView'
-], function (Service, HeaderView) {
+    'header/HeaderView',
+    'header/HeaderModel'
+], function (Service, HeaderView, HeaderModel) {
 
     'use strict';
 
@@ -13,7 +14,7 @@ define([
         },
 
         onStart: function () {
-            this.view = new HeaderView();
+            this.view = new HeaderView({model: new HeaderModel()});
             this.container.show(this.view);
         }
 
