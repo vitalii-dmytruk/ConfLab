@@ -52,6 +52,8 @@ bower {
             source 'dist/*'
         }
 
+        'jqueryui'()
+
         'underscore'('1.8.x') {
             source 'underscore*'
         }

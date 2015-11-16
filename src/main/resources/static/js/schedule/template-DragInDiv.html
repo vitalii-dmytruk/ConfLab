@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Template</title>
+    <script type="text/javascript" src="../../lib/jquery/jquery.js"></script>
+    <script type="text/javascript" src="../../lib/jqueryui/jquery-ui.js"></script>
+    <style type="text/css">
+        #origin {
+            background-color: lightgreen;
+        }
+
+        #origin img, #drop img {
+            margin-top: 3px;
+            margin-left: 5px;
+        }
+
+        #drop {
+            background-color: red;
+            min-height: 120px;
+        }
+
+        .over {
+            border: solid 5px purple;
+        }
+
+        .draggable {
+            border: solid 2px gray;
+        }
+    </style>
+
+    <script type="text/javascript" src="script.js">
+
+    </script>
+
+</head>
+<body style="cursor: auto;">
+
+<div id="wrapper">
+    <div id="origin" class="fbox ui-droppable">
+        <img src="./140x100" id="one" title="one" class="draggable ui-draggable"
+             style="position: relative; left: 0px; top: 0px;">
+        <img src="./150x100" id="two" title="two" class="draggable ui-draggable"
+             style="position: relative; left: 0px; top: 0px;">
+        <img src="./160x100" id="three" title="three" class="draggable">
+    </div>
+    <p>test</p>
+
+    <div id="drop" class="fbox ui-droppable ui-sortable">
+
+    </div>
+</div>
+</body>
+</html>
