@@ -5,6 +5,9 @@ define([
 ], function(Backbone, Radio, User) {
 
     return Backbone.Model.extend({
+        defaults: {
+            error: ''
+        },
 
         initialize: function() {
             this.user = new User();

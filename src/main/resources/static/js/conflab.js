@@ -1,4 +1,5 @@
 require([
+    'backbone',
     'core/ConfLabsApplication',
     'menu/MenuService',
     'header/HeaderService',
@@ -8,8 +9,9 @@ require([
     'speakers/SpeakersRouter',
     'auth/Authentication',
     'auth/LoginRouter',
-    'auth/LogoutRouter'
-], function (C2CApplication, MenuService, HeaderService, HomepageRouter, ProfileRouter, ConferencesRouter,
+    'auth/LogoutRouter',
+    'secret/SecretsRouter'
+], function (Backbone, C2CApplication, MenuService, HeaderService, HomepageRouter, ProfileRouter, ConferencesRouter,
              SpeakersRouter, Authentication, LoginRouter, LogoutRouter) {
 
     'use strict';
@@ -56,6 +58,18 @@ require([
 
         app.start();
 
+        $.ajaxSetup({
+            statusCode: {
+                401: function(jqXHR) {
+                    var response = '';
+                    try {
+                        response = jqXHR.responseJSON.error;
+                    } catch (err) {}
+                    app.authentication.set('error', response);
+                    Backbone.history.navigate('#login', {trigger: true});
+                }
+            }
+        });
     });
 
 });

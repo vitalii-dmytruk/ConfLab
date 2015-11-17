@@ -16,4 +16,11 @@
             <button type="submit" id="signIn" class="btn btn-default">Log in</button>
         </div>
     </div>
+    <% if (error) { %>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <p class="bg-danger contextual-message"><%= error %></p>
+        </div>
+    </div>
+    <% } %>
 </form>
