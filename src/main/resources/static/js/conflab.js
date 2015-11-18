@@ -9,8 +9,7 @@ require([
     'speakers/SpeakersRouter',
     'auth/Authentication',
     'auth/LoginRouter',
-    'auth/LogoutRouter',
-    'secret/SecretsRouter'
+    'auth/LogoutRouter'
 ], function (Backbone, C2CApplication, MenuService, HeaderService, HomepageRouter, ProfileRouter, ConferencesRouter,
              SpeakersRouter, Authentication, LoginRouter, LogoutRouter) {
 
