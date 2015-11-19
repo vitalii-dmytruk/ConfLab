@@ -1,17 +1,22 @@
 define([
     'backbone.marionette',
-    'auth/LogoutController'
-], function(Marionette, LogoutController) {
+    'auth/AuthController'
+], function(Marionette, AuthController){
 
     'use strict';
 
     return Marionette.AppRouter.extend({
+
         initialize: function(options) {
-            this.controller = new LogoutController({application: options.application});
+            this.controller = new AuthController({
+                container: options.container
+            });
         },
 
         appRoutes: {
+            'login': 'login',
             'logout': 'logout'
         }
     });
+
 });

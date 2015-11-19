@@ -1,8 +1,9 @@
 define([
+    'backbone.radio',
     'common/Service',
     'header/HeaderView',
     'header/HeaderModel'
-], function (Service, HeaderView, HeaderModel) {
+], function (Radio, Service, HeaderView, HeaderModel) {
 
     'use strict';
 
@@ -14,7 +15,10 @@ define([
         },
 
         onStart: function () {
-            this.view = new HeaderView({model: new HeaderModel()});
+            this.view = new HeaderView({
+                model  : new HeaderModel(),
+                session: Radio.channel('session').request('getSession')
+            });
             this.container.show(this.view);
         }
 

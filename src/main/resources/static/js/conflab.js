@@ -7,11 +7,10 @@ require([
     'profile/ProfileRouter',
     'conferences/ConferencesRouter',
     'speakers/SpeakersRouter',
-    'auth/Authentication',
-    'auth/LoginRouter',
-    'auth/LogoutRouter'
+    'auth/AuthRouter',
+    'session/SessionService'
 ], function (Backbone, C2CApplication, MenuService, HeaderService, HomepageRouter, ProfileRouter, ConferencesRouter,
-             SpeakersRouter, Authentication, LoginRouter, LogoutRouter) {
+             SpeakersRouter, AuthRouter, SessionService) {
 
     'use strict';
 
@@ -20,7 +19,7 @@ require([
 
         app = new C2CApplication();
 
-        app.authentication = new Authentication();
+        app.session = new SessionService();
 
         app.menu = new MenuService({
             container: app.layout.getRegion('menu')
@@ -46,25 +45,20 @@ require([
             container: app.layout.getRegion('main')
         });
 
-        app.login = new LoginRouter({
-            container: app.layout.getRegion('main'),
-            application: app
+        app.auth = new AuthRouter({
+            container: app.layout.getRegion('main')
         });
-
-        app.logout = new LogoutRouter({application: app});
-
-        app.authentication.initSessionUser();
 
         app.start();
 
         $.ajaxSetup({
             statusCode: {
-                401: function(jqXHR) {
+                401: function (jqXHR) {
                     var response = '';
                     try {
                         response = jqXHR.responseJSON.error;
-                    } catch (err) {}
-                    app.authentication.set('error', response);
+                    } catch (err) {
+                    }
                     Backbone.history.navigate('#login', {trigger: true});
                 }
             }

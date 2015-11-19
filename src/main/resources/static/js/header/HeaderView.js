@@ -1,9 +1,9 @@
 define([
     'backbone.marionette',
     'backbone.radio',
-    'auth/User',
-    'text!header/HeaderTemplate.html'
-], function (Marionette, Radio, User, template) {
+    'text!header/HeaderTemplate.html',
+    'backbone.stickit'
+], function (Marionette, Radio, template) {
 
     'use strict';
 
@@ -11,22 +11,30 @@ define([
         className: 'container-fluid',
         template : _.template(template),
 
-        modelEvents: {
-            'change:sessionUser': 'render'
+        initialize: function (options) {
+            this.session = options.session;
         },
 
-        initialize: function() {
-            this.channel = Radio.channel('auth');
-            this.channel.reply('onSessionUserChange', function(data){
-                this.model.set('sessionUser', new User(data));
-            }, this);
-        },
+        onRender: function () {
+            this.stickit(this.session, {
+                '#currentUsername': {
+                    observe   : 'username',
+                    visible   : true,
+                    updateView: true
+                },
+                '#loginLogout'    : {
+                    observe     : 'isAuthenticated',
+                    updateMethod: 'html',
+                    onGet       : function (isAuthenticated) {
+                        return isAuthenticated ?
+                               '<a href="#logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a>' :
+                               '<a href="#login"><span class="glyphicon glyphicon-log-in"></span> Login</a>'
 
-        serializeData: function() {
-            var user = this.model.get('sessionUser'),
-                isAuthenticated = user && user.has('username');
-            return _.extend({ isAuthenticated: isAuthenticated}, isAuthenticated ? user.toJSON() : {});
+                    }
+                }
+            });
         }
+
     });
 
 });

@@ -1,19 +1,19 @@
 define([
     'backbone.marionette',
-    'auth/Authentication',
+    'backbone.radio',
     'text!auth/LoginLayoutTemplate.html'
-], function(Marionette, AuthenticationModel, template){
+], function (Marionette, Radio, template) {
 
     'use strict';
 
     return Marionette.ItemView.extend({
-        tagName: 'form',
+        tagName  : 'form',
         className: 'form-horizontal',
-        template: _.template(template),
+        template : _.template(template),
 
         ui: {
-            username: 'input#username',
-            password: 'input#password',
+            username    : 'input#username',
+            password    : 'input#password',
             signInButton: 'button#signIn'
         },
 
@@ -21,8 +21,8 @@ define([
             'click @ui.signInButton': 'signIn'
         },
 
-        signIn: function() {
-            this.model.signIn(this.ui.username.val(), this.ui.password.val());
+        signIn: function () {
+            Radio.channel('session').request('signIn', this.ui.username.val(), this.ui.password.val());
             return false;
         }
     });
