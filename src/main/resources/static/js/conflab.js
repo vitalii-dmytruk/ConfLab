@@ -8,7 +8,7 @@ require([
     'conferences/ConferencesRouter',
     'speakers/SpeakersRouter',
     'auth/AuthRouter',
-    'session/SessionService'
+    'auth/session/SessionService'
 ], function (Backbone, C2CApplication, MenuService, HeaderService, HomepageRouter, ProfileRouter, ConferencesRouter,
              SpeakersRouter, AuthRouter, SessionService) {
 

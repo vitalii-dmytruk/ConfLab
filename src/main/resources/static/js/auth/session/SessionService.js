@@ -1,7 +1,7 @@
 define([
     'backbone',
     'common/Service',
-    'session/SessionModel'
+    'auth/session/SessionModel'
 ], function (Backbone, Service, SessionModel) {
 
     'use strict';
