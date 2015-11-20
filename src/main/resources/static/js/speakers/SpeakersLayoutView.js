@@ -9,7 +9,7 @@ define([
 
         template: _.template(template),
         regions : {
-            userSummary: '[data-news-region]'
+            speakers: '[data-speakers-region]'
         }
 
     });
