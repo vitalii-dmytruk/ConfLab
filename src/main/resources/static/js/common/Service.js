@@ -3,6 +3,8 @@ define([
     'backbone.radio'
 ], function (Marionette, Radio) {
 
+    'use strict';
+
     return Marionette.Object.extend({
 
         constructor: function () {
