@@ -5,6 +5,9 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 public class Speaker {
+
+    private Long id;
+
     @NotBlank(message = "Speaker name cannot be empty.")
     @Length(max = 255, message = "Speaker name is greater then {max} characters.")
     private String name;
@@ -17,6 +20,14 @@ public class Speaker {
     @Email(message = "'${validatedValue}' is not valid email address.")
     @NotBlank(message = "Email address is not specified.")
     private String email;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
