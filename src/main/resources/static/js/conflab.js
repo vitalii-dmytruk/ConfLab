@@ -3,13 +3,12 @@ require([
     'core/HomepageRouter',
     'header/HeaderService',
     'menu/MenuService',
-    'profile/ProfileRouter',
     'speaker/SpeakerRouter',
     'conference/ConferenceRouter',
     'auth/AuthRouter',
     'auth/session/SessionService',
     'backbone'
-], function (C2CApplication, HomepageRouter, HeaderService, MenuService, ProfileRouter, SpeakersRouter, ConferenceRouter,
+], function (ConfLabApp, HomepageRouter, HeaderService, MenuService, SpeakerRouter, ConferenceRouter,
              AuthRouter, SessionService) {
 
     'use strict';
@@ -30,10 +29,6 @@ require([
         });
 
         app.home = new HomepageRouter({
-            container: app.layout.getRegion('main')
-        });
-
-        app.profile = new ProfileRouter({
             container: app.layout.getRegion('main')
         });
 
