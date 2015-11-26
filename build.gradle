@@ -38,6 +38,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
     compile("org.springframework.boot:spring-boot-starter-security")
+    compile("org.springframework.security:spring-security-core:4.0.3.RELEASE")
     compile("org.flywaydb:flyway-core:3.2.1")
     compile("org.modelmapper:modelmapper:0.7.5")
     runtime("org.postgresql:postgresql:9.4-1205-jdbc42")
@@ -80,7 +81,7 @@ bower {
         'backbone.stickit'('0.9.2') {
             source 'backbone.stickit.js'
         }
-        
+
         'requirejs'() {
             source 'require.js'
         }
