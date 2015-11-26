@@ -5,11 +5,11 @@ require([
     'menu/MenuService',
     'profile/ProfileRouter',
     'speaker/SpeakerRouter',
-    'conferences/ConferencesRouter',
+    'conference/ConferenceRouter',
     'auth/AuthRouter',
     'auth/session/SessionService',
     'backbone'
-], function (C2CApplication, HomepageRouter, HeaderService, MenuService, ProfileRouter, SpeakersRouter, ConferencesRouter,
+], function (C2CApplication, HomepageRouter, HeaderService, MenuService, ProfileRouter, SpeakersRouter, ConferenceRouter,
              AuthRouter, SessionService) {
 
     'use strict';
@@ -37,7 +37,7 @@ require([
             container: app.layout.getRegion('main')
         });
 
-        app.conferences = new ConferencesRouter({
+        app.conferences = new ConferenceRouter({
             container: app.layout.getRegion('main')
         });
 

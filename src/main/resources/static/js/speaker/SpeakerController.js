@@ -14,10 +14,30 @@ define([
         speaker: function () {
             var self = this;
 
-            require(['speaker/SpeakerPageView', 'speaker/SpeakerCollection'], function (SpeakerPageView, SpeakerCollection) {
-                var collection = new SpeakerCollection();
-                self.container.show(new SpeakerPageView({collection: collection}));
-                Radio.channel('menu').request('activate', {path: 'speaker'});
+            require([
+                        'speaker/Speaker',
+                        'speaker/SpeakerCollection',
+                        'speaker/SpeakerPageView',
+                        'speaker/SpeakerTableView',
+                        'speaker/SpeakerFormView'
+                    ],
+                    function (Speaker,
+                              SpeakerCollection,
+                              SpeakerPageView,
+                              SpeakerTableView,
+                              SpeakerFormView) {
+                        var pageView,
+                            collection;
+
+                        pageView   = new SpeakerPageView();
+
+                        collection = new SpeakerCollection();
+                        self.container.show(pageView);
+
+                        pageView.showChildView("table", new SpeakerTableView({collection: collection}));
+                        pageView.showChildView("form", new SpeakerFormView({model: new Speaker()}));
+
+                        Radio.channel('menu').request('activate', {path: 'speaker'});
             });
         }
     });

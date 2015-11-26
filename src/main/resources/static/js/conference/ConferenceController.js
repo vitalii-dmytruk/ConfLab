@@ -11,12 +11,12 @@ define([
             this.container = options.container;
         },
 
-        speakers: function () {
+        conference: function () {
             var self = this;
 
-            require(['speakers/SpeakersLayoutView'], function (SpeakersLayoutView) {
-                self.container.show(new SpeakersLayoutView());
-                Radio.channel('menu').request('activate', {path: 'speakers'});
+            require(['conference/ConferenceLayoutView'], function (ConferenceLayoutView) {
+                self.container.show(new ConferenceLayoutView());
+                Radio.channel('menu').request('activate', {path: 'conference'});
             });
 
         }

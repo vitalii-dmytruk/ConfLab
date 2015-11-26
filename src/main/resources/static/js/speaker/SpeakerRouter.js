@@ -8,7 +8,7 @@ define([
 
     return Marionette.AppRouter.extend({
         initialize: function (options) {
-            Radio.channel('menu').request('add', {name: 'Speaker', path: 'speaker'});
+            Radio.channel('menu').request('add', {name: 'Speakers', path: 'speaker'});
             this.controller = new SpeakerController({container: options.container});
         },
 

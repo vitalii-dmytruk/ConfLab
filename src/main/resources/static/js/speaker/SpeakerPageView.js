@@ -1,21 +1,15 @@
 define([
-   'speaker/SpeakerView',
-   'text!speaker/SpeakerLayoutTemplate.html',
+   'text!speaker/SpeakerPageTemplate.html',
    'backbone.marionette'
-], function (SpeakerView, template) {
+], function (template) {
 
     'use strict';
 
-    return Marionette.CollectionView.extend({
+    return Marionette.LayoutView.extend({
         template: _.template(template),
-
-        childView: SpeakerView,
-        childViewContainer: '[data-table-region]',
-
-        onBeforeRender: loadData
+        regions : {
+            table : '[data-table-region]',
+            form  : '[data-form-region]'
+        }
     });
-
-    function loadData() {
-        this.collection.fetch();
-    }
 });

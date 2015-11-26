@@ -1,6 +1,6 @@
 define([
     'backbone.marionette',
-    'text!conferences/ConferencesLayoutTemplate.html'
+    'text!conference/ConferenceLayoutTemplate.html'
 ], function (Marionette, template) {
 
     'use strict';
@@ -9,7 +9,7 @@ define([
 
         template: _.template(template),
         regions : {
-            userSummary: '[data-news-region]'
+            speakers: '[data-speakers-region]'
         }
 
     });
