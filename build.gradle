@@ -14,7 +14,7 @@ buildscript {
 }
 
 plugins {
-    id 'com.craigburke.bower-installer' version '2.1.4'
+    id 'com.craigburke.bower-installer' version '2.4.1'
 }
 
 apply plugin: 'java'
