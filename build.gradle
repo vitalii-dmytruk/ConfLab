@@ -74,7 +74,7 @@ bower {
             source 'lib/backbone.marionette*'
         }
 
-        'backbone.radio'('1.0.1') {
+        'backbone.radio'('1.0.2') {
             source 'build/*'
         }
 
