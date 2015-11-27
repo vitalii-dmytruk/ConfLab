@@ -1,27 +1,15 @@
 package com.intelliarts.conflab.core.service;
 
-import com.intelliarts.conflab.core.entity.Stage;
+import com.intelliarts.conflab.api.Stage;
+import com.intelliarts.conflab.core.entity.StageEntity;
 import com.intelliarts.conflab.core.repository.StageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
-public class StageService {
-    private StageRepository stageRepository;
-
+public class StageService extends SimpleService<Stage, StageEntity> {
     @Autowired
     public StageService(StageRepository stageRepository) {
-        this.stageRepository = stageRepository;
-    }
-
-    public Stage save(Stage stage) {
-        return stageRepository.save(stage);
-    }
-
-
-    public List<Stage> getAll() {
-        return stageRepository.findAll();
+        super(stageRepository);
     }
 }
