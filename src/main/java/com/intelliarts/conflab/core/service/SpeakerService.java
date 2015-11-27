@@ -10,7 +10,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Service
-public class SpeakerService extends MappingService<Speaker, SpeakerEntity> {
+public class SpeakerService extends SimpleService<Speaker, SpeakerEntity> {
     private final SpeakerRepository speakerRepository;
 
     @Autowired

@@ -9,14 +9,14 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MappingService<A, E> {
+abstract class SimpleService<A, E> {
     private final Class<A>                                  apiClass;
     private final Class<E>                                  entityClass;
     @Autowired
     private       ModelMapper                               mapper;
     private       BaseRepository<E, ? extends Serializable> repository;
 
-    public MappingService(BaseRepository<E, ? extends Serializable> repository) {
+    SimpleService(BaseRepository<E, ? extends Serializable> repository) {
         this.apiClass = getClassFromParameters(0);
         this.entityClass = getClassFromParameters(1);
         this.repository = repository;
