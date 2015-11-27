@@ -39,7 +39,7 @@ dependencies {
     compile("org.springframework.security:spring-security-core:4.0.3.RELEASE")
     compile("org.flywaydb:flyway-core:3.2.1")
     compile("org.modelmapper:modelmapper:0.7.5")
-    runtime("org.postgresql:postgresql:9.4-1205-jdbc42")
+    runtime("org.postgresql:postgresql:9.4-1206-jdbc42")
 }
 
 bower {
