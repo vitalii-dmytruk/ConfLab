@@ -45,19 +45,6 @@ require([
         });
 
         app.start();
-
-        $.ajaxSetup({
-            statusCode: {
-                401: function (jqXHR) {
-                    var response = '';
-                    try {
-                        response = jqXHR.responseJSON.error;
-                    } catch (err) {
-                    }
-                    Backbone.history.navigate('#login', {trigger: true});
-                }
-            }
-        });
     });
 
 });

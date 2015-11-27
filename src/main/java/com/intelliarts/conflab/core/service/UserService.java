@@ -4,6 +4,8 @@ import com.intelliarts.conflab.api.User;
 import com.intelliarts.conflab.core.entity.UserEntity;
 import com.intelliarts.conflab.core.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -22,7 +24,12 @@ public class UserService extends MappingService<User, UserEntity> {
     }
 
     public User getSessionUser() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+
+        if (authentication instanceof AnonymousAuthenticationToken) {
+            return new User();
+        }
 
         String username = principal instanceof UserDetails
                 ? ((UserDetails) principal).getUsername()

@@ -13,6 +13,11 @@ define([
             lastName       : '',
             isAuthenticated: false,
             redirectFrom   : ''
+        },
+
+        parse: function (response) {
+            response.isAuthenticated = !!(response.email && response.username);
+            return response;
         }
     });
 });

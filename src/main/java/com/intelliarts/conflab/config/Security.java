@@ -17,18 +17,18 @@ public class Security extends WebSecurityConfigurerAdapter {
     private UserAuthenticationService authenticationService;
 
     @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(authenticationService).passwordEncoder(new BCryptPasswordEncoder());
+    }
+
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic()
             .and()
             .authorizeRequests()
-            .antMatchers("/lib/**", "/js/**", "/css/**", "/favicon.ico", "/login", "/logout", "/").permitAll()
+            .antMatchers("/lib/**", "/js/**", "/css/**", "/favicon.ico", "/login", "/logout", "/", "/users/current").permitAll()
             .anyRequest().authenticated()
             .and().csrf().disable()
             .logout().logoutSuccessUrl("/");
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(authenticationService).passwordEncoder(new BCryptPasswordEncoder());
     }
 }

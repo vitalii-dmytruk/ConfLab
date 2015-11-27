@@ -6,8 +6,21 @@ define([
 
     'use strict';
 
-    function setAuthorized(session) {
-        session.set('isAuthenticated', true);
+    function setupErrorHandling(session) {
+        $.ajaxSetup({
+            statusCode: {
+                401: function (jqXHR) {
+                    var response = '';
+                    try {
+                        response = jqXHR.responseJSON.error;
+                        console.warn(response);
+                    } catch (err) {
+                    }
+                    session.clear();
+                    Backbone.history.navigate('#login', {trigger: true});
+                }
+            }
+        });
     }
 
     return Service.extend({
@@ -22,11 +35,8 @@ define([
         onStart: function () {
             var session = this.session;
 
-            session.fetch({
-                success: function () {
-                    setAuthorized(session);
-                }
-            });
+            session.fetch();
+            setupErrorHandling(session);
 
             this.channel.reply({
                 getSession: session,
@@ -43,7 +53,6 @@ define([
                     'Authorization': 'Basic ' + btoa(username + ':' + password)
                 }
             }).done(function () {
-                setAuthorized(session);
                 Backbone.history.navigate(session.redirectFrom, {trigger: true});
             });
 
