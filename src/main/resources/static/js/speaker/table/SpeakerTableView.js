@@ -8,7 +8,7 @@ define([
 
     return Marionette.CompositeView.extend({
 
-        template          : _.template(template),
+        template: _.template(template),
 
         childView         : SpeakerRowView,
         childViewContainer: '[data-speaker-table]'
