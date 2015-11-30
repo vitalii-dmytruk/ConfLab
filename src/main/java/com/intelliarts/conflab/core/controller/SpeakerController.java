@@ -29,13 +29,22 @@ public class SpeakerController {
         return speakerService.create(speaker);
     }
 
+    @RequestMapping(path = "/{id}",
+                    method = RequestMethod.PUT,
+                    consumes = MediaType.APPLICATION_JSON_VALUE,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public Speaker update(@PathVariable("id") Long id, @RequestBody @Validated Speaker speaker) {
+        speaker.setId(id);
+        return speakerService.create(speaker);
+    }
 
-    @RequestMapping(value = "/{email}",
+    @RequestMapping(value = "/{id}",
                     method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public Speaker getByEmail(@PathVariable String email) {
-        return speakerService.findByEmail(email);
+    public Speaker getById(@PathVariable("id") Long id) {
+        return speakerService.findById(id);
     }
 
     @RequestMapping(method = RequestMethod.GET,

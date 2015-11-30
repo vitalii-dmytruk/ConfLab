@@ -1,5 +1,5 @@
 define([
-    'text!speaker/edit/SpeakerFormTemplate.html',
+    'text!speaker/create/CreateSpeakerTemplate.html',
     'backbone.marionette'
 ], function (template) {
 

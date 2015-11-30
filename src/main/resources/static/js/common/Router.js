@@ -14,11 +14,7 @@ define([
         },
 
         _onHistoryRoute: function (router) {
-            if (this === router) {
-                this.active = true;
-            } else {
-                this.active = false;
-            }
+            this.active = this === router;
         },
 
         execute: function (callback, args) {

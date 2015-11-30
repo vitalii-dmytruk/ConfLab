@@ -8,11 +8,18 @@ define([
     return Marionette.ItemView.extend({
         template: _.template(template),
 
+        tagName: 'a',
+        className: 'list-group-item',
+        attributes: function () {
+            return {
+                href: '#speakers/' + this.model.get('id')
+            };
+        },
+
         bindings: {
-            '[data-email]'   : 'id',
             '[data-name]'    : 'name',
             '[data-position]': 'position',
-            '[data-about]'   : 'about'
+            '[data-email]'   : 'email'
         },
 
         onRender: function () {

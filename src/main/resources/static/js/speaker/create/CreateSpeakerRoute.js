@@ -1,7 +1,7 @@
 define([
     'common/Route',
     'speaker/SpeakerModel',
-    'speaker/edit/CreateSpeakerView'
+    'speaker/create/CreateSpeakerView'
 ], function (Route, SpeakerModel, CreateSpeakerView) {
 
     'use strict';
