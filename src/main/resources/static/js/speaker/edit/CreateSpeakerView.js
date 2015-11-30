@@ -1,5 +1,5 @@
 define([
-    'text!speaker/SpeakerFormTemplate.html',
+    'text!speaker/edit/SpeakerFormTemplate.html',
     'backbone.marionette'
 ], function (template) {
 
@@ -7,17 +7,19 @@ define([
 
     return Marionette.ItemView.extend({
         template: _.template(template),
+
         bindings: {
             '#email'   : 'email',
             '#name'    : 'name',
             '#position': 'position',
             '#about'   : 'about'
         },
-        ui      : {
+
+        ui: {
             saveSpeakerBtn: '#save-speaker-button'
         },
 
-        events  : {
+        events: {
             'click @ui.saveSpeakerBtn': saveSpeaker
         },
 
@@ -27,6 +29,13 @@ define([
     });
 
     function saveSpeaker() {
-        this.model.save([], {wait: true})
+        var view = this;
+        this.model.save([], {
+            success: function () {
+                view.collection.add(view.model);
+                Backbone.history.navigate('speakers', {trigger: true});
+            }
+        });
     }
+
 });

@@ -1,5 +1,5 @@
 define([
-    'text!speaker/SpeakerTemplate.html',
+    'text!speaker/table/SpeakerRowTemplate.html',
     'backbone.marionette'
 ], function (template) {
 

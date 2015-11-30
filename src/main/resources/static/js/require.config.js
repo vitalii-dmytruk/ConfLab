@@ -6,7 +6,7 @@ var require = {
         "menu"               : 'js/menu',
         "header"             : 'js/header',
         "speaker"            : 'js/speaker',
-        "conference"        : 'js/conference',
+        "conference"         : 'js/conference',
         "auth"               : 'js/auth',
         "text"               : 'lib/requirejs-text/text',
         "jquery"             : 'lib/jquery/jquery.min',

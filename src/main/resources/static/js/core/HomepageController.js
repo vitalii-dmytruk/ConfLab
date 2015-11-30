@@ -1,15 +1,15 @@
 define([
     'backbone.marionette'
-], function(Marionette) {
+], function (Marionette) {
 
     'use strict';
 
     return Marionette.Object.extend({
-        initialize: function(options) {
+        initialize: function (options) {
             this.container = options.container;
         },
 
-        home: function() {
+        home: function () {
             this.container.empty();
         }
     });
