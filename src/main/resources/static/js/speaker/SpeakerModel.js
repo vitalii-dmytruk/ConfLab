@@ -9,6 +9,7 @@ define([
 
         defaults: function () {
             return {
+                id      : null,
                 name    : '',
                 position: '',
                 about   : '',
