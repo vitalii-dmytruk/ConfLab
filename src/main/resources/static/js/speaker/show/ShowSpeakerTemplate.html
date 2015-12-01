@@ -1,21 +1,21 @@
 <div class="page-header">
-    <a href="#speakers/<%- id%>/edit" class="btn btn-primary pull-right">Edit</a>
+    <a data-speaker-edit-href class="btn btn-primary pull-right">Edit</a>
 
-    <h1>Speakers: <%- name%></h1>
+    <h1>Speakers: <span data-speaker-name></span></h1>
 </div>
 
 
 <div class="row">
     <div class="col-md-3">
-        <img src="/img/avatar.png" alt="..." class="img-responsive center-block">
+        <img src="/img/avatar.png" class="img-responsive center-block">
     </div>
 
-    <div class="col-md-9">
+    <div class="col-md-6 text-center">
         <address>
-            <h3><%- name%></h3>
+            <h3 data-speaker-name></h3>
             <br>
-            <h4> <%- position%></h4>
-            <a href="mailto:#"><%- email%></a>
+            <h4 data-speaker-position></h4>
+            <a data-speaker-email></a>
         </address>
     </div>
 </div>
@@ -25,6 +25,6 @@
         <br>
         <br>
 
-        <h4><em><%- about%></em></h4>
+        <h4><em data-speaker-about></em></h4>
     </div>
 </div>

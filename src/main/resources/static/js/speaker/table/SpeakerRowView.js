@@ -8,8 +8,8 @@ define([
     return Marionette.ItemView.extend({
         template: _.template(template),
 
-        tagName: 'a',
-        className: 'list-group-item',
+        tagName   : 'a',
+        className : 'list-group-item',
         attributes: function () {
             return {
                 href: '#speakers/' + this.model.get('id')
