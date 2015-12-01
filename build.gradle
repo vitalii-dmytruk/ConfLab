@@ -32,6 +32,13 @@ repositories {
     mavenCentral()
 }
 
+idea {
+    module {
+        sourceDirs += file('src/main')
+        testSourceDirs += file('src/test')
+    }
+}
+
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
