@@ -10,7 +10,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Service
-public class SpeakerService extends MappingService<Speaker, SpeakerEntity>{
+public class SpeakerService extends MappingService<Speaker, SpeakerEntity> {
     private final SpeakerRepository speakerRepository;
 
     @Autowired
@@ -23,5 +23,10 @@ public class SpeakerService extends MappingService<Speaker, SpeakerEntity>{
         Optional<SpeakerEntity> entity = speakerRepository.findByEmail(email);
         return toApi(
                 entity.orElseThrow(() -> new EntityNotFoundException("Speaker with email '" + email + "' not found.")));
+    }
+
+    public Speaker findById(Long id) {
+        Optional<SpeakerEntity> entity = speakerRepository.findOne(id);
+        return toApi(entity.orElseThrow(() -> new EntityNotFoundException("Speaker with ID '" + id + "' not found.")));
     }
 }
