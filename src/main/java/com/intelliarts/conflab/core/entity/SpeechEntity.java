@@ -9,29 +9,41 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.util.Locale;
+import java.util.Set;
 
 @Entity
 @Table(name = "speech")
 public class SpeechEntity {
     @Id
+    @Column
     @SequenceGenerator(name = "speech_seq", sequenceName = "speech_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "speech_seq")
-    @Column
     private Long   id;
-
-    @NotEmpty
-    @Column(nullable = false, unique = true)
-    private String title;
 
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Convert(converter = LocaleToLanguageConverter.class)
+    @Column(nullable = false, unique = true)
+    @NotEmpty
+    private String title;
+
     @Column
+    @Convert(converter = LocaleToLanguageConverter.class)
     private Locale lang;
+
+    @Column
+    @ManyToMany
+    @JoinTable(
+            name = "speech_speaker",
+            joinColumns = @JoinColumn(name = "speech_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "speaker_id", referencedColumnName = "id"))
+    private Set<SpeakerEntity> speakers;
 
     public Long getId() {
         return id;
@@ -63,5 +75,13 @@ public class SpeechEntity {
 
     public void setLang(Locale lang) {
         this.lang = lang;
+    }
+
+    public Set<SpeakerEntity> getSpeakers() {
+        return speakers;
+    }
+
+    public void setSpeakers(Set<SpeakerEntity> speakers) {
+        this.speakers = speakers;
     }
 }

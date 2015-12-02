@@ -1,12 +1,16 @@
 package com.intelliarts.conflab.api;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 import java.util.Locale;
+import java.util.Set;
 
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Speech {
     private Long id;
 
@@ -17,6 +21,8 @@ public class Speech {
     private String description;
 
     private Locale lang;
+
+    private Set<Speaker> speakers;
 
 
     public Long getId() {
@@ -49,6 +55,14 @@ public class Speech {
 
     public void setLang(Locale lang) {
         this.lang = lang;
+    }
+
+    public Set<Speaker> getSpeakers() {
+        return speakers;
+    }
+
+    public void setSpeakers(Set<Speaker> speakers) {
+        this.speakers = speakers;
     }
 
     @JsonGetter("lang")

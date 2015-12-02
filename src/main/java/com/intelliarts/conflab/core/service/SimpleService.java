@@ -29,8 +29,8 @@ abstract class SimpleService<A, E> {
     }
 
     public List<A> getAll() {
-        List<E> stageEntities = repository.findAll();
-        return stageEntities.stream().map(this::toApi).collect(Collectors.toList());
+        List<E> entities = repository.findAll();
+        return entities.stream().map(this::toApi).collect(Collectors.toList());
     }
 
     protected E toEntity(A speaker) {
