@@ -14,7 +14,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Service
-public class UserService extends MappingService<User, UserEntity> {
+public class UserService extends SimpleService<User, UserEntity> {
     private final UserRepository repository;
 
     @Autowired

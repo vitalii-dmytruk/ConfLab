@@ -7,8 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import java.util.Set;
 
 @Entity
 @Table(name = "speaker")
@@ -27,6 +29,9 @@ public class SpeakerEntity {
     private String position;
     @Column(columnDefinition = "TEXT")
     private String about;
+
+    @ManyToMany(mappedBy = "speakers")
+    private Set<SpeechEntity> speeches;
 
     public Long getId() {
         return id;
@@ -66,5 +71,13 @@ public class SpeakerEntity {
 
     public void setAbout(String about) {
         this.about = about;
+    }
+
+    public Set<SpeechEntity> getSpeeches() {
+        return speeches;
+    }
+
+    public void setSpeeches(Set<SpeechEntity> speeches) {
+        this.speeches = speeches;
     }
 }

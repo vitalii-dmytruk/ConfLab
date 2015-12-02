@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class StageService extends MappingService<Stage, StageEntity> {
+public class StageService extends SimpleService<Stage, StageEntity> {
     @Autowired
     public StageService(StageRepository stageRepository) {
         super(stageRepository);

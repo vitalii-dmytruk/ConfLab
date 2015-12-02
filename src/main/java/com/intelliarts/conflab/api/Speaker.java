@@ -1,9 +1,14 @@
 package com.intelliarts.conflab.api;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
+import java.util.Set;
+
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Speaker {
 
     private Long id;
@@ -20,6 +25,8 @@ public class Speaker {
     @Email(message = "'${validatedValue}' is not valid email address.")
     @NotBlank(message = "Email address is not specified.")
     private String email;
+
+    private Set<Speech> speeches;
 
     public Long getId() {
         return id;
@@ -59,5 +66,13 @@ public class Speaker {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Set<Speech> getSpeeches() {
+        return speeches;
+    }
+
+    public void setSpeeches(Set<Speech> speeches) {
+        this.speeches = speeches;
     }
 }
