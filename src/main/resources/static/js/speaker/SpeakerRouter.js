@@ -3,11 +3,12 @@ define([
     'backbone.radio',
     'speaker/SpeakerCollection',
     'speaker/table/SpeakerTableRoute',
-    'speaker/create/CreateSpeakerRoute',
+    'speaker/edit/CreateSpeakerRoute',
     'speaker/edit/EditSpeakerRoute',
     'speaker/show/ShowSpeakerRoute',
     'backbone.marionette'
-], function (Router, Radio, SpeakerCollection, SpeakerTableRoute, CreateSpeakerRoute, EditSpeakerRoute, ShowSpeakerRoute) {
+], function (Router, Radio, SpeakerCollection, SpeakerTableRoute, CreateSpeakerRoute, EditSpeakerRoute,
+             ShowSpeakerRoute) {
 
     'use strict';
 
@@ -24,40 +25,21 @@ define([
         },
 
         routes: {
-            'speakers'    : showSpeakerTable,
-            'speakers/new': create,
-            'speakers/:id': show,
-            'speakers/:id/edit': edit
+            'speakers'         : getRoute(SpeakerTableRoute),
+            'speakers/new'     : getRoute(CreateSpeakerRoute),
+            'speakers/:id'     : getRoute(ShowSpeakerRoute),
+            'speakers/:id/edit': getRoute(EditSpeakerRoute)
         }
 
     });
 
-    function showSpeakerTable() {
-        return new SpeakerTableRoute({
-            container : this.container,
-            collection: this.collection
-        });
-    }
-
-    function create() {
-        return new CreateSpeakerRoute({
-            container : this.container,
-            collection: this.collection
-        });
-    }
-
-    function show(){
-        return new ShowSpeakerRoute({
-            container : this.container,
-            collection: this.collection
-        });
-    }
-
-    function edit(){
-        return new EditSpeakerRoute({
-            container : this.container,
-            collection: this.collection
-        });
+    function getRoute(RouteClass) {
+        return function () {
+            return new RouteClass({
+                container : this.container,
+                collection: this.collection
+            });
+        }
     }
 
 });

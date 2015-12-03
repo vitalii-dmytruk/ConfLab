@@ -6,6 +6,7 @@ define([
 
     'use strict';
 
+    //noinspection JSUnusedGlobalSymbols
     return Service.extend({
 
         channelName: 'menu',
@@ -20,33 +21,31 @@ define([
             this.view = new MenuView({collection: this.collection});
             this.container.show(this.view);
             this.channel.reply({
-                add     : this.onAdd,
-                activate: this.onActivate,
-                remove  : this.onRemove
+                add     : addToCollection,
+                activate: setActiveItem,
+                remove  : removeFromCollection
             }, this)
         },
 
         onStop: function () {
             this.channel.reset();
-        },
-
-        onAdd: function (model) {
-            this.collection.add(model);
-        },
-
-        onRemove: function (model) {
-            model = this.collection.findWhere(model);
-            this.collection.remove(model);
-        },
-
-        onActivate: function (model) {
-            this.collection.invoke('set', 'active', false);
-            model = this.collection.findWhere(model);
-            if (model) {
-                model.set('active', true);
-            }
         }
-
     });
 
+    function removeFromCollection(model) {
+        var index = this.collection.findWhere(model);
+        this.collection.remove(index);
+    }
+
+    function setActiveItem(model) {
+        this.collection.invoke('set', 'active', false);
+        model = this.collection.findWhere(model);
+        if (model) {
+            model.set('active', true);
+        }
+    }
+
+    function addToCollection(model) {
+        this.collection.add(model);
+    }
 });

@@ -9,6 +9,15 @@ define([
         template: _.template(template),
 
         bindings: {
+            '#speaker-update-action': {
+                observe: 'id',
+                onGet  : function (id) {
+                    var action = id ? 'edit' : 'add';
+
+                    return 'Speakers: ' + action;
+                }
+            },
+
             '#email'   : 'email',
             '#name'    : 'name',
             '#position': 'position',
@@ -16,11 +25,13 @@ define([
         },
 
         ui: {
-            saveSpeakerBtn: '#save-speaker-button'
+            updateSpeakerBtn      : '#update-speaker-button',
+            cancelUpdateSpeakerBtn: '#cancel-update-speaker-button'
         },
 
         events: {
-            'click @ui.saveSpeakerBtn': saveSpeaker
+            'click @ui.updateSpeakerBtn'      : saveSpeaker,
+            'click @ui.cancelUpdateSpeakerBtn': cancel
         },
 
         onRender: function () {
@@ -28,14 +39,19 @@ define([
         }
     });
 
+
     function saveSpeaker() {
         var view = this;
         this.model.save([], {
             success: function () {
                 view.collection.add(view.model, {merge: true});
-                Backbone.history.navigate('speakers', {trigger: true});
+                view.trigger('save');
             }
         });
+    }
+
+    function cancel() {
+        this.trigger('cancel');
     }
 
 });
