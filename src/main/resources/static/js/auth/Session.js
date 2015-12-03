@@ -7,17 +7,18 @@ define([
     return Backbone.Model.extend({
         url     : 'users/current',
         defaults: {
-            username       : '',
-            email          : '',
-            firstName      : '',
-            lastName       : '',
+            user           : '',
             isAuthenticated: false,
             redirectFrom   : ''
         },
 
         parse: function (response) {
-            response.isAuthenticated = !!(response.email && response.username);
-            return response;
+            var session = {};
+
+            session.user = response;
+            session.isAuthenticated = !!(response.email && response.username);
+
+            return session;
         }
     });
 });

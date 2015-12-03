@@ -1,7 +1,8 @@
 define([
+    'backbone.radio',
     'backbone',
     'backbone.marionette'
-], function (Backbone, Marionette) {
+], function (Radio) {
 
     'use strict';
 
@@ -11,8 +12,14 @@ define([
             this.initialize.apply(this, arguments);
         },
 
+        requireAuth: true,
+
         enter: function (args) {
             var self = this;
+
+            if (!canEnter(this.requireAuth)) {
+                return;
+            }
 
             this.triggerMethod.apply(this, ['before:enter'].concat(args));
             this.triggerMethod.apply(this, ['before:fetch'].concat(args));
@@ -44,5 +51,17 @@ define([
         }
 
     });
+
+    function canEnter(requireAuth) {
+        var auth = Radio.channel('auth');
+
+        if (requireAuth && !auth.request('isAuthenticated')) {
+            auth.request('login');
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 
 });

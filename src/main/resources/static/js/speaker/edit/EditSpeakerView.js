@@ -1,6 +1,7 @@
 define([
     'text!speaker/edit/EditSpeakerTemplate.html',
-    'backbone.marionette'
+    'backbone.marionette',
+    'backbone.stickit'
 ], function (template) {
 
     'use strict';
