@@ -1,38 +1,16 @@
 define([
-    'backbone.marionette',
-    'backbone.radio',
     'text!header/HeaderTemplate.html',
-    'backbone.stickit'
-], function (Marionette, Radio, template) {
+    'backbone.marionette'
+], function (template) {
 
     'use strict';
 
-    return Marionette.ItemView.extend({
-        className: 'container-fluid',
+    return Marionette.LayoutView.extend({
         template : _.template(template),
+        className: 'container-fluid',
 
-        initialize: function (options) {
-            this.session = options.session;
-        },
-
-        onRender: function () {
-            this.stickit(this.session, {
-                '#currentUsername': {
-                    observe   : 'username',
-                    visible   : true,
-                    updateView: true
-                },
-                '#loginLogout'    : {
-                    observe     : 'isAuthenticated',
-                    updateMethod: 'html',
-                    onGet       : function (isAuthenticated) {
-                        return isAuthenticated ?
-                               '<a href="#logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a>' :
-                               '<a href="#login"><span class="glyphicon glyphicon-log-in"></span> Login</a>'
-
-                    }
-                }
-            });
+        regions: {
+            accountMenu: '#account-menu-region'
         }
 
     });

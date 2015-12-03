@@ -13,11 +13,13 @@ define([
     'use strict';
 
     //noinspection JSUnusedGlobalSymbols
+
     return Router.extend({
+
         initialize: function (options) {
             this.container  = options.container;
             this.collection = new SpeakerCollection();
-            Radio.channel('menu').request('add', {name: 'Speakers', path: 'speakers'});
+            initMenuButton();
         },
 
         onBeforeEnter: function () {
@@ -40,6 +42,22 @@ define([
                 collection: this.collection
             });
         }
+    }
+
+    function initMenuButton() {
+        var auth = Radio.channel('auth');
+
+        auth.request('isAuthenticated') && addMenuButton();
+        auth.on('login', addMenuButton);
+        auth.on('logout', removeMenuButton)
+    }
+
+    function addMenuButton() {
+        Radio.channel('menu').request('add', {name: 'Speakers', path: 'speakers'});
+    }
+
+    function removeMenuButton() {
+        Radio.channel('menu').request('remove', {path: 'speakers'});
     }
 
 });

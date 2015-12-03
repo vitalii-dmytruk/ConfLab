@@ -1,8 +1,10 @@
 define([
-    'backbone.marionette',
     'backbone.radio',
-    'text!auth/LoginLayoutTemplate.html'
-], function (Marionette, Radio, template) {
+    'text!auth/LoginViewTemplate.html',
+    'backbone',
+    'backbone.marionette',
+    'backbone.stickit'
+], function (Radio, template) {
 
     'use strict';
 
@@ -12,18 +14,34 @@ define([
         template : _.template(template),
 
         ui: {
-            username    : 'input#username',
-            password    : 'input#password',
-            signInButton: 'button#signIn'
+            login : '#login',
+            cancel: '#cancel'
         },
 
         events: {
-            'click @ui.signInButton': 'signIn'
+            'click @ui.login' : 'login',
+            'click @ui.cancel': 'cancel'
         },
 
-        signIn: function () {
-            Radio.channel('session').request('signIn', this.ui.username.val(), this.ui.password.val());
-            return false;
+        bindings: {
+            '#username': 'username',
+            '#password': 'password'
+        },
+
+        initialize: function () {
+            this.model = new Backbone.Model();
+        },
+
+        onRender: function () {
+            this.stickit();
+        },
+
+        login: function () {
+            this.trigger('login:confirm', this.model);
+        },
+
+        cancel: function () {
+            this.trigger('login:cancel', this.model);
         }
     });
 });

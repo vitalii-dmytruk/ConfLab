@@ -9,6 +9,8 @@ define([
 
     return Service.extend({
 
+        channelName: 'header',
+
         initialize: function (options) {
             this.container = options.container;
             this.start();
@@ -16,10 +18,16 @@ define([
 
         onStart: function () {
             this.view = new HeaderView({
-                model  : new HeaderModel(),
-                session: Radio.channel('session').request('getSession')
+                model: new HeaderModel()
             });
             this.container.show(this.view);
+            this.channel.reply({
+                showAccountMenu: this.showAccountMenu
+            }, this)
+        },
+
+        showAccountMenu: function (accountMenuView) {
+            this.view.showChildView('accountMenu', accountMenuView);
         }
 
     });

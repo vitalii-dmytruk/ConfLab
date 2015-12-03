@@ -2,6 +2,7 @@ var require = {
     baseUrl: '../',
     paths  : {
         "core"               : 'js/core',
+        "account"            : 'js/account',
         "common"             : 'js/common',
         "menu"               : 'js/menu',
         "header"             : 'js/header',

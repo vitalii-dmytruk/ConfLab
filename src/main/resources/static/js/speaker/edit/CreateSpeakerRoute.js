@@ -31,8 +31,17 @@ define([
             collection: route.collection,
             model     : route.model
         });
-        route.view.on('save cancel', function () {
+
+        route.view.on('save', function () {
             route.navigate('speakers/' + route.model.get('id'), {trigger: true});
+        });
+
+        route.view.on('cancel', function () {
+            var id   = route.model.get('id'),
+                path = 'speakers';
+
+            path += id ? '/' + id : '';
+            route.navigate(path, {trigger: true});
         });
     }
 });
