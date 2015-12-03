@@ -1,5 +1,5 @@
 define([
-    'auth/AccessDeniedTemplate.html',
+    'text!auth/AccessDeniedTemplate.html',
     'backbone.marionette'
 ], function (template) {
 

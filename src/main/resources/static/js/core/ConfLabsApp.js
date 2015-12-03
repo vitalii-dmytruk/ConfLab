@@ -6,10 +6,11 @@ define([
     'speaker/SpeakerRouter',
     'conference/ConferenceRouter',
     'auth/AuthService',
+    'account/AccountRouter',
     'backbone.marionette',
     'backbone'
 ], function (ConfLabsLayoutView, HomepageRouter, HeaderService, MenuService, SpeakerRouter, ConferenceRouter,
-             AuthService) {
+             AuthService, AccountRouter) {
 
     'use strict';
 
@@ -35,6 +36,10 @@ define([
 
                 app.header = new HeaderService({
                     container: app.layout.getRegion('header')
+                });
+
+                app.account = new AccountRouter({
+                    container: app.layout.getRegion('main')
                 });
 
                 app.home = new HomepageRouter({

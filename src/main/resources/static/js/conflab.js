@@ -1,5 +1,6 @@
 require([
-    'core/ConfLabsApp'
+    'core/ConfLabsApp',
+    'bootstrap'
 ], function (ConfLabApp) {
 
     'use strict';

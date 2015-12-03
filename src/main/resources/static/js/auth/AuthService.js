@@ -29,7 +29,7 @@ define([
                 currentUser    : this.getCurrentUser,
                 login          : this.login,
                 logout         : this.logout,
-                accessDenied: this.accessDenied
+                accessDenied   : this.accessDenied
             }, this);
         },
 
@@ -38,7 +38,7 @@ define([
         },
 
         getCurrentUser: function () {
-            this.session.get('user');
+            return this.session.get('user');
         },
 
         login: function () {
@@ -59,7 +59,7 @@ define([
             });
 
             loginView.on('login:cancel', function () {
-                Backbone.history.navigate('', {trigger: true});
+                Backbone.history.loadUrl('');
 
             });
             this.container.show(loginView);
@@ -80,7 +80,7 @@ define([
             });
         },
 
-        accessDenied: function(){
+        accessDenied: function () {
             this.container.show(new AccessDeniedView());
         }
     });

@@ -16,6 +16,7 @@ define([
             var session = {};
 
             session.user = response;
+
             session.isAuthenticated = !!(response.email && response.username);
 
             return session;

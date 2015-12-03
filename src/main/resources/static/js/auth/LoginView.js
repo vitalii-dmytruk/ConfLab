@@ -14,12 +14,12 @@ define([
         template : _.template(template),
 
         ui: {
-            login: '#login',
+            login : '#login',
             cancel: '#cancel'
         },
 
         events: {
-            'click @ui.login': 'login',
+            'click @ui.login' : 'login',
             'click @ui.cancel': 'cancel'
         },
 
