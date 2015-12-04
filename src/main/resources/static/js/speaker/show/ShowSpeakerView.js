@@ -1,13 +1,18 @@
 define([
+    'speech/SpeechRowView',
     'text!speaker/show/ShowSpeakerTemplate.html',
     'backbone.marionette'
-], function (template) {
+], function (SpeechView, template) {
 
     'use strict';
 
-    return Marionette.ItemView.extend({
+    return Marionette.CompositeView.extend({
 
         template: _.template(template),
+
+        childView: SpeechView,
+
+        childViewContainer: "#speeches-container",
 
         bindings: {
             '[data-speaker-edit-href]': {
