@@ -16,14 +16,15 @@ import java.util.stream.Collectors;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.isIn;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.Is.is;
 
 public class BasicView {
     private static FirefoxDriver driver;
 
-    private final WebElement logo = driver.findElement(By.xpath("html/body/nav/div/div/div[1]/a"));
-    private final WebElement loginLogout = driver.findElement(By.id("loginLogout"));
-    private final WebElement navbar = driver.findElement(By.cssSelector(".nav.nav-sidebar"));
+    private final WebElement logo = driver.findElement(By.xpath("html/body/nav/div/div[1]/a"));
+    private final WebElement loginLogout = driver.findElement(By.xpath("html/body/nav/div/div[2]/ul/li/a"));
+    private final WebElement navbar = driver.findElement(By.xpath("html/body/div[1]/div/div[1]/ul"));
 
     @Rule
     public ScreenShotOnFailure failure = new ScreenShotOnFailure(driver);
@@ -66,20 +67,20 @@ public class BasicView {
     }
 
     @Test
-    public void sidebarHasSpeakers() throws Exception {
-        assertThat("Speakers", isIn(getNavbarLinks()));
+    public void sidebarHasNotSpeakers() throws Exception {
+        assertThat("Speakers", not(isIn(getNavbarLinks())));
     }
 
-    // If case this test failed, please specify correct expectedLinksCount and
-    // add test to check if navbar has new link
+    // If case this test failed, please specify correct expectedLinksCount for logged out user
+    // and add test to check if navbar has new link
     @Test
     public void navbarHasTwoLinks() throws Exception {
-        int expectedLinksCount = 2;
+        int expectedLinksCount = 1;
         assertThat(getNavbarLinks().size(), equalTo(expectedLinksCount));
     }
 
     private List<String> getNavbarLinks() {
-        List<WebElement> navbarElements = navbar.findElements(By.xpath("//li"));
+        List<WebElement> navbarElements = navbar.findElements(By.xpath(".//li"));
         return navbarElements.stream().map(WebElement::getText).collect(Collectors.toList());
     }
 }
