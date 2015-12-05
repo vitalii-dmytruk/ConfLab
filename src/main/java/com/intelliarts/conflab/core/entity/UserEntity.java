@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -31,6 +33,10 @@ public class UserEntity {
 
     @Column(nullable = false, name = "last_name")
     private String lastName;
+
+    @ManyToOne
+    @JoinColumn(name="role_id")
+    private Role role;
 
     public Long getId() {
         return id;
@@ -78,5 +84,13 @@ public class UserEntity {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
