@@ -23,9 +23,7 @@ public class UserAuthenticationService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity user = userRepository.findByUsername(username).orElseThrow(
+        return userRepository.findByUsername(username).orElseThrow(
                 () -> new UsernameNotFoundException("Incorrect combination of username/password"));
-
-        return new User(user.getUsername(), user.getPassword(), Collections.singletonList(user.getRole()));
     }
 }
