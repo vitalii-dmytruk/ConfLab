@@ -15,7 +15,8 @@ define([
         initialize: function (options) {
             this.container = options.container;
             this.session   = new Session();
-            setupErrorHandling(this.session);
+            setupErrorHandling(this);
+            setupCsrf();
             this.start();
         },
 
@@ -50,7 +51,8 @@ define([
                     headers: {
                         'Authorization': 'Basic ' + btoa(user.get('username') + ':' + user.get('password'))
                     },
-                    success: function () {
+                    success: function (model, response, options) {
+                        setupCsrf(options.xhr);
                         self.channel.trigger('login');
                         Backbone.history.loadUrl(Backbone.history.fragment);
                     }
@@ -73,8 +75,7 @@ define([
                 url    : 'logout',
                 type   : 'POST',
                 success: function () {
-                    self.channel.trigger('logout');
-                    self.session.clear();
+                    clearSession(self);
                     Backbone.history.navigate('', {trigger: true});
                 }
             });
@@ -84,6 +85,11 @@ define([
             this.container.show(new AccessDeniedView());
         }
     });
+
+    function clearSession(authService){
+        authService.session.clear();
+        authService.channel.trigger('logout');
+    }
 
     function setupErrorHandling(authService) {
         $.ajaxSetup({
@@ -95,10 +101,31 @@ define([
                         console.warn(response);
                     } catch (err) {
                     }
-                    authService.session.clear();
+                    clearSession(authService);
                     authService.login();
                 }
             }
         });
     }
+
+    function setupCsrf(xhr) {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': getCsrfToken(xhr)
+            }
+        });
+    }
+
+    function getCsrfToken(xhr) {
+        var csrfToken;
+        if (xhr) {
+            csrfToken                    = xhr.getResponseHeader('X-CSRF-TOKEN') || '';
+            localStorage['X-CSRF-TOKEN'] = csrfToken;
+        } else {
+            csrfToken = localStorage['X-CSRF-TOKEN'] || '';
+        }
+        return csrfToken;
+    }
+
+
 });
