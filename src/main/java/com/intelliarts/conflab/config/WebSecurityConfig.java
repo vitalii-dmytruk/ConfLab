@@ -1,7 +1,7 @@
 package com.intelliarts.conflab.config;
 
 import com.intelliarts.conflab.security.CsrfTokenFilter;
-import com.intelliarts.conflab.security.MissingCsrfTokenExceptionHandler;
+import com.intelliarts.conflab.security.CsrfTokenExceptionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -46,7 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public AccessDeniedHandler accessDeniedHandler() {
         LinkedHashMap<Class<? extends AccessDeniedException>, AccessDeniedHandler> handlers = new LinkedHashMap<>();
-        handlers.put(CsrfException.class, new MissingCsrfTokenExceptionHandler());
+        handlers.put(CsrfException.class, new CsrfTokenExceptionHandler());
         return new DelegatingAccessDeniedHandler(handlers, new AccessDeniedHandlerImpl());
     }
 
