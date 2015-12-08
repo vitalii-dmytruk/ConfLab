@@ -28,7 +28,7 @@ public class StageController {
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Stage create(@RequestBody @Validated Stage stage) {
-        return stageService.create(stage);
+        return stageService.save(stage);
     }
 
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE,

@@ -28,7 +28,7 @@ public class SpeechController {
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Speech create(@RequestBody @Validated Speech speech) {
-        return speechService.create(speech);
+        return speechService.save(speech);
     }
 
 

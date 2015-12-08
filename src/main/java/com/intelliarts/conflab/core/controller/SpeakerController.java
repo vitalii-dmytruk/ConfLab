@@ -29,7 +29,7 @@ public class SpeakerController {
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Speaker create(@RequestBody @Validated Speaker speaker) {
-        return speakerService.create(speaker);
+        return speakerService.save(speaker);
     }
 
     @RequestMapping(path = "/{id}",
@@ -39,7 +39,7 @@ public class SpeakerController {
     @ResponseStatus(HttpStatus.OK)
     public Speaker update(@PathVariable("id") Long id, @RequestBody @Validated Speaker speaker) {
         speaker.setId(id);
-        return speakerService.create(speaker);
+        return speakerService.save(speaker);
     }
 
     @RequestMapping(value = "/{id}",
