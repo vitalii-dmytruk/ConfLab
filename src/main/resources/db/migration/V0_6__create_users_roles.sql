@@ -1,12 +1,26 @@
-CREATE SEQUENCE roles_id_seq;
+CREATE SEQUENCE authority_id_seq;
 
-CREATE TABLE roles (
-  id   BIGINT NOT NULL PRIMARY KEY DEFAULT nextval('roles_id_seq'),
+CREATE TABLE authority (
+  id   INTEGER NOT NULL PRIMARY KEY DEFAULT nextval('authority_id_seq'),
   role VARCHAR(15)
 );
 
-INSERT INTO roles (id, role) VALUES (0, 'ROLE_USER');
-INSERT INTO roles (id, role) VALUES (1, 'ROLE_ADMIN');
 
-ALTER TABLE users ADD role_id BIGINT NOT NULL DEFAULT 0;
-ALTER TABLE users ADD FOREIGN KEY (role_id) REFERENCES roles (id);
+CREATE TABLE user_authority (
+  user_id      BIGINT  NOT NULL,
+  authority_id INTEGER NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+  FOREIGN KEY (authority_id) REFERENCES authority (id) ON DELETE CASCADE
+);
+
+INSERT INTO authority (role) VALUES ('USER');
+INSERT INTO authority (role) VALUES ('ADMIN');
+
+INSERT INTO user_authority (user_id, authority_id) VALUES (
+  (SELECT id
+   FROM users
+   WHERE username = 'test'),
+  (SELECT id
+   FROM authority
+   WHERE role = 'ADMIN')
+);
