@@ -22,7 +22,7 @@ abstract class SimpleService<A, E> {
         this.repository = repository;
     }
 
-    public A create(A stage) {
+    public A save(A stage) {
         E entity = toEntity(stage);
         E persisted = repository.save(entity);
         return toApi(persisted);

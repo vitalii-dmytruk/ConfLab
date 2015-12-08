@@ -1,7 +1,9 @@
 package com.intelliarts.conflab.core.controller;
 
+import com.intelliarts.conflab.api.Role;
 import com.intelliarts.conflab.api.Speech;
 import com.intelliarts.conflab.core.service.SpeechService;
+import com.intelliarts.conflab.security.HasAuthority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/speeches")
+@HasAuthority(role = Role.ADMIN)
 public class SpeechController {
     @Autowired
     private SpeechService speechService;
@@ -25,7 +28,7 @@ public class SpeechController {
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Speech create(@RequestBody @Validated Speech speech) {
-        return speechService.create(speech);
+        return speechService.save(speech);
     }
 
 

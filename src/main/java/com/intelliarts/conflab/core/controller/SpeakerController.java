@@ -1,7 +1,9 @@
 package com.intelliarts.conflab.core.controller;
 
+import com.intelliarts.conflab.api.Role;
 import com.intelliarts.conflab.api.Speaker;
 import com.intelliarts.conflab.core.service.SpeakerService;
+import com.intelliarts.conflab.security.HasAuthority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/speakers")
+@HasAuthority(role = Role.ADMIN)
 public class SpeakerController {
     @Autowired
     private SpeakerService speakerService;
@@ -26,17 +29,17 @@ public class SpeakerController {
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Speaker create(@RequestBody @Validated Speaker speaker) {
-        return speakerService.create(speaker);
+        return speakerService.save(speaker);
     }
 
     @RequestMapping(path = "/{id}",
                     method = RequestMethod.PUT,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public Speaker update(@PathVariable("id") Long id, @RequestBody @Validated Speaker speaker) {
         speaker.setId(id);
-        return speakerService.create(speaker);
+        return speakerService.save(speaker);
     }
 
     @RequestMapping(value = "/{id}",

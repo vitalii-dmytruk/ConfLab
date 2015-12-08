@@ -10,7 +10,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import java.util.Locale;
 import java.util.Set;
 
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Speech {
     private Long id;
 
@@ -49,7 +49,7 @@ public class Speech {
         this.description = description;
     }
 
-    public Locale getLang(){
+    public Locale getLang() {
         return this.lang;
     }
 
@@ -66,12 +66,12 @@ public class Speech {
     }
 
     @JsonGetter("lang")
-    private String getJsonLang(){
+    private String getJsonLang() {
         return this.lang.getLanguage();
     }
 
     @JsonSetter("lang")
-    private void setJsonLang(String country){
+    private void setJsonLang(String country) {
         this.lang = new Locale(country);
     }
 }

@@ -15,13 +15,13 @@ public class StageEntity {
     @SequenceGenerator(name = "stage_seq", sequenceName = "stage_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "stage_seq")
     @Column
-    private Integer   id;
+    private Integer id;
 
     @Column(nullable = false)
     private String title;
 
     @Column(nullable = false, unique = true)
-    private int    capacity;
+    private int capacity;
 
 
     public Integer getId() {
