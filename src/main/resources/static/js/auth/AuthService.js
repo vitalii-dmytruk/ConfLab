@@ -86,7 +86,7 @@ define([
         }
     });
 
-    function clearSession(authService){
+    function clearSession(authService) {
         authService.session.clear();
         authService.channel.trigger('logout');
     }

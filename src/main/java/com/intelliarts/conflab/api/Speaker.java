@@ -8,7 +8,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import java.util.Set;
 
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Speaker {
 
     private Long id;

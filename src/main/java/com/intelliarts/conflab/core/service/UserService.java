@@ -31,9 +31,8 @@ public class UserService extends SimpleService<User, UserEntity> {
             return new User();
         }
 
-        String username = principal instanceof UserDetails
-                ? ((UserDetails) principal).getUsername()
-                : principal.toString();
+        String username =
+                principal instanceof UserDetails ? ((UserDetails) principal).getUsername() : principal.toString();
 
         Optional<UserEntity> userEntity = repository.findByUsername(username);
         return toApi(userEntity.orElseThrow(
