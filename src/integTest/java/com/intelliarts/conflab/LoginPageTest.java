@@ -20,7 +20,7 @@ public class LoginPageTest {
 
     private final WebElement loginField = driver.findElement(By.id("username"));
     private final WebElement passwordField = driver.findElement(By.id("password"));
-    private final WebElement loginButton = driver.findElement(By.id("signIn"));
+    private final WebElement signInButton = driver.findElement(By.xpath("/html/body/nav/div/div[2]/ul/li/a"));
 
     @Rule
     public ScreenShotOnFailure failure = new ScreenShotOnFailure(driver);
@@ -29,7 +29,8 @@ public class LoginPageTest {
     public static void setUp() throws Exception {
         driver = new FirefoxDriver();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        driver.get("http://localhost:8080/#login");
+        driver.get("http://localhost:8080/");
+        driver.findElement(By.xpath("/html/body/nav/div/div[2]/ul/li/a")).click();
     }
 
     @AfterClass
@@ -54,6 +55,6 @@ public class LoginPageTest {
 
     @Test
     public void loginButtonVisible() throws Exception {
-        assertThat(loginButton.isDisplayed(), is(true));
+        assertThat(signInButton.isDisplayed(), is(true));
     }
 }
