@@ -1,5 +1,7 @@
 package com.intelliarts.conflab.config;
 
+import com.intelliarts.conflab.security.CsrfTokenFilter;
+import com.intelliarts.conflab.security.MissingCsrfTokenExceptionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +24,7 @@ import java.util.LinkedHashMap;
 
 @Configuration
 @EnableWebSecurity
-public class Security extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private UserDetailsService userDetailsService;
 

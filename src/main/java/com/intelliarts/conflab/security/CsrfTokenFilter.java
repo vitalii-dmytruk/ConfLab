@@ -1,4 +1,4 @@
-package com.intelliarts.conflab.config;
+package com.intelliarts.conflab.security;
 
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.session.SessionManagementFilter;

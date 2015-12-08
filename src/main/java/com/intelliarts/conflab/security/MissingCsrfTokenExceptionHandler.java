@@ -1,4 +1,4 @@
-package com.intelliarts.conflab.config;
+package com.intelliarts.conflab.security;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;

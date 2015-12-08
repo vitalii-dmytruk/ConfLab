@@ -1,11 +1,12 @@
 package com.intelliarts.conflab.core.controller;
 
+import com.intelliarts.conflab.api.Role;
 import com.intelliarts.conflab.api.Stage;
 import com.intelliarts.conflab.core.service.StageService;
+import com.intelliarts.conflab.security.HasAuthority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/stages")
+@HasAuthority(role = Role.ADMIN)
 public class StageController {
     @Autowired
     private StageService stageService;
@@ -25,7 +27,6 @@ public class StageController {
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("ROLE_ADMIN")
     public Stage create(@RequestBody @Validated Stage stage) {
         return stageService.create(stage);
     }
@@ -33,7 +34,6 @@ public class StageController {
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE,
                     method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("ROLE_USER")
     public List<Stage> getAll() {
         return stageService.getAll();
     }
