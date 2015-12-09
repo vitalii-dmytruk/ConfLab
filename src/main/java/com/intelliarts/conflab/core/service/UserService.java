@@ -6,13 +6,15 @@ import com.intelliarts.conflab.core.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.security.Principal;
 
 @Service
-public class UserService extends SimpleService<User, UserEntity> {
+public class UserService extends SimpleService<User, UserEntity> implements UserDetailsService {
     private final UserRepository repository;
 
     @Autowired
@@ -21,19 +23,20 @@ public class UserService extends SimpleService<User, UserEntity> {
         this.repository = repository;
     }
 
-      public User getUser(String username) {
-        UserEntity userEntity = repository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("User with username " + username + " was not found"));
-        return toApi(userEntity);
-    }
-
     public User getUser(Principal principal) {
         if (isUserAnonymous(principal)) {
             return anonymousUser();
         } else {
-            String username = grabUsername(principal);
-            return getUser(username);
+            return toApi(toUserEntity(principal));
         }
     }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return repository.findByUsername(username).orElseThrow(() ->
+                new EntityNotFoundException(String.format("User with username %s was not found", username)));
+    }
+
     private boolean isUserAnonymous(Principal principal) {
         return principal == null;
     }
@@ -42,8 +45,7 @@ public class UserService extends SimpleService<User, UserEntity> {
         return new User();
     }
 
-    private String grabUsername(Principal principal) {
-        UserDetails userDetails = (UserDetails) ((Authentication) principal).getPrincipal();
-        return userDetails.getUsername();
+    private UserEntity toUserEntity(Principal principal) {
+        return (UserEntity) ((Authentication) principal).getPrincipal();
     }
 }
