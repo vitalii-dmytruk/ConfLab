@@ -1,6 +1,10 @@
 package com.intelliarts.conflab.core.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.intelliarts.conflab.core.entity.converter.LocaleToLanguageConverter;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Column;
@@ -18,8 +22,10 @@ import java.util.Locale;
 import java.util.Set;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Table(name = "speech")
-public class SpeechEntity {
+public class Speech {
+
     @Id
     @Column
     @SequenceGenerator(name = "speech_seq", sequenceName = "speech_id_seq", allocationSize = 1)
@@ -29,6 +35,8 @@ public class SpeechEntity {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @NotBlank(message = "Speech title cannot be empty.")
+    @Length(max = 255, message = "Speech title is greater then {max} characters.")
     @Column(nullable = false, unique = true)
     @NotEmpty
     private String title;
@@ -39,11 +47,10 @@ public class SpeechEntity {
 
     @Column
     @ManyToMany
-    @JoinTable(
-            name = "speech_speaker",
-            joinColumns = @JoinColumn(name = "speech_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "speaker_id", referencedColumnName = "id"))
-    private Set<SpeakerEntity> speakers;
+    @JoinTable(name = "speech_speaker",
+               joinColumns = @JoinColumn(name = "speech_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "speaker_id", referencedColumnName = "id"))
+    private Set<Speaker> speakers;
 
     public Long getId() {
         return id;
@@ -77,11 +84,11 @@ public class SpeechEntity {
         this.lang = lang;
     }
 
-    public Set<SpeakerEntity> getSpeakers() {
+    public Set<Speaker> getSpeakers() {
         return speakers;
     }
 
-    public void setSpeakers(Set<SpeakerEntity> speakers) {
+    public void setSpeakers(Set<Speaker> speakers) {
         this.speakers = speakers;
     }
 }

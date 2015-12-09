@@ -1,6 +1,5 @@
 package com.intelliarts.conflab.core.entity;
 
-import com.intelliarts.conflab.api.Role;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Column;
@@ -16,7 +15,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "authority")
-public class AuthorityEntity implements GrantedAuthority {
+public class Authority implements GrantedAuthority {
 
     @Id
     @SequenceGenerator(name = "authority_seq", sequenceName = "authority_id_seq", allocationSize = 1)
@@ -56,7 +55,7 @@ public class AuthorityEntity implements GrantedAuthority {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        AuthorityEntity that = (AuthorityEntity) o;
+        Authority that = (Authority) o;
         return Objects.equals(id, that.id);
     }
 

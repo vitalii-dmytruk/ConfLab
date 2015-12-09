@@ -1,32 +1,34 @@
 package com.intelliarts.conflab.core.service;
 
-import com.intelliarts.conflab.api.Speaker;
-import com.intelliarts.conflab.core.entity.SpeakerEntity;
+import com.intelliarts.conflab.core.entity.Speaker;
 import com.intelliarts.conflab.core.repository.SpeakerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
-public class SpeakerService extends SimpleService<Speaker, SpeakerEntity> {
+public class SpeakerService {
     private final SpeakerRepository speakerRepository;
 
     @Autowired
     public SpeakerService(SpeakerRepository speakerRepository) {
-        super(speakerRepository);
+
         this.speakerRepository = speakerRepository;
     }
 
-    public Speaker findByEmail(String email) {
-        Optional<SpeakerEntity> entity = speakerRepository.findByEmail(email);
-        return toApi(
-                entity.orElseThrow(() -> new EntityNotFoundException("Speaker with email '" + email + "' not found.")));
+    public Speaker findById(Long id) {
+        Optional<Speaker> entity = speakerRepository.findOne(id);
+        return entity.orElseThrow(() -> new EntityNotFoundException("Speaker with ID '" + id + "' not found."));
     }
 
-    public Speaker findById(Long id) {
-        Optional<SpeakerEntity> entity = speakerRepository.findOne(id);
-        return toApi(entity.orElseThrow(() -> new EntityNotFoundException("Speaker with ID '" + id + "' not found.")));
+    public Speaker save(Speaker speaker) {
+        return speakerRepository.save(speaker);
+    }
+
+    public List<Speaker> getAll() {
+        return speakerRepository.findAll();
     }
 }

@@ -1,6 +1,6 @@
 package com.intelliarts.conflab.security;
 
-import com.intelliarts.conflab.api.Role;
+import com.intelliarts.conflab.core.entity.Role;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

@@ -1,7 +1,7 @@
 package com.intelliarts.conflab.core.controller;
 
-import com.intelliarts.conflab.api.Role;
-import com.intelliarts.conflab.api.Speaker;
+import com.intelliarts.conflab.core.entity.Role;
+import com.intelliarts.conflab.core.entity.Speaker;
 import com.intelliarts.conflab.core.service.SpeakerService;
 import com.intelliarts.conflab.security.HasAuthority;
 import org.springframework.beans.factory.annotation.Autowired;
