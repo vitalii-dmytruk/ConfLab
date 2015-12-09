@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
+
 
 @RestController
 @RequestMapping("/users")
@@ -22,7 +24,7 @@ public class UserController {
                     method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public User getSessionUser() {
-        return userService.getSessionUser();
+    public User getSessionUser(Principal principal) {
+        return userService.getUser(principal);
     }
 }
