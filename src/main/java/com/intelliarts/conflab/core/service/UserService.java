@@ -4,17 +4,17 @@ import com.intelliarts.conflab.api.User;
 import com.intelliarts.conflab.core.entity.UserEntity;
 import com.intelliarts.conflab.core.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.Optional;
+import java.security.Principal;
 
 @Service
-public class UserService extends SimpleService<User, UserEntity> {
+public class UserService extends SimpleService<User, UserEntity> implements UserDetailsService {
     private final UserRepository repository;
 
     @Autowired
@@ -23,19 +23,29 @@ public class UserService extends SimpleService<User, UserEntity> {
         this.repository = repository;
     }
 
-    public User getSessionUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Object principal = authentication.getPrincipal();
-
-        if (authentication instanceof AnonymousAuthenticationToken) {
-            return new User();
+    public User getUser(Principal principal) {
+        if (isUserAnonymous(principal)) {
+            return anonymousUser();
+        } else {
+            return toApi(toUserEntity(principal));
         }
+    }
 
-        String username =
-                principal instanceof UserDetails ? ((UserDetails) principal).getUsername() : principal.toString();
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return repository.findByUsername(username).orElseThrow(() ->
+                new EntityNotFoundException(String.format("User with username %s was not found", username)));
+    }
 
-        Optional<UserEntity> userEntity = repository.findByUsername(username);
-        return toApi(userEntity.orElseThrow(
-                () -> new EntityNotFoundException("User with username " + username + " was not found")));
+    private boolean isUserAnonymous(Principal principal) {
+        return principal == null;
+    }
+
+    private User anonymousUser() {
+        return new User();
+    }
+
+    private UserEntity toUserEntity(Principal principal) {
+        return (UserEntity) ((Authentication) principal).getPrincipal();
     }
 }
