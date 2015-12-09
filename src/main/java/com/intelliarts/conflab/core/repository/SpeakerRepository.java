@@ -1,12 +1,12 @@
 package com.intelliarts.conflab.core.repository;
 
-import com.intelliarts.conflab.core.entity.SpeakerEntity;
+import com.intelliarts.conflab.core.entity.Speaker;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface SpeakerRepository extends BaseRepository<SpeakerEntity, Long> {
+public interface SpeakerRepository extends BaseRepository<Speaker, Long> {
 
-    Optional<SpeakerEntity> findByEmail(String email);
+    Optional<Speaker> findByEmail(String email);
 }

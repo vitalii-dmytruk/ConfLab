@@ -1,8 +1,8 @@
 package com.intelliarts.conflab.core.repository;
 
-import com.intelliarts.conflab.core.entity.SpeechEntity;
+import com.intelliarts.conflab.core.entity.Speech;
 import org.springframework.stereotype.Repository;
 
 @Repository
-interface SpeechRepository extends BaseRepository<SpeechEntity, Long> {
+public interface SpeechRepository extends BaseRepository<Speech, Long> {
 }

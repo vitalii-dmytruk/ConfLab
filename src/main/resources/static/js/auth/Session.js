@@ -5,7 +5,7 @@ define([
     'use strict';
 
     return Backbone.Model.extend({
-        url     : 'users/current',
+        url     : 'session/currentUser',
         defaults: {
             user           : '',
             isAuthenticated: false,

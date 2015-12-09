@@ -1,5 +1,10 @@
 package com.intelliarts.conflab.core.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.Column;
@@ -17,25 +22,34 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class UserEntity implements UserDetails {
+public class User implements UserDetails {
     @Id
     @SequenceGenerator(name = "users_seq", sequenceName = "users_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_seq")
     @Column
     private Long id;
 
+    @NotBlank(message = "Username cannot be empty")
+    @Length(max = 50, message = "Username cannot be longer than {max} characters")
     @Column(nullable = false)
     private String username;
 
+    @JsonIgnore
     @Column(nullable = false)
     private String password;
 
+    @Email(message = "Invalid user email")
+    @Length(max = 50, message = "User's email cannot be longer than {max} characters")
     @Column(nullable = false, unique = true)
     private String email;
 
+    @NotBlank(message = "User's First Name cannot be empty")
+    @Length(max = 255, message = "User's First Name cannot be longer than {max} characters")
     @Column(nullable = false, name = "first_name")
     private String firstName;
 
+    @NotBlank(message = "User's Last Name cannot be empty")
+    @Length(max = 255, message = "User's Last Name cannot be longer than {max} characters")
     @Column(nullable = false, name = "last_name")
     private String lastName;
 
@@ -43,7 +57,7 @@ public class UserEntity implements UserDetails {
     @JoinTable(name = "user_authority",
                joinColumns = @JoinColumn(name = "user_id"),
                inverseJoinColumns = @JoinColumn(name = "authority_id"))
-    private Set<AuthorityEntity> authorities;
+    private Set<Authority> authorities;
 
     public Long getId() {
         return id;
@@ -62,10 +76,12 @@ public class UserEntity implements UserDetails {
         this.username = username;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
 
+    @JsonProperty
     public void setPassword(String password) {
         this.password = password;
     }
@@ -95,11 +111,11 @@ public class UserEntity implements UserDetails {
     }
 
     @Override
-    public Set<AuthorityEntity> getAuthorities() {
+    public Set<Authority> getAuthorities() {
         return authorities;
     }
 
-    public void setAuthorities(Set<AuthorityEntity> authorities) {
+    public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
     }
 
