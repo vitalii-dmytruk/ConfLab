@@ -12,8 +12,8 @@ define([
                 id         : null,
                 name       : '',
                 description: '',
-                startDate   : '',
-                endDate     : ''
+                startDate  : '',
+                endDate    : ''
             }
         }
     });

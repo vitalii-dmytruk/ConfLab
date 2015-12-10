@@ -17,7 +17,7 @@ define([
         },
 
         bindings: {
-            '[data-event-name]'     : 'name',
+            '[data-event-name]'      : 'name',
             '[data-event-start-date]': 'startDate',
             '[data-event-end-date]'  : 'endDate'
         },

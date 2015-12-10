@@ -1,7 +1,7 @@
 package com.intelliarts.conflab.config;
 
-import com.intelliarts.conflab.security.CsrfTokenFilter;
 import com.intelliarts.conflab.security.CsrfTokenExceptionHandler;
+import com.intelliarts.conflab.security.CsrfTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

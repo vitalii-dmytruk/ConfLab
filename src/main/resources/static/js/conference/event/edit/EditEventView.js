@@ -21,8 +21,8 @@ define([
 
             '#event-name'       : 'name',
             '#event-description': 'description',
-            '#event-start-date'  : 'startDate',
-            '#event-end-date'    : 'endDate'
+            '#event-start-date' : 'startDate',
+            '#event-end-date'   : 'endDate'
         },
 
         ui: {
