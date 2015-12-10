@@ -1,5 +1,5 @@
 define([
-    'common/Router',
+    'common/MenuAwareRouter',
     'backbone.radio',
     'conference/event/EventCollection',
     'conference/event/table/EventTableRoute',
@@ -7,21 +7,21 @@ define([
     'conference/event/edit/EditEventRoute',
     'conference/event/show/ShowEventRoute',
     'backbone.marionette'
-], function (Router, Radio, EventCollection, EventTableRoute, CreateEventRoute, EditEventRoute,
+], function (MenuAwareRouter, Radio, EventCollection, EventTableRoute, CreateEventRoute, EditEventRoute,
              ShowEventRoute) {
 
     'use strict';
 
-    return Router.extend({
+    return MenuAwareRouter.extend({
+
+        menuButton: {
+            name: 'Conferences',
+            path: 'events'
+        },
 
         initialize: function (options) {
             this.container  = options.container;
             this.collection = new EventCollection();
-            initMenuButton();
-        },
-
-        onBeforeEnter: function () {
-            Radio.channel('menu').request('activate', {path: 'conferences'});
         },
 
         routes: {
@@ -40,22 +40,6 @@ define([
                 collection: this.collection
             });
         }
-    }
-
-    function initMenuButton() {
-        var auth = Radio.channel('auth');
-
-        auth.request('isAuthenticated') && addMenuButton();
-        auth.on('login', addMenuButton);
-        auth.on('logout', removeMenuButton)
-    }
-
-    function addMenuButton() {
-        Radio.channel('menu').request('add', {name: 'Conferences', path: 'events'});
-    }
-
-    function removeMenuButton() {
-        Radio.channel('menu').request('remove', {path: 'events'});
     }
 
 });

@@ -13,11 +13,8 @@ define([
         },
 
         render: function () {
-            var route = this;
-
             this.initModel();
-            initView(route);
-            this.container.show(this.view);
+            this.container.show(initView(this));
         },
 
         initModel: function () {
@@ -27,21 +24,23 @@ define([
     });
 
     function initView(route) {
-        route.view = new EditSpeakerView({
-            collection: route.collection,
-            model     : route.model
+        var view = new EditSpeakerView({
+            model: route.model
         });
 
-        route.view.on('save', function () {
+        route.listenTo(view, 'save', function () {
+            route.collection.add(route.model, {merge: true});
             route.navigate('speakers/' + route.model.get('id'), {trigger: true});
         });
 
-        route.view.on('cancel', function () {
+        route.listenTo(view, 'cancel', function () {
             var id   = route.model.get('id'),
                 path = 'speakers';
 
             path += id ? '/' + id : '';
             route.navigate(path, {trigger: true});
         });
+
+        return view;
     }
 });

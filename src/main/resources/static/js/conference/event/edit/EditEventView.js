@@ -43,11 +43,9 @@ define([
 
     function saveEvent() {
         var view = this;
-        this.model.save([], {
-            success: function () {
-                view.collection.add(view.model, {merge: true});
-                view.trigger('save');
-            }
+
+        this.model.save().done(function () {
+            view.trigger('save');
         });
     }
 
