@@ -1,6 +1,7 @@
 package com.intelliarts.conflab.core.entity;
 
 import com.intelliarts.conflab.core.entity.converter.LocalDateConverter;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Column;
@@ -25,6 +26,7 @@ public class Event {
 
     @Column
     @NotEmpty
+    @Length(max = 255, message = "Event name is greater then {max} characters.")
     private String name;
 
     @Column

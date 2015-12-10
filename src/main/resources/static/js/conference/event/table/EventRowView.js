@@ -18,8 +18,8 @@ define([
 
         bindings: {
             '[data-event-name]'     : 'name',
-            '[data-event-date-from]': 'dateFrom',
-            '[data-event-date-to]'  : 'dateTo'
+            '[data-event-start-date]': 'startDate',
+            '[data-event-end-date]'  : 'endDate'
         },
 
         onRender: function () {

@@ -5,7 +5,9 @@ import com.intelliarts.conflab.core.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EventService {
@@ -14,6 +16,15 @@ public class EventService {
     private EventRepository eventRepository;
 
     public List<Event> findAll() {
-       return eventRepository.findAll();
+        return eventRepository.findAll();
+    }
+
+    public Event save(Event event) {
+        return eventRepository.save(event);
+    }
+
+    public Event findById(Long id) {
+        Optional<Event> event = eventRepository.findOne(id);
+        return event.orElseThrow(() -> new EntityNotFoundException("Event with ID '" + id + "' " + "not found."));
     }
 }
