@@ -11,8 +11,11 @@ define([
         template: _.template(template),
 
         childView: SpeechView,
+        childViewContainer: '#speeches-container',
 
-        childViewContainer: "#speeches-container",
+        ui: {
+            "addSpeechButton": '#speeches-add'
+        },
 
         bindings: {
             '[data-speaker-edit-href]': {
@@ -20,7 +23,7 @@ define([
                     name   : 'href',
                     observe: 'id',
                     onGet  : function (id) {
-                        return '#speakers/' + id + '/edit'
+                        return '#' + this.model.urlRoot + '/' + id + '/edit'
                     }
                 }]
             },
@@ -43,9 +46,16 @@ define([
             '[data-speaker-about]': 'about'
         },
 
-        onRender: function () {
-            this.stickit();
-        }
+
+        onRender: insertModelSpecificData
     });
 
+    function insertModelSpecificData () {
+        setAddSpeechHref(this);
+        this.stickit();
+    }
+
+    function setAddSpeechHref(view){
+        view.ui.addSpeechButton.attr('href', '#' + view.model.urlRoot + '/new');
+    }
 });
