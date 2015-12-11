@@ -50,7 +50,7 @@ public class EventController {
                     method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public Event getById(@PathVariable("id") Long id) {
+    public Event findById(@PathVariable("id") Long id) {
         return eventService.findById(id);
     }
 }

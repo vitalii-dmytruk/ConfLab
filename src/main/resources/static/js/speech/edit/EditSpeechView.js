@@ -1,5 +1,5 @@
 define([
-    'text!conference/event/edit/EditEventTemplate.html',
+    'text!speech/edit/EditSpeechTemplate.html',
     'backbone.marionette',
     'backbone.stickit'
 ], function (template) {
@@ -10,7 +10,7 @@ define([
         template: _.template(template),
 
         bindings: {
-            '#event-update-action': {
+            '#speech-update-action': {
                 observe: 'id',
                 onGet  : function (id) {
                     var action = id ? 'edit' : 'add';
@@ -19,20 +19,20 @@ define([
                 }
             },
 
-            '#event-name'       : 'name',
-            '#event-description': 'description',
-            '#event-start-date' : 'startDate',
-            '#event-end-date'   : 'endDate'
+            '#speech-title'      : 'title',
+            '#speech-description': 'description',
+            '#speech-lang'       : 'lang',
+            '#speech-speakers'   : 'speakers'
         },
 
         ui: {
-            updateEventBtn      : '#update-event-button',
-            cancelUpdateEventBtn: '#cancel-update-event-button'
+            updateSpeechBtn      : '#update-speech-button',
+            cancelUpdateSpeechBtn: '#cancel-update-speech-button'
         },
 
         events: {
-            'click @ui.updateEventBtn'      : saveEvent,
-            'click @ui.cancelUpdateEventBtn': cancel
+            'click @ui.updateSpeechBtn'      : saveSpeech,
+            'click @ui.cancelUpdateSpeechBtn': cancel
         },
 
         onRender: function () {
@@ -41,7 +41,7 @@ define([
     });
 
 
-    function saveEvent() {
+    function saveSpeech() {
         var view = this;
 
         this.model.save().done(function () {

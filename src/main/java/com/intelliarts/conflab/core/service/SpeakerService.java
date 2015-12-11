@@ -15,20 +15,19 @@ public class SpeakerService {
 
     @Autowired
     public SpeakerService(SpeakerRepository speakerRepository) {
-
         this.speakerRepository = speakerRepository;
     }
 
     public Speaker findById(Long id) {
-        Optional<Speaker> entity = speakerRepository.findOne(id);
-        return entity.orElseThrow(() -> new EntityNotFoundException("Speaker with ID '" + id + "' not found."));
+        Optional<Speaker> speaker = speakerRepository.findOne(id);
+        return speaker.orElseThrow(() -> new EntityNotFoundException("Speaker with ID '" + id + "' not found."));
     }
 
     public Speaker save(Speaker speaker) {
         return speakerRepository.save(speaker);
     }
 
-    public List<Speaker> getAll() {
+    public List<Speaker> findAll() {
         return speakerRepository.findAll();
     }
 }
