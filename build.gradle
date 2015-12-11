@@ -91,6 +91,10 @@ bower {
             source 'backbone.stickit.js'
         }
 
+        'backbone-nested-models'('blittle/backbone-nested-models#v2.0.2'){
+            source 'backbone-nested-models*'
+        }
+
         'requirejs'() {
             source 'require.js'
         }

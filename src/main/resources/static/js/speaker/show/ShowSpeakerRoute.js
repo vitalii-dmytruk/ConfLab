@@ -23,7 +23,8 @@ define([
 
         render: function () {
             this.view = new ShowSpeakerView({
-                model: this.model
+                model     : this.model,
+                collection: this.model.get('speeches')
             });
             this.container.show(this.view);
         }
