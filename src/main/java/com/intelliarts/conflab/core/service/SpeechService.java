@@ -5,7 +5,9 @@ import com.intelliarts.conflab.core.repository.SpeechRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SpeechService {
@@ -21,7 +23,12 @@ public class SpeechService {
         return speechRepository.save(speech);
     }
 
-    public List<Speech> getAll() {
+    public List<Speech> findAll() {
         return speechRepository.findAll();
+    }
+
+    public Speech findById(Long id) {
+        Optional<Speech> speech = speechRepository.findOne(id);
+        return speech.orElseThrow(() -> new EntityNotFoundException("Speech with ID '" + id + "' not found."));
     }
 }

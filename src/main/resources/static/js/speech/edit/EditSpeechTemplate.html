@@ -1,0 +1,41 @@
+<div class="page-header">
+    <h1 id="speech-update-action"></h1>
+</div>
+
+<form class="form-horizontal">
+    <div class="form-group">
+        <label for="speech-title" class="col-md-2 control-label">Title</label>
+
+        <div class="col-md-8">
+            <input id="speech-title" type="text" class="form-control" placeholder="Name" maxlength="255">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="speech-description" class="col-md-2 control-label">Description</label>
+
+        <div class="col-md-8">
+            <textarea class="form-control" rows="3" id="speech-description" placeholder="Description"></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="speech-lang" class="col-md-2 control-label">Language</label>
+
+        <div class="col-md-8">
+            <input id="speech-lang" class="form-control">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="speech-speakers" class="col-md-2 control-label">Speaker(s)</label>
+
+        <div class="col-md-8">
+            <select id="speech-speakers" class="form-control"></select>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-8">
+            <button id="update-speech-button" class="btn btn-success">Save</button>
+            <button id="cancel-update-speech-button" class="btn btn-default">Cancel</button>
+        </div>
+    </div>
+
+</form>

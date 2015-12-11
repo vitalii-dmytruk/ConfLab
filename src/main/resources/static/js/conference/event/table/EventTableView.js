@@ -11,7 +11,7 @@ define([
         template: _.template(template),
 
         childView         : EventRowView,
-        childViewContainer: '[data-speaker-table]'
+        childViewContainer: '[data-events-table]'
 
     });
 

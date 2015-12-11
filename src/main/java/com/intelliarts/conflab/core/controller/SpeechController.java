@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,7 +36,25 @@ public class SpeechController {
     @RequestMapping(method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public List<Speech> getSpeeches() {
-        return speechService.getAll();
+    public List<Speech> findAll() {
+        return speechService.findAll();
+    }
+
+    @RequestMapping(path = "/{id}",
+                    method = RequestMethod.PUT,
+                    consumes = MediaType.APPLICATION_JSON_VALUE,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public Speech update(@PathVariable("id") Long id, @RequestBody @Validated Speech speech) {
+        speech.setId(id);
+        return speechService.save(speech);
+    }
+
+    @RequestMapping(value = "/{id}",
+                    method = RequestMethod.GET,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public Speech findById(@PathVariable("id") Long id) {
+        return speechService.findById(id);
     }
 }

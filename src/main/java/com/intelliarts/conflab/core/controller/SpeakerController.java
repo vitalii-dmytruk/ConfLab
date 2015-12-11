@@ -54,6 +54,6 @@ public class SpeakerController {
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public List<Speaker> getSpeakers() {
-        return speakerService.getAll();
+        return speakerService.findAll();
     }
 }
