@@ -8,11 +8,19 @@ import java.util.Locale;
 public class LocaleToLanguageConverter implements AttributeConverter<Locale, String> {
     @Override
     public String convertToDatabaseColumn(Locale attribute) {
-        return attribute.getLanguage();
+        if (attribute == null) {
+            return null;
+        } else {
+            return attribute.getLanguage();
+        }
     }
 
     @Override
     public Locale convertToEntityAttribute(String dbData) {
-        return new Locale(dbData);
+        if (dbData == null) {
+            return null;
+        } else {
+            return new Locale(dbData);
+        }
     }
 }
