@@ -1,6 +1,6 @@
 define([
-    'conference/event/table/EventRowView',
-    'text!conference/event/table/EventTableTemplate.html',
+    'event/table/EventRowView',
+    'text!event/table/EventTableTemplate.html',
     'backbone.marionette'
 ], function (EventRowView, template) {
 

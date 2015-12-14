@@ -1,5 +1,5 @@
 define([
-    'conference/event/EventModel',
+    'event/EventModel',
     'common/Collection'
 ], function (EventModel, Collection) {
 

@@ -1,6 +1,6 @@
 define([
     'common/Route',
-    'conference/event/edit/EditEventView'
+    'event/edit/EditEventView'
 ], function (Route, EditEventView) {
 
     'use strict';

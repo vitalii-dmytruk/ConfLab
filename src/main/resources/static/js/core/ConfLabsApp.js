@@ -1,15 +1,15 @@
 define([
-    'core/ConfLabsLayoutView',
-    'core/HomepageRouter',
-    'header/HeaderService',
-    'menu/MenuService',
-    'speaker/SpeakerRouter',
-    'speech/SpeechRouter',
-    'conference/event/EventRouter',
-    'auth/AuthService',
-    'account/AccountRouter',
-    'backbone.marionette',
-    'backbone'
+           'core/ConfLabsLayoutView',
+           'core/HomepageRouter',
+           'header/HeaderService',
+           'menu/MenuService',
+           'speaker/SpeakerRouter',
+           'speech/SpeechRouter',
+           '../event/EventRouter',
+           'auth/AuthService',
+           'account/AccountRouter',
+           'backbone.marionette',
+           'backbone'
 ], function (ConfLabsLayoutView, HomepageRouter, HeaderService, MenuService, SpeakerRouter, SpeechRouter, EventRouter,
              AuthService, AccountRouter) {
 

@@ -1,7 +1,7 @@
 define([
     'common/Route',
-    'conference/event/EventModel',
-    'conference/event/show/ShowEventView'
+    'event/EventModel',
+    'event/show/ShowEventView'
 ], function (Route, EventModel, ShowEventView) {
 
     'use strict';
