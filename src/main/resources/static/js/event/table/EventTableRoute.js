@@ -1,7 +1,8 @@
 define([
     'common/Route',
-    'event/table/EventTableView'
-], function (Route, EventTableView) {
+    'common/view/ListView',
+    'event/table/EventRowView'
+], function (Route, ListView, EventRowView) {
 
     'use strict';
 
@@ -18,8 +19,10 @@ define([
         },
 
         render: function () {
-            this.view = new EventTableView({
-                collection: this.collection
+            this.view = new ListView({
+                collection: this.collection,
+                childView: EventRowView,
+                title: 'Conferences'
             });
             this.container.show(this.view);
         }
