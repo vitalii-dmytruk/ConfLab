@@ -34,7 +34,7 @@ define([
 
         onBeforeShow : function () {
             var speakersView = new ListView({
-                collection: this.collection,
+                collection: this.model.get('speakers'),
                 childView : SpeakerRowView,
                 title     : 'Speakers'
             });

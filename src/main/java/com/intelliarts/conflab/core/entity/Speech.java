@@ -1,6 +1,7 @@
 package com.intelliarts.conflab.core.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.intelliarts.conflab.core.entity.converter.LocaleToLanguageConverter;
 import org.hibernate.validator.constraints.Length;
@@ -50,6 +51,7 @@ public class Speech {
     @JoinTable(name = "speech_speaker",
                joinColumns = @JoinColumn(name = "speech_id", referencedColumnName = "id"),
                inverseJoinColumns = @JoinColumn(name = "speaker_id", referencedColumnName = "id"))
+    @JsonIgnore
     private Set<Speaker> speakers;
 
     public Long getId() {

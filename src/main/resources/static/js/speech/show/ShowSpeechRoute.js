@@ -6,33 +6,40 @@ define([
 
     'use strict';
 
-    function fetchSpeakers() {
-        this.speakers.url = this.model.url() + '/speakers';
-        return this.speakers.fetch();
-    }
-
     return Route.extend({
 
         initialize: function (options) {
             this.container  = options.container;
             this.collection = options.collection;
-            this.speakers   = new SpeakersCollection();
         },
 
         fetch: function (id) {
             this.model = this.collection.get(id);
             if (!this.model) {
-                this.model = new this.collection.model({id: id});
+                createModel(this, id);
                 return this.model.fetch().then(fetchSpeakers.bind(this));
             }
         },
 
         render: function () {
             this.view = new ShowSpeechView({
-                model: this.model,
-                collection : this.speakers
+                model: this.model
             });
             this.container.show(this.view);
         }
     });
+
+    function fetchSpeakers() {
+        var speakers = this.model.get('speakers');
+        return speakers.fetch();
+    }
+
+    function createModel(route, id) {
+        var speakers;
+
+        route.model = new route.collection.model({id: id});
+        speakers    = new SpeakersCollection();
+        speakers.url = route.model.url() + '/speakers';
+        route.model.set('speakers', speakers);
+    }
 });

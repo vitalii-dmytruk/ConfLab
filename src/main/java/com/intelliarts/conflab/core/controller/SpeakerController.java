@@ -16,15 +16,16 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
-@RequestMapping("/speakers")
 @HasAuthority(role = Role.ADMIN)
 public class SpeakerController {
     @Autowired
     private SpeakerService speakerService;
 
-    @RequestMapping(method = RequestMethod.POST,
+    @RequestMapping(path = "/speakers",
+                    method = RequestMethod.POST,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
@@ -32,7 +33,7 @@ public class SpeakerController {
         return speakerService.save(speaker);
     }
 
-    @RequestMapping(path = "/{id}",
+    @RequestMapping(path = "/speakers/{id}",
                     method = RequestMethod.PUT,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
@@ -42,7 +43,7 @@ public class SpeakerController {
         return speakerService.save(speaker);
     }
 
-    @RequestMapping(value = "/{id}",
+    @RequestMapping(path = "/speakers/{id}",
                     method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
@@ -50,10 +51,19 @@ public class SpeakerController {
         return speakerService.findById(id);
     }
 
-    @RequestMapping(method = RequestMethod.GET,
+    @RequestMapping(path = "/speakers",
+                    method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public List<Speaker> getSpeakers() {
         return speakerService.findAll();
+    }
+
+    @RequestMapping(path = "/speeches/{id}/speakers",
+                    method = RequestMethod.GET,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public Set<Speaker> findBySpeechId(@PathVariable("id") Long speechId) {
+        return speakerService.findBySpeechId(speechId);
     }
 }

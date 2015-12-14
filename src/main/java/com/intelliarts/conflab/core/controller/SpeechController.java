@@ -50,7 +50,7 @@ public class SpeechController {
         return speechService.save(speech);
     }
 
-    @RequestMapping(value = "/{id}",
+    @RequestMapping(path = "/{id}",
                     method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)

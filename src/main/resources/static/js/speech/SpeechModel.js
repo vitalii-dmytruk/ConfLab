@@ -12,8 +12,7 @@ define([
                 id         : null,
                 title      : '',
                 description: '',
-                lang       : '',
-                speakers   : []
+                lang       : ''
             }
         }
     });
