@@ -1,10 +1,13 @@
 define([
     'text!speech/show/ShowSpeechTemplate.html',
+    'common/view/ListView',
+    'speaker/table/SpeakerRowView',
     'backbone.marionette'
-], function (template) {
+], function (template, ListView, SpeakerRowView) {
 
     'use strict';
 
+    //noinspection JSUnusedGlobalSymbols
     return Marionette.LayoutView.extend({
 
         template: _.template(template),
@@ -22,8 +25,21 @@ define([
             '[data-speech-title]'    : 'title',
             '#speech-title'          : 'title',
             '#speech-description'    : 'description',
-            '#speech-lang'           : 'lang',
-            '#speech-speakers'       : 'speakers'
+            '#speech-lang'           : 'lang'
+        },
+
+        regions : {
+            'speakers' : '#speakers-container'
+        },
+
+        onBeforeShow : function () {
+            var speakersView = new ListView({
+                collection: this.collection,
+                childView : SpeakerRowView,
+                title     : 'Speakers'
+            });
+
+            this.showChildView('speakers', speakersView);
         },
 
         onRender: function () {
