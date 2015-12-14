@@ -5,7 +5,7 @@ define([
 
     'use strict';
 
-    return Marionette.ItemView.extend({
+    return Marionette.LayoutView.extend({
 
         template: _.template(template),
 

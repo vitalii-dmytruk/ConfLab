@@ -12,24 +12,22 @@ define([
         childViewContainer: '[data-table]',
 
         ui : {
-             title : '#page-title'
-        },
-
-        bindings : {
-            '#add-button' : {
-                attributes : [{
-                    name : 'href',
-                    onGet : function () {
-                        return '#' + this.collection.url + '/new';
-                    }
-                }]
-            }
+            title : '#page-title',
+            addButton: '#add-button'
         },
 
         onRender : function () {
-            this.ui.title.text(this.options.title);
+            setAddItemLink(this);
+            setPageTitle(this);
         }
     });
 
 
+    function setAddItemLink(view) {
+        view.ui.addButton.attr('href', '#' + view.collection.url + '/new');
+    }
+
+    function setPageTitle(view) {
+        view.ui.title.text(view.options.title);
+    }
 });

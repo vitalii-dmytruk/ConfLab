@@ -15,7 +15,7 @@ define([
                 onGet  : function (id) {
                     var action = id ? 'edit' : 'add';
 
-                    return 'Conferences: ' + action;
+                    return 'Speech: ' + action;
                 }
             },
 
