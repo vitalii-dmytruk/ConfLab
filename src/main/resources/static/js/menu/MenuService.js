@@ -32,14 +32,16 @@ define([
         }
     });
 
-    function removeFromCollection(model) {
-        var index = this.collection.findWhere(model);
-        this.collection.remove(index);
+    function removeFromCollection(button) {
+        var model = findModelByPath(this.collection, button.path);
+        this.collection.remove(model);
     }
 
-    function setActiveItem(model) {
+    function setActiveItem(button) {
+        var model;
+
         this.collection.invoke('set', 'active', false);
-        model = this.collection.findWhere(model);
+        model = findModelByPath(this.collection, button.path);
         if (model) {
             model.set('active', true);
         }
@@ -47,5 +49,9 @@ define([
 
     function addToCollection(model) {
         this.collection.add(model);
+    }
+
+    function findModelByPath(collection, path) {
+        return collection.findWhere({path: path});
     }
 });

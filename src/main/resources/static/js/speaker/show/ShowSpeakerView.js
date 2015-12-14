@@ -13,19 +13,21 @@ define([
         childView: SpeechView,
         childViewContainer: '#speeches-container',
 
-        ui: {
-            "addSpeechButton": '#speeches-add'
-        },
-
         bindings: {
+            '#speeches-add'           : {
+                attributes: [
+                    convertToHref('id', function () {
+                        return '#' + this.collection.url + '/new';
+                    })
+                ]
+            },
             '[data-speaker-edit-href]': {
-                attributes: [{
-                    name   : 'href',
-                    observe: 'id',
-                    onGet  : function (id) {
-                        return '#' + this.model.urlRoot + '/' + id + '/edit'
-                    }
-                }]
+                attributes: [
+                    convertToHref('id', function (id) {
+                                  return '#' + this.model.urlRoot + '/' + id + '/edit'
+                              }
+                    )
+                ]
             },
 
             '[data-speaker-name]': 'name',
@@ -34,13 +36,11 @@ define([
 
             '[data-speaker-email]': {
                 observe   : 'email',
-                attributes: [{
-                    name   : 'href',
-                    observe: 'email',
-                    onGet  : function (email) {
+                attributes: [
+                    convertToHref('email', function (email) {
                         return 'mailTo:' + email;
-                    }
-                }]
+                    })
+                ]
             },
 
             '[data-speaker-about]': 'about'
@@ -51,11 +51,14 @@ define([
     });
 
     function insertModelSpecificData () {
-        setAddSpeechHref(this);
         this.stickit();
     }
 
-    function setAddSpeechHref(view){
-        view.ui.addSpeechButton.attr('href', '#' + view.model.urlRoot + '/new');
+    function convertToHref(fromAttr, converter){
+        return {
+            name   : 'href',
+            observe: fromAttr,
+            onGet  : converter
+        }
     }
 });

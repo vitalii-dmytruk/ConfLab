@@ -1,5 +1,5 @@
 define([
-    'text!conference/event/table/EventRowTemplate.html',
+    'text!event/table/EventRowTemplate.html',
     'backbone.marionette'
 ], function (template) {
 

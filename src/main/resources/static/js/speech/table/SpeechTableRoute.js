@@ -1,7 +1,8 @@
 define([
     'common/Route',
-    'speech/table/SpeechTableView'
-], function (Route, SpeechTableView) {
+    'common/view/ListView',
+    'speech/table/SpeechRowView'
+], function (Route, ListView, SpeechRowView) {
 
     'use strict';
 
@@ -18,8 +19,10 @@ define([
         },
 
         render: function () {
-            this.view = new SpeechTableView({
-                collection: this.collection
+            this.view = new ListView({
+                collection: this.collection,
+                childView : SpeechRowView,
+                title: 'Speeches'
             });
             this.container.show(this.view);
         }

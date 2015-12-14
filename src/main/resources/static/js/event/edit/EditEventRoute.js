@@ -1,5 +1,5 @@
 define([
-    'conference/event/create/CreateEventRoute'
+    'event/create/CreateEventRoute'
 ], function (CreateEventRoute) {
 
     'use strict';

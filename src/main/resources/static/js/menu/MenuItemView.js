@@ -8,6 +8,9 @@ define([
 
     return Marionette.ItemView.extend({
         tagName    : 'li',
+        className  : function(){
+            return this.model.get('active') ? 'active' : '';
+        },
         template   : _.template(template),
         modelEvents: {
             'change:active': updateItemState
@@ -17,11 +20,6 @@ define([
     });
 
     function updateItemState() {
-        if (this.model.get('active')) {
-            this.$el.addClass('active');
-        } else {
-            this.$el.removeClass('active');
-        }
+        this.$el.toggleClass('active', this.model.get('active'));
     }
-
 });

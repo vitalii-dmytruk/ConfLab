@@ -8,7 +8,7 @@ var require = {
         "header"                : 'js/header',
         "speaker"               : 'js/speaker',
         "speech"                : 'js/speech',
-        "conference"            : 'js/conference',
+        "event"                 : 'js/event',
         "auth"                  : 'js/auth',
         "text"                  : 'lib/requirejs-text/text',
         "jquery"                : 'lib/jquery/jquery.min',

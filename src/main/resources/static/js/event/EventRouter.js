@@ -1,11 +1,11 @@
 define([
     'common/MenuAwareRouter',
     'backbone.radio',
-    'conference/event/EventCollection',
-    'conference/event/table/EventTableRoute',
-    'conference/event/create/CreateEventRoute',
-    'conference/event/edit/EditEventRoute',
-    'conference/event/show/ShowEventRoute',
+    'event/EventCollection',
+    'event/table/EventTableRoute',
+    'event/create/CreateEventRoute',
+    'event/edit/EditEventRoute',
+    'event/show/ShowEventRoute',
     'backbone.marionette'
 ], function (MenuAwareRouter, Radio, EventCollection, EventTableRoute, CreateEventRoute, EditEventRoute,
              ShowEventRoute) {

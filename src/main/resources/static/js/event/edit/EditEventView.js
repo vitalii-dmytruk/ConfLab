@@ -1,5 +1,5 @@
 define([
-    'text!conference/event/edit/EditEventTemplate.html',
+    'text!event/edit/EditEventTemplate.html',
     'backbone.marionette',
     'backbone.stickit'
 ], function (template) {

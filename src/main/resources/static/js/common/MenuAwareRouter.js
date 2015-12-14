@@ -9,7 +9,7 @@ define([
     return Router.extend({
 
         constructor: function () {
-            this.menuButton && initMenuButton(this.menuButton);
+            this.menuButton && initMenuButton(this);
             Router.apply(this, arguments);
         },
 
@@ -19,22 +19,19 @@ define([
 
     });
 
-    function initMenuButton(menuButton) {
+    function initMenuButton(router) {
         var auth = Radio.channel('auth');
 
-        if (auth.request('isAuthenticated')) {
-            addMenuButton();
-        } else {
-            removeMenuButton()
-        }
+        auth.request('isAuthenticated') ? addMenuButton() : removeMenuButton();
 
         function addMenuButton() {
-            Radio.channel('menu').request('add', menuButton);
+            router.menuButton.active = router.active;
+            Radio.channel('menu').request('add', router.menuButton);
             auth.listenToOnce(auth, 'logout', removeMenuButton);
         }
 
         function removeMenuButton() {
-            Radio.channel('menu').request('remove', menuButton);
+            Radio.channel('menu').request('remove', router.menuButton);
             auth.listenToOnce(auth, 'login', addMenuButton);
         }
     }
