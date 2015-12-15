@@ -15,7 +15,6 @@ define([
 
         fetch: function (id) {
             var promise = $.Deferred().resolve();
-            this.model = this.collection.get(id);
 
             checkModelAvailability(this, id, promise);
             checkSpeakersAvailability(this, promise);
@@ -43,6 +42,8 @@ define([
     }
 
     function checkModelAvailability(route, id, promise) {
+        route.model = route.collection.get(id);
+
         if (!route.model) {
             route.model = new route.collection.model({id: id});
             promise.then(route.model.fetch());
