@@ -1,8 +1,8 @@
 define([
     'common/Route',
-    'event/EventModel',
-    'event/show/ShowEventView'
-], function (Route, EventModel, ShowEventView) {
+    'event/show/ShowEventView',
+    'speaker/SpeakerCollection'
+], function (Route, ShowEventView, SpeakerCollection) {
 
     'use strict';
 
@@ -14,18 +14,49 @@ define([
         },
 
         fetch: function (id) {
-            this.model = this.collection.get(id);
-            if (!this.model) {
-                this.model = new EventModel({id: id});
-                return this.model.fetch();
-            }
+            var promise = $.Deferred().resolve();
+
+            fetchEventModel(this, id, promise);
+            fetchSpeakers(this,  promise);
+
+            return promise;
         },
 
         render: function () {
             this.view = new ShowEventView({
-                model: this.model
+                model: this.model,
+                collection : this.model.get('speakers')
             });
             this.container.show(this.view);
         }
     });
+
+    function fetchEventModel(route, id, promise) {
+        route.model = route.collection.get(id);
+        if (!route.model) {
+            route.model = new route.collection.model({id: id});
+            promise.then(route.model.fetch());
+        }
+    }
+
+    function isSpeakersDefined(route) {
+        return !!route.model.get('speakers');
+    }
+
+    function linkWithEvent(speakers, route) {
+        speakers.url = route.model.url() + speakers.url;
+    }
+
+    function defineSpeakers(route) {
+        var speakers     = new SpeakerCollection();
+        linkWithEvent(speakers, route);
+        route.model.set('speakers', speakers);
+    }
+
+    function fetchSpeakers(route, promise) {
+        if (isSpeakersDefined(route)) {
+            defineSpeakers(route);
+            promise.then(route.model.get('speakers').fetch());
+        }
+    }
 });

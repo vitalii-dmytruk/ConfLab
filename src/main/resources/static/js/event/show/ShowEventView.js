@@ -1,13 +1,17 @@
 define([
+    'speaker/table/SpeakerRowView',
     'text!event/show/ShowEventTemplate.html',
     'backbone.marionette'
-], function (template) {
+], function (SpeakerRowView, template) {
 
     'use strict';
 
-    return Marionette.ItemView.extend({
+    return Marionette.CompositeView.extend({
 
         template: _.template(template),
+
+        childView : SpeakerRowView,
+        childViewContainer : '#speaker-container',
 
         bindings: {
             '[data-event-edit-href]': {
@@ -15,7 +19,7 @@ define([
                     name   : 'href',
                     observe: 'id',
                     onGet  : function (id) {
-                        return '#events/' + id + '/edit'
+                        return '#' + this.model.urlRoot + '/' + id + '/edit';
                     }
                 }]
             },
@@ -30,5 +34,4 @@ define([
             this.stickit();
         }
     });
-
 });
