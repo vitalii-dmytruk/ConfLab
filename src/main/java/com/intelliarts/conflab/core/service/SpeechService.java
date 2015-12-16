@@ -1,5 +1,6 @@
 package com.intelliarts.conflab.core.service;
 
+import com.intelliarts.conflab.core.entity.Speaker;
 import com.intelliarts.conflab.core.entity.Speech;
 import com.intelliarts.conflab.core.repository.SpeechRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,5 +31,9 @@ public class SpeechService {
     public Speech findById(Long id) {
         Optional<Speech> speech = speechRepository.findOne(id);
         return speech.orElseThrow(() -> new EntityNotFoundException("Speech with ID '" + id + "' not found."));
+    }
+
+    public List<Speech> findByEventId(Long id) {
+        return speechRepository.findByEventId(id);
     }
 }
