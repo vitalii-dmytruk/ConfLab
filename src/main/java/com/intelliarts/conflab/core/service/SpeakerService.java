@@ -31,7 +31,7 @@ public class SpeakerService {
         return speakerRepository.findAll();
     }
 
-    public List<Speaker> findSpeakersByEventId(Long id) {
+    public List<Speaker> findByEventId(Long id) {
         return speakerRepository.findByEventId(id);
     }
 }
