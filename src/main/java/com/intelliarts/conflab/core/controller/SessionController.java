@@ -17,7 +17,6 @@ public class SessionController {
     @RequestMapping(value = "/currentUser",
                     method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
     public User getSessionUser(@AuthenticationPrincipal User currentUser) {
         return currentUser;
     }

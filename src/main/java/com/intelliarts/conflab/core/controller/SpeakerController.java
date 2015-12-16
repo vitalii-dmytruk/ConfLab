@@ -18,13 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
+@RequestMapping("/speakers")
 @HasAuthority(role = Role.ADMIN)
 public class SpeakerController {
     @Autowired
     private SpeakerService speakerService;
 
-    @RequestMapping(value = "/speakers",
-            method = RequestMethod.POST,
+    @RequestMapping(method = RequestMethod.POST,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
@@ -32,36 +32,24 @@ public class SpeakerController {
         return speakerService.save(speaker);
     }
 
-    @RequestMapping(value = "/speakers/{id}",
+    @RequestMapping(value = "/{id}",
                     method = RequestMethod.PUT,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
     public Speaker update(@PathVariable("id") Long id, @RequestBody @Validated Speaker speaker) {
         speaker.setId(id);
         return speakerService.save(speaker);
     }
 
-    @RequestMapping(value = "/speakers/{id}",
+    @RequestMapping(value = "/{id}",
                     method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
     public Speaker getById(@PathVariable("id") Long id) {
         return speakerService.findById(id);
     }
 
-    @RequestMapping(value = "/events/{id}/speakers",
-                    method = RequestMethod.GET,
+    @RequestMapping(method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public List<Speaker> getSpeakersByEventId(@PathVariable("id") Long id) {
-        return speakerService.findAll();
-    }
-
-    @RequestMapping(value = "/speakers",
-                    method = RequestMethod.GET,
-                    produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
     public List<Speaker> getSpeakers() {
         return speakerService.findAll();
     }

@@ -1,6 +1,7 @@
 package com.intelliarts.conflab.core.controller;
 
 import com.intelliarts.conflab.core.entity.Role;
+import com.intelliarts.conflab.core.entity.Speaker;
 import com.intelliarts.conflab.core.entity.Speech;
 import com.intelliarts.conflab.core.service.SpeechService;
 import com.intelliarts.conflab.security.HasAuthority;
@@ -35,16 +36,15 @@ public class SpeechController {
 
     @RequestMapping(method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
     public List<Speech> findAll() {
         return speechService.findAll();
     }
+
 
     @RequestMapping(path = "/{id}",
                     method = RequestMethod.PUT,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
     public Speech update(@PathVariable("id") Long id, @RequestBody @Validated Speech speech) {
         speech.setId(id);
         return speechService.save(speech);
@@ -53,7 +53,6 @@ public class SpeechController {
     @RequestMapping(path = "/{id}",
                     method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
     public Speech findById(@PathVariable("id") Long id) {
         return speechService.findById(id);
     }
