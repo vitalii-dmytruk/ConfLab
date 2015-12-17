@@ -40,4 +40,14 @@ public class SpeechService {
     public List<Speech> findByEventId(Long id) {
         return speechRepository.findByEventId(id);
     }
+
+    public void linkSpeakerToSpeech(Long speechId, Long speakerId) {
+        linkSpeakerToSpeech(speechId, speakerService.findById(speakerId));
+    }
+
+    public void linkSpeakerToSpeech(Long speechId, Speaker speaker) {
+        Speech speech = findById(speechId);
+        speech.getSpeakers().add(speaker);
+        save(speech);
+    }
 }

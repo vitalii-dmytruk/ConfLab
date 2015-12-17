@@ -9,6 +9,7 @@ import com.intelliarts.conflab.security.HasAuthority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,8 +18,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
@@ -72,19 +75,14 @@ public class SpeechController {
     @RequestMapping(path = "/{id}/speakers", method = POST,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public void createAndLinkSpeaker(@PathVariable("id") Long speechId, @RequestBody @Validated Speaker speaker) {
-        Speaker createdSpeaker = speakerService.save(speaker);
-        Speech speech = speechService.findById(speechId);
-        speech.getSpeakers().add(createdSpeaker);
-        speechService.save(speech);
+        speaker = speakerService.save(speaker);
+        speechService.linkSpeakerToSpeech(speechId, speaker);
     }
 
     @RequestMapping(value = "/{speechId}/speakers/{speakerId}", method = PUT,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public void linkExistingSpeakerToSpeech(@PathVariable("speechId") Long speechId,
             @PathVariable("speakerId") Long speakerId) {
-        Speech speech = speechService.findById(speechId);
-        Speaker speaker = speakerService.findById(speakerId);
-        speech.getSpeakers().add(speaker);
-        speechService.save(speech);
+        speechService.linkSpeakerToSpeech(speechId, speakerId);
     }
 }
