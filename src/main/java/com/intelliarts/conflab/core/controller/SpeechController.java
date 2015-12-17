@@ -3,6 +3,7 @@ package com.intelliarts.conflab.core.controller;
 import com.intelliarts.conflab.core.entity.Role;
 import com.intelliarts.conflab.core.entity.Speaker;
 import com.intelliarts.conflab.core.entity.Speech;
+import com.intelliarts.conflab.core.service.SpeakerService;
 import com.intelliarts.conflab.core.service.SpeechService;
 import com.intelliarts.conflab.security.HasAuthority;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +18,16 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/speeches")
 @HasAuthority(role = Role.ADMIN)
 public class SpeechController {
     @Autowired
-    private SpeechService speechService;
+    private SpeechService  speechService;
+    @Autowired
+    private SpeakerService speakerService;
 
     @RequestMapping(method = RequestMethod.POST,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -55,5 +59,12 @@ public class SpeechController {
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public Speech findById(@PathVariable("id") Long id) {
         return speechService.findById(id);
+    }
+
+    @RequestMapping(path = "/{id}/speakers",
+                    method = RequestMethod.GET,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
+    public Set<Speaker> findBySpeechId(@PathVariable("id") Long speechId) {
+        return speakerService.findBySpeechId(speechId);
     }
 }
