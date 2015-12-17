@@ -1,5 +1,5 @@
 define([
-    'text!speaker/edit/EditSpeakerTemplate.html',
+    'text!speaker/details/SpeakerTemplate.html',
     'common/view/EditView'
 ], function (template, EditView) {
 

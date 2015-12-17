@@ -2,7 +2,7 @@ define([
     'common/Route',
     'common/view/TableView',
     'speaker/table/SpeakerRowView',
-    'speaker/edit/EditSpeakerView'
+    '../details/SpeakerView'
 ], function (Route, TableView, SpeakerRowView, EditSpeakerView) {
 
     'use strict';

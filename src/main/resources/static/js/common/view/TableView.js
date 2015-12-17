@@ -54,8 +54,9 @@ define([
         editView.onSubmit = function (args) {
             this.model.save().done(function () {
                 view.collection.add(args.model);
+                editView.destroy();
             });
-            editView.destroy();
+
         };
         editView.onCancel = function () {
             editView.destroy();

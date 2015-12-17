@@ -1,8 +1,9 @@
 define([
     'common/Route',
     'speaker/SpeakerModel',
-    'speaker/show/ShowSpeakerView'
-], function (Route, SpeakerModel, ShowSpeakerView) {
+    'speaker/details/SpeakerDetailsView',
+    'backbone.marionette'
+], function (Route, SpeakerModel, SpeakerDetailsView) {
 
     'use strict';
 
@@ -22,7 +23,7 @@ define([
         },
 
         render: function () {
-            this.view = new ShowSpeakerView({
+            this.view = new SpeakerDetailsView({
                 model     : this.model,
                 collection: this.model.get('speeches')
             });

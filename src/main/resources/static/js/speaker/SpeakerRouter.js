@@ -3,9 +3,9 @@ define([
     'backbone.radio',
     'speaker/SpeakerCollection',
     'speaker/table/SpeakerTableRoute',
-    'speaker/show/ShowSpeakerRoute',
+    'speaker/details/SpeakerDetailsRoute',
     'backbone.marionette'
-], function (MenuAwareRouter, Radio, SpeakerCollection, SpeakerTableRoute, ShowSpeakerRoute) {
+], function (MenuAwareRouter, Radio, SpeakerCollection, SpeakerTableRoute, SpeakerDetailsRoute) {
 
     'use strict';
 
@@ -23,7 +23,7 @@ define([
 
         routes: {
             'speakers'    : getRoute(SpeakerTableRoute),
-            'speakers/:id': getRoute(ShowSpeakerRoute)
+            'speakers/:id': getRoute(SpeakerDetailsRoute)
         }
 
     });
