@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
@@ -84,5 +83,17 @@ public class SpeechController {
     public void linkExistingSpeakerToSpeech(@PathVariable("speechId") Long speechId,
             @PathVariable("speakerId") Long speakerId) {
         speechService.linkSpeakerToSpeech(speechId, speakerId);
+    }
+
+    @RequestMapping(value = "/{speechId}/speakers/{speakerId}", method = DELETE,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity removeSpeakerFromSpeech(@PathVariable("speechId") Long speechId,
+            @PathVariable("speakerId") Long speakerId) {
+        try {
+            speechService.removeSpeakerFromSpeech(speechId, speakerId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }

@@ -50,4 +50,18 @@ public class SpeechService {
         speech.getSpeakers().add(speaker);
         save(speech);
     }
+
+    public void removeSpeakerFromSpeech(Long speechId, Long speakerId) throws IllegalArgumentException {
+        Speech speech = findById(speechId);
+        Speaker speaker = speakerService.findById(speakerId);
+        Optional<Speaker> speakerOptional =
+                speech.getSpeakers().stream().filter(sk -> speakerId.equals(sk.getId())).findFirst();
+        if (speakerOptional.isPresent()) {
+            speech.getSpeakers().remove(speakerOptional.get());
+            save(speech);
+        } else {
+            throw new IllegalArgumentException(
+                    String.format("Speech with id: %s does not contain speaker with id: " + "%d", speechId, speakerId));
+        }
+    }
 }
