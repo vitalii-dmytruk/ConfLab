@@ -2,8 +2,10 @@ define([
     'common/Route',
     'speech/SpeechModel',
     'speech/details/SpeechDetailsView',
+    'speaker/table/SpeakerLinkTable',
+    'speaker/SpeakerCollection',
     'backbone.marionette'
-], function (Route, SpeechModel, SpeechDetailsView) {
+], function (Route, SpeechModel, SpeechDetailsView, SpeakerLinkTable, SpeakerCollection) {
 
     'use strict';
 
@@ -15,17 +17,21 @@ define([
         },
 
         fetch: function (id) {
-            this.model = this.collection.get(id);
-            if (!this.model) {
-                this.model = new SpeechModel({id: id});
-                return this.model.fetch();
-            }
+            this.model            = new SpeechModel({id: id});
+            this.collection       = new SpeakerCollection();
+            this.collection.url   = this.model.url() + '/speakers';
+            this.searchCollection = new SpeakerCollection();
+
+            return $.when(this.model.fetch(), this.collection.fetch(), this.searchCollection.fetch());
         },
 
         render: function () {
             this.view = new SpeechDetailsView({
-                model     : this.model,
-                collection: this.model.get('speakers')
+                model        : this.model,
+                linkTableView: new SpeakerLinkTable({
+                    collection      : this.collection,
+                    searchCollection: this.searchCollection
+                })
             });
             this.container.show(this.view);
         }

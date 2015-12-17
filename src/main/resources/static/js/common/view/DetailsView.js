@@ -20,7 +20,7 @@ define([
 
         regions: {
             editRegion    : '[data-edit-region]',
-            assignedRegion: '[data-assigned-region]'
+            descendantRegion: '[data-descendant-region]'
         },
 
         onRender: function () {
@@ -29,7 +29,7 @@ define([
 
         onBeforeShow: function () {
             showShowView(this);
-            //this.assignedRegion.show(this.assignedView);
+            this.descendantRegion.show(this.options.linkTableView);
         }
 
     });

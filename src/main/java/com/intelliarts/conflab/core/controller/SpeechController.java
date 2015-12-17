@@ -72,6 +72,7 @@ public class SpeechController {
     }
 
     @RequestMapping(path = "/{id}/speakers", method = POST,
+                    consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public void createAndLinkSpeaker(@PathVariable("id") Long speechId, @RequestBody @Validated Speaker speaker) {
         speaker = speakerService.save(speaker);
@@ -79,6 +80,7 @@ public class SpeechController {
     }
 
     @RequestMapping(value = "/{speechId}/speakers/{speakerId}", method = PUT,
+                    consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public void linkExistingSpeakerToSpeech(@PathVariable("speechId") Long speechId,
             @PathVariable("speakerId") Long speakerId) {

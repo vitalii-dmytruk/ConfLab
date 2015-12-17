@@ -19,6 +19,9 @@ define([
         initialize: function (options) {
             this.container  = options.container;
             this.collection = new SpeechCollection();
+            Radio.channel('storage').reply({
+                speechCollection: this.collection
+            }, this)
         },
 
         routes: {

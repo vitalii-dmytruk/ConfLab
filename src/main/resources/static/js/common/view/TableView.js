@@ -23,23 +23,19 @@ define([
             listRegion: '#list-region'
         },
 
-        initialize: function (options) {
-
-        },
-
         onRender: function () {
             setPageTitle(this);
         },
 
         onBeforeShow: function () {
             this.listRegion.show(new Marionette.CollectionView({
-                childView : this.options.RowView,
+                childView : this.RowView,
                 collection: this.collection
             }));
         },
 
         editView: function(){
-            return new this.options.EditView({
+            return new this.EditView({
                 model: new this.collection.model()
             });
         }
@@ -70,6 +66,6 @@ define([
     }
 
     function setPageTitle(view) {
-        view.ui.title.text(view.options.title);
+        view.ui.title.text(view.title);
     }
 });
