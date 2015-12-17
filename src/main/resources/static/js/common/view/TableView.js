@@ -24,9 +24,7 @@ define([
         },
 
         initialize: function (options) {
-            this.title    = options.title;
-            this.EditView = options.EditView;
-            this.RowView  = options.RowView
+
         },
 
         onRender: function () {
@@ -35,9 +33,15 @@ define([
 
         onBeforeShow: function () {
             this.listRegion.show(new Marionette.CollectionView({
-                childView : this.RowView,
+                childView : this.options.RowView,
                 collection: this.collection
             }));
+        },
+
+        editView: function(){
+            return new this.options.EditView({
+                model: new this.collection.model()
+            });
         }
 
     });
@@ -47,17 +51,17 @@ define([
 
         view = this;
 
-        editView = new this.EditView({
-            model: new this.collection.model()
-        });
+        editView = this.editView();
 
         editView.onSubmit = function (args) {
-            this.model.save().done(function () {
-                view.collection.add(args.model);
-                editView.destroy();
+            view.collection.create(args.model, {
+                wait   : true,
+                success: function () {
+                    editView.destroy();
+                }
             });
-
         };
+
         editView.onCancel = function () {
             editView.destroy();
         };

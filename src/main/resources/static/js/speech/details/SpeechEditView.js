@@ -1,6 +1,6 @@
 define([
     'common/view/EditView',
-    'text!speaker/details/SpeakerEditTemplate.html',
+    'text!speech/details/SpeechEditTemplate.html',
     'backbone.marionette'
 ], function (EditView, template) {
 
@@ -10,10 +10,9 @@ define([
         template: _.template(template),
 
         bindings: {
-            '#email'   : 'email',
-            '#name'    : 'name',
-            '#position': 'position',
-            '#about'   : 'about'
+            '#speech-title'      : 'title',
+            '#speech-description': 'description',
+            '#speech-lang'       : 'lang'
         }
     });
 });

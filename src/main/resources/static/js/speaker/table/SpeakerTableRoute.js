@@ -2,8 +2,8 @@ define([
     'common/Route',
     'common/view/TableView',
     'speaker/table/SpeakerRowView',
-    '../details/SpeakerView'
-], function (Route, TableView, SpeakerRowView, EditSpeakerView) {
+    'speaker/details/SpeakerEditView'
+], function (Route, TableView, SpeakerRowView, SpeakerEditView) {
 
     'use strict';
 
@@ -23,7 +23,7 @@ define([
             this.view = new TableView({
                 title     : 'Speakers',
                 RowView   : SpeakerRowView,
-                EditView  : EditSpeakerView,
+                EditView  : SpeakerEditView,
                 collection: this.collection
             });
             this.container.show(this.view);

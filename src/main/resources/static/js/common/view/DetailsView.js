@@ -23,17 +23,13 @@ define([
             assignedRegion: '[data-assigned-region]'
         },
 
-        initialize: function (options) {
-            this.assignedView = options.assignedView;
-        },
-
         onRender: function () {
             setPageTitle(this);
         },
 
         onBeforeShow: function () {
             showShowView(this);
-          //  this.assignedRegion.show(this.assignedView);
+            //this.assignedRegion.show(this.assignedView);
         }
 
     });
@@ -66,7 +62,6 @@ define([
             model: view.model
         }));
     }
-
 
     function setPageTitle(view) {
         view.ui.title.text(view.title);

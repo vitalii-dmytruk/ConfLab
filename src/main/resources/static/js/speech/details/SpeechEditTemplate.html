@@ -1,29 +1,29 @@
-<div class="page-header">
-    <a data-speech-edit-href class="btn btn-primary pull-right">Edit</a>
-
-    <h1>Speeches: <span data-speech-title></span></h1>
-</div>
 <form class="form-horizontal">
     <div class="form-group">
         <label for="speech-title" class="col-md-2 control-label">Title</label>
 
         <div class="col-md-8">
-            <p id="speech-title" class="form-control-static"></p>
+            <input id="speech-title" type="text" class="form-control" placeholder="Name" maxlength="255">
         </div>
     </div>
     <div class="form-group">
         <label for="speech-description" class="col-md-2 control-label">Description</label>
 
         <div class="col-md-8">
-            <p class="form-control-static" id="speech-description"></p>
+            <textarea class="form-control" rows="3" id="speech-description" placeholder="Description"></textarea>
         </div>
     </div>
     <div class="form-group">
         <label for="speech-lang" class="col-md-2 control-label">Language</label>
 
         <div class="col-md-8">
-            <p id="speech-lang" class="form-control-static"></p>
+            <input id="speech-lang" class="form-control">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-8">
+            <button data-submit-btn type="submit" class="btn btn-success">Ok</button>
+            <div data-cancel-btn class="btn btn-default">Cancel</div>
         </div>
     </div>
 </form>
-<div id="speakers-container"></div>

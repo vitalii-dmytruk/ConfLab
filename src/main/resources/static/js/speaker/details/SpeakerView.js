@@ -1,19 +1,12 @@
 define([
     'text!speaker/details/SpeakerTemplate.html',
-    'common/view/EditView'
-], function (template, EditView) {
+    'speaker/details/SpeakerEditView'
+], function (template, SpeakerEditView) {
 
     'use strict';
 
-    return EditView.extend({
-        template: _.template(template),
-
-        bindings: {
-            '#email'   : 'email',
-            '#name'    : 'name',
-            '#position': 'position',
-            '#about'   : 'about'
-        }
+    return SpeakerEditView.extend({
+        template: _.template(template)
     });
 
 });

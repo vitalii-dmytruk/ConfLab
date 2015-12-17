@@ -3,12 +3,9 @@ define([
     'backbone.radio',
     'speech/SpeechCollection',
     'speech/table/SpeechTableRoute',
-    'speech/create/CreateSpeechRoute',
-    'speech/edit/EditSpeechRoute',
-    'speech/show/ShowSpeechRoute',
+    'speech/details/SpeechDetailRoute',
     'backbone.marionette'
-], function (MenuAwareRouter, Radio, SpeechCollection, SpeechTableRoute, CreateSpeechRoute, EditSpeechRoute,
-             ShowSpeechRoute) {
+], function (MenuAwareRouter, Radio, SpeechCollection, SpeechTableRoute, SpeechDetailRoute) {
 
     'use strict';
 
@@ -25,10 +22,8 @@ define([
         },
 
         routes: {
-            'speeches'         : getRoute(SpeechTableRoute),
-            'speeches/new'     : getRoute(CreateSpeechRoute),
-            'speeches/:id'     : getRoute(ShowSpeechRoute),
-            'speeches/:id/edit': getRoute(EditSpeechRoute)
+            'speeches'    : getRoute(SpeechTableRoute),
+            'speeches/:id': getRoute(SpeechDetailRoute),
         }
 
     });
