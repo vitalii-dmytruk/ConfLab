@@ -14,14 +14,10 @@ import java.util.Set;
 @Service
 public class SpeechService {
 
-    private SpeechRepository speechRepository;
-    private SpeakerService   speakerService;
-
     @Autowired
-    public SpeechService(SpeechRepository speechRepository, SpeakerService speakerService) {
-        this.speechRepository = speechRepository;
-        this.speakerService = speakerService;
-    }
+    private SpeechRepository speechRepository;
+    @Autowired
+    private SpeakerService   speakerService;
 
     public Speech save(Speech speech) {
         return speechRepository.save(speech);

@@ -1,6 +1,7 @@
 package com.intelliarts.conflab.core.service;
 
 import com.intelliarts.conflab.core.entity.Speaker;
+import com.intelliarts.conflab.core.entity.Speech;
 import com.intelliarts.conflab.core.repository.SpeakerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,15 +9,15 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class SpeakerService {
-    private final SpeakerRepository speakerRepository;
 
     @Autowired
-    public SpeakerService(SpeakerRepository speakerRepository) {
-        this.speakerRepository = speakerRepository;
-    }
+    private SpeakerRepository speakerRepository;
+    @Autowired
+    private SpeechService     speechService;
 
     public Speaker findById(Long id) {
         Optional<Speaker> speaker = speakerRepository.findOne(id);
@@ -29,6 +30,11 @@ public class SpeakerService {
 
     public List<Speaker> findAll() {
         return speakerRepository.findAll();
+    }
+
+    public Set<Speaker> findBySpeechId(Long speechId) {
+        Speech speech = speechService.findById(speechId);
+        return speech.getSpeakers();
     }
 
     public List<Speaker> findByEventId(Long id) {
