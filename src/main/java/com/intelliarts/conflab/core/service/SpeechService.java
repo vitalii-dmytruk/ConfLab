@@ -33,8 +33,7 @@ public class SpeechService {
     }
 
     public Set<Speech> findBySpeakerId(Long id) {
-        Speaker speaker = speakerService.findById(id);
-        return speaker.getSpeeches();
+        return speechRepository.findBySpeakerId(id);
     }
 
     public List<Speech> findByEventId(Long id) {
