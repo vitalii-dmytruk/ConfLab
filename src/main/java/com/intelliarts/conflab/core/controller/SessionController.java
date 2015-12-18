@@ -1,12 +1,10 @@
 package com.intelliarts.conflab.core.controller;
 
 import com.intelliarts.conflab.core.entity.User;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -19,5 +17,13 @@ public class SessionController {
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public User getSessionUser(@AuthenticationPrincipal User currentUser) {
         return currentUser;
+    }
+
+    @RequestMapping(value = "/i")
+
+    public Integer getI(){
+
+        throw new IllegalArgumentException(
+                "Speech with id");
     }
 }

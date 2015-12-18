@@ -17,11 +17,7 @@ define([
         },
 
         initialize: function (options) {
-            this.container  = options.container;
-            this.collection = new SpeakerCollection();
-            Radio.channel('storage').reply({
-                speakerCollection: this.collection
-            }, this)
+            this.container = options.container;
         },
 
         routes: {
@@ -34,8 +30,7 @@ define([
     function getRoute(RouteClass) {
         return function () {
             return new RouteClass({
-                container : this.container,
-                collection: this.collection
+                container: this.container
             });
         }
     }

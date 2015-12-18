@@ -1,5 +1,5 @@
 define([
-    'common/Route',
+    '../../common/route/Route',
     'event/show/ShowEventView',
     'speaker/SpeakerCollection'
 ], function (Route, ShowEventView, SpeakerCollection) {

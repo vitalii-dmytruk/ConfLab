@@ -1,26 +1,18 @@
 define([
-    'text!speech/table/SpeechRowTemplate.html',
     'backbone.marionette'
-], function (template) {
+], function () {
 
     'use strict';
 
     return Marionette.ItemView.extend({
-        template: _.template(template),
-
         tagName   : 'a',
         className : 'list-group-item',
         attributes: function () {
             return {
-                href: '#speeches/' + this.model.get('id')
+                href: '#' + this.model.url()
             };
         },
-
-        bindings: {
-            '[data-speech-title]'      : 'title'
-        },
-
-        onRender: function () {
+        onRender  : function () {
             this.stickit();
         }
     });

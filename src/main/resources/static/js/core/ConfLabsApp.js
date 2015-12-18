@@ -5,12 +5,12 @@ define([
            'menu/MenuService',
            'speaker/SpeakerRouter',
            'speech/SpeechRouter',
-           '../event/EventRouter',
+           //'../event/EventRouter',
            'auth/AuthService',
            'account/AccountRouter',
            'backbone.marionette',
            'backbone'
-], function (ConfLabsLayoutView, HomepageRouter, HeaderService, MenuService, SpeakerRouter, SpeechRouter, EventRouter,
+], function (ConfLabsLayoutView, HomepageRouter, HeaderService, MenuService, SpeakerRouter, SpeechRouter,/* EventRouter,*/
              AuthService, AccountRouter) {
 
     'use strict';
@@ -47,9 +47,9 @@ define([
                     container: app.layout.getRegion('main')
                 });
 
-                app.event = new EventRouter({
+               /* app.event = new EventRouter({
                     container: app.layout.getRegion('main')
-                });
+                });*/
 
                 app.speaker = new SpeakerRouter({
                     container: app.layout.getRegion('main')

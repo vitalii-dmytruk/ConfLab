@@ -29,7 +29,7 @@ define([
 
         onBeforeShow: function () {
             showShowView(this);
-            this.descendantRegion.show(this.options.linkTableView);
+            this.descendantRegion.show(this.options.attachedItemTableView);
         }
 
     });
