@@ -9,7 +9,6 @@ import com.intelliarts.conflab.security.HasAuthority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -89,13 +88,8 @@ public class SpeechController {
 
     @RequestMapping(value = "/{speechId}/speakers/{speakerId}", method = DELETE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity removeSpeakerFromSpeech(@PathVariable("speechId") Long speechId,
+    public void removeSpeakerFromSpeech(@PathVariable("speechId") Long speechId,
             @PathVariable("speakerId") Long speakerId) {
-        try {
-            speechService.removeSpeakerFromSpeech(speechId, speakerId);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        speechService.removeSpeakerFromSpeech(speechId, speakerId);
     }
 }
