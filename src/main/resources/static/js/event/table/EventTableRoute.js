@@ -1,5 +1,5 @@
 define([
-    'common/Route',
+    'common/route/Route',
     'common/view/ListView',
     'event/table/EventRowView'
 ], function (Route, ListView, EventRowView) {

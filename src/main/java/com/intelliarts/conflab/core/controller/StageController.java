@@ -33,7 +33,6 @@ public class StageController {
 
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE,
                     method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
     public List<Stage> getAll() {
         return stageService.getAll();
     }

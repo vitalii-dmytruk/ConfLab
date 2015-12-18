@@ -3,12 +3,9 @@ define([
     'backbone.radio',
     'speaker/SpeakerCollection',
     'speaker/table/SpeakerTableRoute',
-    'speaker/edit/CreateSpeakerRoute',
-    'speaker/edit/EditSpeakerRoute',
-    'speaker/show/ShowSpeakerRoute',
+    'speaker/details/SpeakerDetailsRoute',
     'backbone.marionette'
-], function (MenuAwareRouter, Radio, SpeakerCollection, SpeakerTableRoute, CreateSpeakerRoute, EditSpeakerRoute,
-             ShowSpeakerRoute) {
+], function (MenuAwareRouter, Radio, SpeakerCollection, SpeakerTableRoute, SpeakerDetailsRoute) {
 
     'use strict';
 
@@ -20,15 +17,12 @@ define([
         },
 
         initialize: function (options) {
-            this.container  = options.container;
-            this.collection = new SpeakerCollection();
+            this.container = options.container;
         },
 
         routes: {
-            'speakers'         : getRoute(SpeakerTableRoute),
-            'speakers/new'     : getRoute(CreateSpeakerRoute),
-            'speakers/:id'     : getRoute(ShowSpeakerRoute),
-            'speakers/:id/edit': getRoute(EditSpeakerRoute)
+            'speakers'    : getRoute(SpeakerTableRoute),
+            'speakers/:id': getRoute(SpeakerDetailsRoute)
         }
 
     });
@@ -36,8 +30,7 @@ define([
     function getRoute(RouteClass) {
         return function () {
             return new RouteClass({
-                container : this.container,
-                collection: this.collection
+                container: this.container
             });
         }
     }

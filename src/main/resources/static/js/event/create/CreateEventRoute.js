@@ -1,5 +1,5 @@
 define([
-    'common/Route',
+    '../../common/route/Route',
     'event/edit/EditEventView'
 ], function (Route, EditEventView) {
 

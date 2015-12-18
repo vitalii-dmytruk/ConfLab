@@ -177,7 +177,6 @@ body {
     }
 }
 
-#speeches-title {
-    color: #337ab7;
-    font-weight: bold;
+div[data-descendant-region] * #table-title {
+    font-size: 30px ;
 }

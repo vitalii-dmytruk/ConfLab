@@ -13,7 +13,8 @@ define([
                 name       : '',
                 description: '',
                 startDate  : '',
-                endDate    : ''
+                endDate    : '',
+                speakers   : []
             }
         }
     });

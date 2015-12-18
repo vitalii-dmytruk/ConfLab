@@ -15,7 +15,7 @@ define([
                     name   : 'href',
                     observe: 'id',
                     onGet  : function (id) {
-                        return '#events/' + id + '/edit'
+                        return '#' + this.model.urlRoot + '/' + id + '/edit';
                     }
                 }]
             },
@@ -30,5 +30,4 @@ define([
             this.stickit();
         }
     });
-
 });

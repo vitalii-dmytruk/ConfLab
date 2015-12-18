@@ -1,7 +1,7 @@
 define([
     'backbone',
     'backbone.marionette',
-    'common/Route'
+    'common/route/Route'
 ], function (Backbone, Marionette, Route) {
 
     'use strict';
