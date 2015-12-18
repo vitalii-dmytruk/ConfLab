@@ -23,8 +23,8 @@ define([
                 collection: this.view.collection,
                 model     : searchResult
             });
-            searchView.render();
-            this.$el.prepend(searchView.el);
+
+            this.$el.prepend(searchView.render().el);
         }
     });
 

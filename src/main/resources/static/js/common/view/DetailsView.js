@@ -19,21 +19,26 @@ define([
         },
 
         regions: {
-            editRegion    : '[data-edit-region]',
+            editRegion      : '[data-edit-region]',
             descendantRegion: '[data-descendant-region]'
         },
 
         onRender: function () {
             setPageTitle(this);
+            appendChildViews(this);
         },
 
         onBeforeShow: function () {
             showShowView(this);
-            this.descendantRegion.show(this.options.attachedItemTableView);
         }
 
     });
 
+    function appendChildViews(view) {
+        _.each(view.options.childViews, function (childView) {
+            view.$el.append(childView.render().el);
+        })
+    }
 
     function showEditView() {
         var view, editView;

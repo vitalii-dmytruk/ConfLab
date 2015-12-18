@@ -7,7 +7,7 @@ define([
     return Route.extend({
 
         initialize: function (options) {
-            this.container  = options.container;
+            this.container = options.container;
         },
 
         fetch: function (id) {
@@ -21,11 +21,13 @@ define([
 
         render: function () {
             this.view = new this.itemDetailsView({
-                model        : this.model,
-                attachedItemTableView: new this.attachedItemTableView({
-                    collection      : this.collection,
-                    searchCollection: this.searchCollection
-                })
+                model     : this.model,
+                childViews: [
+                    new this.attachedItemTableView({
+                        collection      : this.collection,
+                        searchCollection: this.searchCollection
+                    })
+                ]
             });
             this.container.show(this.view);
         }
