@@ -1,13 +1,12 @@
 package com.intelliarts.conflab.core.service;
 
 import com.intelliarts.conflab.core.entity.Speaker;
-import com.intelliarts.conflab.core.entity.SpeechSpeaker;
 import com.intelliarts.conflab.core.repository.SpeakerRepository;
-import com.intelliarts.conflab.core.repository.SpeechSpeakerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -15,23 +14,28 @@ import java.util.Set;
 @Service
 public class SpeakerService {
 
-    @Autowired
-    private SpeakerRepository speakerRepository;
+    private SpeakerRepository    speakerRepository;
+    private SpeechSpeakerService speechSpeakerService;
 
     @Autowired
-    private SpeechSpeakerRepository speechSpeakerRepository;
+    public SpeakerService(SpeakerRepository speakerRepository, SpeechSpeakerService speechSpeakerService) {
+        this.speakerRepository = speakerRepository;
+        this.speechSpeakerService = speechSpeakerService;
+    }
 
     public Speaker findById(Long id) {
         Optional<Speaker> speaker = speakerRepository.findOne(id);
         return speaker.orElseThrow(() -> new EntityNotFoundException("Speaker with ID '" + id + "' not found."));
     }
 
+    @Transactional
     public Speaker save(Speaker speaker) {
-        Speaker savedSpeaker = speakerRepository.save(speaker);
-        if (speaker.getId() == null) {
-            speechSpeakerRepository.save(new SpeechSpeaker(null, savedSpeaker.getId()));
+        boolean isNew = speaker.getId() == null;
+        speakerRepository.save(speaker);
+        if (isNew) {
+            speechSpeakerService.createSpeechSpeakerLink(null, speaker.getId());
         }
-        return savedSpeaker;
+        return speaker;
     }
 
     public List<Speaker> findAll() {

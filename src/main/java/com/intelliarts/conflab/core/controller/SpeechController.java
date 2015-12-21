@@ -1,9 +1,7 @@
 package com.intelliarts.conflab.core.controller;
 
 import com.intelliarts.conflab.core.entity.Role;
-import com.intelliarts.conflab.core.entity.Speaker;
 import com.intelliarts.conflab.core.entity.Speech;
-import com.intelliarts.conflab.core.service.SpeakerService;
 import com.intelliarts.conflab.core.service.SpeechService;
 import com.intelliarts.conflab.security.HasAuthority;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,38 +17,35 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Set;
 
-import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 @RestController
-@RequestMapping("/speeches")
 @HasAuthority(role = Role.ADMIN)
 public class SpeechController {
 
     @Autowired
-    private SpeechService  speechService;
-    @Autowired
-    private SpeakerService speakerService;
+    private SpeechService speechService;
 
-    @RequestMapping(method = POST,
+    @RequestMapping(value = "/speeches",
+                    method = POST,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Speech create(@RequestBody @Validated Speech speech) {
+        speech.setId(null);
         return speechService.save(speech);
     }
 
-
-    @RequestMapping(method = GET,
+    @RequestMapping(value = "/speeches",
+                    method = GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Speech> findAll() {
         return speechService.findAll();
     }
 
-
-    @RequestMapping(path = "/{id}", method = PUT,
+    @RequestMapping(value = "/speeches/{id}", method = PUT,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public Speech update(@PathVariable("id") Long id, @RequestBody @Validated Speech speech) {
@@ -58,38 +53,16 @@ public class SpeechController {
         return speechService.save(speech);
     }
 
-    @RequestMapping(path = "/{id}", method = GET,
+    @RequestMapping(value = "/speeches/{id}", method = GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public Speech findById(@PathVariable("id") Long id) {
         return speechService.findById(id);
     }
 
-    @RequestMapping(path = "/{id}/speakers", method = GET,
+    @RequestMapping(value = "/speakers/{id}/speeches", method = GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public Set<Speaker> findBySpeechId(@PathVariable("id") Long speechId) {
-        return speakerService.findBySpeechId(speechId);
+    public Set<Speech> findBySpeakerId(@PathVariable("id") Long speakerId) {
+        return speechService.findBySpeakerId(speakerId);
     }
 
-    @RequestMapping(path = "/{id}/speakers", method = POST,
-                    consumes = MediaType.APPLICATION_JSON_VALUE,
-                    produces = MediaType.APPLICATION_JSON_VALUE)
-    public void createAndLinkSpeaker(@PathVariable("id") Long speechId, @RequestBody @Validated Speaker speaker) {
-        speaker = speakerService.save(speaker);
-        speechService.linkSpeakerToSpeech(speechId, speaker);
-    }
-
-    @RequestMapping(value = "/{speechId}/speakers/{speakerId}", method = PUT,
-                    consumes = MediaType.APPLICATION_JSON_VALUE,
-                    produces = MediaType.APPLICATION_JSON_VALUE)
-    public void linkExistingSpeakerToSpeech(@PathVariable("speechId") Long speechId,
-            @PathVariable("speakerId") Long speakerId) {
-        speechService.linkSpeakerToSpeech(speechId, speakerId);
-    }
-
-    @RequestMapping(value = "/{speechId}/speakers/{speakerId}", method = DELETE,
-                    produces = MediaType.APPLICATION_JSON_VALUE)
-    public void removeSpeakerFromSpeech(@PathVariable("speechId") Long speechId,
-            @PathVariable("speakerId") Long speakerId) {
-        speechService.removeSpeakerFromSpeech(speechId, speakerId);
-    }
 }

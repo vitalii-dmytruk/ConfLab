@@ -2,9 +2,7 @@ package com.intelliarts.conflab.core.controller;
 
 import com.intelliarts.conflab.core.entity.Role;
 import com.intelliarts.conflab.core.entity.Speaker;
-import com.intelliarts.conflab.core.entity.Speech;
 import com.intelliarts.conflab.core.service.SpeakerService;
-import com.intelliarts.conflab.core.service.SpeechService;
 import com.intelliarts.conflab.security.HasAuthority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,23 +19,22 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/speakers")
 @HasAuthority(role = Role.ADMIN)
 public class SpeakerController {
     @Autowired
-    private SpeechService  speechService;
-    @Autowired
     private SpeakerService speakerService;
 
-    @RequestMapping(method = RequestMethod.POST,
+    @RequestMapping(value = "/speakers",
+                    method = RequestMethod.POST,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Speaker create(@RequestBody @Validated Speaker speaker) {
+        speaker.setId(null);
         return speakerService.save(speaker);
     }
 
-    @RequestMapping(path = "/{id}",
+    @RequestMapping(value = "/speakers/{id}",
                     method = RequestMethod.PUT,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
@@ -46,23 +43,24 @@ public class SpeakerController {
         return speakerService.save(speaker);
     }
 
-    @RequestMapping(value = "/{id}",
+    @RequestMapping(value = "/speakers/{id}",
                     method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public Speaker getById(@PathVariable("id") Long id) {
         return speakerService.findById(id);
     }
 
-    @RequestMapping(method = RequestMethod.GET,
+    @RequestMapping(value = "/speakers",
+                    method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Speaker> getSpeakers() {
         return speakerService.findAll();
     }
 
-    @RequestMapping(path = "/{id}/speeches",
+    @RequestMapping(value = "/speeches/{id}/speakers",
                     method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public Set<Speech> findBySpeechId(@PathVariable("id") Long speakerId) {
-        return speechService.findBySpeakerId(speakerId);
+    public Set<Speaker> findBySpeechId(@PathVariable("id") Long speakerId) {
+        return speakerService.findBySpeechId(speakerId);
     }
 }
