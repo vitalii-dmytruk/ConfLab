@@ -1,27 +1,18 @@
 define([
-    'common/route/Route',
-    'event/EventModel',
-    'event/eventViewFactory'
-], function (Route, EventModel, eventViewFactory) {
+   'common/route/ItemDetailsRoute',
+   'event/eventViewFactory',
+   'speech/speechViewFactory',
+   'speaker/speakerViewFactory',
+   'event/EventModel',
+   'speaker/SpeakerCollection'
+], function (ItemDetailsRoute, eventViewFactory, speechViewFactory, speakerViewFactory,  EventModel, SpeakerCollection) {
 
     'use strict';
 
-    return Route.extend({
-
-        initialize: function (options) {
-            this.container = options.container;
-        },
-
-        fetch: function (id) {
-            this.model = new EventModel({id: id});
-            return this.model.fetch();
-        },
-
-        render: function () {
-            this.view = new eventViewFactory.itemDetailsView({
-                model: this.model
-            });
-            this.container.show(this.view);
-        }
+    return ItemDetailsRoute.extend({
+        itemModelClass             : EventModel,
+        attachedItemCollectionClass: SpeakerCollection,
+        itemDetailsView            : eventViewFactory.itemDetailsView,
+        attachedItemTableView      : speakerViewFactory.attachedItemTableView
     });
 });
