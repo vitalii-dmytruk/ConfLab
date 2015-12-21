@@ -3,12 +3,8 @@ define([
     'backbone.radio',
     'event/EventCollection',
     'event/table/EventTableRoute',
-    'event/create/CreateEventRoute',
-    'event/edit/EditEventRoute',
-    'event/show/ShowEventRoute',
-    'backbone.marionette'
-], function (MenuAwareRouter, Radio, EventCollection, EventTableRoute, CreateEventRoute, EditEventRoute,
-             ShowEventRoute) {
+    'event/details/EventDetailsRoute'
+], function (MenuAwareRouter, Radio, EventCollection, EventTableRoute, EventDetailsRoute) {
 
     'use strict';
 
@@ -26,9 +22,7 @@ define([
 
         routes: {
             'events'         : getRoute(EventTableRoute),
-            'events/new'     : getRoute(CreateEventRoute),
-            'events/:id'     : getRoute(ShowEventRoute),
-            'events/:id/edit': getRoute(EditEventRoute)
+            'events/:id'     : getRoute(EventDetailsRoute)
         }
 
     });

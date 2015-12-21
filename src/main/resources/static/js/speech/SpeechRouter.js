@@ -19,14 +19,12 @@ define([
         initialize: function (options) {
             this.container  = options.container;
             this.collection = new SpeechCollection();
-            Radio.channel('storage').reply({
-                speechCollection: this.collection
-            }, this)
+
         },
 
         routes: {
             'speeches'    : getRoute(SpeechTableRoute),
-            'speeches/:id': getRoute(SpeechDetailRoute),
+            'speeches/:id': getRoute(SpeechDetailRoute)
         }
 
     });
