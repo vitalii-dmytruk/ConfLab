@@ -1,11 +1,9 @@
 define([
     'common/MenuAwareRouter',
-    'backbone.radio',
-    'speaker/SpeakerCollection',
     'speaker/table/SpeakerTableRoute',
     'speaker/details/SpeakerDetailsRoute',
     'backbone.marionette'
-], function (MenuAwareRouter, Radio, SpeakerCollection, SpeakerTableRoute, SpeakerDetailsRoute) {
+], function (MenuAwareRouter, SpeakerTableRoute, SpeakerDetailsRoute) {
 
     'use strict';
 

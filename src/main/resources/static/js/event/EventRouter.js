@@ -1,10 +1,8 @@
 define([
     'common/MenuAwareRouter',
-    'backbone.radio',
-    'event/EventCollection',
     'event/table/EventTableRoute',
     'event/details/EventDetailsRoute'
-], function (MenuAwareRouter, Radio, EventCollection, EventTableRoute, EventDetailsRoute) {
+], function (MenuAwareRouter, EventTableRoute, EventDetailsRoute) {
 
     'use strict';
 
@@ -16,13 +14,12 @@ define([
         },
 
         initialize: function (options) {
-            this.container  = options.container;
-            this.collection = new EventCollection();
+            this.container = options.container;
         },
 
         routes: {
-            'events'         : getRoute(EventTableRoute),
-            'events/:id'     : getRoute(EventDetailsRoute)
+            'events'    : getRoute(EventTableRoute),
+            'events/:id': getRoute(EventDetailsRoute)
         }
 
     });
@@ -30,8 +27,7 @@ define([
     function getRoute(RouteClass) {
         return function () {
             return new RouteClass({
-                container : this.container,
-                collection: this.collection
+                container: this.container
             });
         }
     }
