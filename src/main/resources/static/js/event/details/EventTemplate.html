@@ -1,41 +1,30 @@
-<div class="page-header">
-    <h1 id="event-update-action"></h1>
-</div>
-
 <form class="form-horizontal">
     <div class="form-group">
         <label for="event-name" class="col-md-2 control-label">Name</label>
 
         <div class="col-md-8">
-            <input id="event-name" type="text" class="form-control" placeholder="Name" maxlength="255">
+            <p id="event-name" class="form-control-static"></p>
         </div>
     </div>
     <div class="form-group">
         <label for="event-description" class="col-md-2 control-label">Description</label>
 
         <div class="col-md-8">
-            <textarea class="form-control" rows="3" id="event-description" placeholder="Description"></textarea>
+            <p class="form-control-static" id="event-description"></p>
         </div>
     </div>
     <div class="form-group">
         <label for="event-start-date" class="col-md-2 control-label">Start Date</label>
 
         <div class="col-md-8">
-            <input id="event-start-date" type="date" class="form-control">
+            <p id="event-start-date" class="form-control-static"></p>
         </div>
     </div>
     <div class="form-group">
         <label for="event-end-date" class="col-md-2 control-label">End Date</label>
 
         <div class="col-md-8">
-            <input id="event-end-date" type="date" class="form-control">
+            <p id="event-end-date" class="form-control-static"></p>
         </div>
     </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-8">
-            <button id="update-event-button" class="btn btn-success">Save</button>
-            <button id="cancel-update-event-button" class="btn btn-default">Cancel</button>
-        </div>
-    </div>
-
 </form>

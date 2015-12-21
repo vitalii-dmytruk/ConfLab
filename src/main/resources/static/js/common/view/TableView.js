@@ -25,9 +25,6 @@ define([
 
         onRender: function () {
             setPageTitle(this);
-        },
-
-        onBeforeShow: function () {
             this.listRegion.show(new Marionette.CollectionView({
                 childView : this.RowView,
                 collection: this.collection

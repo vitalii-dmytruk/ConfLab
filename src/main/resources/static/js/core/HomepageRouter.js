@@ -1,18 +1,24 @@
 define([
     'backbone.marionette',
-    'core/HomepageController'
-], function (Marionette, HomepageController) {
+    'core/HomepageView'
+], function (Marionette, HomepageView) {
 
     'use strict';
 
     return Marionette.AppRouter.extend({
+
         initialize: function (options) {
-            this.controller = new HomepageController({container: options.container});
+            this.container  = options.container;
         },
 
-        appRoutes: {
+        routes: {
             '': 'home'
+        },
+
+        home: function(){
+            this.container.show(new HomepageView());
         }
+
     });
 
 });

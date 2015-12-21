@@ -1,38 +1,36 @@
-<div class="page-header">
-    <a data-event-edit-href class="btn btn-primary pull-right">Edit</a>
-
-    <h1>Conferences: <span data-event-name></span></h1>
-</div>
 <form class="form-horizontal">
     <div class="form-group">
         <label for="event-name" class="col-md-2 control-label">Name</label>
 
         <div class="col-md-8">
-            <p id="event-name" class="form-control-static"></p>
+            <input id="event-name" type="text" class="form-control" placeholder="Name" maxlength="255">
         </div>
     </div>
     <div class="form-group">
         <label for="event-description" class="col-md-2 control-label">Description</label>
 
         <div class="col-md-8">
-            <p class="form-control-static" id="event-description"></p>
+            <textarea class="form-control" rows="3" id="event-description" placeholder="Description"></textarea>
         </div>
     </div>
     <div class="form-group">
         <label for="event-start-date" class="col-md-2 control-label">Start Date</label>
 
         <div class="col-md-8">
-            <p id="event-start-date" class="form-control-static"></p>
+            <input id="event-start-date" type="date" class="form-control">
         </div>
     </div>
     <div class="form-group">
         <label for="event-end-date" class="col-md-2 control-label">End Date</label>
 
         <div class="col-md-8">
-            <p id="event-end-date" class="form-control-static"></p>
+            <input id="event-end-date" type="date" class="form-control">
         </div>
     </div>
-
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-8">
+            <button data-submit-btn type="submit" class="btn btn-success">Ok</button>
+            <div data-cancel-btn class="btn btn-default">Cancel</div>
+        </div>
+    </div>
 </form>
-
-<div id="speaker-container"></div>

@@ -1,11 +1,9 @@
 define([
     'common/MenuAwareRouter',
-    'backbone.radio',
-    'speech/SpeechCollection',
     'speech/table/SpeechTableRoute',
     'speech/details/SpeechDetailRoute',
     'backbone.marionette'
-], function (MenuAwareRouter, Radio, SpeechCollection, SpeechTableRoute, SpeechDetailRoute) {
+], function (MenuAwareRouter, SpeechTableRoute, SpeechDetailRoute) {
 
     'use strict';
 
@@ -17,16 +15,12 @@ define([
         },
 
         initialize: function (options) {
-            this.container  = options.container;
-            this.collection = new SpeechCollection();
-            Radio.channel('storage').reply({
-                speechCollection: this.collection
-            }, this)
+            this.container = options.container;
         },
 
         routes: {
             'speeches'    : getRoute(SpeechTableRoute),
-            'speeches/:id': getRoute(SpeechDetailRoute),
+            'speeches/:id': getRoute(SpeechDetailRoute)
         }
 
     });
@@ -34,8 +28,7 @@ define([
     function getRoute(RouteClass) {
         return function () {
             return new RouteClass({
-                container : this.container,
-                collection: this.collection
+                container: this.container
             });
         }
     }
