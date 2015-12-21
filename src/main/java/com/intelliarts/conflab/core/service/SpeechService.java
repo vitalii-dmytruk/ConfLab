@@ -2,6 +2,7 @@ package com.intelliarts.conflab.core.service;
 
 import com.intelliarts.conflab.core.entity.Speech;
 import com.intelliarts.conflab.core.repository.SpeechRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -16,6 +17,7 @@ public class SpeechService {
     private SpeechRepository speechRepository;
     private SpeechSpeakerService speechSpeakerService;
 
+    @Autowired
     public SpeechService(SpeechRepository speechRepository, SpeechSpeakerService speechSpeakerService) {
         this.speechRepository = speechRepository;
         this.speechSpeakerService = speechSpeakerService;
@@ -26,7 +28,7 @@ public class SpeechService {
         boolean isNew = speech.getId() == null;
         speechRepository.save(speech);
         if (isNew) {
-            speechSpeakerService.createSpeechSpeakerLink(null, speech.getId());
+            speechSpeakerService.createSpeechSpeakerLink(speech.getId(), null);
         }
         return speech;
     }
