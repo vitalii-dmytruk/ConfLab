@@ -31,7 +31,7 @@ define([
             }));
         },
 
-        editView: function(){
+        editView: function () {
             return new this.EditView({
                 model: new this.collection.model()
             });
@@ -48,8 +48,9 @@ define([
 
         editView.onSubmit = function (args) {
             view.collection.create(args.model, {
-                wait   : true,
-                success: function () {
+                wait    : true,
+                dataType: args.model.get('id') ? 'html' : 'json',
+                success : function () {
                     editView.destroy();
                 }
             });
