@@ -17,8 +17,8 @@ define([
         },
 
         events: {
-            'submit @ui.form' : 'login',
-            'click @ui.cancel': 'cancel'
+            'submit @ui.form' : login,
+            'click @ui.cancel': cancel
         },
 
         bindings: {
@@ -32,15 +32,16 @@ define([
 
         onRender: function () {
             this.stickit();
-        },
-
-        login: function () {
-            this.trigger('login:confirm', this.model);
-            return false;
-        },
-
-        cancel: function () {
-            this.trigger('login:cancel', this.model);
         }
     });
+
+
+    function login() {
+        this.trigger('login:confirm', this.model);
+        return false;
+    }
+
+    function cancel() {
+        this.trigger('login:cancel', this.model);
+    }
 });
