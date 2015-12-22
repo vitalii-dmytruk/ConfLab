@@ -18,12 +18,4 @@ public class SessionController {
     public User getSessionUser(@AuthenticationPrincipal User currentUser) {
         return currentUser;
     }
-
-    @RequestMapping(value = "/i")
-
-    public Integer getI(){
-
-        throw new IllegalArgumentException(
-                "Speech with id");
-    }
 }
