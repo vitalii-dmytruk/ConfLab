@@ -47,9 +47,10 @@ define([
                 self      = this;
 
             loginView.on('login:confirm', function (user) {
+                var credentials = user.get('username') + ':' + user.get('password');
                 self.session.fetch({
                     headers: {
-                        'Authorization': 'Basic ' + btoa(user.get('username') + ':' + user.get('password'))
+                        'Authorization': 'Basic ' + b64EncodeUnicode(credentials)
                     },
                     success: function (model, response, options) {
                         setupCsrf(options.xhr);
@@ -57,7 +58,6 @@ define([
                         Backbone.history.loadUrl(Backbone.history.fragment);
                     }
                 });
-
             });
 
             loginView.on('login:cancel', function () {
@@ -127,5 +127,9 @@ define([
         return csrfToken;
     }
 
-
+    function b64EncodeUnicode(str) {
+        return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+            return String.fromCharCode('0x' + p1);
+        }));
+    }
 });
