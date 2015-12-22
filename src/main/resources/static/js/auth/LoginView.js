@@ -9,18 +9,16 @@ define([
     'use strict';
 
     return Marionette.ItemView.extend({
-        tagName  : 'form',
-        className: 'form-horizontal',
         template : _.template(template),
 
         ui: {
-            login : '#login',
+            form  : '#login-form',
             cancel: '#cancel'
         },
 
         events: {
-            'click @ui.login' : 'login',
-            'click @ui.cancel': 'cancel'
+            'submit @ui.form' : login,
+            'click @ui.cancel': cancel
         },
 
         bindings: {
@@ -34,14 +32,16 @@ define([
 
         onRender: function () {
             this.stickit();
-        },
-
-        login: function () {
-            this.trigger('login:confirm', this.model);
-        },
-
-        cancel: function () {
-            this.trigger('login:cancel', this.model);
         }
     });
+
+
+    function login() {
+        this.trigger('login:confirm', this.model);
+        return false;
+    }
+
+    function cancel() {
+        this.trigger('login:cancel', this.model);
+    }
 });
