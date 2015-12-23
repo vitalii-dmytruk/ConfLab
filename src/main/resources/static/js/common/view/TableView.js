@@ -40,30 +40,32 @@ define([
     });
 
     function showAddItemView() {
-        var view, editView;
+        var editView = this.editView();
 
-        view = this;
-
-        editView = this.editView();
-
-        editView.onSubmit = function (args) {
-            view.collection.create(args.model, {
-                wait    : true,
-                dataType: args.model.get('id') ? 'html' : 'json',
-                success : function () {
-                    editView.destroy();
-                }
-            });
-        };
-
-        editView.onCancel = function () {
-            editView.destroy();
-        };
+        editView.onSubmit = saveModel.bind(this);
+        editView.onCancel = hideView;
 
         this.editRegion.show(editView);
     }
 
     function setPageTitle(view) {
         view.ui.title.text(view.title);
+    }
+
+    function saveModel(args) {
+        args.model.save(null, {
+            wait    : true,
+            dataType: args.model.get('id') ? 'html' : 'json',
+            success : cleanupAfterEdit.bind(this, args)
+        });
+    }
+
+    function cleanupAfterEdit(args) {
+        this.collection.add(args.model.attributes);
+        hideView(args);
+    }
+
+    function hideView(args) {
+        args.view.destroy();
     }
 });
