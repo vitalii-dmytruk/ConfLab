@@ -1,6 +1,9 @@
 package com.intelliarts.conflab.core.service;
 
+import com.intelliarts.conflab.core.entity.Event;
+import com.intelliarts.conflab.core.entity.Speaker;
 import com.intelliarts.conflab.core.entity.Speech;
+import com.intelliarts.conflab.core.entity.SpeechSpeaker;
 import com.intelliarts.conflab.core.repository.SpeechRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,23 +17,58 @@ import java.util.Set;
 @Service
 public class SpeechService {
 
-    private SpeechRepository speechRepository;
-    private SpeechSpeakerService speechSpeakerService;
+    private SpeechRepository          speechRepository;
+    private SpeechSpeakerService      speechSpeakerService;
+    private EventSpeechSpeakerService eventSpeechSpeakerService;
 
     @Autowired
-    public SpeechService(SpeechRepository speechRepository, SpeechSpeakerService speechSpeakerService) {
+    public SpeechService(SpeechRepository speechRepository, SpeechSpeakerService speechSpeakerService,
+            EventSpeechSpeakerService eventSpeechSpeakerService) {
         this.speechRepository = speechRepository;
         this.speechSpeakerService = speechSpeakerService;
+        this.eventSpeechSpeakerService = eventSpeechSpeakerService;
     }
 
     @Transactional
-    public Speech save(Speech speech) {
-        boolean isNew = speech.getId() == null;
-        speechRepository.save(speech);
-        if (isNew) {
-            speechSpeakerService.createSpeechSpeakerLink(speech.getId(), null);
+    public Speech create(Speech speech) {
+        speech.setId(null);
+        Speech createdSpeech = speechRepository.save(speech);
+        linkToSpeaker(createdSpeech, null);
+        return createdSpeech;
+    }
+
+    @Transactional
+    public Speech createAndLinkToSpeaker(Speech speech, Speaker speaker) {
+        Speech createdSpeech = create(speech);
+        linkToSpeaker(createdSpeech, speaker);
+        return createdSpeech;
+    }
+
+    @Transactional
+    public void linkToSpeaker(Long speechId, Speaker speaker) {
+        Speech speech = findById(speechId);
+        linkToSpeaker(speech, speaker);
+    }
+
+    @Transactional
+    public Speech createAndLinkToEvent(Speech speech, Event event) {
+        Speech createdSpeech = create(speech);
+        linkToEvent(createdSpeech, event);
+        return createdSpeech;
+    }
+
+    @Transactional
+    public void linkToEvent(Long speechId, Event event) {
+        Speech speech = findById(speechId);
+        linkToEvent(speech, event);
+    }
+
+    @Transactional
+    public Speech update(Speech speech) {
+        if (speech.getId() == null) {
+            throw new IllegalArgumentException("Speech Id is not specified");
         }
-        return speech;
+        return speechRepository.save(speech);
     }
 
     public List<Speech> findAll() {
@@ -48,6 +86,15 @@ public class SpeechService {
 
     public List<Speech> findByEventId(Long id) {
         return speechRepository.findByEventId(id);
+    }
+
+    private void linkToSpeaker(Speech createdSpeech, Speaker speaker) {
+        speechSpeakerService.createSpeechSpeakerLink(createdSpeech, speaker);
+    }
+
+    private void linkToEvent(Speech speech, Event event) {
+        SpeechSpeaker speechSpeaker = speechSpeakerService.findOrCreate(speech, null);
+        eventSpeechSpeakerService.createEventSpeechSpeakerLink(event, speechSpeaker);
     }
 
 }

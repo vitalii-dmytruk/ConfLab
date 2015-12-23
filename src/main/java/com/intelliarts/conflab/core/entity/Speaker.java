@@ -1,6 +1,7 @@
 package com.intelliarts.conflab.core.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
@@ -12,7 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.util.Set;
@@ -47,8 +48,9 @@ public class Speaker {
     @Column
     private String about;
 
-    @ManyToMany(mappedBy = "speakers")
-    private Set<Speech> speeches;
+    @JsonIgnore
+    @OneToMany(mappedBy = "speaker")
+    private Set<SpeechSpeaker> speechSpeakers;
 
     public Long getId() {
         return id;
@@ -90,11 +92,11 @@ public class Speaker {
         this.about = about;
     }
 
-    public Set<Speech> getSpeeches() {
-        return speeches;
+    public Set<SpeechSpeaker> getSpeechSpeakers() {
+        return speechSpeakers;
     }
 
-    public void setSpeeches(Set<Speech> speeches) {
-        this.speeches = speeches;
+    public void setSpeechSpeakers(Set<SpeechSpeaker> speechSpeakers) {
+        this.speechSpeakers = speechSpeakers;
     }
 }

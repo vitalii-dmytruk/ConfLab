@@ -1,7 +1,11 @@
 package com.intelliarts.conflab.core.controller;
 
+import com.intelliarts.conflab.core.entity.Event;
 import com.intelliarts.conflab.core.entity.Role;
+import com.intelliarts.conflab.core.entity.Speaker;
 import com.intelliarts.conflab.core.entity.Speech;
+import com.intelliarts.conflab.core.service.EventService;
+import com.intelliarts.conflab.core.service.SpeakerService;
 import com.intelliarts.conflab.core.service.SpeechService;
 import com.intelliarts.conflab.security.HasAuthority;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +29,16 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 @HasAuthority(role = Role.ADMIN)
 public class SpeechController {
 
+    private SpeechService  speechService;
+    private SpeakerService speakerService;
+    private EventService   eventService;
+
     @Autowired
-    private SpeechService speechService;
+    public SpeechController(SpeechService speechService, SpeakerService speakerService, EventService eventService) {
+        this.speechService = speechService;
+        this.speakerService = speakerService;
+        this.eventService = eventService;
+    }
 
     @RequestMapping(value = "/speeches",
                     method = POST,
@@ -34,8 +46,45 @@ public class SpeechController {
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Speech create(@RequestBody @Validated Speech speech) {
+        return speechService.create(speech);
+    }
+
+    @RequestMapping(value = "/speakers/{id}/speeches", method = POST,
+                    consumes = MediaType.APPLICATION_JSON_VALUE,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public Speech createAndLinkToSpeaker(@PathVariable("id") Long speakerId, @RequestBody @Validated Speech speech) {
         speech.setId(null);
-        return speechService.save(speech);
+        Speaker speaker = speakerService.findById(speakerId);
+        return speechService.createAndLinkToSpeaker(speech, speaker);
+    }
+
+    @RequestMapping(value = "/speakers/{speakerId}/speeches/{speechId}",
+                    method = PUT,
+                    consumes = MediaType.APPLICATION_JSON_VALUE,
+                    produces = MediaType.TEXT_HTML_VALUE)
+    public void linkToSpeaker(@PathVariable("speechId") Long speechId, @PathVariable("speakerId") Long speakerId) {
+        Speaker speaker = speakerService.findById(speakerId);
+        speechService.linkToSpeaker(speechId, speaker);
+    }
+
+    @RequestMapping(value = "/events/{eventId}/speeches", method = POST,
+                    consumes = MediaType.APPLICATION_JSON_VALUE,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public Speech createAndLinkToEvent(@PathVariable("eventId") Long eventId, @RequestBody @Validated Speech speech) {
+        speech.setId(null);
+        Event event = eventService.findById(eventId);
+        return speechService.createAndLinkToEvent(speech, event);
+    }
+
+    @RequestMapping(value = "/events/{eventId}/speeches/{speechId}",
+                    method = PUT,
+                    consumes = MediaType.APPLICATION_JSON_VALUE,
+                    produces = MediaType.TEXT_HTML_VALUE)
+    public void linkToEvent(@PathVariable("eventId") Long eventId, @PathVariable("speechId") Long speechId) {
+        Event event = eventService.findById(eventId);
+        speechService.linkToEvent(speechId, event);
     }
 
     @RequestMapping(value = "/speeches",
@@ -50,7 +99,7 @@ public class SpeechController {
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public Speech update(@PathVariable("id") Long id, @RequestBody @Validated Speech speech) {
         speech.setId(id);
-        return speechService.save(speech);
+        return speechService.update(speech);
     }
 
     @RequestMapping(value = "/speeches/{id}", method = GET,
