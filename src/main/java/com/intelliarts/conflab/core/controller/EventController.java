@@ -23,14 +23,16 @@ import java.util.List;
 @RequestMapping("/events")
 public class EventController {
 
-    @Autowired
     private EventService eventService;
-
-    @Autowired
     private SpeechService speechService;
+    private SpeakerService speakerService;
 
     @Autowired
-    private SpeakerService speakerService;
+    public EventController(EventService eventService, SpeechService speechService, SpeakerService speakerService) {
+        this.eventService = eventService;
+        this.speechService = speechService;
+        this.speakerService = speakerService;
+    }
 
     @RequestMapping(method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
@@ -46,7 +48,7 @@ public class EventController {
         return eventService.save(event);
     }
 
-    @RequestMapping(path = "/{id}",
+    @RequestMapping(value = "/{id}",
                     method = RequestMethod.PUT,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)

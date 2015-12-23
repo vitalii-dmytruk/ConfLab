@@ -5,8 +5,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import java.util.Set;
 
 @Entity
 @Table(name = "speech_speaker")
@@ -18,19 +22,23 @@ public class SpeechSpeaker {
     @Column
     private Long id;
 
-    @Column(name = "speech_id")
-    private Long speechId;
+    @ManyToOne
+    @JoinColumn(name = "speech_id")
+    private Speech speech;
 
-    @Column(name = "speaker_id")
-    private Long speakerId;
+    @ManyToOne
+    @JoinColumn(name = "speaker_id")
+    private Speaker speaker;
 
+    @OneToMany(mappedBy = "speechSpeaker")
+    private Set<EventSpeechSpeaker> eventSpeechSpeakers;
 
     public SpeechSpeaker() {
     }
 
-    public SpeechSpeaker(Long speechId, Long speakerId) {
-        this.speechId = speechId;
-        this.speakerId = speakerId;
+    public SpeechSpeaker(Speech speech, Speaker speaker) {
+        this.speech = speech;
+        this.speaker = speaker;
     }
 
     public Long getId() {
@@ -41,20 +49,28 @@ public class SpeechSpeaker {
         this.id = id;
     }
 
-    public Long getSpeechId() {
-        return speechId;
+    public Speech getSpeech() {
+        return speech;
     }
 
-    public void setSpeechId(Long speechId) {
-        this.speechId = speechId;
+    public void setSpeech(Speech speech) {
+        this.speech = speech;
     }
 
-    public Long getSpeakerId() {
-        return speakerId;
+    public Speaker getSpeaker() {
+        return speaker;
     }
 
-    public void setSpeakerId(Long speakerId) {
-        this.speakerId = speakerId;
+    public void setSpeaker(Speaker speaker) {
+        this.speaker = speaker;
+    }
+
+    public Set<EventSpeechSpeaker> getEventSpeechSpeakers() {
+        return eventSpeechSpeakers;
+    }
+
+    public void setEventSpeechSpeakers(Set<EventSpeechSpeaker> eventSpeechSpeakers) {
+        this.eventSpeechSpeakers = eventSpeechSpeakers;
     }
 }
 

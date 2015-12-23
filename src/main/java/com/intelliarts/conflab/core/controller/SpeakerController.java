@@ -1,8 +1,12 @@
 package com.intelliarts.conflab.core.controller;
 
+import com.intelliarts.conflab.core.entity.Event;
 import com.intelliarts.conflab.core.entity.Role;
 import com.intelliarts.conflab.core.entity.Speaker;
+import com.intelliarts.conflab.core.entity.Speech;
+import com.intelliarts.conflab.core.service.EventService;
 import com.intelliarts.conflab.core.service.SpeakerService;
+import com.intelliarts.conflab.core.service.SpeechService;
 import com.intelliarts.conflab.security.HasAuthority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,11 +22,23 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Set;
 
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
+
 @RestController
 @HasAuthority(role = Role.ADMIN)
 public class SpeakerController {
-    @Autowired
+
     private SpeakerService speakerService;
+    private SpeechService  speechService;
+    private EventService   eventService;
+
+    @Autowired
+    public SpeakerController(SpeakerService speakerService, SpeechService speechService, EventService eventService) {
+        this.speakerService = speakerService;
+        this.speechService = speechService;
+        this.eventService = eventService;
+    }
 
     @RequestMapping(value = "/speakers",
                     method = RequestMethod.POST,
@@ -30,8 +46,44 @@ public class SpeakerController {
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Speaker create(@RequestBody @Validated Speaker speaker) {
-        speaker.setId(null);
-        return speakerService.save(speaker);
+        return speakerService.create(speaker);
+    }
+
+    @RequestMapping(value = "/speeches/{id}/speakers", method = POST,
+                    consumes = MediaType.APPLICATION_JSON_VALUE,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public Speaker createAndLinkToSpeech(@PathVariable("id") Long speechId, @RequestBody @Validated Speaker speaker) {
+        Speech speech = speechService.findById(speechId);
+        return speakerService.createAndLinkToSpeech(speaker, speech);
+    }
+
+    @RequestMapping(value = "/speeches/{speechId}/speakers/{speakerId}",
+                    method = PUT,
+                    consumes = MediaType.APPLICATION_JSON_VALUE,
+                    produces = MediaType.TEXT_HTML_VALUE)
+    public void linkToSpeech(@PathVariable("speechId") Long speechId, @PathVariable("speakerId") Long speakerId) {
+        Speech speech = speechService.findById(speechId);
+        speakerService.linkToSpeech(speakerId, speech);
+    }
+
+    @RequestMapping(value = "/events/{eventId}/speakers", method = POST,
+                    consumes = MediaType.APPLICATION_JSON_VALUE,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public Speaker createAndLinkToEvent(@PathVariable("eventId") Long eventId,
+            @RequestBody @Validated Speaker speaker) {
+        Event event = eventService.findById(eventId);
+        return speakerService.createAndLinkToEvent(speaker, event);
+    }
+
+    @RequestMapping(value = "/events/{eventId}/speakers/{speakerId}",
+                    method = PUT,
+                    consumes = MediaType.APPLICATION_JSON_VALUE,
+                    produces = MediaType.TEXT_HTML_VALUE)
+    public void linkToEvent(@PathVariable("eventId") Long eventId, @PathVariable("speakerId") Long speakerId) {
+        Event event = eventService.findById(eventId);
+        speakerService.linkToEvent(speakerId, event);
     }
 
     @RequestMapping(value = "/speakers/{id}",
@@ -40,7 +92,7 @@ public class SpeakerController {
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public Speaker update(@PathVariable("id") Long id, @RequestBody @Validated Speaker speaker) {
         speaker.setId(id);
-        return speakerService.save(speaker);
+        return speakerService.update(speaker);
     }
 
     @RequestMapping(value = "/speakers/{id}",

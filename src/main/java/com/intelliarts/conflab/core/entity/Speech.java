@@ -14,9 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.util.Locale;
@@ -46,13 +44,9 @@ public class Speech {
     @Convert(converter = LocaleToLanguageConverter.class)
     private Locale lang;
 
-    @Column
-    @ManyToMany
-    @JoinTable(name = "speech_speaker",
-               joinColumns = @JoinColumn(name = "speech_id", referencedColumnName = "id"),
-               inverseJoinColumns = @JoinColumn(name = "speaker_id", referencedColumnName = "id"))
     @JsonIgnore
-    private Set<Speaker> speakers;
+    @OneToMany(mappedBy = "speech")
+    private Set<SpeechSpeaker> speechSpeakers;
 
     public Long getId() {
         return id;
@@ -60,14 +54,6 @@ public class Speech {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getDescription() {
@@ -78,6 +64,14 @@ public class Speech {
         this.description = description;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public Locale getLang() {
         return lang;
     }
@@ -86,11 +80,11 @@ public class Speech {
         this.lang = lang;
     }
 
-    public Set<Speaker> getSpeakers() {
-        return speakers;
+    public Set<SpeechSpeaker> getSpeechSpeakers() {
+        return speechSpeakers;
     }
 
-    public void setSpeakers(Set<Speaker> speakers) {
-        this.speakers = speakers;
+    public void setSpeechSpeakers(Set<SpeechSpeaker> speechSpeakers) {
+        this.speechSpeakers = speechSpeakers;
     }
 }

@@ -1,5 +1,6 @@
 package com.intelliarts.conflab.core.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.intelliarts.conflab.core.entity.converter.LocalDateConverter;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -10,9 +11,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Table(name = "events")
@@ -42,6 +45,10 @@ public class Event {
 
     @Column
     private String venue;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "event")
+    private Set<EventSpeechSpeaker> eventSpeechSpeakers;
 
     public Long getId() {
         return id;
@@ -89,5 +96,13 @@ public class Event {
 
     public void setVenue(String venue) {
         this.venue = venue;
+    }
+
+    public Set<EventSpeechSpeaker> getEventSpeechSpeakers() {
+        return eventSpeechSpeakers;
+    }
+
+    public void setEventSpeechSpeakers(Set<EventSpeechSpeaker> eventSpeechSpeakers) {
+        this.eventSpeechSpeakers = eventSpeechSpeakers;
     }
 }
