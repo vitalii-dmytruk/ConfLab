@@ -1,8 +1,7 @@
 define([
     'common/Service',
-    'menu/MenuItems',
-    'menu/MenuView'
-], function (Service, MenuItems, MenuView) {
+    'common/navigation/NavigationView'
+], function (Service, NavigationView) {
 
     'use strict';
 
@@ -13,45 +12,23 @@ define([
 
         initialize: function (options) {
             this.container  = options.container;
-            this.collection = new MenuItems();
             this.start();
         },
 
         onStart: function () {
-            this.view = new MenuView({collection: this.collection});
-            this.container.show(this.view);
+            var menu = new NavigationView({
+                className: 'nav nav-sidebar'
+            });
+            this.container.show(menu);
             this.channel.reply({
-                add     : addToCollection,
-                activate: setActiveItem,
-                remove  : removeFromCollection
-            }, this)
+                add     : menu.add,
+                activate: menu.activate,
+                remove  : menu.remove
+            }, menu)
         },
 
         onStop: function () {
             this.channel.reset();
         }
     });
-
-    function removeFromCollection(button) {
-        var model = findModelByPath(this.collection, button.path);
-        this.collection.remove(model);
-    }
-
-    function setActiveItem(button) {
-        var model;
-
-        this.collection.invoke('set', 'active', false);
-        model = findModelByPath(this.collection, button.path);
-        if (model) {
-            model.set('active', true);
-        }
-    }
-
-    function addToCollection(model) {
-        this.collection.add(model);
-    }
-
-    function findModelByPath(collection, path) {
-        return collection.findWhere({path: path});
-    }
 });
