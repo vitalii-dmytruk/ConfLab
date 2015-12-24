@@ -15,6 +15,8 @@ define([
         itemShowTemplate: SpeechShowTemplate,
         itemEditTemplate: SpeechEditTemplate,
 
+        searchLabelAttribute : 'title',
+
         bindings: {
             '#speech-title'      : 'title',
             '#speech-description': 'description',

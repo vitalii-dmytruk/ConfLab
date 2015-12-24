@@ -9,24 +9,20 @@ define([
     return Marionette.ItemView.extend({
         template: _.template(template),
 
-        bindings: {
-            '#search-item': {
+        onRender: function () {
+            this.addBinding(null, '#search-item', {
                 observe      : 'result',
                 selectOptions: {
                     collection   : function () {
                         return this.collection;
                     },
-                    labelPath    : 'name',
+                    labelPath : this.options.labelAttribute,
                     defaultOption: {
                         label: 'Search...',
                         value: null
                     }
                 }
-            }
-        },
-
-        onRender: function () {
-            this.stickit()
+            });
         }
     });
 
