@@ -13,13 +13,14 @@ define([
     return Marionette.Object.extend({
 
         initialize: function (options) {
-            this.itemRowTemplate  = options.itemRowTemplate;
-            this.itemShowTemplate = options.itemShowTemplate;
-            this.itemEditTemplate = options.itemEditTemplate;
-            this.bindings         = options.bindings;
-            this.rowBindings      = options.rowBindings;
-            this.title            = options.title;
-            this.tableTitle       = options.tableTitle;
+            this.itemRowTemplate      = options.itemRowTemplate;
+            this.itemShowTemplate     = options.itemShowTemplate;
+            this.itemEditTemplate     = options.itemEditTemplate;
+            this.bindings             = options.bindings;
+            this.rowBindings          = options.rowBindings;
+            this.title                = options.title;
+            this.tableTitle           = options.tableTitle;
+            this.searchLabelAttribute = options.searchLabelAttribute;
 
             this.itemEditView = EditView.extend({
                 template: _.template(this.itemEditTemplate),
@@ -32,7 +33,10 @@ define([
 
             this.itemAttachView = this.itemEditView.extend({
                 behaviors: {
-                    search: {behaviorClass: SearchBehavior}
+                    search: {
+                        behaviorClass : SearchBehavior,
+                        labelAttribute: this.searchLabelAttribute
+                    }
                 }
             });
 

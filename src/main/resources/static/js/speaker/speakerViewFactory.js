@@ -15,6 +15,8 @@ define([
         itemShowTemplate: SpeakerShowTemplate,
         itemEditTemplate: SpeakerEditTemplate,
 
+        searchLabelAttribute : 'name',
+
         bindings: {
             '#email'   : 'email',
             '#name'    : 'name',
