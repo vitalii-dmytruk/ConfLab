@@ -7,20 +7,28 @@ define([
     'use strict';
 
     return Marionette.CollectionView.extend({
-        tagName   : 'ul',
-        childView : MenuItemView,
-        collection: new NavigationCollection(),
+        tagName  : 'ul',
+        childView: MenuItemView,
 
-        add: function (menuItem) {
-            this.collection.add(menuItem);
+        constructor: function () {
+            Marionette.CollectionView.apply(this, arguments);
+            this.collection = new NavigationCollection();
         },
 
-        remove: function (menuItem) {
+        addItems: function (menuItems) {
+            this.collection.add(menuItems);
+        },
+
+        removeItem: function (menuItem) {
             var toRemove = findModelByPath(this.collection, menuItem.path);
             this.collection.remove(toRemove);
         },
 
-        activate: function (menuItem) {
+        resetItems: function (menuItems) {
+            this.collection.reset(menuItems);
+        },
+
+        activateItem: function (menuItem) {
             var toActivate = findModelByPath(this.collection, menuItem.path);
 
             this.collection.invoke('set', 'active', false);
