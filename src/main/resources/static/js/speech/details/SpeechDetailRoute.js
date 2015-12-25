@@ -4,7 +4,7 @@ define([
     'speaker/speakerViewFactory',
     'speech/SpeechModel',
     'speaker/SpeakerCollection'
-], function (ItemDetailsRoute, speechViewFactory, speakerViewFactory,  SpeechModel, SpeakerCollection) {
+], function (ItemDetailsRoute, speechViewFactory, speakerViewFactory, SpeechModel, SpeakerCollection) {
 
     'use strict';
 

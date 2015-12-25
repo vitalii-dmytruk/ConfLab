@@ -11,7 +11,7 @@ define([
         channelName: 'menu',
 
         initialize: function (options) {
-            this.container  = options.container;
+            this.container = options.container;
             this.start();
         },
 

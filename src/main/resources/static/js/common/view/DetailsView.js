@@ -19,7 +19,7 @@ define([
         },
 
         regions: {
-            editRegion      : '[data-edit-region]'
+            editRegion: '[data-edit-region]'
         },
 
         onRender: function () {

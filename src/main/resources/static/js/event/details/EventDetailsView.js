@@ -16,7 +16,7 @@ define([
             '#page-title': 'name'
         },
 
-        regions    : {
+        regions: {
             tabsRegion      : '[data-tabs-region]',
             currentTabRegion: '[data-current-tab-region]'
         },
@@ -30,8 +30,8 @@ define([
             this.tabs.addItems(initTabs(this, this.model.get('id')));
         },
 
-        onRender: function(){
-           this.stickit();
+        onRender: function () {
+            this.stickit();
         },
 
         onBeforeShow: function () {
