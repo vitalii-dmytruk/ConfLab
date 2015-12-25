@@ -15,7 +15,7 @@ define([
         itemShowTemplate: SpeechShowTemplate,
         itemEditTemplate: SpeechEditTemplate,
 
-        searchLabelAttribute : 'title',
+        searchLabelAttribute: 'title',
 
         bindings: {
             '#speech-title'      : 'title',
@@ -24,7 +24,18 @@ define([
         },
 
         rowBindings: {
-            '[data-speech-title]': 'title'
+            '[data-speech-title]'      : 'title',
+            '[data-speech-lang]'       : 'lang',
+            '[data-speech-description]': {
+                observe: 'description',
+                onGet  : function (value) {
+                    if (value.length > 250) {
+                        return value.substring(0, 250) + "...";
+                    } else {
+                        return value;
+                    }
+                }
+            }
         }
     });
 });
