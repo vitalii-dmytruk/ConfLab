@@ -11,7 +11,7 @@ define([
         channelName: 'menu',
 
         initialize: function (options) {
-            this.container  = options.container;
+            this.container = options.container;
             this.start();
         },
 
@@ -21,9 +21,9 @@ define([
             });
             this.container.show(menu);
             this.channel.reply({
-                add     : menu.add,
-                activate: menu.activate,
-                remove  : menu.remove
+                add     : menu.addItems,
+                activate: menu.activateItem,
+                remove  : menu.removeItem
             }, menu)
         },
 
