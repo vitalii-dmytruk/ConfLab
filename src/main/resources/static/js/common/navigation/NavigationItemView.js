@@ -1,14 +1,13 @@
 define([
-    'backbone.marionette',
-    'text!menu/MenuItemTemplate.html',
-    'backbone.stickit'
-], function (Marionette, template) {
+    'text!common/navigation/NavigationItemTemplate.html',
+    'backbone.marionette'
+], function (template) {
 
     'use strict';
 
     return Marionette.ItemView.extend({
         tagName    : 'li',
-        className  : function(){
+        className  : function () {
             return this.model.get('active') ? 'active' : '';
         },
         template   : _.template(template),

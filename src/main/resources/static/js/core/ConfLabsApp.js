@@ -11,7 +11,7 @@ define([
     'backbone.marionette',
     'backbone'
 ], function (ConfLabsLayoutView, HomepageRouter, HeaderService, MenuService, SpeakerRouter, SpeechRouter,
-             EventRouter, AuthService, AccountRouter) {
+    EventRouter, AuthService, AccountRouter) {
 
     'use strict';
 

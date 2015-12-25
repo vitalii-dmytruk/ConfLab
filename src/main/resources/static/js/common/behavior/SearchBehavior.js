@@ -7,8 +7,8 @@ define([
     'use strict';
 
     return Marionette.Behavior.extend({
-        defaults : {
-            labelAttribute : 'name'
+        defaults: {
+            labelAttribute: 'name'
         },
 
         onRender: function () {
@@ -23,7 +23,7 @@ define([
                     this.model.clear();
                 }
             });
-            searchView = new SearchView({
+            searchView   = new SearchView({
                 collection    : this.view.collection,
                 model         : searchResult,
                 labelAttribute: this.options.labelAttribute
