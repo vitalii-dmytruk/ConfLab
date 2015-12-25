@@ -16,7 +16,7 @@ define([
                     collection   : function () {
                         return this.collection;
                     },
-                    labelPath : this.options.labelAttribute,
+                    labelPath    : this.options.labelAttribute,
                     defaultOption: {
                         label: 'Search...',
                         value: null

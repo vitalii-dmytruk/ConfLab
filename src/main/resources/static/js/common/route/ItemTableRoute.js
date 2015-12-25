@@ -6,7 +6,7 @@ define([
 
     return Route.extend({
         initialize: function (options) {
-            this.container  = options.container;
+            this.container = options.container;
         },
 
         fetch: function () {
