@@ -15,7 +15,7 @@ define([
         itemShowTemplate: SpeechShowTemplate,
         itemEditTemplate: SpeechEditTemplate,
 
-        searchLabelAttribute : 'title',
+        searchLabelAttribute: 'title',
 
         bindings: {
             '#speech-title'      : 'title',
@@ -28,10 +28,10 @@ define([
             '[data-speech-lang]'       : 'lang',
             '[data-speech-description]': {
                 observe: 'description',
-                onGet: function(value) {
-                    if (value.length>250) {
+                onGet  : function (value) {
+                    if (value.length > 250) {
                         return value.substring(0, 250) + "...";
-                    }else{
+                    } else {
                         return value;
                     }
                 }
