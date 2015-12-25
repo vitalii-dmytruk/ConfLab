@@ -15,7 +15,7 @@ define([
         events : {
             'mouseenter': showActionIcons,
             'mouseleave': hideActionIcons,
-            'hover @ui.actionIcons' : function(e){
+            'click @ui.actionIcons' : function(e){
                 return e.type;
             }
         },
