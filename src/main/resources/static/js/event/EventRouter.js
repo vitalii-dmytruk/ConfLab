@@ -10,10 +10,10 @@ define([
 
     return MenuAwareRouter.extend({
 
-        menuButton: {
+        menuButton: new Backbone.Model({
             name: 'Conferences',
             path: 'events'
-        },
+        }),
 
         initialize: function (options) {
             this.container = options.container;

@@ -60,18 +60,21 @@ define([
     }
 
     function initTabs(view, eventId) {
-        view.infoTab     = {
+        view.infoTab = new Backbone.Model({
             name: 'Info',
             path: 'events/' + eventId + '/info'
-        };
-        view.speakersTab = {
+        });
+
+        view.speakersTab = new Backbone.Model({
             name: 'Speakers',
             path: 'events/' + eventId + '/speakers'
-        };
-        view.speechesTab = {
+        });
+
+        view.speechesTab = new Backbone.Model({
             name: 'Speeches',
             path: 'events/' + eventId + '/speeches'
-        };
+        });
+
         return [view.infoTab,
                 view.speakersTab,
                 view.speechesTab];

@@ -6,19 +6,16 @@ define([
     'use strict';
 
     return Marionette.ItemView.extend({
-        tagName    : 'li',
-        className  : function () {
-            return this.model.get('active') ? 'active' : '';
-        },
-        template   : _.template(template),
-        modelEvents: {
-            'change:active': updateItemState
+        tagName : 'li',
+        template: _.template(template),
 
+        activate: function () {
+            this.$el.addClass('active');
+        },
+
+        deactivate: function () {
+            this.$el.removeClass('active');
         }
 
     });
-
-    function updateItemState() {
-        this.$el.toggleClass('active', this.model.get('active'));
-    }
 });

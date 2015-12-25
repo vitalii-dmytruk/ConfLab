@@ -4,9 +4,10 @@ define([
     'common/view/DetailsView',
     'common/view/RowView',
     'common/view/TableView',
+    'common/view/ItemsInEventView',
     'backbone.marionette',
     'backbone.stickit'
-], function (SearchBehavior, EditView, DetailsView, RowView, TableView) {
+], function (SearchBehavior, EditView, DetailsView, RowView, TableView, ItemsInEventView) {
 
     'use strict';
 
@@ -70,6 +71,8 @@ define([
                     });
                 }
             });
+
+            this.itemsInEventView = ItemsInEventView;
         }
     });
 
