@@ -1,18 +1,19 @@
 define([
     'common/navigation/NavigationItemView',
-    'common/navigation/NavigationCollection',
     'backbone.marionette'
-], function (MenuItemView, NavigationCollection) {
+], function (NavigationItemView) {
 
     'use strict';
 
     return Marionette.CollectionView.extend({
         tagName  : 'ul',
-        childView: MenuItemView,
+        childView: NavigationItemView,
 
-        constructor: function () {
+        constructor: function (options) {
+            if (!options.collection) {
+                this.collection = new Backbone.Collection();
+            }
             Marionette.CollectionView.apply(this, arguments);
-            this.collection = new NavigationCollection();
         },
 
         addItems: function (menuItems) {
@@ -20,8 +21,7 @@ define([
         },
 
         removeItem: function (menuItem) {
-            var toRemove = findModelByPath(this.collection, menuItem.path);
-            this.collection.remove(toRemove);
+            this.collection.remove(this.collection.findWhere(menuItem));
         },
 
         resetItems: function (menuItems) {
@@ -29,15 +29,9 @@ define([
         },
 
         activateItem: function (menuItem) {
-            var toActivate = findModelByPath(this.collection, menuItem.path);
-
-            this.collection.invoke('set', 'active', false);
-            toActivate && toActivate.set('active', true);
+            this.previousActive && this.previousActive.deactivate();
+            this.previousActive = this.children.findByModel(menuItem);
+            this.previousActive && this.previousActive.activate();
         }
-
     });
-
-    function findModelByPath(collection, path) {
-        return collection.findWhere({path: path});
-    }
 });
