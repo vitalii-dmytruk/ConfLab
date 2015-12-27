@@ -1,16 +1,18 @@
 define([
     'common/navigation/NavigationItemView',
     'backbone.marionette'
-], function (MenuItemView) {
+], function (NavigationItemView) {
 
     'use strict';
 
     return Marionette.CollectionView.extend({
         tagName  : 'ul',
-        childView: MenuItemView,
+        childView: NavigationItemView,
 
         constructor: function (options) {
-            this.collection = new Backbone.Collection();
+            if (!options.collection) {
+                this.collection = new Backbone.Collection();
+            }
             Marionette.CollectionView.apply(this, arguments);
         },
 

@@ -17,7 +17,7 @@ define([
         },
 
         render: function () {
-            this.view.showSpeakersTab(new speakerViewFactory.attachedItemTableView({
+            this.view.showSpeakersTab(new speakerViewFactory.itemsInEventView({
                 collection      : this.speakers,
                 searchCollection: this.speakersSearchCollection
             }));
