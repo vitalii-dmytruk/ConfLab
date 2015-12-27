@@ -7,10 +7,11 @@ define([
     'text!common/view/ItemsInEventTemplate.html',
     'common/navigation/NavigationItemView',
     'common/navigation/NavigationView',
+    'common/search/SearchView',
     'backbone.marionette',
     'backbone.stickit'
 ], function (SearchBehavior, EditView, DetailsView, RowView, TableView, ItemsInEventTemplate, NavigationItemView,
-             NavigationView) {
+             NavigationView, SearchView) {
 
     'use strict';
 
@@ -112,8 +113,9 @@ define([
                 template: _.template(ItemsInEventTemplate),
 
                 regions: {
-                    eventItemsRegion: '[data-event-items-region]',
-                    eventItemRegion : '[data-event-item-region]'
+                    selectEventItemRegion: '[data-select-event-item-region]',
+                    eventItemsRegion     : '[data-event-items-region]',
+                    eventItemRegion      : '[data-event-item-region]'
                 },
 
                 onBeforeShow: function () {
@@ -121,14 +123,31 @@ define([
                         collection    : this.collection,
                         onItemSelected: this.showItem.bind(this)
                     }));
+                    this.selectEventItemRegion.show(new SearchView({
+                        collection    : this.options.searchCollection,
+                        labelAttribute: factory.searchLabelAttribute,
+                        onAddClicked  : this.addItem.bind(this)
+                    }));
                 },
 
                 showItem: function (item) {
                     this.eventItemRegion.show(new factory.itemShowView({model: item}));
+                },
+
+                addItem: function (model) {
+                    var view = this;
+                    if (!model.isNew()) {
+                        model.urlRoot = this.collection.url;
+                        model.save(null, {
+                            dataType: 'html',
+                            success : function () {
+                                view.collection.add(model);
+                                view.options.searchCollection.remove(model);
+                            }
+                        });
+                    }
                 }
-
             });
-
         }
     });
 
