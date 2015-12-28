@@ -180,3 +180,8 @@ body {
 div[data-descendant-region] * #table-title {
     font-size: 30px ;
 }
+
+.required:after{
+    content:"*" ;
+    color:red
+}
