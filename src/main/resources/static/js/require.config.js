@@ -20,6 +20,7 @@ var require = {
         "backbone.radio"        : 'lib/backbone.radio/backbone.radio',
         "backbone.stickit"      : 'lib/backbone.stickit/backbone.stickit',
         "backbone.nested.models": 'lib/backbone-nested-models/backbone-nested-models',
+        "backbone.validation"   : 'lib/backbone-validation/backbone-validation-min',
         "bootstrap"             : 'lib/bootstrap/js/bootstrap.min'
     },
     shim   : {

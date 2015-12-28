@@ -97,6 +97,10 @@ bower {
             source 'backbone-nested-models*'
         }
 
+        'backbone-validation'('0.11.5'){
+            source 'dist/*'
+        }
+
         'requirejs'() {
             source 'require.js'
         }

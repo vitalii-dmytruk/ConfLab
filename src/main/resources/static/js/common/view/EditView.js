@@ -1,11 +1,16 @@
 define([
     'backbone.marionette',
-    'backbone.stickit'
+    'backbone.stickit',
+    'backbone.validation'
 ], function () {
 
     'use strict';
 
     return Marionette.ItemView.extend({
+        initialize: function () {
+            Backbone.Validation.bind(this);
+        },
+
         ui: {
             submitBtn: '[data-submit-btn]',
             cancelBtn: '[data-cancel-btn]'
@@ -19,7 +24,5 @@ define([
         onRender: function () {
             this.stickit();
         }
-
     });
-
 });
