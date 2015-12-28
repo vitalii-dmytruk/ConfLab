@@ -12,7 +12,7 @@ var require = {
         "auth"                  : 'js/auth',
         "text"                  : 'lib/requirejs-text/text',
         "jquery"                : 'lib/jquery/jquery.min',
-        "select2"               : 'lib/select2/select2',
+        "select2"               : 'lib/select2/js/select2.full',
         "underscore"            : 'lib/underscore/underscore-min',
         "backbone"              : 'lib/backbone/backbone-min',
         "backbone.marionette"   : 'lib/marionette/backbone.marionette',
