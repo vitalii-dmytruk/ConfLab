@@ -191,6 +191,7 @@ div[data-descendant-region] * #table-title {
 }
 
 [data-actions] {
+    cursor: pointer;
     display: none;
     position: absolute;
     top: 10px;
