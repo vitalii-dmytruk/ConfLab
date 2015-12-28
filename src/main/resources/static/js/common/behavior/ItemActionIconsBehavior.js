@@ -12,13 +12,11 @@ define([
         events: {
             'mouseenter'           : showActionIcons,
             'mouseleave'           : hideActionIcons,
-            'click @ui.actionIcons': function (e) {
-                //this.model.destroy();
-            }
+            'click @ui.actionIcons': destroyItem
         },
 
         onBeforeRender: function () {
-            var originalTemplateFunc = this.view.getTemplate();
+            var originalTemplateFunc   = this.view.getTemplate();
             this.view.options.template = _.compose(function (origin) {
                 return origin + template;
             }, originalTemplateFunc);
@@ -31,5 +29,13 @@ define([
 
     function showActionIcons() {
         this.ui.actionIcons.show(100);
+    }
+
+    function destroyItem(e) {
+        var model = this.view.model;
+
+        model.urlRoot = model.collection.url;
+        model.destroy();
+        e.preventDefault();
     }
 });
