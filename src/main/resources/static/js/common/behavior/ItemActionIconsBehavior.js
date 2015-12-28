@@ -20,15 +20,22 @@ define([
             this.view.options.template = _.compose(function (origin) {
                 return origin + template;
             }, originalTemplateFunc);
-        }
+        },
+
+        onActivated: showActionIcons,
+        onDeactivated: hideActionIcons
     });
 
     function hideActionIcons() {
-        this.ui.actionIcons.hide(100);
+        isActive(this.view) || this.ui.actionIcons.hide(100);
     }
 
     function showActionIcons() {
         this.ui.actionIcons.show(100);
+    }
+
+    function isActive(view) {
+        return view.$el.hasClass('active');
     }
 
     function destroyItem(e) {

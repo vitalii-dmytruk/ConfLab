@@ -11,10 +11,12 @@ define([
 
         activate: function () {
             this.$el.addClass('active');
+            this.triggerMethod('activated');
         },
 
         deactivate: function () {
             this.$el.removeClass('active');
+            this.triggerMethod('deactivated');
         }
 
     });
