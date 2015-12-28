@@ -69,6 +69,13 @@ public class SpeakerService {
         linkToEvent(speaker, event);
     }
 
+
+    @Transactional
+    public void unlinkFromEvent(Long speakerId, Event event) {
+        Speaker speaker = findById(speakerId);
+        unlinkFromEvent(speaker, event);
+    }
+
     @Transactional
     public Speaker update(Speaker speaker) {
         if (speaker.getId() == null) {
@@ -97,5 +104,9 @@ public class SpeakerService {
     private void linkToEvent(Speaker speaker, Event event) {
         SpeechSpeaker speechSpeaker = speechSpeakerService.findOrCreate(null, speaker);
         eventSpeechSpeakerService.createEventSpeechSpeakerLink(event, speechSpeaker);
+    }
+
+    private void unlinkFromEvent(Speaker speaker, Event event) {
+        eventSpeechSpeakerService.deleteSpeakerFromEvent(speaker, event);
     }
 }
