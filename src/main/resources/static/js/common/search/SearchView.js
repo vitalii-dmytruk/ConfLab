@@ -8,20 +8,18 @@ define([
     'use strict';
 
     return Marionette.ItemView.extend({
-        template : _.template(template),
-        className: 'row',
+        template: _.template(template),
 
         ui: {
-            selectedItem: '#selected-item',
-            addBtn      : '#add-button'
+            selectedItem: '#selected-item'
         },
 
         triggers: {
-            'click @ui.addBtn': 'add:clicked'
+            'click @ui.newBtn': 'new:clicked'
         },
 
-        initialize: function () {
-            this.model = new Backbone.Model();
+        modelEvents: {
+            'change:result': 'onSelectionChanged'
         },
 
         onRender: function () {
@@ -29,10 +27,9 @@ define([
                 observe      : 'result',
                 initialize   : function ($el, model, options) {
                     $el.select2({
-                        theme            : 'bootstrap',
-                        containerCssClass: 'remove-right-radius',
-                        placeholder      : "Search...",
-                        allowClear       : true
+                        theme      : 'bootstrap',
+                        placeholder: 'Add from the list',
+                        allowClear : true
                     });
                 },
                 selectOptions: {
@@ -47,16 +44,14 @@ define([
             });
         },
 
-        onAddClicked: function (options) {
-            var result, model;
-            result = options.model.get('result');
+        onSelectionChanged: function () {
+            var result, item;
+            result = this.model.get('result');
             if (result) {
-                model = this.collection.get(result.id);
-            } else{
-                model = new this.collection.model()
+                this.ui.selectedItem.select2('val', '');
+                item = this.collection.get(result.id);
+                this.options.onItemSelected(item);
             }
-            this.ui.selectedItem.select2('val', '');
-            this.options.onAddClicked(model);
         }
     });
 

@@ -11,7 +11,7 @@ define([
     'backbone.marionette',
     'backbone.stickit'
 ], function (SearchBehavior, EditView, DetailsView, RowView, TableView, ItemsInEventTemplate, NavigationItemView,
-             NavigationView, SearchView) {
+    NavigationView, SearchView) {
 
     'use strict';
 
@@ -78,7 +78,7 @@ define([
             });
 
             this.listItemView = NavigationItemView.extend({
-                template: _.template('<a></a>'),
+                template: _.template('<a href="#"></a>'),
 
                 bindings: {
                     'a': this.searchLabelAttribute
@@ -124,9 +124,10 @@ define([
                         onItemSelected: this.showItem.bind(this)
                     }));
                     this.selectEventItemRegion.show(new SearchView({
+                        model         : new Backbone.Model(),
                         collection    : this.options.searchCollection,
                         labelAttribute: factory.searchLabelAttribute,
-                        onAddClicked  : this.addItem.bind(this)
+                        onItemSelected: this.addAndSelectItem.bind(this)
                     }));
                 },
 
@@ -134,18 +135,27 @@ define([
                     this.eventItemRegion.show(new factory.itemShowView({model: item}));
                 },
 
-                addItem: function (model) {
-                    var view = this;
-                    if (!model.isNew()) {
+                addAndSelectItem: function (model) {
+                    var view         = this,
+                        existedModel = this.collection.get(model.get('id'));
+
+                    if (!existedModel) {
                         model.urlRoot = this.collection.url;
                         model.save(null, {
                             dataType: 'html',
                             success : function () {
                                 view.collection.add(model);
-                                view.options.searchCollection.remove(model);
+                                view.selectItem(model);
                             }
                         });
+                    } else {
+                        this.selectItem(existedModel)
                     }
+                },
+
+                selectItem: function(item){
+                    this.eventItemsRegion.currentView.activateItem(item);
+                    this.showItem(item);
                 }
             });
         }
