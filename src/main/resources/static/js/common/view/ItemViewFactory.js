@@ -149,7 +149,7 @@ define([
                         deferred = this.addItem(model, this.collection.url);
                     }
 
-                    this.selectItem(deferred, model);
+                    deferred.done(this.selectItem.bind(this, model));
                 },
 
                 addItem: function (model, url) {
@@ -163,13 +163,9 @@ define([
                     });
                 },
 
-                selectItem: function (deferred, item) {
-                    var view = this;
-
-                    deferred.done(function () {
-                        view.eventItemsRegion.currentView.activateItem(item);
-                        view.showItem(item);
-                    });
+                selectItem: function (item) {
+                    this.eventItemsRegion.currentView.activateItem(item);
+                    this.showItem(item);
                 }
             });
         }
