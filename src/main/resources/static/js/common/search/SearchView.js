@@ -14,12 +14,8 @@ define([
             selectedItem: '#selected-item'
         },
 
-        triggers: {
-            'click @ui.newBtn': 'new:clicked'
-        },
-
         modelEvents: {
-            'change:result': 'onSelectionChanged'
+            'change:result': onSelectionChanged
         },
 
         onRender: function () {
@@ -42,17 +38,17 @@ define([
                     }
                 }
             });
-        },
-
-        onSelectionChanged: function () {
-            var result, item;
-            result = this.model.get('result');
-            if (result) {
-                this.ui.selectedItem.select2('val', '');
-                item = this.collection.get(result.id);
-                this.options.onItemSelected(item);
-            }
         }
     });
+
+    function onSelectionChanged() {
+        var result, item;
+        result = this.model.get('result');
+        if (result) {
+            this.ui.selectedItem.select2('val', '');
+            item = this.collection.get(result.id);
+            this.options.onItemSelected(item);
+        }
+    }
 
 });

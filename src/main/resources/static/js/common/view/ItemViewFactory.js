@@ -135,27 +135,41 @@ define([
                     this.eventItemRegion.show(new factory.itemShowView({model: item}));
                 },
 
-                addAndSelectItem: function (model) {
-                    var view         = this,
-                        existedModel = this.collection.get(model.get('id'));
-
-                    if (!existedModel) {
-                        model.urlRoot = this.collection.url;
-                        model.save(null, {
-                            dataType: 'html',
-                            success : function () {
-                                view.collection.add(model);
-                                view.selectItem(model);
-                            }
-                        });
-                    } else {
-                        this.selectItem(existedModel)
-                    }
+                findItem: function (model) {
+                    return this.collection.get(model.get('id'))
                 },
 
-                selectItem: function(item){
-                    this.eventItemsRegion.currentView.activateItem(item);
-                    this.showItem(item);
+                addAndSelectItem: function (model) {
+                    var existedModel, deferred;
+
+                    if (existedModel = this.findItem(model)) {
+                        deferred = $.Deferred().resolve();
+                        model    = existedModel;
+                    } else {
+                        deferred = this.addItem(model, this.collection.url);
+                    }
+
+                    this.selectItem(deferred, model);
+                },
+
+                addItem: function (model, url) {
+                    var view      = this;
+                    model.urlRoot = url;
+                    return model.save(null, {
+                        dataType: 'html',
+                        success : function () {
+                            view.collection.add(model);
+                        }
+                    });
+                },
+
+                selectItem: function (deferred, item) {
+                    var view = this;
+
+                    deferred.done(function () {
+                        view.eventItemsRegion.currentView.activateItem(item);
+                        view.showItem(item);
+                    });
                 }
             });
         }
