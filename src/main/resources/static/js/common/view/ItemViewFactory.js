@@ -1,5 +1,6 @@
 define([
     'common/behavior/SearchBehavior',
+    'common/behavior/ItemActionIconsBehavior',
     'common/view/EditView',
     'common/view/DetailsView',
     'common/view/RowView',
@@ -10,8 +11,8 @@ define([
     'common/search/SearchView',
     'backbone.marionette',
     'backbone.stickit'
-], function (SearchBehavior, EditView, DetailsView, RowView, TableView, ItemsInEventTemplate, NavigationItemView,
-    NavigationView, SearchView) {
+], function (SearchBehavior, ItemActionIcons, EditView, DetailsView, RowView, TableView, ItemsInEventTemplate, NavigationItemView,
+             NavigationView, SearchView) {
 
     'use strict';
 
@@ -82,6 +83,12 @@ define([
 
                 bindings: {
                     'a': this.searchLabelAttribute
+                },
+
+                behaviors : {
+                    actions: {
+                        behaviorClass: ItemActionIcons
+                    }
                 },
 
                 triggers: {
