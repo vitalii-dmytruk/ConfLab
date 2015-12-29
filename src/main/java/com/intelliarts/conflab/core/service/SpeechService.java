@@ -51,6 +51,12 @@ public class SpeechService {
     }
 
     @Transactional
+    public void unlinkFromSpeaker(Long speechId, Speaker speaker) {
+        Speech speech = findById(speechId);
+        speechSpeakerService.deleteBySpeechAndSpeaker(speech, speaker);
+    }
+
+    @Transactional
     public Speech createAndLinkToEvent(Speech speech, Event event) {
         Speech createdSpeech = create(speech);
         linkToEvent(createdSpeech, event);

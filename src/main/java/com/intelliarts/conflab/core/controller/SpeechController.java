@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Set;
 
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
@@ -68,7 +69,16 @@ public class SpeechController {
         speechService.linkToSpeaker(speechId, speaker);
     }
 
-    @RequestMapping(value = "/events/{eventId}/speeches", method = POST,
+    @RequestMapping(value = "/speakers/{speakerId}/speeches/{speechId}",
+                    method = DELETE,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
+    public void unlinkFromSpeaker(@PathVariable("speechId") Long speechId, @PathVariable("speakerId") Long speakerId) {
+        Speaker speaker = speakerService.findById(speakerId);
+        speechService.unlinkFromSpeaker(speechId, speaker);
+    }
+
+    @RequestMapping(value = "/events/{eventId}/speeches",
+                    method = POST,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
@@ -94,7 +104,8 @@ public class SpeechController {
         return speechService.findAll();
     }
 
-    @RequestMapping(value = "/speeches/{id}", method = PUT,
+    @RequestMapping(value = "/speeches/{id}",
+                    method = PUT,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public Speech update(@PathVariable("id") Long id, @RequestBody @Validated Speech speech) {
@@ -102,13 +113,15 @@ public class SpeechController {
         return speechService.update(speech);
     }
 
-    @RequestMapping(value = "/speeches/{id}", method = GET,
+    @RequestMapping(value = "/speeches/{id}",
+                    method = GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public Speech findById(@PathVariable("id") Long id) {
         return speechService.findById(id);
     }
 
-    @RequestMapping(value = "/speakers/{id}/speeches", method = GET,
+    @RequestMapping(value = "/speakers/{id}/speeches",
+                    method = GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public Set<Speech> findBySpeakerId(@PathVariable("id") Long speakerId) {
         return speechService.findBySpeakerId(speakerId);

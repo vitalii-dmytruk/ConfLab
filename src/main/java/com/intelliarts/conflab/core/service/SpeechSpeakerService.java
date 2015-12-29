@@ -41,4 +41,7 @@ public class SpeechSpeakerService {
         return speechSpeaker;
     }
 
+    public void deleteBySpeechAndSpeaker(Speech speech, Speaker speaker) {
+        speechSpeakerRepository.deleteBySpeechAndSpeaker(speech, speaker);
+    }
 }

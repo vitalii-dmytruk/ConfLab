@@ -1,5 +1,6 @@
 define([
     'common/behavior/SearchBehavior',
+    'common/behavior/ItemActionIconsBehavior',
     'common/view/EditView',
     'common/view/DetailsView',
     'common/view/RowView',
@@ -10,23 +11,25 @@ define([
     'common/search/SearchView',
     'backbone.marionette',
     'backbone.stickit'
-], function (SearchBehavior, EditView, DetailsView, RowView, TableView, ItemsInEventTemplate, NavigationItemView,
-    NavigationView, SearchView) {
+], function (SearchBehavior, ItemActionIcons, EditView, DetailsView, RowView, TableView, ItemsInEventTemplate,
+             NavigationItemView,
+             NavigationView, SearchView) {
 
     'use strict';
 
     return Marionette.Object.extend({
 
         initialize: function (options) {
-            var factory               = this;
-            this.itemRowTemplate      = options.itemRowTemplate;
-            this.itemShowTemplate     = options.itemShowTemplate;
-            this.itemEditTemplate     = options.itemEditTemplate;
-            this.bindings             = options.bindings;
-            this.rowBindings          = options.rowBindings;
-            this.title                = options.title;
-            this.tableTitle           = options.tableTitle;
-            this.searchLabelAttribute = options.searchLabelAttribute;
+            var factory                = this;
+            this.itemRowTemplate       = options.itemRowTemplate;
+            this.itemShowTemplate      = options.itemShowTemplate;
+            this.itemEditTemplate      = options.itemEditTemplate;
+            this.bindings              = options.bindings;
+            this.rowBindings           = options.rowBindings;
+            this.title                 = options.title;
+            this.tableTitle            = options.tableTitle;
+            this.searchLabelAttribute  = options.searchLabelAttribute;
+            this.attachedItemBehaviors = options.attachedItemBehaviors;
 
             this.itemEditView = EditView.extend({
                 template: _.template(this.itemEditTemplate),
@@ -64,6 +67,9 @@ define([
             });
 
             this.attachedItemTableView = this.itemTableView.extend({
+                RowView : this.itemRowView.extend({
+                    behaviors: this.attachedItemBehaviors
+                }),
                 EditView: this.itemAttachView,
                 editView: function () {
                     var model = new this.collection.model();
@@ -82,6 +88,12 @@ define([
 
                 bindings: {
                     'a': this.searchLabelAttribute
+                },
+
+                behaviors: {
+                    actions: {
+                        behaviorClass: ItemActionIcons
+                    }
                 },
 
                 triggers: {

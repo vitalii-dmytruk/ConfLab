@@ -185,3 +185,15 @@ div[data-descendant-region] * #table-title {
     content:"*" ;
     color:red
 }
+
+.remove {
+    color: #d9534f;
+}
+
+[data-actions] {
+    cursor: pointer;
+    display: none;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}

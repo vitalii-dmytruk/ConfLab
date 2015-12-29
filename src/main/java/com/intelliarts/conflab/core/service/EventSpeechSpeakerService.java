@@ -2,6 +2,7 @@ package com.intelliarts.conflab.core.service;
 
 import com.intelliarts.conflab.core.entity.Event;
 import com.intelliarts.conflab.core.entity.EventSpeechSpeaker;
+import com.intelliarts.conflab.core.entity.Speaker;
 import com.intelliarts.conflab.core.entity.SpeechSpeaker;
 import com.intelliarts.conflab.core.repository.EventSpeechSpeakerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,9 @@ public class EventSpeechSpeakerService {
 
     public void createEventSpeechSpeakerLink(Event event, SpeechSpeaker speechSpeaker){
         eventSpeechSpeakerRepository.save(new EventSpeechSpeaker(event, speechSpeaker));
-
     }
 
+    public void deleteSpeakerFromEvent(Speaker speaker, Event event) {
+        eventSpeechSpeakerRepository.delete(speaker.getId(), event.getId());
+    }
 }

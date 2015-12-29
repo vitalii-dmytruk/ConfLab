@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Set;
 
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
@@ -41,7 +42,7 @@ public class SpeakerController {
     }
 
     @RequestMapping(value = "/speakers",
-                    method = RequestMethod.POST,
+                    method = POST,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
@@ -49,7 +50,8 @@ public class SpeakerController {
         return speakerService.create(speaker);
     }
 
-    @RequestMapping(value = "/speeches/{id}/speakers", method = POST,
+    @RequestMapping(value = "/speeches/{id}/speakers",
+                    method = POST,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
@@ -84,6 +86,14 @@ public class SpeakerController {
     public void linkToEvent(@PathVariable("eventId") Long eventId, @PathVariable("speakerId") Long speakerId) {
         Event event = eventService.findById(eventId);
         speakerService.linkToEvent(speakerId, event);
+    }
+
+    @RequestMapping(value = "/events/{eventId}/speakers/{speakerId}",
+                    method = DELETE,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
+    public void unlinkFromEvent(@PathVariable("eventId") Long eventId, @PathVariable("speakerId") Long speakerId) {
+        Event event = eventService.findById(eventId);
+        speakerService.unlinkFromEvent(speakerId, event);
     }
 
     @RequestMapping(value = "/speakers/{id}",
