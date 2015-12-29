@@ -26,10 +26,7 @@ define([
                         return 'mailto:' + val;
                     }
                 }],
-                observe   : 'email',
-                onGet     : function (value) {
-                    return value;
-                }
+                observe   : 'email'
             },
             '#name'    : 'name',
             '#position': 'position',
