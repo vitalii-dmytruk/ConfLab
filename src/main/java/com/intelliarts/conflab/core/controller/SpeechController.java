@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Set;
 
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
@@ -66,6 +67,15 @@ public class SpeechController {
     public void linkToSpeaker(@PathVariable("speechId") Long speechId, @PathVariable("speakerId") Long speakerId) {
         Speaker speaker = speakerService.findById(speakerId);
         speechService.linkToSpeaker(speechId, speaker);
+    }
+
+    @RequestMapping(value = "/speakers/{speakerId}/speeches/{speechId}",
+                    method = DELETE,
+                    consumes = MediaType.APPLICATION_JSON_VALUE,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
+    public void unlinkFromSpeaker(@PathVariable("speechId") Long speechId, @PathVariable("speakerId") Long speakerId) {
+        Speaker speaker = speakerService.findById(speakerId);
+        speechService.unlinkFromSpeaker(speechId, speaker);
     }
 
     @RequestMapping(value = "/events/{eventId}/speeches", method = POST,
