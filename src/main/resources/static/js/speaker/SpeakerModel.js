@@ -7,7 +7,7 @@ define([
     return Backbone.Model.extend({
         urlRoot: '/speakers',
 
-        defaults       : function () {
+        defaults  : function () {
             return {
                 id      : null,
                 name    : '',
@@ -17,10 +17,10 @@ define([
                 speeches: []
             }
         },
-        validation     : {
+        validation: {
             name    : {
                 required : true,
-                minLength: 5,
+                minLength: 2,
                 maxLength: 40,
                 msg      : 'Please enter a valid name'
             },
@@ -28,18 +28,11 @@ define([
                 required : true,
                 pattern  : 'email',
                 maxLength: 255,
-                msg      : 'Please enter a valid email',
-                fn       : 'withoutCyrillic'
+                msg      : 'Please enter a valid email'
             },
             position: {
                 maxLength: 255,
                 msg      : 'Please enter a valid position information'
-            }
-        },
-        withoutCyrillic: function (value) {
-            var indexOf = /^[a-zA-Z.\-_@]+$/.test(value);
-            if (!indexOf) {
-                return 'Value is invalid';
             }
         }
     });
