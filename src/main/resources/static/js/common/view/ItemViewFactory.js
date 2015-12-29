@@ -29,7 +29,6 @@ define([
             this.title                 = options.title;
             this.tableTitle            = options.tableTitle;
             this.searchLabelAttribute  = options.searchLabelAttribute;
-            this.attachedItemBehaviors = options.attachedItemBehaviors;
 
             this.itemEditView = EditView.extend({
                 template: _.template(this.itemEditTemplate),
@@ -68,7 +67,11 @@ define([
 
             this.attachedItemTableView = this.itemTableView.extend({
                 RowView : this.itemRowView.extend({
-                    behaviors: this.attachedItemBehaviors
+                    behaviors: {
+                        actions: {
+                            behaviorClass: ItemActionIcons
+                        }
+                    }
                 }),
                 EditView: this.itemAttachView,
                 editView: function () {
