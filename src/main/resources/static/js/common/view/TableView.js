@@ -42,7 +42,7 @@ define([
     function showAddItemView() {
         var editView = this.editView();
 
-        editView.onSubmit = saveModel.bind(this);
+        editView.onSubmit = submitModel.bind(this);
         editView.onCancel = hideView;
 
         this.editRegion.show(editView);
@@ -52,11 +52,19 @@ define([
         view.ui.title.text(view.title);
     }
 
-    function saveModel(args) {
+    function submitModel(args) {
+        var deferred, id;
+
+        id       = args.model.get('id');
+        deferred = this.collection.find({id: id}) ? $.Deferred().resolve() : saveModel(this, args);
+        deferred.done(cleanupAfterEdit.bind(this, args));
+    }
+
+    function saveModel(view, args) {
         args.model.save(null, {
             wait    : true,
             dataType: args.model.get('id') ? 'html' : 'json',
-            success : cleanupAfterEdit.bind(this, args)
+            success : cleanupAfterEdit.bind(view, args)
         });
     }
 
