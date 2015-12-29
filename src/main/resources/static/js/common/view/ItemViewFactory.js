@@ -109,12 +109,17 @@ define([
 
             });
 
+            //noinspection JSUnusedGlobalSymbols
             this.eventItemsView = NavigationView.extend({
                 childView: this.listItemView,
                 className: 'nav nav-pills nav-stacked',
 
                 childEvents: {
                     'item:clicked': 'onItemClicked'
+                },
+
+                onRenderCollection : function () {
+                    this.onItemClicked(this.children.first());
                 },
 
                 onItemClicked: function (view) {
