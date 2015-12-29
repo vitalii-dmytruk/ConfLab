@@ -37,8 +37,7 @@ define([
             }
         },
         withoutCyrillic: function (value) {
-            var indexOf = /^[a-zA-Z.\-_@]+$/.test(value);
-            if (!indexOf) {
+            if (!/^[a-zA-Z0-9.\-_@]+$/.test(value)) {
                 return 'Value is invalid';
             }
         }
