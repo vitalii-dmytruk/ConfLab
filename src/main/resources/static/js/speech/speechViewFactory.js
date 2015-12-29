@@ -1,10 +1,9 @@
 define([
     'common/view/ItemViewFactory',
-    'common/behavior/ItemActionIconsBehavior',
     'text!speech/table/SpeechRowTemplate.html',
     'text!speech/details/SpeechTemplate.html',
     'text!speech/details/SpeechEditTemplate.html'
-], function (ItemViewFactory, ItemActionIcons, SpeechRowTemplate, SpeechShowTemplate, SpeechEditTemplate) {
+], function (ItemViewFactory, SpeechRowTemplate, SpeechShowTemplate, SpeechEditTemplate) {
 
     'use strict';
 
@@ -36,12 +35,6 @@ define([
                         return value;
                     }
                 }
-            }
-        },
-
-        attachedItemBehaviors: {
-            actions: {
-                behaviorClass: ItemActionIcons
             }
         }
     });

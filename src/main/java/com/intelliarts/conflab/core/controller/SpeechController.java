@@ -69,10 +69,10 @@ public class SpeechController {
         speechService.linkToSpeaker(speechId, speaker);
     }
 
-    @RequestMapping(value = "/speakers/{speakerId}/speeches/{speechId}",
+    @RequestMapping(value = {"/speakers/{speakerId}/speeches/{speechId}", "/speeches/{speechId}/speakers/{speakerId}"},
                     method = DELETE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public void unlinkFromSpeaker(@PathVariable("speechId") Long speechId, @PathVariable("speakerId") Long speakerId) {
+    public void unlinkFromSpeaker(@PathVariable("speakerId") Long speakerId, @PathVariable("speechId") Long speechId) {
         Speaker speaker = speakerService.findById(speakerId);
         speechService.unlinkFromSpeaker(speechId, speaker);
     }
