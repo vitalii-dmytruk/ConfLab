@@ -17,5 +17,5 @@ public interface EventSpeechSpeakerRepository extends BaseRepository<EventSpeech
                    "    FROM SpeechSpeaker speechSpeaker " +
                    "    WHERE speechSpeaker.speaker.id = :speakerId" +
                    ")")
-    void delete(@Param("speakerId") Long speakerId,@Param("eventId") Long eventId);
+    void delete(@Param("speakerId") Long speakerId, @Param("eventId") Long eventId);
 }
