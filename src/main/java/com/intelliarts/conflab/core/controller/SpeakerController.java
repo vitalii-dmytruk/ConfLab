@@ -42,7 +42,7 @@ public class SpeakerController {
     }
 
     @RequestMapping(value = "/speakers",
-                    method = RequestMethod.POST,
+                    method = POST,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
@@ -50,7 +50,8 @@ public class SpeakerController {
         return speakerService.create(speaker);
     }
 
-    @RequestMapping(value = "/speeches/{id}/speakers", method = POST,
+    @RequestMapping(value = "/speeches/{id}/speakers",
+                    method = POST,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
