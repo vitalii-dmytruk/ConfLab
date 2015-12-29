@@ -18,7 +18,16 @@ define([
         searchLabelAttribute: 'name',
 
         bindings: {
-            '#email'   : 'email',
+            '#email'   : {
+                attributes: [{
+                    name   : 'href',
+                    observe: 'email',
+                    onGet  : function (val) {
+                        return 'mailto:' + val;
+                    }
+                }],
+                observe   : 'email'
+            },
             '#name'    : 'name',
             '#position': 'position',
             '#about'   : 'about'
