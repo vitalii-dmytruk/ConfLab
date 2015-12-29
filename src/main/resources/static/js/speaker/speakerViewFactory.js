@@ -38,6 +38,5 @@ define([
             '[data-position]': 'position',
             '[data-email]'   : 'email'
         }
-
     });
 });

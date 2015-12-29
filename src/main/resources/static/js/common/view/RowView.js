@@ -1,19 +1,12 @@
 define([
-    'common/behavior/ItemActionIconsBehavior',
     'backbone.marionette'
-], function (ItemActionIcons) {
+], function () {
 
     'use strict';
 
     return Marionette.ItemView.extend({
         tagName  : 'a',
         className: 'list-group-item',
-
-        behaviors: {
-            actions: {
-                behaviorClass: ItemActionIcons
-            }
-        },
 
         attributes: function () {
             return {
