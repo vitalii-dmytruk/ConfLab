@@ -37,7 +37,7 @@ define([
             }
         },
         withoutCyrillic: function (value) {
-            if (!/^[a-zA-Z0-9.\-_@]+$/.test(value)) {
+            if (!/^[\w\d.\-_@]+$/.test(value)) {
                 return 'Value is invalid';
             }
         }
