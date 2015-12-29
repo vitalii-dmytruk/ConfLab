@@ -7,10 +7,11 @@ define([
     'text!common/view/ItemsInEventTemplate.html',
     'common/navigation/NavigationItemView',
     'common/navigation/NavigationView',
+    'common/search/SearchView',
     'backbone.marionette',
     'backbone.stickit'
 ], function (SearchBehavior, EditView, DetailsView, RowView, TableView, ItemsInEventTemplate, NavigationItemView,
-             NavigationView) {
+    NavigationView, SearchView) {
 
     'use strict';
 
@@ -77,7 +78,7 @@ define([
             });
 
             this.listItemView = NavigationItemView.extend({
-                template: _.template('<a></a>'),
+                template: _.template('<a href="#"></a>'),
 
                 bindings: {
                     'a': this.searchLabelAttribute
@@ -112,8 +113,9 @@ define([
                 template: _.template(ItemsInEventTemplate),
 
                 regions: {
-                    eventItemsRegion: '[data-event-items-region]',
-                    eventItemRegion : '[data-event-item-region]'
+                    selectEventItemRegion: '[data-select-event-item-region]',
+                    eventItemsRegion     : '[data-event-items-region]',
+                    eventItemRegion      : '[data-event-item-region]'
                 },
 
                 onBeforeShow: function () {
@@ -121,14 +123,51 @@ define([
                         collection    : this.collection,
                         onItemSelected: this.showItem.bind(this)
                     }));
+                    this.selectEventItemRegion.show(new SearchView({
+                        model         : new Backbone.Model(),
+                        collection    : this.options.searchCollection,
+                        labelAttribute: factory.searchLabelAttribute,
+                        onItemSelected: this.addAndSelectItem.bind(this)
+                    }));
                 },
 
                 showItem: function (item) {
                     this.eventItemRegion.show(new factory.itemShowView({model: item}));
+                },
+
+                findItem: function (model) {
+                    return this.collection.get(model.get('id'))
+                },
+
+                addAndSelectItem: function (model) {
+                    var existedModel, deferred;
+
+                    if (existedModel = this.findItem(model)) {
+                        deferred = $.Deferred().resolve();
+                        model    = existedModel;
+                    } else {
+                        deferred = this.addItem(model, this.collection.url);
+                    }
+
+                    deferred.done(this.selectItem.bind(this, model));
+                },
+
+                addItem: function (model, url) {
+                    var view      = this;
+                    model.urlRoot = url;
+                    return model.save(null, {
+                        dataType: 'html',
+                        success : function () {
+                            view.collection.add(model);
+                        }
+                    });
+                },
+
+                selectItem: function (item) {
+                    this.eventItemsRegion.currentView.activateItem(item);
+                    this.showItem(item);
                 }
-
             });
-
         }
     });
 
