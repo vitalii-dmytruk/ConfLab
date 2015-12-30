@@ -41,7 +41,7 @@ var require = {
             "exports": "Backbone"
         },
         "backbone.marionette"   : {
-            "deps"   : ['backbone', 'backbone.babysitter', 'backbone.radio'],
+            "deps"   : ['backbone', 'backbone.babysitter', 'backbone.radio', "jquery"],
             "exports": "Marionette"
         },
         "backbone.nested.models": {

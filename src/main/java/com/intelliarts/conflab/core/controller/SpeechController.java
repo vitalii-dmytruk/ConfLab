@@ -63,7 +63,7 @@ public class SpeechController {
     @RequestMapping(value = "/speakers/{speakerId}/speeches/{speechId}",
                     method = PUT,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
-                    produces = MediaType.TEXT_HTML_VALUE)
+                    produces = MediaType.APPLICATION_JSON_VALUE)
     public void linkToSpeaker(@PathVariable("speechId") Long speechId, @PathVariable("speakerId") Long speakerId) {
         Speaker speaker = speakerService.findById(speakerId);
         speechService.linkToSpeaker(speechId, speaker);
@@ -91,7 +91,7 @@ public class SpeechController {
     @RequestMapping(value = "/events/{eventId}/speeches/{speechId}",
                     method = PUT,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
-                    produces = MediaType.TEXT_HTML_VALUE)
+                    produces = MediaType.APPLICATION_JSON_VALUE)
     public void linkToEvent(@PathVariable("eventId") Long eventId, @PathVariable("speechId") Long speechId) {
         Event event = eventService.findById(eventId);
         speechService.linkToEvent(speechId, event);

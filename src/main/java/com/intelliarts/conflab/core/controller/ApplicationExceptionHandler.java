@@ -1,31 +1,37 @@
 package com.intelliarts.conflab.core.controller;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.CONFLICT;
 
 @ControllerAdvice
 public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ResponseStatus(value = BAD_REQUEST)
     @ExceptionHandler({IllegalArgumentException.class})
-    public ResponseEntity<Object> badRequest(HttpServletRequest req, Exception exception) {
-        HttpStatus statusCode = BAD_REQUEST;
+    public void invalidArguments(HttpServletResponse res) throws IOException {
+        res.sendError(BAD_REQUEST.value());
+    }
 
-        Map<String, String> responseBody = new LinkedHashMap<>();
-        responseBody.put("path", req.getServletPath());
-        responseBody.put("message", exception.getMessage());
-        responseBody.put("error", statusCode.name());
+    @ExceptionHandler({DataIntegrityViolationException.class})
+    public void constraintViolation(HttpServletResponse response, DataIntegrityViolationException ex)
+            throws IOException {
+        String message;
+        Throwable cause = ex.getCause();
+        if (cause instanceof ConstraintViolationException) {
+            ConstraintViolationException cEx = (ConstraintViolationException) cause;
+            message = "Application already contain sent data (Constraint " + cEx.getConstraintName() + " violates).";
+        } else {
+            message = ex.getMessage();
+        }
 
-        return new ResponseEntity<>(responseBody, statusCode);
+        response.sendError(CONFLICT.value(), message);
     }
 }

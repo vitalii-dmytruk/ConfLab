@@ -1,6 +1,7 @@
 require([
     'core/ConfLabsApp',
-    'bootstrap'
+    'bootstrap',
+    'backbone.validation'
 ], function (ConfLabApp) {
 
     'use strict';
@@ -10,14 +11,14 @@ require([
     });
 
     _.extend(Backbone.Validation.callbacks, {
-        valid  : function (view, attr, selector) {
+        valid  : function (view, attr) {
             var $el    = view.$('#' + attr),
                 $group = $el.closest('.form-group');
 
             $group.removeClass('has-error');
             $group.find('.help-block').html('').addClass('hidden');
         },
-        invalid: function (view, attr, error, selector) {
+        invalid: function (view, attr, error) {
             var $el    = view.$('#' + attr),
                 $group = $el.closest('.form-group');
 
@@ -26,4 +27,8 @@ require([
         }
     });
 
+
+    $.ajaxSettings.converters["text json"] = function (data) {
+        return data ? $.parseJSON(data) : {};
+    }
 });

@@ -36,7 +36,6 @@ public class SpeakerService {
 
     @Transactional
     public Speaker create(Speaker speaker) {
-        //todo: throw exception of speaker.
         speaker.setId(null);
         Speaker createdSpeaker = speakerRepository.save(speaker);
         linkToSpeech(createdSpeaker, null);
@@ -52,10 +51,8 @@ public class SpeakerService {
 
     @Transactional
     public void linkToSpeech(Long speakerId, Speech speech) {
-        if (isNewSpeakerForSpeech(speakerId, speech)) {
-            Speaker speaker = findById(speakerId);
-            linkToSpeech(speaker, speech);
-        }
+        Speaker speaker = findById(speakerId);
+        linkToSpeech(speaker, speech);
     }
 
     @Transactional
@@ -110,12 +107,5 @@ public class SpeakerService {
 
     private void unlinkFromEvent(Speaker speaker, Event event) {
         eventSpeechSpeakerService.deleteSpeakerFromEvent(speaker, event);
-    }
-
-    private boolean isNewSpeakerForSpeech(Long speakerId, Speech speech) {
-        return speech.getSpeechSpeakers().stream().noneMatch(ss -> {
-            Speaker speaker = ss.getSpeaker();
-            return speaker != null && speaker.getId().equals(speakerId);
-        });
     }
 }
