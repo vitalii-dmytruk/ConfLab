@@ -21,18 +21,15 @@ define([
             name    : {
                 required : true,
                 minLength: 2,
-                maxLength: 40,
-                msg      : 'Please enter a valid name'
+                maxLength: 40
             },
             email   : {
                 required : true,
                 pattern  : 'email',
-                maxLength: 255,
-                msg      : 'Please enter a valid email'
+                maxLength: 255
             },
             position: {
-                maxLength: 255,
-                msg      : 'Please enter a valid position information'
+                maxLength: 255
             }
         }
     });
