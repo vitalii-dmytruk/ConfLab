@@ -52,16 +52,14 @@ define([
         view.ui.title.text(view.title);
     }
 
-    function isSaved(deferred) {
-        return !!deferred;
-    }
-
     function submitModel(args) {
         var deferred, id;
 
         id       = args.model.get('id');
-        deferred = this.collection.find({id: id}) ? false : addModel(args.model, this.collection);
-        isSaved(deferred) && deferred.done(hideView.bind(this));
+        deferred = this.collection.find({id: id}) ?
+                   $.Deferred().resolve() :
+                   addModel(args.model, this.collection);
+        deferred.done(hideView.bind(this));
     }
 
     function addModel(model, collection) {

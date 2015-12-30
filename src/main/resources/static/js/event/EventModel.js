@@ -1,10 +1,11 @@
 define([
+    'common/Model',
     'backbone'
-], function () {
+], function (Model) {
 
     'use strict';
 
-    return Backbone.Model.extend({
+    return Model.extend({
         urlRoot: '/events',
 
         defaults: function () {
