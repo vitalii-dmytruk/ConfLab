@@ -56,16 +56,12 @@ define([
         var deferred, id;
 
         id       = args.model.get('id');
-        deferred = this.collection.find({id: id}) ? $.Deferred().resolve() : saveModel(this, args);
+        deferred = this.collection.find({id: id}) ? $.Deferred().resolve() : saveModel(args);
         deferred.done(cleanupAfterEdit.bind(this, args));
     }
 
-    function saveModel(view, args) {
-        return args.model.save(null, {
-            wait    : true,
-            dataType: args.model.get('id') ? 'html' : 'json',
-            success : cleanupAfterEdit.bind(view, args)
-        });
+    function saveModel(args) {
+        return args.model.save(null, {wait: true});
     }
 
     function cleanupAfterEdit(args) {

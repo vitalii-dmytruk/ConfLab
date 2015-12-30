@@ -46,10 +46,8 @@ public class SpeechService {
 
     @Transactional
     public void linkToSpeaker(Long speechId, Speaker speaker) {
-        if (isNewSpeechForSpeaker(speechId, speaker)) {
-            Speech speech = findById(speechId);
-            linkToSpeaker(speech, speaker);
-        }
+        Speech speech = findById(speechId);
+        linkToSpeaker(speech, speaker);
     }
 
     @Transactional
@@ -104,12 +102,4 @@ public class SpeechService {
         SpeechSpeaker speechSpeaker = speechSpeakerService.findOrCreate(speech, null);
         eventSpeechSpeakerService.createEventSpeechSpeakerLink(event, speechSpeaker);
     }
-
-    private boolean isNewSpeechForSpeaker(Long speechId, Speaker speaker) {
-        return speaker.getSpeechSpeakers().stream().noneMatch(ss -> {
-            Speech speech = ss.getSpeech();
-            return speech != null && speech.getId().equals(speechId);
-        });
-    }
-
 }
