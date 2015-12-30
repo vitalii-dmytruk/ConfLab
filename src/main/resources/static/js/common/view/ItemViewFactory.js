@@ -20,15 +20,15 @@ define([
     return Marionette.Object.extend({
 
         initialize: function (options) {
-            var factory                = this;
-            this.itemRowTemplate       = options.itemRowTemplate;
-            this.itemShowTemplate      = options.itemShowTemplate;
-            this.itemEditTemplate      = options.itemEditTemplate;
-            this.bindings              = options.bindings;
-            this.rowBindings           = options.rowBindings;
-            this.title                 = options.title;
-            this.tableTitle            = options.tableTitle;
-            this.searchLabelAttribute  = options.searchLabelAttribute;
+            var factory               = this;
+            this.itemRowTemplate      = options.itemRowTemplate;
+            this.itemShowTemplate     = options.itemShowTemplate;
+            this.itemEditTemplate     = options.itemEditTemplate;
+            this.bindings             = options.bindings;
+            this.rowBindings          = options.rowBindings;
+            this.title                = options.title;
+            this.tableTitle           = options.tableTitle;
+            this.searchLabelAttribute = options.searchLabelAttribute;
 
             this.itemEditView = EditView.extend({
                 template: _.template(this.itemEditTemplate),
@@ -118,7 +118,7 @@ define([
                     'item:clicked': 'onItemClicked'
                 },
 
-                onRenderCollection : function () {
+                onRenderCollection: function () {
                     this.onItemClicked(this.children.first());
                 },
 
@@ -160,11 +160,10 @@ define([
                 },
 
                 addAndSelectItem: function (model) {
-                    var existedModel, deferred;
+                    var deferred;
 
-                    if (existedModel = this.findItem(model)) {
+                    if (this.findItem(model)) {
                         deferred = $.Deferred().resolve();
-                        model    = existedModel;
                     } else {
                         deferred = this.addItem(model, this.collection.url);
                     }
@@ -178,14 +177,20 @@ define([
                     return model.save(null, {
                         dataType: 'html',
                         success : function () {
-                            view.collection.add(model);
+                            view.collection.add(model.clone());
                         }
                     });
                 },
 
-                selectItem: function (item) {
-                    this.eventItemsRegion.currentView.activateItem(item);
-                    this.showItem(item);
+                selectItem: function (model) {
+                    var existedItem = this.findItem(model);
+
+                    if (existedItem) {
+                        this.eventItemsRegion.currentView.activateItem(existedItem);
+                        this.showItem(existedItem);
+                    } else {
+                        console.error("Model " + model + " not found.");
+                    }
                 }
             });
         }
