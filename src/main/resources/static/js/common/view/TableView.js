@@ -43,7 +43,7 @@ define([
         var editView = this.editView();
 
         editView.onSubmit = submitModel.bind(this);
-        editView.onCancel = hideView;
+        editView.onCancel = hideView.bind(this);
 
         this.editRegion.show(editView);
     }
@@ -52,24 +52,28 @@ define([
         view.ui.title.text(view.title);
     }
 
+    function isSaved(deferred) {
+        return !!deferred;
+    }
+
     function submitModel(args) {
         var deferred, id;
 
         id       = args.model.get('id');
-        deferred = this.collection.find({id: id}) ? $.Deferred().resolve() : saveModel(args);
-        deferred.done(cleanupAfterEdit.bind(this, args));
+        deferred = this.collection.find({id: id}) ? false : addModel(args.model, this.collection);
+        isSaved(deferred) && deferred.done(hideView.bind(this));
     }
 
-    function saveModel(args) {
-        return args.model.save(null, {wait: true});
+    function addModel(model, collection) {
+        return model.save(null, {
+            wait   : true,
+            success: function () {
+                collection.add(model);
+            }
+        });
     }
 
-    function cleanupAfterEdit(args) {
-        this.collection.add(args.model.attributes);
-        hideView(args);
-    }
-
-    function hideView(args) {
-        args.view.destroy();
+    function hideView() {
+        this.editRegion.empty();
     }
 });
