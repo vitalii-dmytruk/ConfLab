@@ -68,7 +68,7 @@ define([
         return model.save(null, {
             wait   : true,
             success: function () {
-                collection.add(model);
+                collection.add(model.attributes);
             }
         });
     }
