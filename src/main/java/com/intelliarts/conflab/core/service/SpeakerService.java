@@ -52,8 +52,10 @@ public class SpeakerService {
 
     @Transactional
     public void linkToSpeech(Long speakerId, Speech speech) {
-        Speaker speaker = findById(speakerId);
-        linkToSpeech(speaker, speech);
+        if (isNewSpeakerForSpeech(speakerId, speech)) {
+            Speaker speaker = findById(speakerId);
+            linkToSpeech(speaker, speech);
+        }
     }
 
     @Transactional
@@ -69,12 +71,12 @@ public class SpeakerService {
         linkToEvent(speaker, event);
     }
 
-
     @Transactional
     public void unlinkFromEvent(Long speakerId, Event event) {
         Speaker speaker = findById(speakerId);
         unlinkFromEvent(speaker, event);
     }
+
 
     @Transactional
     public Speaker update(Speaker speaker) {
@@ -92,10 +94,10 @@ public class SpeakerService {
         return speakerRepository.findBySpeechId(speechId);
     }
 
-
     public List<Speaker> findByEventId(Long id) {
         return speakerRepository.findByEventId(id);
     }
+
 
     private void linkToSpeech(Speaker speaker, Speech speech) {
         speechSpeakerService.createSpeechSpeakerLink(speech, speaker);
@@ -108,5 +110,12 @@ public class SpeakerService {
 
     private void unlinkFromEvent(Speaker speaker, Event event) {
         eventSpeechSpeakerService.deleteSpeakerFromEvent(speaker, event);
+    }
+
+    private boolean isNewSpeakerForSpeech(Long speakerId, Speech speech) {
+        return speech.getSpeechSpeakers().stream().noneMatch(ss -> {
+            Speaker speaker = ss.getSpeaker();
+            return speaker != null && speaker.getId().equals(speakerId);
+        });
     }
 }

@@ -3,10 +3,12 @@ package com.intelliarts.conflab.core.repository;
 import com.intelliarts.conflab.core.entity.Speaker;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Set;
 
+@Repository
 public interface SpeakerRepository extends BaseRepository<Speaker, Long> {
 
     @Query(value = "SELECT speaker " +
