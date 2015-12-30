@@ -1,6 +1,7 @@
 require([
     'core/ConfLabsApp',
-    'bootstrap'
+    'bootstrap',
+    'backbone.validation'
 ], function (ConfLabApp) {
 
     'use strict';
