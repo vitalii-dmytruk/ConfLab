@@ -9,6 +9,10 @@ define([
         tagName  : 'ul',
         childView: NavigationItemView,
 
+        collectionEvents: {
+            'remove': refreshPreviousActive
+        },
+
         constructor: function (options) {
             if (!options.collection) {
                 this.collection = new Backbone.Collection();
@@ -34,4 +38,14 @@ define([
             this.previousActive && this.previousActive.activate();
         }
     });
+
+    function refreshPreviousActive(model) {
+        var activeView, isActiveViewDeleted;
+
+        activeView          = this.previousActive;
+        isActiveViewDeleted = activeView && model.get('id') == activeView.model.get('id');
+        if (isActiveViewDeleted) {
+            this.previousActive = undefined;
+        }
+    }
 });
