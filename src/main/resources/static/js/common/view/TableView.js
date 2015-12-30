@@ -61,7 +61,7 @@ define([
     }
 
     function saveModel(view, args) {
-        args.model.save(null, {
+        return args.model.save(null, {
             wait    : true,
             dataType: args.model.get('id') ? 'html' : 'json',
             success : cleanupAfterEdit.bind(view, args)
