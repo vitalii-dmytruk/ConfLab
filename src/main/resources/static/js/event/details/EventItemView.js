@@ -23,6 +23,7 @@ define([
         }
     });
 
+
     function createSearchView(view) {
         var searchView = new SearchView({
             model         : new Backbone.Model(),
