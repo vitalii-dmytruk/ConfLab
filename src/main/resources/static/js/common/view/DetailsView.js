@@ -19,23 +19,17 @@ define([
         },
 
         regions: {
-            content: '[data-content-region]'
+            content   : '[data-content-region]',
+            attachment: '[data-attachment-region]'
         },
 
         onRender: function () {
             setPageTitle(this);
-            appendChildViews(this);
         },
 
         onBeforeShow: showShowView
 
     });
-
-    function appendChildViews(view) {
-        _.each(view.options.childViews, function (childView) {
-            view.$el.append(childView.render().el);
-        })
-    }
 
     function showEditView() {
         var view, editView;

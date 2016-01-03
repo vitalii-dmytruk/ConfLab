@@ -20,16 +20,14 @@ define([
         },
 
         render: function () {
-            this.view = new this.itemDetailsView({
-                model     : this.model,
-                childViews: [
-                    new this.attachedItemTableView({
-                        collection      : this.collection,
-                        searchCollection: this.searchCollection
-                    })
-                ]
-            });
+            this.view = new this.itemDetailsView({model: this.model});
             this.container.show(this.view);
+
+            this.view.getRegion('attachment').show(new this.attachedItemTableView({
+                    collection      : this.collection,
+                    searchCollection: this.searchCollection
+                })
+            );
         }
     });
 });
