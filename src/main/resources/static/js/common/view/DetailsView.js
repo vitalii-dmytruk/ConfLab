@@ -19,7 +19,7 @@ define([
         },
 
         regions: {
-            editRegion: '[data-edit-region]'
+            content: '[data-content-region]'
         },
 
         onRender: function () {
@@ -49,7 +49,7 @@ define([
         editView.onSubmit = save.bind(view);
         editView.onCancel = showShowView.bind(view);
 
-        this.editRegion.show(editView);
+        this.getRegion('content').show(editView);
     }
 
     function save(args) {
@@ -62,7 +62,7 @@ define([
 
 
     function showShowView() {
-        this.editRegion.show(new this.ShowView({
+        this.getRegion('content').show(new this.ShowView({
             model: this.model
         }));
     }
