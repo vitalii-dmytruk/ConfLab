@@ -12,9 +12,9 @@ define([
 
         fetch: function (id) {
             this.model            = new this.itemModelClass({id: id});
-            this.collection       = new this.attachedItemCollectionClass();
+            this.collection       = new this.collectionClass();
             this.collection.url   = this.model.url() + this.collection.url;
-            this.searchCollection = new this.attachedItemCollectionClass();
+            this.searchCollection = new this.collectionClass();
 
             return $.when(this.model.fetch(), this.collection.fetch(), this.searchCollection.fetch());
         },
@@ -23,7 +23,7 @@ define([
             this.view = new this.itemDetailsView({model: this.model});
             this.container.show(this.view);
 
-            this.view.getRegion('attachment').show(new this.attachedItemTableView({
+            this.view.showAttachment(new this.attachedItemTableView({
                     collection      : this.collection,
                     searchCollection: this.searchCollection
                 })

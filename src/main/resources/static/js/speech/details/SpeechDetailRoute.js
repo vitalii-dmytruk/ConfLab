@@ -9,9 +9,9 @@ define([
     'use strict';
 
     return ItemDetailsRoute.extend({
-        itemModelClass             : SpeechModel,
-        attachedItemCollectionClass: SpeakerCollection,
-        itemDetailsView            : speechViewFactory.itemDetailsView,
-        attachedItemTableView      : speakerViewFactory.attachedItemTableView
+        itemModelClass       : SpeechModel,
+        collectionClass      : SpeakerCollection,
+        itemDetailsView      : speechViewFactory.itemDetailsView,
+        attachedItemTableView: speakerViewFactory.attachedItemTableView
     });
 });

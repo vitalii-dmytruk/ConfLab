@@ -27,8 +27,11 @@ define([
             setPageTitle(this);
         },
 
-        onBeforeShow: showShowView
+        onBeforeShow: showShowView,
 
+        showAttachment : function (view) {
+            this.showChildView('attachment', view);
+        }
     });
 
     function showEditView() {
