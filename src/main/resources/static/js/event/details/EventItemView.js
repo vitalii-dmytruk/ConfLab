@@ -17,74 +17,77 @@ define([
             eventItemRegion      : '[data-event-item-region]'
         },
 
-        onChildviewActivated: function (view) {
-            showItem(this, view.model);
-        },
-
         onBeforeShow: function () {
             this.showChildView('itemListRegion', createListView(this));
             this.showChildView('selectEventItemRegion', createSearchView(this));
-        },
-
-        findItem: function (model) {
-            return this.collection.get(model.get('id'))
-        },
-
-        addAndSelectItem: function (model) {
-            var deferred;
-
-            if (this.findItem(model)) {
-                deferred = $.Deferred().resolve();
-            } else {
-                deferred = this.addItem(model, this.collection.url);
-            }
-
-            deferred.done(this.selectItem.bind(this, model));
-        },
-
-        addItem: function (model, url) {
-            var view      = this;
-            model.urlRoot = url;
-            return model.save(null, {
-                dataType: 'html',
-                success : function () {
-                    view.collection.add(model.clone());
-                }
-            });
-        },
-
-        selectItem: function (model) {
-            var existedItem = this.findItem(model);
-
-            if (existedItem) {
-                this.getRegion('itemListRegion').currentView.activateItem(existedItem);
-                showItem(this, existedItem);
-            } else {
-                console.error("Model " + model + " not found.");
-            }
         }
     });
 
     function createSearchView(view) {
-        return new SearchView({
+        var searchView = new SearchView({
             model         : new Backbone.Model(),
             labelAttribute: view.options.searchLabelAttribute,
-            collection    : view.options.searchCollection,
-            onItemSelected: view.addAndSelectItem.bind(view)
+            collection    : view.options.searchCollection
         });
+
+        searchView.onFound = addAndSelectItem.bind(view);
+        return searchView;
     }
 
     function createListView(view) {
-        return new EventItemListView({
-            collection          : view.collection,
-            childViewOptions    : {
+        var listView = new EventItemListView({
+            collection      : view.collection,
+            childViewOptions: {
                 labelAttribute: view.options.searchLabelAttribute
             }
         });
+
+        listView.onChildviewActivated = function (child) {
+            showItem(view, child.model);
+        };
+
+        return listView;
     }
 
     function showItem(view, model) {
         var componentView = new view.options.detailsView({model: model});
         view.showChildView('eventItemRegion', componentView);
+    }
+
+    function addAndSelectItem(model) {
+        var deferred;
+
+        if (findItem(this, model)) {
+            deferred = $.Deferred().resolve();
+        } else {
+            deferred = addItem(model, this.collection);
+        }
+
+        deferred.done(selectItem.bind(this, model));
+    }
+
+    function addItem(model, collection) {
+        model.urlRoot = collection.url;
+        return model.save(null, {
+            dataType: 'html',
+            success : function () {
+                collection.add(model.clone());
+            }
+        });
+    }
+
+    function selectItem(model) {
+        var existedItem = findItem(this, model);
+
+        if (existedItem) {
+            this.getRegion('itemListRegion').currentView.activateItem(existedItem);
+            showItem(this, existedItem);
+        } else {
+            console.error("Model " + model + " not found.");
+        }
+    }
+
+    function findItem(view, model) {
+        return view.collection.get(model.get('id'))
     }
 });
