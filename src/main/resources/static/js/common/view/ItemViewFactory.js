@@ -5,22 +5,15 @@ define([
     'common/view/DetailsView',
     'common/view/RowView',
     'common/view/TableView',
-    'text!common/view/ItemsInEventTemplate.html',
-    'common/navigation/NavigationItemView',
-    'common/navigation/NavigationView',
-    'common/search/SearchView',
     'backbone.marionette',
     'backbone.stickit'
-], function (SearchBehavior, ItemActionIcons, EditView, DetailsView, RowView, TableView, ItemsInEventTemplate,
-             NavigationItemView,
-             NavigationView, SearchView) {
+], function (SearchBehavior, ItemActionIcons, EditView, DetailsView, RowView, TableView) {
 
     'use strict';
 
     return Marionette.Object.extend({
 
         initialize: function (options) {
-            var factory               = this;
             this.itemRowTemplate      = options.itemRowTemplate;
             this.itemShowTemplate     = options.itemShowTemplate;
             this.itemEditTemplate     = options.itemEditTemplate;
@@ -83,114 +76,6 @@ define([
                         model     : model,
                         collection: this.options.searchCollection
                     });
-                }
-            });
-
-            this.listItemView = NavigationItemView.extend({
-                template: _.template('<a href="#"></a>'),
-
-                bindings: {
-                    'a': this.searchLabelAttribute
-                },
-
-                behaviors: {
-                    actions: {
-                        behaviorClass: ItemActionIcons
-                    }
-                },
-
-                triggers: {
-                    'click a': 'item:clicked'
-                },
-
-                onRender: function () {
-                    this.stickit();
-                }
-
-            });
-
-            //noinspection JSUnusedGlobalSymbols
-            this.eventItemsView = NavigationView.extend({
-                childView: this.listItemView,
-                className: 'nav nav-pills nav-stacked',
-
-                childEvents: {
-                    'item:clicked': 'onItemClicked'
-                },
-
-                onRenderCollection: function () {
-                    this.onItemClicked(this.children.first());
-                },
-
-                onItemClicked: function (view) {
-                    var item = view.model;
-                    this.activateItem(item);
-                    this.options.onItemSelected(item);
-                }
-            });
-
-            this.itemsInEventView = Marionette.LayoutView.extend({
-                template: _.template(ItemsInEventTemplate),
-
-                regions: {
-                    selectEventItemRegion: '[data-select-event-item-region]',
-                    itemListRegion       : '[data-item-list-region]',
-                    eventItemRegion      : '[data-event-item-region]'
-                },
-
-                onBeforeShow: function () {
-                    this.itemListRegion.show(new factory.eventItemsView({
-                        collection    : this.collection,
-                        onItemSelected: this.showItem.bind(this)
-                    }));
-                    this.selectEventItemRegion.show(new SearchView({
-                        model         : new Backbone.Model(),
-                        collection    : this.options.searchCollection,
-                        labelAttribute: factory.searchLabelAttribute,
-                        onItemSelected: this.addAndSelectItem.bind(this)
-                    }));
-                },
-
-                showItem: function (item) {
-                    this.eventItemRegion.show(new factory.itemShowView({model: item}));
-                },
-
-                findItem: function (model) {
-                    return this.collection.get(model.get('id'))
-                },
-
-                addAndSelectItem: function (model) {
-                    var deferred;
-
-                    if (this.findItem(model)) {
-                        deferred = $.Deferred().resolve();
-                    } else {
-                        deferred = this.addItem(model, this.collection.url);
-                    }
-
-                    deferred.done(this.selectItem.bind(this, model));
-                },
-
-                addItem: function (model, url) {
-                    var view      = this;
-                    model.urlRoot = url;
-                    return model.save(null, {
-                        dataType: 'html',
-                        success : function () {
-                            view.collection.add(model.clone());
-                        }
-                    });
-                },
-
-                selectItem: function (model) {
-                    var existedItem = this.findItem(model);
-
-                    if (existedItem) {
-                        this.itemListRegion.currentView.activateItem(existedItem);
-                        this.showItem(existedItem);
-                    } else {
-                        console.error("Model " + model + " not found.");
-                    }
                 }
             });
         }
