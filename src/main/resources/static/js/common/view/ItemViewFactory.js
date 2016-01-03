@@ -134,12 +134,12 @@ define([
 
                 regions: {
                     selectEventItemRegion: '[data-select-event-item-region]',
-                    eventItemsRegion     : '[data-event-items-region]',
+                    itemListRegion       : '[data-item-list-region]',
                     eventItemRegion      : '[data-event-item-region]'
                 },
 
                 onBeforeShow: function () {
-                    this.eventItemsRegion.show(new factory.eventItemsView({
+                    this.itemListRegion.show(new factory.eventItemsView({
                         collection    : this.collection,
                         onItemSelected: this.showItem.bind(this)
                     }));
@@ -186,7 +186,7 @@ define([
                     var existedItem = this.findItem(model);
 
                     if (existedItem) {
-                        this.eventItemsRegion.currentView.activateItem(existedItem);
+                        this.itemListRegion.currentView.activateItem(existedItem);
                         this.showItem(existedItem);
                     } else {
                         console.error("Model " + model + " not found.");
