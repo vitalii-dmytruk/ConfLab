@@ -68,13 +68,15 @@ public class EventController {
                     method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Speaker> getSpeakersByEventId(@PathVariable("id") Long id) {
-        return speakerService.findByEventId(id);
+        Event event = eventService.findById(id);
+        return speakerService.findByEvent(event);
     }
 
     @RequestMapping(value = "/{id}/speeches",
                     method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Speech> getSpeechesByEventId(@PathVariable("id") Long id) {
-        return speechService.findByEventId(id);
+        Event event = eventService.findById(id);
+        return speechService.findByEvent(event);
     }
 }
