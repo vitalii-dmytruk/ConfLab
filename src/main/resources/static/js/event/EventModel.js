@@ -24,11 +24,9 @@ define([
                 minLength: 3,
                 maxLength: 40
             },
-            endDate: {
-                fn: function (value, attr, computedState) {
-                    if (value < computedState.startDate) {
-                        return "End date can not be earlier than start date";
-                    }
+            endDate: function (value, attr, computedState) {
+                if (value < computedState.startDate) {
+                    return "End date can not be earlier than start date";
                 }
             }
         }
