@@ -8,7 +8,7 @@ define([
     return Model.extend({
         urlRoot: '/events',
 
-        defaults: function () {
+        defaults  : function () {
             return {
                 id         : null,
                 name       : '',
@@ -16,6 +16,18 @@ define([
                 startDate  : '',
                 endDate    : '',
                 speakers   : []
+            }
+        },
+        validation: {
+            name   : {
+                required : true,
+                minLength: 3,
+                maxLength: 40
+            },
+            endDate: function (value, attr, computedState) {
+                if (value < computedState.startDate) {
+                    return "End date can not be earlier than start date";
+                }
             }
         }
     });
