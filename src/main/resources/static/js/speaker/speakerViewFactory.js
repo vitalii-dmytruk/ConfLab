@@ -1,13 +1,14 @@
 define([
-    'common/view/ItemViewFactory',
+    'event/details/EventItemViewFactory',
+    'speech/SpeechCollection',
     'text!speaker/table/SpeakerRowTemplate.html',
     'text!speaker/details/SpeakerTemplate.html',
     'text!speaker/details/SpeakerEditTemplate.html'
-], function (ItemViewFactory, SpeakerRowTemplate, SpeakerShowTemplate, SpeakerEditTemplate) {
+], function (ViewFactory, SpeechCollection, SpeakerRowTemplate, SpeakerShowTemplate, SpeakerEditTemplate) {
 
     'use strict';
 
-    return new ItemViewFactory({
+    return new ViewFactory({
         title     : 'Speaker',
         tableTitle: 'Speakers',
 
@@ -16,6 +17,7 @@ define([
         itemEditTemplate: SpeakerEditTemplate,
 
         searchLabelAttribute: 'name',
+        attachedCollectionType: SpeechCollection,
 
         bindings: {
             '#email'   : {

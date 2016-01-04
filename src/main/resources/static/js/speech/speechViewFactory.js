@@ -1,13 +1,15 @@
 define([
-    'common/view/ItemViewFactory',
+    'event/details/EventItemViewFactory',
+    'speaker/SpeakerCollection',
     'text!speech/table/SpeechRowTemplate.html',
     'text!speech/details/SpeechTemplate.html',
     'text!speech/details/SpeechEditTemplate.html'
-], function (ItemViewFactory, SpeechRowTemplate, SpeechShowTemplate, SpeechEditTemplate) {
+], function (ViewFactory, SpeakerCollection, SpeechRowTemplate, SpeechShowTemplate,
+             SpeechEditTemplate) {
 
     'use strict';
 
-    return new ItemViewFactory({
+    return new ViewFactory({
         title     : 'Speech',
         tableTitle: 'Speeches',
 
@@ -16,6 +18,8 @@ define([
         itemEditTemplate: SpeechEditTemplate,
 
         searchLabelAttribute: 'title',
+
+        attachedCollectionType: SpeakerCollection,
 
         bindings: {
             '#speech-title'      : 'title',
