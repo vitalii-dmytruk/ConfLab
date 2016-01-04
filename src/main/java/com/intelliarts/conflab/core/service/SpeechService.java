@@ -94,6 +94,10 @@ public class SpeechService {
         return speechRepository.findByEventId(id);
     }
 
+    public Set<Speech> findByEventAndSpeaker(Event event, Speaker speaker) {
+        return speechRepository.findByEventAndSpeaker(event.getId(), speaker.getId());
+    }
+
     private void linkToSpeaker(Speech createdSpeech, Speaker speaker) {
         speechSpeakerService.createSpeechSpeakerLink(createdSpeech, speaker);
     }
