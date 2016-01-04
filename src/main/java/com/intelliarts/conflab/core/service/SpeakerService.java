@@ -74,7 +74,6 @@ public class SpeakerService {
         unlinkFromEvent(speaker, event);
     }
 
-
     @Transactional
     public Speaker update(Speaker speaker) {
         if (speaker.getId() == null) {
@@ -87,14 +86,13 @@ public class SpeakerService {
         return speakerRepository.findAll();
     }
 
-    public Set<Speaker> findBySpeechId(Long speechId) {
-        return speakerRepository.findBySpeechId(speechId);
+    public Set<Speaker> findBySpeech(Speech speech) {
+        return speakerRepository.findBySpeechId(speech.getId());
     }
 
-    public List<Speaker> findByEventId(Long id) {
-        return speakerRepository.findByEventId(id);
+    public List<Speaker> findByEvent(Event event) {
+        return speakerRepository.findByEventId(event.getId());
     }
-
 
     private void linkToSpeech(Speaker speaker, Speech speech) {
         speechSpeakerService.createSpeechSpeakerLink(speech, speaker);

@@ -19,25 +19,20 @@ define([
         },
 
         regions: {
-            editRegion: '[data-edit-region]'
+            content   : '[data-content-region]',
+            attachment: '[data-attachment-region]'
         },
 
         onRender: function () {
             setPageTitle(this);
-            appendChildViews(this);
         },
 
-        onBeforeShow: function () {
-            showShowView(this);
+        onBeforeShow: showShowView,
+
+        showAttachment : function (view) {
+            this.showChildView('attachment', view);
         }
-
     });
-
-    function appendChildViews(view) {
-        _.each(view.options.childViews, function (childView) {
-            view.$el.append(childView.render().el);
-        })
-    }
 
     function showEditView() {
         var view, editView;
@@ -48,22 +43,24 @@ define([
             model: this.model.clone()
         });
 
-        editView.onSubmit = function (args) {
-            args.model.save().done(function () {
-                view.model.set(args.model.attributes);
-                showShowView(view)
-            });
-        };
-        editView.onCancel = function () {
-            showShowView(view);
-        };
+        editView.onSubmit = save.bind(view);
+        editView.onCancel = showShowView.bind(view);
 
-        this.editRegion.show(editView);
+        this.getRegion('content').show(editView);
     }
 
-    function showShowView(view) {
-        view.editRegion.show(new view.ShowView({
-            model: view.model
+    function save(args) {
+        var view = this;
+        args.model.save().done(function () {
+            view.model.set(args.model.attributes);
+            showShowView.call(view);
+        });
+    }
+
+
+    function showShowView() {
+        this.getRegion('content').show(new this.ShowView({
+            model: this.model
         }));
     }
 

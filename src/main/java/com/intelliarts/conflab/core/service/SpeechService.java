@@ -86,12 +86,16 @@ public class SpeechService {
         return speech.orElseThrow(() -> new EntityNotFoundException("Speech with ID '" + id + "' not found."));
     }
 
-    public Set<Speech> findBySpeakerId(Long id) {
-        return speechRepository.findBySpeakerId(id);
+    public Set<Speech> findBySpeaker(Speaker speaker) {
+        return speechRepository.findBySpeakerId(speaker.getId());
     }
 
-    public List<Speech> findByEventId(Long id) {
-        return speechRepository.findByEventId(id);
+    public List<Speech> findByEvent(Event event) {
+        return speechRepository.findByEventId(event.getId());
+    }
+
+    public Set<Speech> findByEventAndSpeaker(Event event, Speaker speaker) {
+        return speechRepository.findByEventAndSpeaker(event.getId(), speaker.getId());
     }
 
     private void linkToSpeaker(Speech createdSpeech, Speaker speaker) {

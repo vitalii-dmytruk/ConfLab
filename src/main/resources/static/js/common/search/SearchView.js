@@ -21,7 +21,7 @@ define([
         onRender: function () {
             this.addBinding(null, '#selected-item', {
                 observe      : 'result',
-                initialize   : function ($el, model, options) {
+                initialize   : function ($el) {
                     $el.select2({
                         theme      : 'bootstrap',
                         placeholder: 'Add from the list',
@@ -47,7 +47,7 @@ define([
         if (result) {
             this.ui.selectedItem.select2('val', '');
             item = this.collection.get(result.id);
-            this.options.onItemSelected(item);
+            this.triggerMethod('found', item);
         }
     }
 
