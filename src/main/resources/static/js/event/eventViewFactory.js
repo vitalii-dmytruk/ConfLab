@@ -16,10 +16,10 @@ define([
         itemEditTemplate: EventEditTemplate,
 
         bindings: {
-            '#event-name'       : 'name',
-            '#event-description': 'description',
-            '#event-start-date' : 'startDate',
-            '#event-end-date'   : 'endDate'
+            '#name'       : 'name',
+            '#description': 'description',
+            '#startDate'  : 'startDate',
+            '#endDate'    : 'endDate'
         },
 
         rowBindings: {
@@ -27,6 +27,5 @@ define([
             '[data-event-start-date]': 'startDate',
             '[data-event-end-date]'  : 'endDate'
         }
-
     });
 });
