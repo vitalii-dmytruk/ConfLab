@@ -2,10 +2,9 @@ define([
     'event/details/EventItemListView',
     'common/view/EditView',
     'common/search/SearchView',
-    'speech/SpeechCollection',
     'text!common/view/ItemsInEventTemplate.html',
     'backbone.marionette'
-], function EventItemDetailedView(EventItemListView, EditView, SearchView, Collection, template) {
+], function EventItemDetailedView(EventItemListView, EditView, SearchView, template) {
 
     //noinspection JSUnusedGlobalSymbols
     return Marionette.LayoutView.extend({
@@ -51,12 +50,16 @@ define([
     }
 
     function showItem(view, model) {
-        var componentView = new view.options.detailsView({model: model});
+        var options, componentView;
+
+        options       = view.options;
+
+        componentView = new options.detailsView({model: model});
         view.showChildView('eventItemRegion', componentView);
 
-        componentView.showAttachment(new view.options.attachmentView({
-            collection : getCollection(view.model.url() + model.url()),
-            searchCollection: getCollection(model.url())
+        componentView.showAttachment(new options.attachmentView({
+            collection : getCollection(options, view.model.url() + model.url()),
+            searchCollection: getCollection(options, model.url())
         }));
     }
 
@@ -97,8 +100,8 @@ define([
         return view.collection.get(model.get('id'))
     }
 
-    function getCollection(url){
-        var collection = new Collection();
+    function getCollection(options, url){
+        var collection = new options.attachedCollectionType();
         collection.url = url + collection.url;
         collection.fetch();
         return collection;

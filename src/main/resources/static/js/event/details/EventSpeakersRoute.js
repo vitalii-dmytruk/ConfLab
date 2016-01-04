@@ -3,8 +3,9 @@ define([
     'event/details/EventItemView',
     'speaker/speakerViewFactory',
     'speech/speechViewFactory',
-    'speaker/SpeakerCollection'
-], function (EventDetailsRoute, EventItemView, speakerViewFactory, speechViewFactory, SpeakerCollection) {
+    'speaker/SpeakerCollection',
+    'speech/SpeechCollection'
+], function (EventDetailsRoute, EventItemView, speakerViewFactory, speechViewFactory, SpeakerCollection, SpeechCollection) {
 
     'use strict';
 
@@ -20,12 +21,13 @@ define([
 
         render: function () {
             this.view.showSpeakersTab(new EventItemView({
-                model               : this.model,
-                collection          : this.speakers,
-                searchCollection    : this.speakersSearchCollection,
-                searchLabelAttribute: speakerViewFactory.searchLabelAttribute,
-                detailsView         : speakerViewFactory.itemDetailsView,
-                attachmentView      : speechViewFactory.attachedItemTableView
+                model                 : this.model,
+                collection            : this.speakers,
+                searchCollection      : this.speakersSearchCollection,
+                attachedCollectionType: SpeechCollection,
+                searchLabelAttribute  : speakerViewFactory.searchLabelAttribute,
+                detailsView           : speakerViewFactory.itemDetailsView,
+                attachmentView        : speechViewFactory.attachedItemTableView
             }));
         }
     });
