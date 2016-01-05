@@ -7,7 +7,7 @@ define([
     return Marionette.Behavior.extend({
         ui: {
             actionIcons: '[data-actions]',
-            icon       : 'glyphicon'
+            icon       : '.glyphicon'
         },
 
         events: {
@@ -24,6 +24,7 @@ define([
         },
 
         onRender: setIcon,
+
         onActivated  : showActionIcons,
         onDeactivated: hideActionIcons
     });
