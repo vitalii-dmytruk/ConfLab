@@ -1,13 +1,13 @@
 define([
     'common/navigation/NavigationItemView',
-    'common/behavior/ItemActionIconsBehavior'
-], function EventComponentItemView(NavigationItemView, ItemActionIcons) {
+    'common/behavior/DeleteBehavior'
+], function EventComponentItemView(NavigationItemView, DeleteBehavior) {
     return NavigationItemView.extend({
         template: _.template('<a href="#"></a>'),
 
         behaviors: {
             actions: {
-                behaviorClass: ItemActionIcons
+                behaviorClass: DeleteBehavior
             }
         },
 

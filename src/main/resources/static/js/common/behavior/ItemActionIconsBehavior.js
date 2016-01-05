@@ -7,13 +7,13 @@ define([
     return Marionette.Behavior.extend({
         ui: {
             actionIcons: '[data-actions]',
-            icon : 'glyphicon'
+            icon       : 'glyphicon'
         },
 
         events: {
-            'mouseenter'           : showActionIcons,
-            'mouseleave'           : hideActionIcons,
-            'click @ui.actionIcons': 'doAction'
+            'mouseenter'    : showActionIcons,
+            'mouseleave'    : hideActionIcons,
+            'click @ui.icon': 'doAction'
         },
 
         onBeforeRender: function () {
@@ -23,9 +23,8 @@ define([
             }, originalTemplateFunc);
         },
 
-        onRender : setIcon,
-
-        onActivated: showActionIcons,
+        onRender: setIcon,
+        onActivated  : showActionIcons,
         onDeactivated: hideActionIcons
     });
 
