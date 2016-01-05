@@ -35,18 +35,18 @@ define([
     });
 
     function showEditView() {
-        var view, editView;
+        var view, contentView;
 
         view = this;
 
-        editView = new this.EditView({
+        contentView = new this.EditView({
             model: this.model.clone()
         });
 
-        editView.onSubmit = save.bind(view);
-        editView.onCancel = showShowView.bind(view);
+        contentView.onSubmit = save.bind(view);
+        contentView.onCancel = showShowView.bind(view);
 
-        this.getRegion('content').show(editView);
+        this.getRegion('content').show(contentView);
     }
 
     function save(args) {
