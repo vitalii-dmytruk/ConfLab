@@ -25,14 +25,14 @@ define([
         },
 
         onBeforeShow: function () {
-            this.showChildView('itemListRegion', createListView(this));
-            this.showChildView('selectEventItemRegion', createSearchView(this));
+            this.itemListRegion.show(createListView(this));
+            this.selectEventItemRegion.show(createSearchView(this));
         }
     });
 
     function showCreateView() {
-        this.showChildView('eventItemRegion', createEditView(this));
-        this.getRegion('itemListRegion').currentView.deactivateItem();
+        this.eventItemRegion.show(createEditView(this));
+        this.itemListRegion.currentView.deactivateItem();
     }
 
     function createEditView(view) {
@@ -41,9 +41,11 @@ define([
         });
 
         createView.onSubmit = function (args) {
-            addAndSelectItem.call(view, args.model);
+            addAndSelectItem(view, args.model);
         };
-        createView.onCancel = selectFirstItem.bind(view);
+        createView.onCancel = function () {
+            view.itemListRegion.currentView.activateItem();
+        };
 
         return createView;
     }
@@ -55,7 +57,9 @@ define([
             collection    : view.options.searchCollection
         });
 
-        searchView.onFound = addAndSelectItem.bind(view);
+        searchView.onFound = function (model) {
+            addAndSelectItem(view, model);
+        };
         return searchView;
     }
 
@@ -80,7 +84,7 @@ define([
         options = view.options;
 
         componentView = new options.DetailsView({model: model});
-        view.showChildView('eventItemRegion', componentView);
+        view.eventItemRegion.show(componentView);
 
         componentView.showAttachment(new options.attachmentView({
             collection      : getCollection(options, view.model.url() + model.url()),
@@ -88,16 +92,20 @@ define([
         }));
     }
 
-    function addAndSelectItem(model) {
-        var deferred;
+    function addAndSelectItem(view, model) {
+        var deferred, collection;
 
-        if (findItem(this, model)) {
+        collection = view.collection;
+
+        if (findItem(collection, model)) {
             deferred = $.Deferred().resolve();
         } else {
-            deferred = addItem(model, this.collection);
+            deferred = addItem(model, collection);
         }
 
-        deferred.done(selectItem.bind(this, model));
+        deferred.done(function () {
+            selectItem(view, model)
+        });
     }
 
     function addItem(model, collection) {
@@ -109,25 +117,19 @@ define([
         });
     }
 
-    function selectFirstItem() {
-        var firstItem = this.collection.first();
-        firstItem && selectItem.call(this, firstItem);
-    }
-
-    function selectItem(model) {
-        var existedItem = findItem(this, model);
+    function selectItem(view, model) {
+        var existedItem = findItem(view.collection, model);
 
         if (existedItem) {
-            this.getRegion('itemListRegion').currentView.activateItem(existedItem);
-            showItem(this, existedItem);
+            view.itemListRegion.currentView.activateItem(existedItem);
         } else {
             console.error("Model " + model + " not found.");
         }
     }
 
 
-    function findItem(view, model) {
-        return view.collection.get(model.get('id'))
+    function findItem(collection, model) {
+        return collection.get(model.get('id'))
     }
 
     function getCollection(options, url) {

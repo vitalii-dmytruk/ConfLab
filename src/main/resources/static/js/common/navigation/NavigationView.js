@@ -37,8 +37,10 @@ define([
         },
 
         activateItem: function (menuItem) {
-            this.deactivateItem();
-            this.previousActive = this.children.findByModel(menuItem);
+            if (menuItem) {
+                this.deactivateItem();
+                this.previousActive = this.children.findByModel(menuItem);
+            }
             this.previousActive && this.previousActive.activate();
         }
     });
