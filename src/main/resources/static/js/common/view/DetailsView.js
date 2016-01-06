@@ -1,7 +1,7 @@
 define([
     'text!common/view/DetailsTemplate.html',
     'backbone.marionette'
-], function (template) {
+], function DetailsView(template) {
 
     'use strict';
 
@@ -9,24 +9,12 @@ define([
 
         template: _.template(template),
 
-        ui: {
-            title  : '#page-title',
-            editBtn: '#edit-button'
-        },
-
-        events: {
-            'click @ui.editBtn': showEditView
-        },
-
         regions: {
             content   : '[data-content-region]',
             attachment: '[data-attachment-region]'
         },
 
-        onRender: function () {
-            setPageTitle(this);
-        },
-
+        onChildviewEdit : showEditView,
         onBeforeShow: showShowView,
 
         showAttachment : function (view) {
@@ -62,9 +50,5 @@ define([
         this.getRegion('content').show(new this.ShowView({
             model: this.model
         }));
-    }
-
-    function setPageTitle(view) {
-        view.ui.title.text(view.title);
     }
 });

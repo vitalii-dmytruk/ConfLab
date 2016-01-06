@@ -6,13 +6,14 @@ define([
     //noinspection JSUnusedGlobalSymbols
     return Marionette.Behavior.extend({
         ui: {
-            actionIcons: '[data-actions]'
+            actionIcons: '[data-actions]',
+            icon       : '.glyphicon'
         },
 
         events: {
-            'mouseenter'           : showActionIcons,
-            'mouseleave'           : hideActionIcons,
-            'click @ui.actionIcons': destroyItem
+            'mouseenter'    : showActionIcons,
+            'mouseleave'    : hideActionIcons,
+            'click @ui.icon': execAction
         },
 
         onBeforeRender: function () {
@@ -22,7 +23,9 @@ define([
             }, originalTemplateFunc);
         },
 
-        onActivated: showActionIcons,
+        onRender: setIcon,
+
+        onActivated  : showActionIcons,
         onDeactivated: hideActionIcons
     });
 
@@ -38,11 +41,12 @@ define([
         return view.$el.hasClass('active');
     }
 
-    function destroyItem(e) {
-        var model = this.view.model;
+    function setIcon() {
+        this.ui.icon.addClass(this.className);
+    }
 
-        model.urlRoot = model.collection.url;
-        model.destroy();
+    function execAction(e){
         e.preventDefault();
+        this.doAction && this.doAction();
     }
 });

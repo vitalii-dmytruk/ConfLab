@@ -1,13 +1,14 @@
 define([
     'common/behavior/SearchBehavior',
-    'common/behavior/ItemActionIconsBehavior',
+    'common/behavior/DeleteBehavior',
+    'common/behavior/EditBehavior',
     'common/view/EditView',
     'common/view/DetailsView',
     'common/view/RowView',
     'common/view/TableView',
     'backbone.marionette',
     'backbone.stickit'
-], function (SearchBehavior, ItemActionIcons, EditView, DetailsView, RowView, TableView) {
+], function (SearchBehavior, DeleteBehavior, EditBehavior, EditView, DetailsView, RowView, TableView) {
 
     'use strict';
 
@@ -29,7 +30,12 @@ define([
             });
 
             this.itemShowView = this.itemEditView.extend({
-                template: _.template(this.itemShowTemplate)
+                template: _.template(this.itemShowTemplate),
+                behaviors : {
+                    actions: {
+                        behaviorClass: EditBehavior
+                    }
+                }
             });
 
             this.itemAttachView = this.itemEditView.extend({
@@ -62,7 +68,7 @@ define([
                 RowView : this.itemRowView.extend({
                     behaviors: {
                         actions: {
-                            behaviorClass: ItemActionIcons
+                            behaviorClass: DeleteBehavior
                         }
                     }
                 }),

@@ -87,10 +87,6 @@ body {
     margin-top: 0;
 }
 
-.speaker h3 {
-    color: #286090;
-}
-
 .text {
     font-size: medium;
 }
@@ -181,6 +177,10 @@ div[data-descendant-region] * #table-title {
     font-size: 30px ;
 }
 
+.page-header p{
+    font-size: x-large;
+}
+
 .required:after{
     content:"*" ;
     color:red
@@ -188,6 +188,10 @@ div[data-descendant-region] * #table-title {
 
 .remove {
     color: #d9534f;
+}
+
+.edit {
+    color: #3c763d;
 }
 
 [data-actions] {
