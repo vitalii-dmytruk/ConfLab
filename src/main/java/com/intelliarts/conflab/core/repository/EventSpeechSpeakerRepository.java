@@ -18,5 +18,16 @@ public interface EventSpeechSpeakerRepository extends BaseRepository<EventSpeech
                    "    FROM SpeechSpeaker speechSpeaker " +
                    "    WHERE speechSpeaker.speaker.id = :speakerId" +
                    ")")
-    void delete(@Param("speakerId") Long speakerId, @Param("eventId") Long eventId);
+    void deleteBySpeakerId(@Param("speakerId") Long speakerId, @Param("eventId") Long eventId);
+
+    @Modifying
+    @Query(value = "DELETE " +
+                   "FROM EventSpeechSpeaker eventSpeechSpeaker " +
+                   "WHERE eventSpeechSpeaker.event.id = :eventId " +
+                   "AND eventSpeechSpeaker.speechSpeaker.id IN (" +
+                   "    SELECT speechSpeaker.id " +
+                   "    FROM SpeechSpeaker speechSpeaker " +
+                   "    WHERE speechSpeaker.speech.id = :speechId" +
+                   ")")
+    void deleteBySpeechId(@Param("speechId") Long speechId, @Param("eventId") Long eventId);
 }

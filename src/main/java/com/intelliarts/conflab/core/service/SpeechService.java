@@ -77,6 +77,12 @@ public class SpeechService {
         return speechRepository.save(speech);
     }
 
+    @Transactional
+    public void unlinkFromEvent(Long speechId, Event event) {
+        Speech speech = findById(speechId);
+        unlinkFromEvent(speech, event);
+    }
+
     public List<Speech> findAll() {
         return speechRepository.findAll();
     }
@@ -105,5 +111,9 @@ public class SpeechService {
     private void linkToEvent(Speech speech, Event event) {
         SpeechSpeaker speechSpeaker = speechSpeakerService.findOrCreate(speech, null);
         eventSpeechSpeakerService.createEventSpeechSpeakerLink(event, speechSpeaker);
+    }
+
+    public void unlinkFromEvent(Speech speech, Event event) {
+        eventSpeechSpeakerService.deleteSpeechFromEvent(speech, event);
     }
 }
