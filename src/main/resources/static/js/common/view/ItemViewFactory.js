@@ -30,7 +30,12 @@ define([
             });
 
             this.itemShowView = this.itemEditView.extend({
-                template: _.template(this.itemShowTemplate)
+                template: _.template(this.itemShowTemplate),
+                behaviors : {
+                    actions: {
+                        behaviorClass: EditBehavior
+                    }
+                }
             });
 
             this.itemAttachView = this.itemEditView.extend({
@@ -45,12 +50,7 @@ define([
             this.itemDetailsView = DetailsView.extend({
                 title   : this.title,
                 EditView: this.itemEditView,
-                ShowView: this.itemShowView,
-                behaviors : {
-                    actions: {
-                        behaviorClass: EditBehavior
-                    }
-                }
+                ShowView: this.itemShowView
             });
 
             this.itemRowView = RowView.extend({

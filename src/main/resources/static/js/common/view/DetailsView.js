@@ -14,7 +14,7 @@ define([
             attachment: '[data-attachment-region]'
         },
 
-        onEdit : showEditView,
+        onChildviewEdit : showEditView,
         onBeforeShow: showShowView,
 
         showAttachment : function (view) {
