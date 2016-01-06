@@ -87,10 +87,6 @@ body {
     margin-top: 0;
 }
 
-.speaker h3 {
-    color: #286090;
-}
-
 .text {
     font-size: medium;
 }
@@ -179,6 +175,10 @@ body {
 
 div[data-descendant-region] * #table-title {
     font-size: 30px ;
+}
+
+.page-header p{
+    font-size: x-large;
 }
 
 .required:after{
