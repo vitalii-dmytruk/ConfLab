@@ -190,6 +190,10 @@ div[data-descendant-region] * #table-title {
     color: #d9534f;
 }
 
+.edit {
+    color: #3c763d;
+}
+
 [data-actions] {
     cursor: pointer;
     display: none;

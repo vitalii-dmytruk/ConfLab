@@ -3,12 +3,11 @@ define([
 ], function DeleteBehavior(ActionIconsBehavior) {
     return ActionIconsBehavior.extend({
         className: 'glyphicon-remove remove',
-        doAction : function destroyItem(e) {
+        doAction : function() {
             var model = this.view.model;
 
             model.urlRoot = model.collection.url;
             model.destroy();
-            e.preventDefault();
         }
     });
 });

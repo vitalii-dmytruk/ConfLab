@@ -13,7 +13,7 @@ define([
         events: {
             'mouseenter'    : showActionIcons,
             'mouseleave'    : hideActionIcons,
-            'click @ui.icon': 'doAction'
+            'click @ui.icon': execAction
         },
 
         onBeforeRender: function () {
@@ -43,5 +43,10 @@ define([
 
     function setIcon() {
         this.ui.icon.addClass(this.className);
+    }
+
+    function execAction(e){
+        e.preventDefault();
+        this.doAction && this.doAction();
     }
 });
