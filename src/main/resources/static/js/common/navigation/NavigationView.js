@@ -32,8 +32,12 @@ define([
             this.collection.reset(menuItems);
         },
 
-        activateItem: function (menuItem) {
+        deactivateItem: function(){
             this.previousActive && this.previousActive.deactivate();
+        },
+
+        activateItem: function (menuItem) {
+            this.deactivateItem();
             this.previousActive = this.children.findByModel(menuItem);
             this.previousActive && this.previousActive.activate();
         }

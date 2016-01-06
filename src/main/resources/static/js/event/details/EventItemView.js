@@ -4,11 +4,19 @@ define([
     'common/search/SearchView',
     'text!common/view/ItemsInEventTemplate.html',
     'backbone.marionette'
-], function EventItemDetailedView(EventItemListView, EditView, SearchView, template) {
+], function EventItemView(EventItemListView, EditView, SearchView, template) {
 
     //noinspection JSUnusedGlobalSymbols
     return Marionette.LayoutView.extend({
         template: _.template(template),
+
+        ui: {
+            newBtn: '#new-button'
+        },
+
+        events: {
+            'click @ui.newBtn': showCreateView
+        },
 
         regions: {
             selectEventItemRegion: '[data-select-event-item-region]',
@@ -22,6 +30,23 @@ define([
         }
     });
 
+    function showCreateView() {
+        this.showChildView('eventItemRegion', createEditView(this));
+        this.getRegion('itemListRegion').currentView.deactivateItem();
+    }
+
+    function createEditView(view) {
+        var createView = new view.options.EditView({
+            model: new view.collection.model()
+        });
+
+        createView.onSubmit = function (args) {
+            addAndSelectItem.call(view, args.model);
+        };
+        createView.onCancel = selectFirstItem.bind(view);
+
+        return createView;
+    }
 
     function createSearchView(view) {
         var searchView = new SearchView({
@@ -52,13 +77,13 @@ define([
     function showItem(view, model) {
         var options, componentView;
 
-        options       = view.options;
+        options = view.options;
 
-        componentView = new options.detailsView({model: model});
+        componentView = new options.DetailsView({model: model});
         view.showChildView('eventItemRegion', componentView);
 
         componentView.showAttachment(new options.attachmentView({
-            collection : getCollection(options, view.model.url() + model.url()),
+            collection      : getCollection(options, view.model.url() + model.url()),
             searchCollection: getCollection(options, model.url())
         }));
     }
@@ -78,11 +103,15 @@ define([
     function addItem(model, collection) {
         model.urlRoot = collection.url;
         return model.save(null, {
-            dataType: 'html',
-            success : function () {
+            success: function () {
                 collection.add(model.clone());
             }
         });
+    }
+
+    function selectFirstItem() {
+        var firstItem = this.collection.first();
+        firstItem && selectItem.call(this, firstItem);
     }
 
     function selectItem(model) {
@@ -96,11 +125,12 @@ define([
         }
     }
 
+
     function findItem(view, model) {
         return view.collection.get(model.get('id'))
     }
 
-    function getCollection(options, url){
+    function getCollection(options, url) {
         var collection = new options.attachedCollectionType();
         collection.url = url + collection.url;
         collection.fetch();
