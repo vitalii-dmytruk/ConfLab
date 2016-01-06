@@ -50,9 +50,9 @@ public class SpeakerService {
     }
 
     @Transactional
-    public void linkToSpeech(Long speakerId, Speech speech) {
+    public SpeechSpeaker linkToSpeech(Long speakerId, Speech speech) {
         Speaker speaker = findById(speakerId);
-        linkToSpeech(speaker, speech);
+        return linkToSpeech(speaker, speech);
     }
 
     @Transactional
@@ -94,8 +94,8 @@ public class SpeakerService {
         return speakerRepository.findByEventId(event.getId());
     }
 
-    private void linkToSpeech(Speaker speaker, Speech speech) {
-        speechSpeakerService.createSpeechSpeakerLink(speech, speaker);
+    private SpeechSpeaker linkToSpeech(Speaker speaker, Speech speech) {
+        return speechSpeakerService.createSpeechSpeakerLink(speech, speaker);
     }
 
     private void linkToEvent(Speaker speaker, Event event) {

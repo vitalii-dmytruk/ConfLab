@@ -25,8 +25,8 @@ public class SpeechSpeakerService {
     }
 
     @Transactional
-    public void createSpeechSpeakerLink(Speech speech, Speaker speaker) {
-        speechSpeakerRepository.save(new SpeechSpeaker(speech, speaker));
+    public SpeechSpeaker createSpeechSpeakerLink(Speech speech, Speaker speaker) {
+        return speechSpeakerRepository.save(new SpeechSpeaker(speech, speaker));
     }
 
     @Transactional
