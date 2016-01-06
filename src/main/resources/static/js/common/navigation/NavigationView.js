@@ -32,9 +32,15 @@ define([
             this.collection.reset(menuItems);
         },
 
-        activateItem: function (menuItem) {
+        deactivateItem: function(){
             this.previousActive && this.previousActive.deactivate();
-            this.previousActive = this.children.findByModel(menuItem);
+        },
+
+        activateItem: function (menuItem) {
+            if (menuItem) {
+                this.deactivateItem();
+                this.previousActive = this.children.findByModel(menuItem);
+            }
             this.previousActive && this.previousActive.activate();
         }
     });

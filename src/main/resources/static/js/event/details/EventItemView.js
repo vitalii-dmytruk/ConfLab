@@ -4,11 +4,19 @@ define([
     'common/search/SearchView',
     'text!common/view/ItemsInEventTemplate.html',
     'backbone.marionette'
-], function EventItemDetailedView(EventItemListView, EditView, SearchView, template) {
+], function EventItemView(EventItemListView, EditView, SearchView, template) {
 
     //noinspection JSUnusedGlobalSymbols
     return Marionette.LayoutView.extend({
         template: _.template(template),
+
+        ui: {
+            newBtn: '#new-button'
+        },
+
+        events: {
+            'click @ui.newBtn': showCreateView
+        },
 
         regions: {
             selectEventItemRegion: '[data-select-event-item-region]',
@@ -17,11 +25,30 @@ define([
         },
 
         onBeforeShow: function () {
-            this.showChildView('itemListRegion', createListView(this));
-            this.showChildView('selectEventItemRegion', createSearchView(this));
+            this.itemListRegion.show(createListView(this));
+            this.selectEventItemRegion.show(createSearchView(this));
         }
     });
 
+    function showCreateView() {
+        this.eventItemRegion.show(createEditView(this));
+        this.itemListRegion.currentView.deactivateItem();
+    }
+
+    function createEditView(view) {
+        var createView = new view.options.EditView({
+            model: new view.collection.model()
+        });
+
+        createView.onSubmit = function (args) {
+            addAndSelectItem(view, args.model);
+        };
+        createView.onCancel = function () {
+            view.itemListRegion.currentView.activateItem();
+        };
+
+        return createView;
+    }
 
     function createSearchView(view) {
         var searchView = new SearchView({
@@ -30,7 +57,9 @@ define([
             collection    : view.options.searchCollection
         });
 
-        searchView.onFound = addAndSelectItem.bind(view);
+        searchView.onFound = function (model) {
+            addAndSelectItem(view, model);
+        };
         return searchView;
     }
 
@@ -52,55 +81,58 @@ define([
     function showItem(view, model) {
         var options, componentView;
 
-        options       = view.options;
+        options = view.options;
 
-        componentView = new options.detailsView({model: model});
-        view.showChildView('eventItemRegion', componentView);
+        componentView = new options.DetailsView({model: model});
+        view.eventItemRegion.show(componentView);
 
         componentView.showAttachment(new options.attachmentView({
-            collection : getCollection(options, view.model.url() + model.url()),
+            collection      : getCollection(options, view.model.url() + model.url()),
             searchCollection: getCollection(options, model.url())
         }));
     }
 
-    function addAndSelectItem(model) {
-        var deferred;
+    function addAndSelectItem(view, model) {
+        var deferred, collection;
 
-        if (findItem(this, model)) {
+        collection = view.collection;
+
+        if (findItem(collection, model)) {
             deferred = $.Deferred().resolve();
         } else {
-            deferred = addItem(model, this.collection);
+            deferred = addItem(model, collection);
         }
 
-        deferred.done(selectItem.bind(this, model));
+        deferred.done(function () {
+            selectItem(view, model)
+        });
     }
 
     function addItem(model, collection) {
         model.urlRoot = collection.url;
         return model.save(null, {
-            dataType: 'html',
-            success : function () {
+            success: function () {
                 collection.add(model.clone());
             }
         });
     }
 
-    function selectItem(model) {
-        var existedItem = findItem(this, model);
+    function selectItem(view, model) {
+        var existedItem = findItem(view.collection, model);
 
         if (existedItem) {
-            this.getRegion('itemListRegion').currentView.activateItem(existedItem);
-            showItem(this, existedItem);
+            view.itemListRegion.currentView.activateItem(existedItem);
         } else {
             console.error("Model " + model + " not found.");
         }
     }
 
-    function findItem(view, model) {
-        return view.collection.get(model.get('id'))
+
+    function findItem(collection, model) {
+        return collection.get(model.get('id'))
     }
 
-    function getCollection(options, url){
+    function getCollection(options, url) {
         var collection = new options.attachedCollectionType();
         collection.url = url + collection.url;
         collection.fetch();

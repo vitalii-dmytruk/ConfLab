@@ -4,12 +4,14 @@ define([
 ], function EventItemViewFactory(ItemViewFactory, EventItemView) {
 
     return ItemViewFactory.extend({
+
         newEventView: function (options) {
 
             return new EventItemView(_.extend({
                 attachedCollectionType: this.options.attachedCollectionType,
                 searchLabelAttribute  : this.options.searchLabelAttribute,
-                detailsView           : this.itemDetailsView
+                DetailsView           : this.itemDetailsView,
+                EditView              : this.itemEditView
             }, options));
         }
     });
