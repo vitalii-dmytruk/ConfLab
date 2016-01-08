@@ -4,7 +4,6 @@ import com.intelliarts.conflab.core.entity.Event;
 import com.intelliarts.conflab.core.entity.Role;
 import com.intelliarts.conflab.core.entity.Speaker;
 import com.intelliarts.conflab.core.entity.Speech;
-import com.intelliarts.conflab.core.entity.SpeechSpeaker;
 import com.intelliarts.conflab.core.service.EventService;
 import com.intelliarts.conflab.core.service.SpeakerService;
 import com.intelliarts.conflab.core.service.SpeechService;
@@ -89,9 +88,8 @@ public class SpeechController {
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Speech createAndLinkToEvent(@PathVariable("eventId") Long eventId, @RequestBody @Validated Speech speech) {
-        speech.setId(null);
         Event event = eventService.findById(eventId);
-        return speechService.createAndLinkToEvent(speech, event);
+        return speechService.createAndLinkToEvent(speech, null, event);
     }
 
     @RequestMapping(value = "/events/{eventId}/speeches/{speechId}",
@@ -158,9 +156,8 @@ public class SpeechController {
     public void createAndLinkToEvent(@PathVariable("speakerId") Long speakerId, @PathVariable("eventId") Long eventId,
             @RequestBody @Validated Speech speech) {
         Event event = eventService.findById(eventId);
-        SpeechSpeaker speechSpeaker =
-                speechSpeakerService.findOrCreate(speechService.create(speech), speakerService.findById(speakerId));
-        speechService.linkToEvent(speechSpeaker, event);
+        Speaker speaker = speakerService.findById(speakerId);
+        speechService.createAndLinkToEvent(speech, speaker, event);
     }
 
     @RequestMapping(value = "events/{eventId}/speakers/{speakerId}/speeches/{speechId}",
@@ -168,9 +165,9 @@ public class SpeechController {
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public void linkToEvent(@PathVariable("speakerId") Long speakerId, @PathVariable("eventId") Long eventId,
             @PathVariable("speechId") Long speechId) {
+        Speech speech = speechService.findById(speechId);
+        Speaker speaker = speakerService.findById(speakerId);
         Event event = eventService.findById(eventId);
-        SpeechSpeaker speechSpeaker =
-                speechSpeakerService.findOrCreate(speechService.findById(speechId), speakerService.findById(speakerId));
-        speechService.linkToEvent(speechSpeaker, event);
+        speechService.linkToEvent(speech, speaker, event);
     }
 }
