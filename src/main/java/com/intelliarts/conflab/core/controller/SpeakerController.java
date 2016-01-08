@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Set;
 
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
@@ -125,5 +126,13 @@ public class SpeakerController {
     public Set<Speaker> findBySpeechId(@PathVariable("id") Long id) {
         Speech speech = speechService.findById(id);
         return speakerService.findBySpeech(speech);
+    }
+
+    @RequestMapping(value = "events/{eventId}/speeches/{speechId}/speakers",
+                    method = GET,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
+    public Set<Speaker> findByEventAndSpeech(@PathVariable("speechId") Long speechId,
+            @PathVariable("eventId") Long eventId) {
+        return speakerService.findByEventAndSpeech(eventId, speechId);
     }
 }
