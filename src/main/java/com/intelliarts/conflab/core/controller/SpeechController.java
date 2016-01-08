@@ -32,9 +32,9 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 @HasAuthority(role = Role.ADMIN)
 public class SpeechController {
 
-    private SpeechService        speechService;
-    private SpeakerService       speakerService;
-    private EventService         eventService;
+    private SpeechService  speechService;
+    private SpeakerService speakerService;
+    private EventService   eventService;
 
     @Autowired
     public SpeechController(SpeechService speechService, SpeakerService speakerService, EventService eventService,
@@ -167,5 +167,14 @@ public class SpeechController {
         Speaker speaker = speakerService.findById(speakerId);
         Event event = eventService.findById(eventId);
         speechService.linkToEvent(speech, speaker, event);
+    }
+
+    @RequestMapping(value = "events/{eventId}/speakers/{speakerId}/speeches/{speechId}",
+                    method = RequestMethod.DELETE,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
+    public void removeFromEventSpeakerView(@PathVariable("eventId") Long eventId,
+            @PathVariable("speechId") Long speechId) {
+        Event event = eventService.findById(eventId);
+        speechService.unlinkFromEvent(speechId, event);
     }
 }
