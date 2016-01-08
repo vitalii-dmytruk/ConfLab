@@ -70,6 +70,11 @@ public class SpeechService {
     }
 
     @Transactional
+    public void linkToEvent(SpeechSpeaker speechSpeaker, Event event) {
+        eventSpeechSpeakerService.createEventSpeechSpeakerLink(event, speechSpeaker);
+    }
+
+    @Transactional
     public Speech update(Speech speech) {
         if (speech.getId() == null) {
             throw new IllegalArgumentException("Speech Id is not specified");
@@ -104,6 +109,10 @@ public class SpeechService {
         return speechRepository.findByEventAndSpeaker(event.getId(), speaker.getId());
     }
 
+    public void unlinkFromEvent(Speech speech, Event event) {
+        eventSpeechSpeakerService.deleteSpeechFromEvent(speech, event);
+    }
+
     private void linkToSpeaker(Speech createdSpeech, Speaker speaker) {
         speechSpeakerService.createSpeechSpeakerLink(createdSpeech, speaker);
     }
@@ -111,9 +120,5 @@ public class SpeechService {
     private void linkToEvent(Speech speech, Event event) {
         SpeechSpeaker speechSpeaker = speechSpeakerService.findOrCreate(speech, null);
         eventSpeechSpeakerService.createEventSpeechSpeakerLink(event, speechSpeaker);
-    }
-
-    public void unlinkFromEvent(Speech speech, Event event) {
-        eventSpeechSpeakerService.deleteSpeechFromEvent(speech, event);
     }
 }

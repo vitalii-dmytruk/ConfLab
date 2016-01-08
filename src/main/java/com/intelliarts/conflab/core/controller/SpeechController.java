@@ -155,22 +155,22 @@ public class SpeechController {
     @RequestMapping(value = "events/{eventId}/speakers/{speakerId}/speeches",
                     method = POST,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public void createAndLinkSpeechToEvent(@PathVariable("speakerId") Long speakerId,
-            @PathVariable("eventId") Long eventId, @RequestBody @Validated Speech speech) {
+    public void createAndLinkToEvent(@PathVariable("speakerId") Long speakerId, @PathVariable("eventId") Long eventId,
+            @RequestBody @Validated Speech speech) {
         Event event = eventService.findById(eventId);
         SpeechSpeaker speechSpeaker =
                 speechSpeakerService.findOrCreate(speechService.create(speech), speakerService.findById(speakerId));
-        eventService.link(event, speechSpeaker);
+        speechService.linkToEvent(speechSpeaker, event);
     }
 
     @RequestMapping(value = "events/{eventId}/speakers/{speakerId}/speeches/{speechId}",
                     method = PUT,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public void linkSpeechToEvent(@PathVariable("speakerId") Long speakerId, @PathVariable("eventId") Long eventId,
+    public void linkToEvent(@PathVariable("speakerId") Long speakerId, @PathVariable("eventId") Long eventId,
             @PathVariable("speechId") Long speechId) {
         Event event = eventService.findById(eventId);
         SpeechSpeaker speechSpeaker =
                 speechSpeakerService.findOrCreate(speechService.findById(speechId), speakerService.findById(speakerId));
-        eventService.link(event, speechSpeaker);
+        speechService.linkToEvent(speechSpeaker, event);
     }
 }
