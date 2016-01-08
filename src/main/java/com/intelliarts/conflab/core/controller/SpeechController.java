@@ -168,4 +168,13 @@ public class SpeechController {
         Event event = eventService.findById(eventId);
         speechService.linkToEvent(speech, speaker, event);
     }
+
+    @RequestMapping(value = "events/{eventId}/speakers/{speakerId}/speeches/{speechId}",
+                    method = RequestMethod.DELETE,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
+    public void removeFromEventSpeakerView(@PathVariable("eventId") Long eventId,
+            @PathVariable("speechId") Long speechId) {
+        Event event = eventService.findById(eventId);
+        speechService.unlinkFromEvent(speechId, event);
+    }
 }
