@@ -105,8 +105,8 @@ public class SpeechService {
         return speechRepository.findByEventId(event.getId());
     }
 
-    public Set<Speech> findByEventAndSpeaker(Event event, Speaker speaker) {
-        return speechRepository.findByEventAndSpeaker(event.getId(), speaker.getId());
+    public Set<Speech> findByEventAndSpeaker(Long eventId, Long speakerId) {
+        return speechRepository.findByEventAndSpeaker(eventId, speakerId);
     }
 
     public void unlinkFromEvent(Speech speech, Event event) {
