@@ -32,9 +32,9 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 @HasAuthority(role = Role.ADMIN)
 public class SpeechController {
 
-    private SpeechService        speechService;
-    private SpeakerService       speakerService;
-    private EventService         eventService;
+    private SpeechService  speechService;
+    private SpeakerService speakerService;
+    private EventService   eventService;
 
     @Autowired
     public SpeechController(SpeechService speechService, SpeakerService speakerService, EventService eventService,
@@ -151,11 +151,11 @@ public class SpeechController {
     @RequestMapping(value = "events/{eventId}/speakers/{speakerId}/speeches",
                     method = POST,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public void createAndLinkToEvent(@PathVariable("speakerId") Long speakerId, @PathVariable("eventId") Long eventId,
+    public Speech createAndLinkToEvent(@PathVariable("speakerId") Long speakerId, @PathVariable("eventId") Long eventId,
             @RequestBody @Validated Speech speech) {
         Event event = eventService.findById(eventId);
         Speaker speaker = speakerService.findById(speakerId);
-        speechService.createAndLinkToEvent(speech, speaker, event);
+        return speechService.createAndLinkToEvent(speech, speaker, event);
     }
 
     @RequestMapping(value = "events/{eventId}/speakers/{speakerId}/speeches/{speechId}",
