@@ -26,6 +26,9 @@ define([
 
             this.itemEditView = EditView.extend({
                 template: _.template(this.itemEditTemplate),
+                attributes: {
+                  style: 'position:relative;'
+                },
                 bindings: this.bindings
             });
 
