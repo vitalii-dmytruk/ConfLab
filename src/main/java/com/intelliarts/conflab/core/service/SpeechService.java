@@ -57,16 +57,21 @@ public class SpeechService {
     }
 
     @Transactional
-    public Speech createAndLinkToEvent(Speech speech, Event event) {
+    public Speech createAndLinkToEvent(Speech speech, Speaker speaker, Event event) {
         Speech createdSpeech = create(speech);
-        linkToEvent(createdSpeech, event);
+        linkToEvent(createdSpeech, speaker, event);
         return createdSpeech;
     }
 
     @Transactional
     public void linkToEvent(Long speechId, Event event) {
         Speech speech = findById(speechId);
-        linkToEvent(speech, event);
+        linkToEvent(speech, null, event);
+    }
+
+    @Transactional
+    public void linkToEvent(SpeechSpeaker speechSpeaker, Event event) {
+        eventSpeechSpeakerService.createEventSpeechSpeakerLink(event, speechSpeaker);
     }
 
     @Transactional
@@ -104,16 +109,16 @@ public class SpeechService {
         return speechRepository.findByEventAndSpeaker(event.getId(), speaker.getId());
     }
 
-    private void linkToSpeaker(Speech createdSpeech, Speaker speaker) {
-        speechSpeakerService.createSpeechSpeakerLink(createdSpeech, speaker);
+    public void unlinkFromEvent(Speech speech, Event event) {
+        eventSpeechSpeakerService.deleteSpeechFromEvent(speech, event);
     }
 
-    private void linkToEvent(Speech speech, Event event) {
-        SpeechSpeaker speechSpeaker = speechSpeakerService.findOrCreate(speech, null);
+    public void linkToEvent(Speech speech, Speaker speaker, Event event) {
+        SpeechSpeaker speechSpeaker = speechSpeakerService.findOrCreate(speech, speaker);
         eventSpeechSpeakerService.createEventSpeechSpeakerLink(event, speechSpeaker);
     }
 
-    public void unlinkFromEvent(Speech speech, Event event) {
-        eventSpeechSpeakerService.deleteSpeechFromEvent(speech, event);
+    private void linkToSpeaker(Speech createdSpeech, Speaker speaker) {
+        speechSpeakerService.createSpeechSpeakerLink(createdSpeech, speaker);
     }
 }
