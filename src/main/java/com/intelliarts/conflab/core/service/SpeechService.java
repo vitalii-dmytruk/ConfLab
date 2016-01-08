@@ -70,11 +70,6 @@ public class SpeechService {
     }
 
     @Transactional
-    public void linkToEvent(SpeechSpeaker speechSpeaker, Event event) {
-        eventSpeechSpeakerService.createEventSpeechSpeakerLink(event, speechSpeaker);
-    }
-
-    @Transactional
     public Speech update(Speech speech) {
         if (speech.getId() == null) {
             throw new IllegalArgumentException("Speech Id is not specified");

@@ -63,12 +63,6 @@ public class SpeakerService {
     }
 
     @Transactional
-    public void linkToEvent(Long speakerId, Speech speech, Event event) {
-        Speaker speaker = findById(speakerId);
-        linkToEvent(speaker, speech, event);
-    }
-
-    @Transactional
     public void unlinkFromEvent(Long speakerId, Event event) {
         Speaker speaker = findById(speakerId);
         unlinkFromEvent(speaker, event);
@@ -91,21 +85,20 @@ public class SpeakerService {
     }
 
     public List<Speaker> findByEvent(Event event) {
-        List<Speaker> byEventId = speakerRepository.findByEventId(event.getId());
-        return byEventId;
+        return speakerRepository.findByEventId(event.getId());
     }
 
     public Set<Speaker> findByEventAndSpeech(Long eventId, Long speechId) {
         return speakerRepository.findByEventAndSpeech(eventId, speechId);
     }
 
-    private SpeechSpeaker linkToSpeech(Speaker speaker, Speech speech) {
-        return speechSpeakerService.createSpeechSpeakerLink(speech, speaker);
-    }
-
-    private void linkToEvent(Speaker speaker, Speech speech, Event event) {
+    public void linkToEvent(Speaker speaker, Speech speech, Event event) {
         SpeechSpeaker speechSpeaker = speechSpeakerService.findOrCreate(speech, speaker);
         eventSpeechSpeakerService.createEventSpeechSpeakerLink(event, speechSpeaker);
+    }
+
+    private SpeechSpeaker linkToSpeech(Speaker speaker, Speech speech) {
+        return speechSpeakerService.createSpeechSpeakerLink(speech, speaker);
     }
 
     private void unlinkFromEvent(Speaker speaker, Event event) {
