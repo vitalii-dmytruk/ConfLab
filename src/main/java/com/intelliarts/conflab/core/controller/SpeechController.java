@@ -35,7 +35,6 @@ public class SpeechController {
     private SpeechService        speechService;
     private SpeakerService       speakerService;
     private EventService         eventService;
-    private SpeechSpeakerService speechSpeakerService;
 
     @Autowired
     public SpeechController(SpeechService speechService, SpeakerService speakerService, EventService eventService,
@@ -43,7 +42,6 @@ public class SpeechController {
         this.speechService = speechService;
         this.speakerService = speakerService;
         this.eventService = eventService;
-        this.speechSpeakerService = speechSpeakerService;
     }
 
     @RequestMapping(value = "/speeches",
