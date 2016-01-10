@@ -1,5 +1,4 @@
 define([
-    'common/behavior/SearchBehavior',
     'common/behavior/DeleteBehavior',
     'common/behavior/EditBehavior',
     'common/view/EditView',
@@ -8,7 +7,7 @@ define([
     'common/view/TableView',
     'backbone.marionette',
     'backbone.stickit'
-], function (SearchBehavior, DeleteBehavior, EditBehavior, EditView, DetailsView, RowView, TableView) {
+], function (DeleteBehavior, EditBehavior, EditView, DetailsView, RowView, TableView) {
 
     'use strict';
 
@@ -25,27 +24,18 @@ define([
             this.searchLabelAttribute = options.searchLabelAttribute;
 
             this.itemEditView = EditView.extend({
-                template: _.template(this.itemEditTemplate),
+                template  : _.template(this.itemEditTemplate),
                 attributes: {
-                  style: 'position:relative;'
+                    style: 'position:relative;'
                 },
-                bindings: this.bindings
+                bindings  : this.bindings
             });
 
             this.itemShowView = this.itemEditView.extend({
-                template: _.template(this.itemShowTemplate),
-                behaviors : {
+                template : _.template(this.itemShowTemplate),
+                behaviors: {
                     actions: {
                         behaviorClass: EditBehavior
-                    }
-                }
-            });
-
-            this.itemAttachView = this.itemEditView.extend({
-                behaviors: {
-                    search: {
-                        behaviorClass : SearchBehavior,
-                        labelAttribute: this.searchLabelAttribute
                     }
                 }
             });
@@ -64,28 +54,18 @@ define([
             this.itemTableView = TableView.extend({
                 title   : this.tableTitle,
                 RowView : this.itemRowView,
-                EditView: this.itemEditView
+                EditView: this.itemEditView,
+                searchLabelAttribute: this.searchLabelAttribute
             });
 
             this.attachedItemTableView = this.itemTableView.extend({
-                RowView : this.itemRowView.extend({
+                RowView: this.itemRowView.extend({
                     behaviors: {
                         actions: {
                             behaviorClass: DeleteBehavior
                         }
                     }
-                }),
-                EditView: this.itemAttachView,
-                editView: function () {
-                    var model = new this.collection.model();
-
-                    model.urlRoot = this.collection.url;
-
-                    return new this.EditView({
-                        model     : model,
-                        collection: this.options.searchCollection
-                    });
-                }
+                })
             });
         }
     });

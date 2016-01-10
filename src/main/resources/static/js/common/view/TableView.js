@@ -1,7 +1,8 @@
 define([
     'text!common/view/TableTemplate.html',
+    'common/search/SearchView',
     'backbone.marionette'
-], function (template) {
+], function (template, SearchView) {
 
     'use strict';
 
@@ -15,63 +16,85 @@ define([
         },
 
         events: {
-            'click @ui.addBtn': showAddItemView
+            'click @ui.addBtn': showEditView
         },
 
         regions: {
-            editRegion: '#edit-region',
-            listRegion: '#list-region'
+            editRegion      : '#edit-region',
+            listRegion      : '#list-region',
+            selectItemRegion: '[data-select-item-region]'
         },
 
-        onRender: function () {
+        onBeforeShow: function () {
             setPageTitle(this);
             this.listRegion.show(new Marionette.CollectionView({
                 childView : this.RowView,
                 collection: this.collection
             }));
-        },
-
-        editView: function () {
-            return new this.EditView({
-                model: new this.collection.model()
-            });
+            if (this.options.searchCollection) {
+                this.selectItemRegion.show(createSearchView(this));
+            }
         }
 
     });
 
-    function showAddItemView() {
-        var editView = this.editView();
-
-        editView.onSubmit = submitModel.bind(this);
-        editView.onCancel = hideView.bind(this);
-
+    function showEditView() {
+        var editView = createEditView(this);
         this.editRegion.show(editView);
+    }
+
+    function createSearchView(view) {
+        var searchView = new SearchView({
+            model         : new Backbone.Model(),
+            labelAttribute: view.searchLabelAttribute,
+            collection    : view.options.searchCollection
+        });
+
+        searchView.onFound = function (model) {
+            addItemIfNotExist(view, model);
+        };
+        return searchView;
+    }
+
+    function createEditView(view) {
+        var editView = new view.EditView({
+            model: new view.collection.model()
+        });
+
+        editView.onSubmit = function (args) {
+            addItemIfNotExist(view, args.model)
+        };
+        editView.onCancel = function () {
+            hideEditView(view);
+        };
+        return editView;
     }
 
     function setPageTitle(view) {
         view.ui.title.text(view.title);
     }
 
-    function submitModel(args) {
+    function addItemIfNotExist(view, model) {
         var deferred, id;
 
-        id       = args.model.get('id');
-        deferred = this.collection.find({id: id}) ?
+        id       = model.get('id');
+        deferred = view.collection.find({id: id}) ?
                    $.Deferred().resolve() :
-                   addModel(args.model, this.collection);
-        deferred.done(hideView.bind(this));
+                   addModel(model, view.collection);
+        deferred.done(hideEditView(view));
     }
 
     function addModel(model, collection) {
+        model.urlRoot = collection.url;
         return model.save(null, {
             wait   : true,
             success: function () {
-                collection.add(model.attributes);
+                collection.add(model.clone());
             }
         });
     }
 
-    function hideView() {
-        this.editRegion.empty();
+    function hideEditView(view) {
+        view.editRegion.empty();
     }
 });
