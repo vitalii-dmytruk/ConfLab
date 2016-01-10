@@ -143,9 +143,7 @@ public class SpeechController {
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public Set<Speech> findByEventAndSpeaker(@PathVariable("speakerId") Long speakerId,
             @PathVariable("eventId") Long eventId) {
-        Event event = eventService.findById(eventId);
-        Speaker speaker = speakerService.findById(speakerId);
-        return speechService.findByEventAndSpeaker(event, speaker);
+        return speechService.findByEventAndSpeaker(eventId, speakerId);
     }
 
     @RequestMapping(value = "events/{eventId}/speakers/{speakerId}/speeches",
