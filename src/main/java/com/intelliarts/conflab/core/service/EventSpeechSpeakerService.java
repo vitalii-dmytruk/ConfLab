@@ -9,6 +9,9 @@ import com.intelliarts.conflab.core.repository.EventSpeechSpeakerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Service
 public class EventSpeechSpeakerService {
 
@@ -19,8 +22,12 @@ public class EventSpeechSpeakerService {
         this.eventSpeechSpeakerRepository = eventSpeechSpeakerRepository;
     }
 
-    public void createEventSpeechSpeakerLink(Event event, SpeechSpeaker speechSpeaker){
+    public void createEventSpeechSpeakerLink(Event event, SpeechSpeaker speechSpeaker) {
         eventSpeechSpeakerRepository.save(new EventSpeechSpeaker(event, speechSpeaker));
+    }
+
+    public void createEventSpeechSpeakerLinks(Event event, Set<SpeechSpeaker> speechSpeakers) {
+        eventSpeechSpeakerRepository.save(toEventSpeechSpeakerList(event, speechSpeakers));
     }
 
     public void deleteSpeakerFromEvent(Speaker speaker, Event event) {
@@ -29,5 +36,11 @@ public class EventSpeechSpeakerService {
 
     public void deleteSpeechFromEvent(Speech speech, Event event) {
         eventSpeechSpeakerRepository.deleteBySpeechId(speech.getId(), event.getId());
+    }
+
+    private Set<EventSpeechSpeaker> toEventSpeechSpeakerList(Event event, Set<SpeechSpeaker> speechSpeakers) {
+        return speechSpeakers.stream()
+                             .map(speechSpeaker -> new EventSpeechSpeaker(event, speechSpeaker))
+                             .collect(Collectors.toSet());
     }
 }

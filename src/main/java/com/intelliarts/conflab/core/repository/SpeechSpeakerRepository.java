@@ -13,6 +13,10 @@ public interface SpeechSpeakerRepository extends BaseRepository<SpeechSpeaker, L
 
     Optional<SpeechSpeaker> findBySpeechAndSpeaker(Speech speech, Speaker speaker);
 
+    Set<SpeechSpeaker> findBySpeech(Speech speech);
+
+    Set<SpeechSpeaker> findBySpeaker(Speaker speaker);
+
     Set<SpeechSpeaker> deleteBySpeechAndSpeaker(Speech speech, Speaker speaker);
 
 }
