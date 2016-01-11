@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
 
 @Service
 public class SpeechSpeakerService {
@@ -31,14 +30,9 @@ public class SpeechSpeakerService {
 
     @Transactional
     public SpeechSpeaker findOrCreate(Speech speech, Speaker speaker) {
-        SpeechSpeaker speechSpeaker;
-        Optional<SpeechSpeaker> speechSpeakerOptional = speechSpeakerRepository.findBySpeechAndSpeaker(speech, speaker);
-        if (!speechSpeakerOptional.isPresent()) {
-            speechSpeaker = speechSpeakerRepository.save(new SpeechSpeaker(speech, speaker));
-        } else {
-            speechSpeaker = speechSpeakerOptional.get();
-        }
-        return speechSpeaker;
+        return speechSpeakerRepository.findBySpeechAndSpeaker(speech, speaker)
+                                      .orElseGet(
+                                              () -> speechSpeakerRepository.save(new SpeechSpeaker(speech, speaker)));
     }
 
     public void deleteBySpeechAndSpeaker(Speech speech, Speaker speaker) {
