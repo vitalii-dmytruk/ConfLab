@@ -8,12 +8,22 @@ define([
     return Model.extend({
         urlRoot: '/speeches',
 
-        defaults: function () {
+        defaults  : function () {
             return {
                 id         : null,
                 title      : '',
                 description: '',
                 lang       : ''
+            }
+        },
+        validation: {
+            title: {
+                required : true,
+                maxLength: 255
+            },
+            lang : {
+                maxLength: 8,
+                msg      : 'Language must be at most 8 characters'
             }
         }
     });

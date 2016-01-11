@@ -22,9 +22,9 @@ define([
         attachedCollectionType: SpeakerCollection,
 
         bindings: {
-            '#speech-title'      : 'title',
-            '#speech-description': 'description',
-            '#speech-lang'       : 'lang'
+            '#title'      : 'title',
+            '#description': 'description',
+            '#lang'       : 'lang'
         },
 
         rowBindings: {
