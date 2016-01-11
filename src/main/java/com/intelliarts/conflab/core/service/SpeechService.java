@@ -96,7 +96,7 @@ public class SpeechService {
         return speechRepository.findBySpeakerId(speaker.getId());
     }
 
-    public List<Speech> findByEvent(Event event) {
+    public Set<Speech> findByEvent(Event event) {
         return speechRepository.findByEventId(event.getId());
     }
 

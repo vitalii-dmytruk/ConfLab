@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/events")
@@ -67,7 +68,7 @@ public class EventController {
     @RequestMapping(value = "/{id}/speakers",
                     method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Speaker> getSpeakersByEventId(@PathVariable("id") Long id) {
+    public Set<Speaker> getSpeakersByEventId(@PathVariable("id") Long id) {
         Event event = eventService.findById(id);
         return speakerService.findByEvent(event);
     }
@@ -75,7 +76,7 @@ public class EventController {
     @RequestMapping(value = "/{id}/speeches",
                     method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Speech> getSpeechesByEventId(@PathVariable("id") Long id) {
+    public Set<Speech> getSpeechesByEventId(@PathVariable("id") Long id) {
         Event event = eventService.findById(id);
         return speechService.findByEvent(event);
     }

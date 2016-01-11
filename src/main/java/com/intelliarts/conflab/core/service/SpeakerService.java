@@ -84,7 +84,7 @@ public class SpeakerService {
         return speakerRepository.findBySpeechId(speech.getId());
     }
 
-    public List<Speaker> findByEvent(Event event) {
+    public Set<Speaker> findByEvent(Event event) {
         return speakerRepository.findByEventId(event.getId());
     }
 
