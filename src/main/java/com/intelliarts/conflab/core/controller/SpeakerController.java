@@ -129,7 +129,15 @@ public class SpeakerController {
         return speakerService.findBySpeech(speech);
     }
 
-    @RequestMapping(value = "events/{eventId}/speeches/{speechId}/speakers",
+    @RequestMapping(value = "/events/{id}/speakers",
+                    method = RequestMethod.GET,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
+    public Set<Speaker> findByEventId(@PathVariable("id") Long id) {
+        Event event = eventService.findById(id);
+        return speakerService.findByEvent(event);
+    }
+
+    @RequestMapping(value = "/events/{eventId}/speeches/{speechId}/speakers",
                     method = GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public Set<Speaker> findByEventAndSpeech(@PathVariable("speechId") Long speechId,
@@ -137,7 +145,7 @@ public class SpeakerController {
         return speakerService.findByEventAndSpeech(eventId, speechId);
     }
 
-    @RequestMapping(value = "events/{eventId}/speeches/{speechId}/speakers",
+    @RequestMapping(value = "/events/{eventId}/speeches/{speechId}/speakers",
                     method = POST,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public Speaker createAndLinkToEvent(@PathVariable("speechId") Long speechId, @PathVariable("eventId") Long eventId,
@@ -147,7 +155,7 @@ public class SpeakerController {
         return speakerService.createAndLinkToEvent(speaker, speech, event);
     }
 
-    @RequestMapping(value = "events/{eventId}/speeches/{speechId}/speakers/{speakerId}",
+    @RequestMapping(value = "/events/{eventId}/speeches/{speechId}/speakers/{speakerId}",
                     method = PUT,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public void linkToEvent(@PathVariable("speechId") Long speechId, @PathVariable("eventId") Long eventId,
@@ -158,7 +166,7 @@ public class SpeakerController {
         speakerService.linkToEvent(speaker, speech, event);
     }
 
-    @RequestMapping(value = "events/{eventId}/speeches/{speechId}/speakers/{speakerId}",
+    @RequestMapping(value = "/events/{eventId}/speeches/{speechId}/speakers/{speakerId}",
                     method = RequestMethod.DELETE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public void removeFromEventSpeakerView(@PathVariable("eventId") Long eventId,

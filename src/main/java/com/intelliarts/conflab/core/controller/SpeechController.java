@@ -7,7 +7,6 @@ import com.intelliarts.conflab.core.entity.Speech;
 import com.intelliarts.conflab.core.service.EventService;
 import com.intelliarts.conflab.core.service.SpeakerService;
 import com.intelliarts.conflab.core.service.SpeechService;
-import com.intelliarts.conflab.core.service.SpeechSpeakerService;
 import com.intelliarts.conflab.security.HasAuthority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,8 +36,7 @@ public class SpeechController {
     private EventService   eventService;
 
     @Autowired
-    public SpeechController(SpeechService speechService, SpeakerService speakerService, EventService eventService,
-            SpeechSpeakerService speechSpeakerService) {
+    public SpeechController(SpeechService speechService, SpeakerService speakerService, EventService eventService) {
         this.speechService = speechService;
         this.speakerService = speakerService;
         this.eventService = eventService;
@@ -138,7 +136,15 @@ public class SpeechController {
         return speechService.findBySpeaker(speaker);
     }
 
-    @RequestMapping(value = "events/{eventId}/speakers/{speakerId}/speeches",
+    @RequestMapping(value = "/events/{id}/speeches",
+                    method = RequestMethod.GET,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
+    public Set<Speech> findByEventId(@PathVariable("id") Long id) {
+        Event event = eventService.findById(id);
+        return speechService.findByEvent(event);
+    }
+
+    @RequestMapping(value = "/events/{eventId}/speakers/{speakerId}/speeches",
                     method = GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public Set<Speech> findByEventAndSpeaker(@PathVariable("speakerId") Long speakerId,
@@ -146,7 +152,7 @@ public class SpeechController {
         return speechService.findByEventAndSpeaker(eventId, speakerId);
     }
 
-    @RequestMapping(value = "events/{eventId}/speakers/{speakerId}/speeches",
+    @RequestMapping(value = "/events/{eventId}/speakers/{speakerId}/speeches",
                     method = POST,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public Speech createAndLinkToEvent(@PathVariable("speakerId") Long speakerId, @PathVariable("eventId") Long eventId,
@@ -156,7 +162,7 @@ public class SpeechController {
         return speechService.createAndLinkToEvent(speech, speaker, event);
     }
 
-    @RequestMapping(value = "events/{eventId}/speakers/{speakerId}/speeches/{speechId}",
+    @RequestMapping(value = "/events/{eventId}/speakers/{speakerId}/speeches/{speechId}",
                     method = PUT,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public void linkToEvent(@PathVariable("speakerId") Long speakerId, @PathVariable("eventId") Long eventId,
@@ -167,7 +173,7 @@ public class SpeechController {
         speechService.linkToEvent(speech, speaker, event);
     }
 
-    @RequestMapping(value = "events/{eventId}/speakers/{speakerId}/speeches/{speechId}",
+    @RequestMapping(value = "/events/{eventId}/speakers/{speakerId}/speeches/{speechId}",
                     method = RequestMethod.DELETE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public void removeFromEventSpeakerView(@PathVariable("eventId") Long eventId,

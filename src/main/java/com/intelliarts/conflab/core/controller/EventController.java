@@ -1,11 +1,7 @@
 package com.intelliarts.conflab.core.controller;
 
 import com.intelliarts.conflab.core.entity.Event;
-import com.intelliarts.conflab.core.entity.Speaker;
-import com.intelliarts.conflab.core.entity.Speech;
 import com.intelliarts.conflab.core.service.EventService;
-import com.intelliarts.conflab.core.service.SpeakerService;
-import com.intelliarts.conflab.core.service.SpeechService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,14 +20,10 @@ import java.util.List;
 public class EventController {
 
     private EventService eventService;
-    private SpeechService speechService;
-    private SpeakerService speakerService;
 
     @Autowired
-    public EventController(EventService eventService, SpeechService speechService, SpeakerService speakerService) {
+    public EventController(EventService eventService) {
         this.eventService = eventService;
-        this.speechService = speechService;
-        this.speakerService = speakerService;
     }
 
     @RequestMapping(method = RequestMethod.GET,
@@ -62,21 +54,5 @@ public class EventController {
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public Event findById(@PathVariable("id") Long id) {
         return eventService.findById(id);
-    }
-
-    @RequestMapping(value = "/{id}/speakers",
-                    method = RequestMethod.GET,
-                    produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Speaker> getSpeakersByEventId(@PathVariable("id") Long id) {
-        Event event = eventService.findById(id);
-        return speakerService.findByEvent(event);
-    }
-
-    @RequestMapping(value = "/{id}/speeches",
-                    method = RequestMethod.GET,
-                    produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Speech> getSpeechesByEventId(@PathVariable("id") Long id) {
-        Event event = eventService.findById(id);
-        return speechService.findByEvent(event);
     }
 }

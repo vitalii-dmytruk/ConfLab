@@ -81,7 +81,9 @@ define([
         deferred = view.collection.find({id: id}) ?
                    $.Deferred().resolve() :
                    addModel(model, view.collection);
-        deferred.done(hideEditView(view));
+        deferred.done(function(){
+            hideEditView(view)
+        });
     }
 
     function addModel(model, collection) {

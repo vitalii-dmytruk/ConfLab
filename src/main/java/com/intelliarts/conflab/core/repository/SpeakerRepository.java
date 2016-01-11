@@ -5,18 +5,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Set;
 
 @Repository
 public interface SpeakerRepository extends BaseRepository<Speaker, Long> {
 
-    @Query(value = "SELECT speaker " +
+    @Query(value = "SELECT DISTINCT speaker " +
                    "FROM EventSpeechSpeaker eventSpeechSpeaker " +
                    "JOIN eventSpeechSpeaker.speechSpeaker speechSpeaker " +
                    "JOIN speechSpeaker.speaker speaker " +
                    "WHERE eventSpeechSpeaker.event.id=:eventId")
-    List<Speaker> findByEventId(@Param("eventId") Long eventId);
+    Set<Speaker> findByEventId(@Param("eventId") Long eventId);
 
     @Query(value = "SELECT speaker " +
                    "FROM Speaker speaker " +
