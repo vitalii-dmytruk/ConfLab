@@ -11,7 +11,7 @@ import java.util.Set;
 @Repository
 public interface SpeechRepository extends BaseRepository<Speech, Long> {
 
-    @Query(value = "SELECT speech " +
+    @Query(value = "SELECT DISTINCT speech " +
                    "FROM EventSpeechSpeaker eventSpeechSpeaker " +
                    "JOIN eventSpeechSpeaker.speechSpeaker speechSpeaker " +
                    "JOIN speechSpeaker.speech speech " +
