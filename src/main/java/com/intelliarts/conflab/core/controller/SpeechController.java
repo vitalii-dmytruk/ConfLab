@@ -160,28 +160,29 @@ public class SpeechController {
     @RequestMapping(value = "/events/{eventId}/speakers/{speakerId}/speeches",
                     method = POST,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public Speech createAndLinkToEvent(@PathVariable("speakerId") Long speakerId, @PathVariable("eventId") Long eventId,
+    public Speech createAndLinkToEventSpeaker(@PathVariable("speakerId") Long speakerId, @PathVariable("eventId") Long
+            eventId,
             @RequestBody @Validated Speech speech) {
         Event event = eventService.findById(eventId);
         Speaker speaker = speakerService.findById(speakerId);
-        return speechService.createAndLinkToEvent(speech, speaker, event);
+        return speechService.createAndLinkToEventSpeaker(speech, speaker, event);
     }
 
     @RequestMapping(value = "/events/{eventId}/speakers/{speakerId}/speeches/{speechId}",
                     method = PUT,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public void linkToEvent(@PathVariable("speakerId") Long speakerId, @PathVariable("eventId") Long eventId,
+    public void linkToEventSpeaker(@PathVariable("speakerId") Long speakerId, @PathVariable("eventId") Long eventId,
             @PathVariable("speechId") Long speechId) {
-        Speech speech = speechService.findById(speechId);
-        Speaker speaker = speakerService.findById(speakerId);
         Event event = eventService.findById(eventId);
-        speechService.linkToEvent(speech, speaker, event);
+        Speaker speaker = speakerService.findById(speakerId);
+        Speech speech = speechService.findById(speechId);
+        speechService.linkToEventSpeaker(speech, speaker, event);
     }
 
     @RequestMapping(value = "/events/{eventId}/speakers/{speakerId}/speeches/{speechId}",
                     method = RequestMethod.DELETE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public void removeFromEventSpeakerView(@PathVariable("eventId") Long eventId,
+    public void removeFromEventSpeaker(@PathVariable("eventId") Long eventId,
             @PathVariable("speechId") Long speechId) {
         Event event = eventService.findById(eventId);
         Speech speech = speechService.findById(speechId);

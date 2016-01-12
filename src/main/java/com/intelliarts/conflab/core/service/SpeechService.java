@@ -1,6 +1,7 @@
 package com.intelliarts.conflab.core.service;
 
 import com.intelliarts.conflab.core.entity.Event;
+import com.intelliarts.conflab.core.entity.EventSpeechSpeaker;
 import com.intelliarts.conflab.core.entity.Speaker;
 import com.intelliarts.conflab.core.entity.Speech;
 import com.intelliarts.conflab.core.entity.SpeechSpeaker;
@@ -11,8 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class SpeechService {
@@ -90,34 +93,47 @@ public class SpeechService {
     }
 
     @Transactional
-    public Speech createAndLinkToEvent(Speech speech, Speaker speaker, Event event) {
+    public Speech createAndLinkToEventSpeaker(Speech speech, Speaker speaker, Event event) {
         Speech createdSpeech = create(speech);
         SpeechSpeaker speechSpeaker = linkToSpeaker(speech, speaker);
-        eventSpeechSpeakerService.createEventSpeechSpeakerLink(event, speechSpeaker);
+        eventSpeechSpeakerService.create(new EventSpeechSpeaker(event, speechSpeaker));
         return createdSpeech;
     }
 
     @Transactional
     public Speech createAndLinkToEvent(Speech speech, Event event) {
         Speech createdSpeech = create(speech);
-        linkToEvent(speech, null, event);
+        linkToEvent(createdSpeech, event);
         return createdSpeech;
     }
 
     @Transactional
     public void linkToEvent(Speech speech, Event event) {
         Set<SpeechSpeaker> speechSpeakers = speechSpeakerService.findBySpeech(speech);
-        eventSpeechSpeakerService.createEventSpeechSpeakerLinks(event, speechSpeakers);
+        if (speechSpeakers.size() == 1) {
+            eventSpeechSpeakerService.create(new EventSpeechSpeaker(event, speechSpeakers.iterator().next()));
+        } else {
+            eventSpeechSpeakerService.create(getEventSpeechSpeakers(event, speechSpeakers));
+
+        }
     }
 
     @Transactional
-    public void linkToEvent(Speech speech, Speaker speaker, Event event) {
+    public void linkToEventSpeaker(Speech speech, Speaker speaker, Event event) {
+        eventSpeechSpeakerService.deleteByEventAndSpeechAndSpeaker(event.getId(), speech.getId(), null);
         SpeechSpeaker speechSpeaker = speechSpeakerService.findBySpeechAndSpeaker(speech, speaker);
-        eventSpeechSpeakerService.createEventSpeechSpeakerLink(event, speechSpeaker);
+        eventSpeechSpeakerService.create(new EventSpeechSpeaker(event, speechSpeaker));
     }
 
     @Transactional
     public void unlinkFromEvent(Speech speech, Event event) {
-        eventSpeechSpeakerService.deleteSpeechFromEvent(speech, event);
+        eventSpeechSpeakerService.deleteByEventAndSpeech(event, speech);
+    }
+
+    private Set<EventSpeechSpeaker> getEventSpeechSpeakers(Event event, Set<SpeechSpeaker> speechSpeakers) {
+        return speechSpeakers.stream()
+                             .filter(speechSpeaker -> Objects.nonNull(speechSpeaker.getSpeaker()))
+                             .map(speechSpeaker -> new EventSpeechSpeaker(event, speechSpeaker))
+                             .collect(Collectors.toSet());
     }
 }
