@@ -12,18 +12,13 @@ define([
     'use strict';
 
     return Marionette.Object.extend({
+        props: [
+            'itemRowTemplate', 'itemShowTemplate', 'itemEditTemplate', 'showBindings', 'editBindings', 'rowBindings',
+            'title', 'tableTitle', 'searchLabelAttribute'
+        ],
 
         initialize: function (options) {
-            this.itemRowTemplate      = options.itemRowTemplate;
-            this.itemShowTemplate     = options.itemShowTemplate;
-            this.itemEditTemplate     = options.itemEditTemplate;
-            this.bindings             = options.bindings;
-            this.showBindings         = options.showBindings;
-            this.editBindings         = options.editBindings;
-            this.rowBindings          = options.rowBindings;
-            this.title                = options.title;
-            this.tableTitle           = options.tableTitle;
-            this.searchLabelAttribute = options.searchLabelAttribute;
+            this.mergeOptions(options, this.props);
 
             this.itemEditView = EditView.extend({
                 template  : _.template(this.itemEditTemplate),
