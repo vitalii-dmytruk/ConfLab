@@ -18,7 +18,7 @@ public interface EventSpeechSpeakerRepository extends BaseRepository<EventSpeech
                    "    FROM SpeechSpeaker speechSpeaker " +
                    "    WHERE speechSpeaker.speaker.id = :speakerId" +
                    ")")
-    void deleteBySpeakerId(@Param("speakerId") Long speakerId, @Param("eventId") Long eventId);
+    void deleteByEventAndSpeaker(@Param("eventId") Long eventId, @Param("speakerId") Long speakerId);
 
     @Modifying
     @Query(value = "DELETE " +
@@ -29,7 +29,7 @@ public interface EventSpeechSpeakerRepository extends BaseRepository<EventSpeech
                    "    FROM SpeechSpeaker speechSpeaker " +
                    "    WHERE speechSpeaker.speech.id = :speechId" +
                    ")")
-    void deleteBySpeechId(@Param("speechId") Long speechId, @Param("eventId") Long eventId);
+    void deleteByEventAndSpeech(@Param("eventId") Long eventId, @Param("speechId") Long speechId);
 
 
     @Modifying

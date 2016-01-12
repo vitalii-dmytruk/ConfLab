@@ -30,11 +30,11 @@ public class EventSpeechSpeakerService {
     }
 
     public void deleteByEventAndSpeaker(Event event, Speaker speaker) {
-        eventSpeechSpeakerRepository.deleteBySpeakerId(speaker.getId(), event.getId());
+        eventSpeechSpeakerRepository.deleteByEventAndSpeaker(event.getId(), speaker.getId());
     }
 
     public void deleteByEventAndSpeech(Event event, Speech speech) {
-        eventSpeechSpeakerRepository.deleteBySpeechId(speech.getId(), event.getId());
+        eventSpeechSpeakerRepository.deleteByEventAndSpeech(event.getId(), speech.getId());
     }
 
     public void deleteByEventAndSpeechAndSpeaker(Long eventId, Long speechId, Long speakerId) {
