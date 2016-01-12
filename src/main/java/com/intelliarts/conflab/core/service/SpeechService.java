@@ -101,6 +101,18 @@ public class SpeechService {
     }
 
     @Transactional
+    public void linkToEventSpeaker(Speech speech, Speaker speaker, Event event) {
+        eventSpeechSpeakerService.deleteByEventAndSpeechAndSpeaker(event.getId(), speech.getId(), null);
+        SpeechSpeaker speechSpeaker = speechSpeakerService.findBySpeechAndSpeaker(speech, speaker);
+        eventSpeechSpeakerService.create(new EventSpeechSpeaker(event, speechSpeaker));
+    }
+
+    @Transactional
+    public void unlinkFromEventSpeaker(Speech speech, Speaker speaker, Event event) {
+        eventSpeechSpeakerService.deleteByEventAndSpeechAndSpeaker(event.getId(), speech.getId(), speaker.getId());
+    }
+
+    @Transactional
     public Speech createAndLinkToEvent(Speech speech, Event event) {
         Speech createdSpeech = create(speech);
         linkToEvent(createdSpeech, event);
@@ -117,25 +129,13 @@ public class SpeechService {
         }
     }
 
-    private boolean hasSpeakers(Set<SpeechSpeaker> speechSpeakers) {
-        return speechSpeakers.size() > 1;
-    }
-
-    @Transactional
-    public void linkToEventSpeaker(Speech speech, Speaker speaker, Event event) {
-        eventSpeechSpeakerService.deleteByEventAndSpeechAndSpeaker(event.getId(), speech.getId(), null);
-        SpeechSpeaker speechSpeaker = speechSpeakerService.findBySpeechAndSpeaker(speech, speaker);
-        eventSpeechSpeakerService.create(new EventSpeechSpeaker(event, speechSpeaker));
-    }
-
     @Transactional
     public void unlinkFromEvent(Speech speech, Event event) {
         eventSpeechSpeakerService.deleteByEventAndSpeech(event, speech);
     }
 
-    @Transactional
-    public void unlinkFromEventSpeaker(Speech speech, Speaker speaker, Event event) {
-        eventSpeechSpeakerService.deleteByEventAndSpeechAndSpeaker(event.getId(), speech.getId(), speaker.getId());
+    private boolean hasSpeakers(Set<SpeechSpeaker> speechSpeakers) {
+        return speechSpeakers.size() > 1;
     }
 
     private Set<EventSpeechSpeaker> getEventSpeechSpeakers(Event event, Set<SpeechSpeaker> speechSpeakers) {
