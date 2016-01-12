@@ -21,9 +21,10 @@ define([
                 required : true,
                 maxLength: 255
             },
-            lang : {
-                maxLength: 8,
-                msg      : 'Language must be at most 8 characters'
+            lang : function (value) {
+                if (value != null && value.length > 8) {
+                    return "Language must be at most 8 characters";
+                }
             }
         }
     });
