@@ -3,21 +3,20 @@ package com.intelliarts.conflab.core.entity;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.intelliarts.conflab.core.entity.converter.LocaleToLanguageConverter;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import java.util.Locale;
 import java.util.Set;
 
 @Entity
@@ -40,9 +39,9 @@ public class Speech {
     @NotEmpty
     private String title;
 
-    @Column
-    @Convert(converter = LocaleToLanguageConverter.class)
-    private Locale lang;
+    @ManyToOne
+    @JoinColumn(name = "lang_id")
+    private Language lang;
 
     @JsonIgnore
     @OneToMany(mappedBy = "speech")
@@ -72,11 +71,11 @@ public class Speech {
         this.title = title;
     }
 
-    public Locale getLang() {
+    public Language getLang() {
         return lang;
     }
 
-    public void setLang(Locale lang) {
+    public void setLang(Language lang) {
         this.lang = lang;
     }
 
