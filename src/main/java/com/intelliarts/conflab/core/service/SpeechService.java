@@ -110,12 +110,15 @@ public class SpeechService {
     @Transactional
     public void linkToEvent(Speech speech, Event event) {
         Set<SpeechSpeaker> speechSpeakers = speechSpeakerService.findBySpeech(speech);
-        if (speechSpeakers.size() == 1) {
-            eventSpeechSpeakerService.create(new EventSpeechSpeaker(event, speechSpeakers.iterator().next()));
-        } else {
+        if (hasSpeakers(speechSpeakers)) {
             eventSpeechSpeakerService.create(getEventSpeechSpeakers(event, speechSpeakers));
-
+        } else {
+            eventSpeechSpeakerService.create(new EventSpeechSpeaker(event, speechSpeakers.iterator().next()));
         }
+    }
+
+    private boolean hasSpeakers(Set<SpeechSpeaker> speechSpeakers) {
+        return speechSpeakers.size() > 1;
     }
 
     @Transactional
