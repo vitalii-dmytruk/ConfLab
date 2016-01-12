@@ -85,26 +85,41 @@ public class SpeakerService {
     }
 
     @Transactional
-    public Speaker createAndLinkToEvent(Speaker speaker, Speech speech, Event event) {
+    public Speaker createAndLinkToEventSpeech(Speaker speaker, Speech speech,  Event event) {
         Speaker createdSpeaker = create(speaker);
-        linkToEvent(createdSpeaker, speech, event);
+        SpeechSpeaker speechSpeaker = linkToSpeech(createdSpeaker, speech);
+        eventSpeechSpeakerService.create(new EventSpeechSpeaker(event, speechSpeaker));
         return createdSpeaker;
     }
 
     @Transactional
-    public void unlinkFromEvent(Speaker speaker, Event event) {
-        eventSpeechSpeakerService.deleteByEventAndSpeaker(event, speaker);
-    }
-
-    @Transactional
-    public void linkToEvent(Speaker speaker, Speech speech, Event event) {
-        SpeechSpeaker speechSpeaker = speechSpeakerService.findOrCreate(speech, speaker);
+    public void linkToEventSpeech(Speaker speaker, Speech speech, Event event) {
+        eventSpeechSpeakerService.deleteByEventAndSpeechAndSpeaker(event.getId(), null, speaker.getId());
+        SpeechSpeaker speechSpeaker = speechSpeakerService.findBySpeechAndSpeaker(speech, speaker);
         eventSpeechSpeakerService.create(new EventSpeechSpeaker(event, speechSpeaker));
     }
 
     @Transactional
     public void unlinkFromEventSpeech(Speaker speaker, Speech speech, Event event) {
         eventSpeechSpeakerService.deleteByEventAndSpeechAndSpeaker(event.getId(), speech.getId(), speaker.getId());
+    }
+
+    @Transactional
+    public Speaker createAndLinkToEvent(Speaker speaker, Event event) {
+        Speaker createdSpeaker = create(speaker);
+        linkToEvent(createdSpeaker,event);
+        return createdSpeaker;
+    }
+
+    @Transactional
+    public void linkToEvent(Speaker speaker, Event event) {
+        SpeechSpeaker speechSpeaker = speechSpeakerService.findBySpeechAndSpeaker(null, speaker);
+        eventSpeechSpeakerService.create(new EventSpeechSpeaker(event, speechSpeaker));
+    }
+
+    @Transactional
+    public void unlinkFromEvent(Speaker speaker, Event event) {
+        eventSpeechSpeakerService.deleteByEventAndSpeaker(event, speaker);
     }
 
 }

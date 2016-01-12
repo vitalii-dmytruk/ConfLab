@@ -78,7 +78,7 @@ public class SpeakerController {
     public Speaker createAndLinkToEvent(@PathVariable("eventId") Long eventId,
             @RequestBody @Validated Speaker speaker) {
         Event event = eventService.findById(eventId);
-        return speakerService.createAndLinkToEvent(speaker, null, event);
+        return speakerService.createAndLinkToEvent(speaker, event);
     }
 
     @RequestMapping(value = "/events/{eventId}/speakers/{speakerId}",
@@ -88,7 +88,7 @@ public class SpeakerController {
     public void linkToEvent(@PathVariable("eventId") Long eventId, @PathVariable("speakerId") Long speakerId) {
         Event event = eventService.findById(eventId);
         Speaker speaker = speakerService.findById(speakerId);
-        speakerService.linkToEvent(speaker, null, event);
+        speakerService.linkToEvent(speaker, event);
     }
 
     @RequestMapping(value = "/events/{eventId}/speakers/{speakerId}",
@@ -150,11 +150,11 @@ public class SpeakerController {
     @RequestMapping(value = "/events/{eventId}/speeches/{speechId}/speakers",
                     method = POST,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public Speaker createAndLinkToEvent(@PathVariable("speechId") Long speechId, @PathVariable("eventId") Long eventId,
-            @RequestBody @Validated Speaker speaker) {
+    public Speaker createAndLinkToEventSpeech(@PathVariable("eventId") Long eventId,
+            @PathVariable("speechId") Long speechId, @RequestBody @Validated Speaker speaker) {
         Event event = eventService.findById(eventId);
         Speech speech = speechService.findById(speechId);
-        return speakerService.createAndLinkToEvent(speaker, speech, event);
+        return speakerService.createAndLinkToEventSpeech(speaker, speech, event);
     }
 
     @RequestMapping(value = "/events/{eventId}/speeches/{speechId}/speakers/{speakerId}",
@@ -165,7 +165,7 @@ public class SpeakerController {
         Speaker speaker = speakerService.findById(speakerId);
         Speech speech = speechService.findById(speechId);
         Event event = eventService.findById(eventId);
-        speakerService.linkToEvent(speaker, speech, event);
+        speakerService.linkToEventSpeech(speaker, speech, event);
     }
 
     @RequestMapping(value = "/events/{eventId}/speeches/{speechId}/speakers/{speakerId}",
