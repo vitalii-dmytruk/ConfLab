@@ -17,4 +17,6 @@ public interface BaseRepository<T, ID extends Serializable> extends Repository<T
     T save(T persisted);
 
     void delete(ID id);
+
+    <S extends T> List<S> save(Iterable<S> entities);
 }

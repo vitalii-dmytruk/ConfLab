@@ -9,6 +9,9 @@ import com.intelliarts.conflab.core.repository.EventSpeechSpeakerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Set;
+
 @Service
 public class EventSpeechSpeakerService {
 
@@ -19,15 +22,28 @@ public class EventSpeechSpeakerService {
         this.eventSpeechSpeakerRepository = eventSpeechSpeakerRepository;
     }
 
-    public void createEventSpeechSpeakerLink(Event event, SpeechSpeaker speechSpeaker){
+    public EventSpeechSpeaker create(EventSpeechSpeaker eventSpeechSpeaker) {
+        return eventSpeechSpeakerRepository.save(eventSpeechSpeaker);
+    }
+
+    public List<EventSpeechSpeaker> create(Set<EventSpeechSpeaker> eventSpeechSpeakers) {
+        return eventSpeechSpeakerRepository.save(eventSpeechSpeakers);
+    }
+
+    public void createEventSpeechSpeakerLink(Event event, SpeechSpeaker speechSpeaker) {
         eventSpeechSpeakerRepository.save(new EventSpeechSpeaker(event, speechSpeaker));
     }
 
-    public void deleteSpeakerFromEvent(Speaker speaker, Event event) {
+    public void deleteByEventAndSpeaker(Event event, Speaker speaker) {
         eventSpeechSpeakerRepository.deleteBySpeakerId(speaker.getId(), event.getId());
     }
 
-    public void deleteSpeechFromEvent(Speech speech, Event event) {
+    public void deleteByEventAndSpeech(Event event, Speech speech) {
         eventSpeechSpeakerRepository.deleteBySpeechId(speech.getId(), event.getId());
     }
+
+    public void deleteByEventAndSpeechAndSpeaker(Long eventId, Long speechId, Long speakerId) {
+        eventSpeechSpeakerRepository.deleteByEventAndSpeechAndSpeaker(eventId, speechId, speakerId);
+    }
+
 }

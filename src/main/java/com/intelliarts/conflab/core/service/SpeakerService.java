@@ -102,6 +102,6 @@ public class SpeakerService {
     }
 
     private void unlinkFromEvent(Speaker speaker, Event event) {
-        eventSpeechSpeakerService.deleteSpeakerFromEvent(speaker, event);
+        eventSpeechSpeakerService.deleteByEventAndSpeaker(event, speaker);
     }
 }
