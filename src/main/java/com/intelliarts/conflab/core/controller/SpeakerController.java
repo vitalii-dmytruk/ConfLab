@@ -67,7 +67,8 @@ public class SpeakerController {
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public void linkToSpeech(@PathVariable("speechId") Long speechId, @PathVariable("speakerId") Long speakerId) {
         Speech speech = speechService.findById(speechId);
-        speakerService.linkToSpeech(speakerId, speech);
+        Speaker speaker = speakerService.findById(speakerId);
+        speakerService.linkToSpeech(speaker, speech);
     }
 
     @RequestMapping(value = "/events/{eventId}/speakers", method = POST,
@@ -95,7 +96,8 @@ public class SpeakerController {
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public void unlinkFromEvent(@PathVariable("eventId") Long eventId, @PathVariable("speakerId") Long speakerId) {
         Event event = eventService.findById(eventId);
-        speakerService.unlinkFromEvent(speakerId, event);
+        Speaker speaker = speakerService.findById(speakerId);
+        speakerService.unlinkFromEvent(speaker, event);
     }
 
     @RequestMapping(value = "/speakers/{id}",

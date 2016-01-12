@@ -8,9 +8,9 @@ import com.intelliarts.conflab.core.entity.SpeechSpeaker;
 import com.intelliarts.conflab.core.repository.SpeakerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -30,9 +30,30 @@ public class SpeakerService {
         this.eventSpeechSpeakerService = eventSpeechSpeakerService;
     }
 
+    @Transactional(readOnly = true)
+    public List<Speaker> findAll() {
+        return speakerRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
     public Speaker findById(Long id) {
         Optional<Speaker> speaker = speakerRepository.findOne(id);
         return speaker.orElseThrow(() -> new EntityNotFoundException("Speaker with ID '" + id + "' not found."));
+    }
+
+    @Transactional(readOnly = true)
+    public Set<Speaker> findBySpeech(Speech speech) {
+        return speakerRepository.findBySpeechId(speech.getId());
+    }
+
+    @Transactional(readOnly = true)
+    public Set<Speaker> findByEvent(Event event) {
+        return speakerRepository.findByEventId(event.getId());
+    }
+
+    @Transactional(readOnly = true)
+    public Set<Speaker> findByEventAndSpeech(Long eventId, Long speechId) {
+        return speakerRepository.findByEventAndSpeech(eventId, speechId);
     }
 
     @Transactional
@@ -44,6 +65,14 @@ public class SpeakerService {
     }
 
     @Transactional
+    public Speaker update(Speaker speaker) {
+        if (speaker.getId() == null) {
+            throw new IllegalArgumentException("Speaker Id is not specified");
+        }
+        return speakerRepository.save(speaker);
+    }
+
+    @Transactional
     public Speaker createAndLinkToSpeech(Speaker speaker, Speech speech) {
         Speaker createdSpeaker = create(speaker);
         linkToSpeech(createdSpeaker, speech);
@@ -51,9 +80,8 @@ public class SpeakerService {
     }
 
     @Transactional
-    public SpeechSpeaker linkToSpeech(Long speakerId, Speech speech) {
-        Speaker speaker = findById(speakerId);
-        return linkToSpeech(speaker, speech);
+    public SpeechSpeaker linkToSpeech(Speaker speaker, Speech speech) {
+        return speechSpeakerService.createSpeechSpeakerLink(speech, speaker);
     }
 
     @Transactional
@@ -64,49 +92,19 @@ public class SpeakerService {
     }
 
     @Transactional
-    public void unlinkFromEvent(Long speakerId, Event event) {
-        Speaker speaker = findById(speakerId);
-        unlinkFromEvent(speaker, event);
+    public void unlinkFromEvent(Speaker speaker, Event event) {
+        eventSpeechSpeakerService.deleteByEventAndSpeaker(event, speaker);
     }
 
     @Transactional
-    public Speaker update(Speaker speaker) {
-        if (speaker.getId() == null) {
-            throw new IllegalArgumentException("Speaker Id is not specified");
-        }
-        return speakerRepository.save(speaker);
-    }
-
-    public List<Speaker> findAll() {
-        return speakerRepository.findAll();
-    }
-
-    public Set<Speaker> findBySpeech(Speech speech) {
-        return speakerRepository.findBySpeechId(speech.getId());
-    }
-
-    public Set<Speaker> findByEvent(Event event) {
-        return speakerRepository.findByEventId(event.getId());
-    }
-
-    public Set<Speaker> findByEventAndSpeech(Long eventId, Long speechId) {
-        return speakerRepository.findByEventAndSpeech(eventId, speechId);
-    }
-
     public void linkToEvent(Speaker speaker, Speech speech, Event event) {
         SpeechSpeaker speechSpeaker = speechSpeakerService.findOrCreate(speech, speaker);
         eventSpeechSpeakerService.create(new EventSpeechSpeaker(event, speechSpeaker));
     }
 
+    @Transactional
     public void unlinkFromEventSpeech(Speaker speaker, Speech speech, Event event) {
         eventSpeechSpeakerService.deleteByEventAndSpeechAndSpeaker(event.getId(), speech.getId(), speaker.getId());
     }
 
-    private SpeechSpeaker linkToSpeech(Speaker speaker, Speech speech) {
-        return speechSpeakerService.createSpeechSpeakerLink(speech, speaker);
-    }
-
-    private void unlinkFromEvent(Speaker speaker, Event event) {
-        eventSpeechSpeakerService.deleteByEventAndSpeaker(event, speaker);
-    }
 }
