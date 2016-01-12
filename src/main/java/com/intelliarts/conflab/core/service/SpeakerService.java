@@ -1,6 +1,7 @@
 package com.intelliarts.conflab.core.service;
 
 import com.intelliarts.conflab.core.entity.Event;
+import com.intelliarts.conflab.core.entity.EventSpeechSpeaker;
 import com.intelliarts.conflab.core.entity.Speaker;
 import com.intelliarts.conflab.core.entity.Speech;
 import com.intelliarts.conflab.core.entity.SpeechSpeaker;
@@ -94,7 +95,11 @@ public class SpeakerService {
 
     public void linkToEvent(Speaker speaker, Speech speech, Event event) {
         SpeechSpeaker speechSpeaker = speechSpeakerService.findOrCreate(speech, speaker);
-        eventSpeechSpeakerService.createEventSpeechSpeakerLink(event, speechSpeaker);
+        eventSpeechSpeakerService.create(new EventSpeechSpeaker(event, speechSpeaker));
+    }
+
+    public void unlinkFromEventSpeech(Speaker speaker, Speech speech, Event event) {
+        eventSpeechSpeakerService.deleteByEventAndSpeechAndSpeaker(event.getId(), speech.getId(), speaker.getId());
     }
 
     private SpeechSpeaker linkToSpeech(Speaker speaker, Speech speech) {

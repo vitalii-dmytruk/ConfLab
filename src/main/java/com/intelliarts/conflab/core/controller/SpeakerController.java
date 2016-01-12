@@ -169,9 +169,11 @@ public class SpeakerController {
     @RequestMapping(value = "/events/{eventId}/speeches/{speechId}/speakers/{speakerId}",
                     method = RequestMethod.DELETE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public void removeFromEventSpeaker(@PathVariable("eventId") Long eventId,
+    public void removeFromEventSpeech(@PathVariable("eventId") Long eventId, @PathVariable("speechId") Long speechId,
             @PathVariable("speakerId") Long speakerId) {
         Event event = eventService.findById(eventId);
-        speakerService.unlinkFromEvent(speakerId, event);
+        Speaker speaker = speakerService.findById(speakerId);
+        Speech speech = speechService.findById(speechId);
+        speakerService.unlinkFromEventSpeech(speaker, speech, event);
     }
 }

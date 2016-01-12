@@ -160,9 +160,8 @@ public class SpeechController {
     @RequestMapping(value = "/events/{eventId}/speakers/{speakerId}/speeches",
                     method = POST,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public Speech createAndLinkToEventSpeaker(@PathVariable("speakerId") Long speakerId, @PathVariable("eventId") Long
-            eventId,
-            @RequestBody @Validated Speech speech) {
+    public Speech createAndLinkToEventSpeaker(@PathVariable("speakerId") Long speakerId,
+            @PathVariable("eventId") Long eventId, @RequestBody @Validated Speech speech) {
         Event event = eventService.findById(eventId);
         Speaker speaker = speakerService.findById(speakerId);
         return speechService.createAndLinkToEventSpeaker(speech, speaker, event);
@@ -182,10 +181,11 @@ public class SpeechController {
     @RequestMapping(value = "/events/{eventId}/speakers/{speakerId}/speeches/{speechId}",
                     method = RequestMethod.DELETE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public void removeFromEventSpeaker(@PathVariable("eventId") Long eventId,
+    public void removeFromEventSpeaker(@PathVariable("eventId") Long eventId, @PathVariable("speakerId") Long speakerId,
             @PathVariable("speechId") Long speechId) {
         Event event = eventService.findById(eventId);
+        Speaker speaker = speakerService.findById(speakerId);
         Speech speech = speechService.findById(speechId);
-        speechService.unlinkFromEvent(speech, event);
+        speechService.unlinkFromEventSpeaker(speech, speaker, event);
     }
 }

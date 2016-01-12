@@ -133,6 +133,11 @@ public class SpeechService {
         eventSpeechSpeakerService.deleteByEventAndSpeech(event, speech);
     }
 
+    @Transactional
+    public void unlinkFromEventSpeaker(Speech speech, Speaker speaker, Event event) {
+        eventSpeechSpeakerService.deleteByEventAndSpeechAndSpeaker(event.getId(), speech.getId(), speaker.getId());
+    }
+
     private Set<EventSpeechSpeaker> getEventSpeechSpeakers(Event event, Set<SpeechSpeaker> speechSpeakers) {
         return speechSpeakers.stream()
                              .filter(speechSpeaker -> Objects.nonNull(speechSpeaker.getSpeaker()))
