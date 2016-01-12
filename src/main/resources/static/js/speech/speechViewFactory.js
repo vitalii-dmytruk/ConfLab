@@ -24,12 +24,22 @@ define([
         bindings: {
             '#title'      : 'title',
             '#description': 'description',
-            '#lang'       : 'lang'
+            '#lang'       : {
+                observe: 'lang',
+                onGet  : function (value) {
+                    return value.name;
+                }
+            }
         },
 
         rowBindings: {
             '[data-speech-title]'      : 'title',
-            '[data-speech-lang]'       : 'lang',
+            '[data-speech-lang]'       : {
+                observe: 'lang',
+                onGet  : function (value) {
+                    return value.name;
+                }
+            },
             '[data-speech-description]': {
                 observe: 'description',
                 onGet  : function (value) {
