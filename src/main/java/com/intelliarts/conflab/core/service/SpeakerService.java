@@ -52,8 +52,8 @@ public class SpeakerService {
     }
 
     @Transactional(readOnly = true)
-    public Set<Speaker> findByEventAndSpeech(Long eventId, Long speechId) {
-        return speakerRepository.findByEventAndSpeech(eventId, speechId);
+    public Set<Speaker> findByEventAndSpeech(Event event, Speech speech) {
+        return speakerRepository.findByEventAndSpeech(event.getId(), speech.getId());
     }
 
     @Transactional
@@ -85,7 +85,7 @@ public class SpeakerService {
     }
 
     @Transactional
-    public Speaker createAndLinkToEventSpeech(Speaker speaker, Speech speech,  Event event) {
+    public Speaker createAndLinkToEventSpeech(Speaker speaker, Speech speech, Event event) {
         Speaker createdSpeaker = create(speaker);
         SpeechSpeaker speechSpeaker = linkToSpeech(createdSpeaker, speech);
         eventSpeechSpeakerService.create(new EventSpeechSpeaker(event, speechSpeaker));
@@ -107,7 +107,7 @@ public class SpeakerService {
     @Transactional
     public Speaker createAndLinkToEvent(Speaker speaker, Event event) {
         Speaker createdSpeaker = create(speaker);
-        linkToEvent(createdSpeaker,event);
+        linkToEvent(createdSpeaker, event);
         return createdSpeaker;
     }
 

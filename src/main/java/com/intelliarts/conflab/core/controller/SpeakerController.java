@@ -142,9 +142,11 @@ public class SpeakerController {
     @RequestMapping(value = "/events/{eventId}/speeches/{speechId}/speakers",
                     method = GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public Set<Speaker> findByEventAndSpeech(@PathVariable("speechId") Long speechId,
-            @PathVariable("eventId") Long eventId) {
-        return speakerService.findByEventAndSpeech(eventId, speechId);
+    public Set<Speaker> findByEventAndSpeech(@PathVariable("eventId") Long eventId,
+            @PathVariable("speechId") Long speechId) {
+        Event event = eventService.findById(eventId);
+        Speech speech = speechService.findById(speechId);
+        return speakerService.findByEventAndSpeech(event, speech);
     }
 
     @RequestMapping(value = "/events/{eventId}/speeches/{speechId}/speakers",
