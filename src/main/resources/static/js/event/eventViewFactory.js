@@ -7,6 +7,12 @@ define([
 
     'use strict';
 
+    var bindings = {
+        '#name'       : 'name',
+        '#description': 'description',
+        '#startDate'  : 'startDate',
+        '#endDate'    : 'endDate'
+    };
     return new ItemViewFactory({
         title     : 'Conference',
         tableTitle: 'Conferences',
@@ -15,12 +21,8 @@ define([
         itemShowTemplate: EventTemplate,
         itemEditTemplate: EventEditTemplate,
 
-        bindings: {
-            '#name'       : 'name',
-            '#description': 'description',
-            '#startDate'  : 'startDate',
-            '#endDate'    : 'endDate'
-        },
+        showBindings: bindings,
+        editBindings: bindings,
 
         rowBindings: {
             '[data-event-name]'      : 'name',
