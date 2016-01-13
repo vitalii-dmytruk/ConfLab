@@ -18,6 +18,8 @@ define([
             this.itemShowTemplate     = options.itemShowTemplate;
             this.itemEditTemplate     = options.itemEditTemplate;
             this.bindings             = options.bindings;
+            this.showBindings         = options.showBindings;
+            this.editBindings         = options.editBindings;
             this.rowBindings          = options.rowBindings;
             this.title                = options.title;
             this.tableTitle           = options.tableTitle;
@@ -28,7 +30,7 @@ define([
                 attributes: {
                     style: 'position:relative;'
                 },
-                bindings  : this.bindings
+                bindings  : this.editBindings
             });
 
             this.itemShowView = this.itemEditView.extend({
@@ -37,7 +39,8 @@ define([
                     actions: {
                         behaviorClass: EditBehavior
                     }
-                }
+                },
+                bindings : this.showBindings
             });
 
             this.itemDetailsView = DetailsView.extend({
@@ -52,9 +55,9 @@ define([
             });
 
             this.itemTableView = TableView.extend({
-                title   : this.tableTitle,
-                RowView : this.itemRowView,
-                EditView: this.itemEditView,
+                title               : this.tableTitle,
+                RowView             : this.itemRowView,
+                EditView            : this.itemEditView,
                 searchLabelAttribute: this.searchLabelAttribute
             });
 

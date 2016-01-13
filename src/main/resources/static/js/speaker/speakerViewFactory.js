@@ -8,6 +8,21 @@ define([
 
     'use strict';
 
+    var bindings = {
+        '#email'   : {
+            attributes: [{
+                name   : 'href',
+                observe: 'email',
+                onGet  : function (val) {
+                    return 'mailto:' + val;
+                }
+            }],
+            observe   : 'email'
+        },
+        '#name'    : 'name',
+        '#position': 'position',
+        '#about'   : 'about'
+    };
     return new ViewFactory({
         title     : 'Speaker',
         tableTitle: 'Speakers',
@@ -16,24 +31,11 @@ define([
         itemShowTemplate: SpeakerShowTemplate,
         itemEditTemplate: SpeakerEditTemplate,
 
-        searchLabelAttribute: 'name',
+        searchLabelAttribute  : 'name',
         attachedCollectionType: SpeechCollection,
 
-        bindings: {
-            '#email'   : {
-                attributes: [{
-                    name   : 'href',
-                    observe: 'email',
-                    onGet  : function (val) {
-                        return 'mailto:' + val;
-                    }
-                }],
-                observe   : 'email'
-            },
-            '#name'    : 'name',
-            '#position': 'position',
-            '#about'   : 'about'
-        },
+        editBindings: bindings,
+        showBindings: bindings,
 
         rowBindings: {
             '[data-name]'    : 'name',

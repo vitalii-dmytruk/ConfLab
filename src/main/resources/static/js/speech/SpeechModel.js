@@ -13,7 +13,10 @@ define([
                 id         : null,
                 title      : '',
                 description: '',
-                lang       : ''
+                lang       : {
+                    id  : null,
+                    name: ''
+                }
             }
         },
         validation: {
