@@ -28,15 +28,12 @@ public class EventSpeechSpeakerService {
         this.speechSpeakerRepository = speechSpeakerRepository;
     }
 
-    public EventSpeechSpeaker create(EventSpeechSpeaker eventSpeechSpeaker) {
-        return eventSpeechSpeakerRepository.save(eventSpeechSpeaker);
-    }
-
     @Transactional
     public SpeechSpeaker createSpeechSpeakerLink(Speech speech, Speaker speaker) {
         return speechSpeakerRepository.save(new SpeechSpeaker(speech, speaker));
     }
 
+    @Transactional(readOnly = true)
     public SpeechSpeaker findSpeechSpeakerLink(Speech speech, Speaker speaker) {
         Optional<SpeechSpeaker> speechSpeaker = speechSpeakerRepository.findBySpeechAndSpeaker(speech, speaker);
         return speechSpeaker.orElseThrow(() -> new EntityNotFoundException("Speech with ID = " + speech.getId() +
@@ -44,44 +41,54 @@ public class EventSpeechSpeakerService {
                                                                            speaker.getId()));
     }
 
+    @Transactional(readOnly = true)
     public Set<SpeechSpeaker> findSpeechSpeakerLink(Speech speech) {
         return speechSpeakerRepository.findBySpeech(speech);
     }
 
+    @Transactional
     public void deleteSpeechSpeakerLink(Speech speech, Speaker speaker) {
         speechSpeakerRepository.deleteBySpeechAndSpeaker(speech, speaker);
     }
 
+    @Transactional
     public EventSpeechSpeaker createEventSpeechSpeakerLink(Event event, Speech speech, Speaker speaker) {
         SpeechSpeaker speechSpeaker = findSpeechSpeakerLink(speech, speaker);
         return eventSpeechSpeakerRepository.save(new EventSpeechSpeaker(event, speechSpeaker));
     }
 
+    @Transactional
     public EventSpeechSpeaker createEventSpeechSpeakerLink(Event event, SpeechSpeaker speechSpeaker) {
         return eventSpeechSpeakerRepository.save(new EventSpeechSpeaker(event, speechSpeaker));
     }
 
+    @Transactional
     public void deleteEventSpeechNullSpeakerLink(Event event, Speech speech) {
         eventSpeechSpeakerRepository.deleteByEventAndSpeechAndNullSpeaker(event.getId(), speech.getId());
     }
 
+    @Transactional
     public void deleteEventNullSpeechSpeakerLink(Event event, Speaker speaker) {
         eventSpeechSpeakerRepository.deleteByEventAndSpeakerAndNullSpeech(event.getId(), speaker.getId());
     }
 
+    @Transactional
     public void deleteEventNullSpeechOrNullSpeakerLinks(Event event, Speech speech, Speaker speaker) {
         eventSpeechSpeakerRepository.deleteByEventAndSpeechAndNullSpeaker(event.getId(), speech.getId());
         eventSpeechSpeakerRepository.deleteByEventAndSpeakerAndNullSpeech(event.getId(), speaker.getId());
     }
 
+    @Transactional
     public void deleteEventSpeechSpeakerLinks(Event event, Speaker speaker) {
         eventSpeechSpeakerRepository.deleteByEventAndSpeaker(event.getId(), speaker.getId());
     }
 
+    @Transactional
     public void deleteEventSpeechSpeakerLinks(Event event, Speech speech) {
         eventSpeechSpeakerRepository.deleteByEventAndSpeech(event.getId(), speech.getId());
     }
 
+    @Transactional
     public void deleteEventSpeechSpeakerLink(Event event, Speech speech, Speaker speaker) {
         eventSpeechSpeakerRepository.deleteByEventAndSpeechAndSpeaker(event.getId(), speech.getId(), speaker.getId());
     }
