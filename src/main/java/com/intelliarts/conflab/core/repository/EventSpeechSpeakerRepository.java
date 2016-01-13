@@ -31,6 +31,29 @@ public interface EventSpeechSpeakerRepository extends BaseRepository<EventSpeech
                    ")")
     void deleteByEventAndSpeech(@Param("eventId") Long eventId, @Param("speechId") Long speechId);
 
+    @Modifying
+    @Query(value = "DELETE " +
+                   "FROM EventSpeechSpeaker eventSpeechSpeaker " +
+                   "WHERE eventSpeechSpeaker.event.id = :eventId " +
+                   "AND eventSpeechSpeaker.speechSpeaker.id IN (" +
+                   "    SELECT speechSpeaker.id " +
+                   "    FROM SpeechSpeaker speechSpeaker " +
+                   "    WHERE speechSpeaker.speech.id = :speechId " +
+                   "    AND speechSpeaker.speaker.id IS NULL " +
+                   ")")
+    void deleteByEventAndSpeechAndNullSpeaker(@Param("eventId") Long eventId, @Param("speechId") Long speechId);
+
+    @Modifying
+    @Query(value = "DELETE " +
+                   "FROM EventSpeechSpeaker eventSpeechSpeaker " +
+                   "WHERE eventSpeechSpeaker.event.id = :eventId " +
+                   "AND eventSpeechSpeaker.speechSpeaker.id IN (" +
+                   "    SELECT speechSpeaker.id " +
+                   "    FROM SpeechSpeaker speechSpeaker " +
+                   "    WHERE speechSpeaker.speech.id IS NULL " +
+                   "    AND speechSpeaker.speaker.id = :speakerId " +
+                   ")")
+    void deleteByEventAndSpeakerAndNullSpeech(@Param("eventId") Long eventId, @Param("speakerId") Long speakerId);
 
     @Modifying
     @Query(value = "DELETE " +
@@ -42,6 +65,6 @@ public interface EventSpeechSpeakerRepository extends BaseRepository<EventSpeech
                    "    WHERE speechSpeaker.speech.id = :speechId " +
                    "    AND speechSpeaker.speaker.id = :speakerId " +
                    ")")
-    void deleteByEventAndSpeechAndSpeaker(@Param("eventId") Long eventId,
-            @Param("speechId") Long speechId, @Param("speakerId") Long speakerId);
+    void deleteByEventAndSpeechAndSpeaker(@Param("eventId") Long eventId, @Param("speechId") Long speechId,
+            @Param("speakerId") Long speakerId);
 }

@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class SpeechService {
@@ -95,14 +94,15 @@ public class SpeechService {
     @Transactional
     public Speech createAndLinkToEventSpeaker(Speech speech, Speaker speaker, Event event) {
         Speech createdSpeech = create(speech);
-        linkToSpeaker(speech, speaker);
-        createEventSpeechSpeakerLink(event, createdSpeech, speaker);
+        SpeechSpeaker speechSpeaker = linkToSpeaker(speech, speaker);
+        createEventSpeechSpeakerLink(event, speechSpeaker);
         return createdSpeech;
     }
 
     @Transactional
     public void linkToEventSpeaker(Speech speech, Speaker speaker, Event event) {
-        eventSpeechSpeakerService.deleteByEventAndSpeechAndSpeaker(event.getId(), speech.getId(), null);
+        eventSpeechSpeakerService.deleteByEventAndSpeechAndNullSpeaker(event.getId(), speech.getId());
+        eventSpeechSpeakerService.deleteByEventAndSpeakerAndNullSpeech(event.getId(), speaker.getId());
         createEventSpeechSpeakerLink(event, speech, speaker);
     }
 
@@ -125,7 +125,11 @@ public class SpeechService {
     public void linkToEvent(Speech speech, Event event) {
         Set<SpeechSpeaker> speechSpeakers = speechSpeakerService.findBySpeech(speech);
         if (hasSpeakers(speechSpeakers)) {
-            eventSpeechSpeakerService.create(getEventSpeechSpeakers(event, speechSpeakers));
+            speechSpeakers.forEach(speechSpeaker -> {
+                if (Objects.nonNull(speechSpeaker.getSpeaker())) {
+                    createEventSpeechSpeakerLink(event, speechSpeaker);
+                }
+            });
         } else {
             eventSpeechSpeakerService.create(new EventSpeechSpeaker(event, speechSpeakers.iterator().next()));
         }
@@ -140,15 +144,14 @@ public class SpeechService {
         return speechSpeakers.size() > 1;
     }
 
-    private Set<EventSpeechSpeaker> getEventSpeechSpeakers(Event event, Set<SpeechSpeaker> speechSpeakers) {
-        return speechSpeakers.stream()
-                             .filter(speechSpeaker -> Objects.nonNull(speechSpeaker.getSpeaker()))
-                             .map(speechSpeaker -> new EventSpeechSpeaker(event, speechSpeaker))
-                             .collect(Collectors.toSet());
-    }
-
     private void createEventSpeechSpeakerLink(Event event, Speech speech, Speaker speaker) {
         SpeechSpeaker speechSpeaker = speechSpeakerService.findBySpeechAndSpeaker(speech, speaker);
+        eventSpeechSpeakerService.create(new EventSpeechSpeaker(event, speechSpeaker));
+    }
+
+    private void createEventSpeechSpeakerLink(Event event, SpeechSpeaker speechSpeaker) {
+        Speaker speaker = speechSpeaker.getSpeaker();
+        eventSpeechSpeakerService.deleteByEventAndSpeakerAndNullSpeech(event.getId(), speaker.getId());
         eventSpeechSpeakerService.create(new EventSpeechSpeaker(event, speechSpeaker));
     }
 

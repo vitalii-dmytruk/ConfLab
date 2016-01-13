@@ -87,14 +87,15 @@ public class SpeakerService {
     @Transactional
     public Speaker createAndLinkToEventSpeech(Speaker speaker, Speech speech, Event event) {
         Speaker createdSpeaker = create(speaker);
-        linkToSpeech(createdSpeaker, speech);
-        createEventSpeechSpeakerLink(event, speech, createdSpeaker);
+        SpeechSpeaker speechSpeaker = linkToSpeech(createdSpeaker, speech);
+        createEventSpeechSpeakerLink(event, speechSpeaker);
         return createdSpeaker;
     }
 
     @Transactional
     public void linkToEventSpeech(Speaker speaker, Speech speech, Event event) {
-        eventSpeechSpeakerService.deleteByEventAndSpeechAndSpeaker(event.getId(), null, speaker.getId());
+        eventSpeechSpeakerService.deleteByEventAndSpeakerAndNullSpeech(event.getId(), speaker.getId());
+        eventSpeechSpeakerService.deleteByEventAndSpeechAndNullSpeaker(event.getId(), speech.getId());
         createEventSpeechSpeakerLink(event, speech, speaker);
     }
 
@@ -125,6 +126,12 @@ public class SpeakerService {
 
     private void createEventSpeechSpeakerLink(Event event, Speech speech, Speaker speaker) {
         SpeechSpeaker speechSpeaker = speechSpeakerService.findBySpeechAndSpeaker(speech, speaker);
+        eventSpeechSpeakerService.create(new EventSpeechSpeaker(event, speechSpeaker));
+    }
+
+    private void createEventSpeechSpeakerLink(Event event, SpeechSpeaker speechSpeaker) {
+        Speech speech = speechSpeaker.getSpeech();
+        eventSpeechSpeakerService.deleteByEventAndSpeechAndNullSpeaker(event.getId(), speech.getId());
         eventSpeechSpeakerService.create(new EventSpeechSpeaker(event, speechSpeaker));
     }
 
