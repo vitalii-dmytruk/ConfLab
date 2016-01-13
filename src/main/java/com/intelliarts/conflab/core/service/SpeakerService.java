@@ -87,21 +87,23 @@ public class SpeakerService {
     @Transactional
     public Speaker createAndLinkToEventSpeech(Speaker speaker, Speech speech, Event event) {
         Speaker createdSpeaker = create(speaker);
-        SpeechSpeaker speechSpeaker = linkToSpeech(createdSpeaker, speech);
-        eventSpeechSpeakerService.create(new EventSpeechSpeaker(event, speechSpeaker));
+        linkToSpeech(createdSpeaker, speech);
+        createEventSpeechSpeakerLink(event, speech, createdSpeaker);
         return createdSpeaker;
     }
 
     @Transactional
     public void linkToEventSpeech(Speaker speaker, Speech speech, Event event) {
         eventSpeechSpeakerService.deleteByEventAndSpeechAndSpeaker(event.getId(), null, speaker.getId());
-        SpeechSpeaker speechSpeaker = speechSpeakerService.findBySpeechAndSpeaker(speech, speaker);
-        eventSpeechSpeakerService.create(new EventSpeechSpeaker(event, speechSpeaker));
+        createEventSpeechSpeakerLink(event, speech, speaker);
     }
 
     @Transactional
     public void unlinkFromEventSpeech(Speaker speaker, Speech speech, Event event) {
         eventSpeechSpeakerService.deleteByEventAndSpeechAndSpeaker(event.getId(), speech.getId(), speaker.getId());
+        if (findByEventAndSpeech(event, speech).isEmpty()) {
+            createEventSpeechSpeakerLink(event, speech, null);
+        }
     }
 
     @Transactional
@@ -113,13 +115,17 @@ public class SpeakerService {
 
     @Transactional
     public void linkToEvent(Speaker speaker, Event event) {
-        SpeechSpeaker speechSpeaker = speechSpeakerService.findBySpeechAndSpeaker(null, speaker);
-        eventSpeechSpeakerService.create(new EventSpeechSpeaker(event, speechSpeaker));
+        createEventSpeechSpeakerLink(event, null, speaker);
     }
 
     @Transactional
     public void unlinkFromEvent(Speaker speaker, Event event) {
         eventSpeechSpeakerService.deleteByEventAndSpeaker(event, speaker);
+    }
+
+    private void createEventSpeechSpeakerLink(Event event, Speech speech, Speaker speaker) {
+        SpeechSpeaker speechSpeaker = speechSpeakerService.findBySpeechAndSpeaker(speech, speaker);
+        eventSpeechSpeakerService.create(new EventSpeechSpeaker(event, speechSpeaker));
     }
 
 }
