@@ -1,7 +1,6 @@
 package com.intelliarts.conflab.core.service;
 
 import com.intelliarts.conflab.core.entity.Event;
-import com.intelliarts.conflab.core.entity.EventSpeechSpeaker;
 import com.intelliarts.conflab.core.entity.Speaker;
 import com.intelliarts.conflab.core.entity.Speech;
 import com.intelliarts.conflab.core.entity.SpeechSpeaker;
@@ -20,14 +19,11 @@ import java.util.Set;
 public class SpeechService {
 
     private SpeechRepository          speechRepository;
-    private SpeechSpeakerService      speechSpeakerService;
     private EventSpeechSpeakerService eventSpeechSpeakerService;
 
     @Autowired
-    public SpeechService(SpeechRepository speechRepository, SpeechSpeakerService speechSpeakerService,
-            EventSpeechSpeakerService eventSpeechSpeakerService) {
+    public SpeechService(SpeechRepository speechRepository, EventSpeechSpeakerService eventSpeechSpeakerService) {
         this.speechRepository = speechRepository;
-        this.speechSpeakerService = speechSpeakerService;
         this.eventSpeechSpeakerService = eventSpeechSpeakerService;
     }
 
@@ -82,35 +78,35 @@ public class SpeechService {
 
     @Transactional
     public SpeechSpeaker linkToSpeaker(Speech speech, Speaker speaker) {
-        return speechSpeakerService.createSpeechSpeakerLink(speech, speaker);
+        return eventSpeechSpeakerService.createSpeechSpeakerLink(speech, speaker);
     }
 
     @Transactional
     public void unlinkFromSpeaker(Long speechId, Speaker speaker) {
         Speech speech = findById(speechId);
-        speechSpeakerService.deleteBySpeechAndSpeaker(speech, speaker);
+        eventSpeechSpeakerService.deleteSpeechSpeakerLink(speech, speaker);
     }
 
     @Transactional
     public Speech createAndLinkToEventSpeaker(Speech speech, Speaker speaker, Event event) {
+        eventSpeechSpeakerService.deleteEventNullSpeechSpeakerLink(event, speaker);
         Speech createdSpeech = create(speech);
         SpeechSpeaker speechSpeaker = linkToSpeaker(speech, speaker);
-        createEventSpeechSpeakerLink(event, speechSpeaker);
+        eventSpeechSpeakerService.createEventSpeechSpeakerLink(event, speechSpeaker);
         return createdSpeech;
     }
 
     @Transactional
     public void linkToEventSpeaker(Speech speech, Speaker speaker, Event event) {
-        eventSpeechSpeakerService.deleteByEventAndSpeechAndNullSpeaker(event.getId(), speech.getId());
-        eventSpeechSpeakerService.deleteByEventAndSpeakerAndNullSpeech(event.getId(), speaker.getId());
-        createEventSpeechSpeakerLink(event, speech, speaker);
+        eventSpeechSpeakerService.deleteEventNullSpeechOrNullSpeakerLinks(event, speech, speaker);
+        eventSpeechSpeakerService.createEventSpeechSpeakerLink(event, speech, speaker);
     }
 
     @Transactional
     public void unlinkFromEventSpeaker(Speech speech, Speaker speaker, Event event) {
-        eventSpeechSpeakerService.deleteByEventAndSpeechAndSpeaker(event.getId(), speech.getId(), speaker.getId());
+        eventSpeechSpeakerService.deleteEventSpeechSpeakerLink(event, speech, speaker);
         if (findByEventAndSpeaker(event, speaker).isEmpty()) {
-            createEventSpeechSpeakerLink(event, null, speaker);
+            eventSpeechSpeakerService.createEventSpeechSpeakerLink(event, null, speaker);
         }
     }
 
@@ -123,36 +119,26 @@ public class SpeechService {
 
     @Transactional
     public void linkToEvent(Speech speech, Event event) {
-        Set<SpeechSpeaker> speechSpeakers = speechSpeakerService.findBySpeech(speech);
+        Set<SpeechSpeaker> speechSpeakers = eventSpeechSpeakerService.findSpeechSpeakerLink(speech);
         if (hasSpeakers(speechSpeakers)) {
             speechSpeakers.forEach(speechSpeaker -> {
                 if (Objects.nonNull(speechSpeaker.getSpeaker())) {
-                    createEventSpeechSpeakerLink(event, speechSpeaker);
+                    eventSpeechSpeakerService.deleteEventNullSpeechSpeakerLink(event, speechSpeaker.getSpeaker());
+                    eventSpeechSpeakerService.createEventSpeechSpeakerLink(event, speechSpeaker);
                 }
             });
         } else {
-            eventSpeechSpeakerService.create(new EventSpeechSpeaker(event, speechSpeakers.iterator().next()));
+            eventSpeechSpeakerService.createEventSpeechSpeakerLink(event, speechSpeakers.iterator().next());
         }
     }
 
     @Transactional
     public void unlinkFromEvent(Speech speech, Event event) {
-        eventSpeechSpeakerService.deleteByEventAndSpeech(event, speech);
+        eventSpeechSpeakerService.deleteEventSpeechSpeakerLinks(event, speech);
     }
 
     private boolean hasSpeakers(Set<SpeechSpeaker> speechSpeakers) {
         return speechSpeakers.size() > 1;
-    }
-
-    private void createEventSpeechSpeakerLink(Event event, Speech speech, Speaker speaker) {
-        SpeechSpeaker speechSpeaker = speechSpeakerService.findBySpeechAndSpeaker(speech, speaker);
-        eventSpeechSpeakerService.create(new EventSpeechSpeaker(event, speechSpeaker));
-    }
-
-    private void createEventSpeechSpeakerLink(Event event, SpeechSpeaker speechSpeaker) {
-        Speaker speaker = speechSpeaker.getSpeaker();
-        eventSpeechSpeakerService.deleteByEventAndSpeakerAndNullSpeech(event.getId(), speaker.getId());
-        eventSpeechSpeakerService.create(new EventSpeechSpeaker(event, speechSpeaker));
     }
 
 }
