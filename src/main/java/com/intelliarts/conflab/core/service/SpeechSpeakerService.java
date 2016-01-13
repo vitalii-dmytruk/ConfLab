@@ -6,9 +6,9 @@ import com.intelliarts.conflab.core.entity.SpeechSpeaker;
 import com.intelliarts.conflab.core.repository.SpeechSpeakerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
 import java.util.Optional;
 import java.util.Set;
 
@@ -22,6 +22,7 @@ public class SpeechSpeakerService {
         this.speechSpeakerRepository = speechSpeakerRepository;
     }
 
+    @Transactional
     public void save(SpeechSpeaker speechSpeaker) {
         speechSpeakerRepository.save(speechSpeaker);
     }
@@ -31,29 +32,25 @@ public class SpeechSpeakerService {
         return speechSpeakerRepository.save(new SpeechSpeaker(speech, speaker));
     }
 
-    @Transactional
-    public SpeechSpeaker findOrCreate(Speech speech, Speaker speaker) {
-        return speechSpeakerRepository.findBySpeechAndSpeaker(speech, speaker)
-                                      .orElseGet(
-                                              () -> speechSpeakerRepository.save(new SpeechSpeaker(speech, speaker)));
-    }
-
+    @Transactional(readOnly = true)
     public SpeechSpeaker findBySpeechAndSpeaker(Speech speech, Speaker speaker) {
         Optional<SpeechSpeaker> speechSpeaker = speechSpeakerRepository.findBySpeechAndSpeaker(speech, speaker);
         return speechSpeaker.orElseThrow(() -> new EntityNotFoundException("Speech with ID = " + speech.getId() +
-                                                                           "is not linked to Speaker with ID = " +
-                                                                           +speaker.getId()));
+                                                                           " is not linked to Speaker with ID = " +
+                                                                           speaker.getId()));
     }
 
-
+    @Transactional(readOnly = true)
     public Set<SpeechSpeaker> findBySpeech(Speech speech) {
         return speechSpeakerRepository.findBySpeech(speech);
     }
 
+    @Transactional(readOnly = true)
     public Set<SpeechSpeaker> findBySpeaker(Speaker speaker) {
         return speechSpeakerRepository.findBySpeaker(speaker);
     }
 
+    @Transactional
     public void deleteBySpeechAndSpeaker(Speech speech, Speaker speaker) {
         speechSpeakerRepository.deleteBySpeechAndSpeaker(speech, speaker);
     }

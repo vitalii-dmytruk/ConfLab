@@ -67,7 +67,8 @@ public class SpeakerController {
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public void linkToSpeech(@PathVariable("speechId") Long speechId, @PathVariable("speakerId") Long speakerId) {
         Speech speech = speechService.findById(speechId);
-        speakerService.linkToSpeech(speakerId, speech);
+        Speaker speaker = speakerService.findById(speakerId);
+        speakerService.linkToSpeech(speaker, speech);
     }
 
     @RequestMapping(value = "/events/{eventId}/speakers", method = POST,
@@ -77,7 +78,7 @@ public class SpeakerController {
     public Speaker createAndLinkToEvent(@PathVariable("eventId") Long eventId,
             @RequestBody @Validated Speaker speaker) {
         Event event = eventService.findById(eventId);
-        return speakerService.createAndLinkToEvent(speaker, null, event);
+        return speakerService.createAndLinkToEvent(speaker, event);
     }
 
     @RequestMapping(value = "/events/{eventId}/speakers/{speakerId}",
@@ -87,7 +88,7 @@ public class SpeakerController {
     public void linkToEvent(@PathVariable("eventId") Long eventId, @PathVariable("speakerId") Long speakerId) {
         Event event = eventService.findById(eventId);
         Speaker speaker = speakerService.findById(speakerId);
-        speakerService.linkToEvent(speaker, null, event);
+        speakerService.linkToEvent(speaker, event);
     }
 
     @RequestMapping(value = "/events/{eventId}/speakers/{speakerId}",
@@ -95,7 +96,8 @@ public class SpeakerController {
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public void unlinkFromEvent(@PathVariable("eventId") Long eventId, @PathVariable("speakerId") Long speakerId) {
         Event event = eventService.findById(eventId);
-        speakerService.unlinkFromEvent(speakerId, event);
+        Speaker speaker = speakerService.findById(speakerId);
+        speakerService.unlinkFromEvent(speaker, event);
     }
 
     @RequestMapping(value = "/speakers/{id}",
@@ -140,19 +142,21 @@ public class SpeakerController {
     @RequestMapping(value = "/events/{eventId}/speeches/{speechId}/speakers",
                     method = GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public Set<Speaker> findByEventAndSpeech(@PathVariable("speechId") Long speechId,
-            @PathVariable("eventId") Long eventId) {
-        return speakerService.findByEventAndSpeech(eventId, speechId);
+    public Set<Speaker> findByEventAndSpeech(@PathVariable("eventId") Long eventId,
+            @PathVariable("speechId") Long speechId) {
+        Event event = eventService.findById(eventId);
+        Speech speech = speechService.findById(speechId);
+        return speakerService.findByEventAndSpeech(event, speech);
     }
 
     @RequestMapping(value = "/events/{eventId}/speeches/{speechId}/speakers",
                     method = POST,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public Speaker createAndLinkToEvent(@PathVariable("speechId") Long speechId, @PathVariable("eventId") Long eventId,
-            @RequestBody @Validated Speaker speaker) {
+    public Speaker createAndLinkToEventSpeech(@PathVariable("eventId") Long eventId,
+            @PathVariable("speechId") Long speechId, @RequestBody @Validated Speaker speaker) {
         Event event = eventService.findById(eventId);
         Speech speech = speechService.findById(speechId);
-        return speakerService.createAndLinkToEvent(speaker, speech, event);
+        return speakerService.createAndLinkToEventSpeech(speaker, speech, event);
     }
 
     @RequestMapping(value = "/events/{eventId}/speeches/{speechId}/speakers/{speakerId}",
@@ -163,15 +167,17 @@ public class SpeakerController {
         Speaker speaker = speakerService.findById(speakerId);
         Speech speech = speechService.findById(speechId);
         Event event = eventService.findById(eventId);
-        speakerService.linkToEvent(speaker, speech, event);
+        speakerService.linkToEventSpeech(speaker, speech, event);
     }
 
     @RequestMapping(value = "/events/{eventId}/speeches/{speechId}/speakers/{speakerId}",
                     method = RequestMethod.DELETE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public void removeFromEventSpeaker(@PathVariable("eventId") Long eventId,
+    public void removeFromEventSpeech(@PathVariable("eventId") Long eventId, @PathVariable("speechId") Long speechId,
             @PathVariable("speakerId") Long speakerId) {
         Event event = eventService.findById(eventId);
-        speakerService.unlinkFromEvent(speakerId, event);
+        Speaker speaker = speakerService.findById(speakerId);
+        Speech speech = speechService.findById(speechId);
+        speakerService.unlinkFromEventSpeech(speaker, speech, event);
     }
 }

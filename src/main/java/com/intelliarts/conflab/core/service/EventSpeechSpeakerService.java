@@ -4,13 +4,9 @@ import com.intelliarts.conflab.core.entity.Event;
 import com.intelliarts.conflab.core.entity.EventSpeechSpeaker;
 import com.intelliarts.conflab.core.entity.Speaker;
 import com.intelliarts.conflab.core.entity.Speech;
-import com.intelliarts.conflab.core.entity.SpeechSpeaker;
 import com.intelliarts.conflab.core.repository.EventSpeechSpeakerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Set;
 
 @Service
 public class EventSpeechSpeakerService {
@@ -26,20 +22,20 @@ public class EventSpeechSpeakerService {
         return eventSpeechSpeakerRepository.save(eventSpeechSpeaker);
     }
 
-    public List<EventSpeechSpeaker> create(Set<EventSpeechSpeaker> eventSpeechSpeakers) {
-        return eventSpeechSpeakerRepository.save(eventSpeechSpeakers);
-    }
-
-    public void createEventSpeechSpeakerLink(Event event, SpeechSpeaker speechSpeaker) {
-        eventSpeechSpeakerRepository.save(new EventSpeechSpeaker(event, speechSpeaker));
-    }
-
     public void deleteByEventAndSpeaker(Event event, Speaker speaker) {
-        eventSpeechSpeakerRepository.deleteBySpeakerId(speaker.getId(), event.getId());
+        eventSpeechSpeakerRepository.deleteByEventAndSpeaker(event.getId(), speaker.getId());
     }
 
     public void deleteByEventAndSpeech(Event event, Speech speech) {
-        eventSpeechSpeakerRepository.deleteBySpeechId(speech.getId(), event.getId());
+        eventSpeechSpeakerRepository.deleteByEventAndSpeech(event.getId(), speech.getId());
+    }
+
+    public void deleteByEventAndSpeechAndNullSpeaker(Long eventId, Long speechId) {
+        eventSpeechSpeakerRepository.deleteByEventAndSpeechAndNullSpeaker(eventId, speechId);
+    }
+
+    public void deleteByEventAndSpeakerAndNullSpeech(Long eventId, Long speakerId) {
+        eventSpeechSpeakerRepository.deleteByEventAndSpeakerAndNullSpeech(eventId, speakerId);
     }
 
     public void deleteByEventAndSpeechAndSpeaker(Long eventId, Long speechId, Long speakerId) {
