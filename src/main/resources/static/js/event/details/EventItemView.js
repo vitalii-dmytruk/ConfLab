@@ -74,6 +74,9 @@ define([
         listView.onChildviewActivated = function (child) {
             showItem(view, child.model);
         };
+        listView.onChildviewDeactivated = function () {
+            view.eventItemRegion.empty();
+        };
 
         return listView;
     }
