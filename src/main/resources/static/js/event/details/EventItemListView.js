@@ -1,8 +1,10 @@
 define([
     'common/navigation/NavigationView',
     'event/details/EventListedItemView'
-], function EventComponentListView(NavigationView, EventListedItemView) {
-    //noinspection JSUnusedGlobalSymbols
+], function EventItemListView(NavigationView, EventListedItemView) {
+
+    'use strict';
+
     return NavigationView.extend({
         childView: EventListedItemView,
         className: 'nav nav-pills nav-stacked',
@@ -11,13 +13,27 @@ define([
             'item:clicked': selectItem
         },
 
-        onRenderCollection: function () {
-            selectItem.call(this, this.children.first());
-        }
+        collectionEvents: {
+            'remove': updateSelection
+        },
+
+        onRenderCollection: selectFirstItem
     });
 
     function selectItem(view) {
         var item = view.model;
         this.activateItem(item);
+    }
+
+    function selectFirstItem(view) {
+        var firstItem;
+        firstItem = view.collection.first();
+        firstItem ? view.activateItem(firstItem) : view.deactivateItem();
+    }
+
+    function updateSelection(model) {
+        if (this.previousActive.model.get('id') === model.get('id')) {
+            selectFirstItem(this);
+        }
     }
 });
