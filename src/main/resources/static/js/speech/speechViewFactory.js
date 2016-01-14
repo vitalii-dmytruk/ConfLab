@@ -5,11 +5,9 @@ define([
     'text!speech/details/SpeechTemplate.html',
     'text!speech/details/SpeechEditTemplate.html',
     'backbone.radio',
-    'speech/LanguageService',
     'select2'
 ], function (ViewFactory, SpeakerCollection, SpeechRowTemplate, SpeechShowTemplate,
-             SpeechEditTemplate, Radio, LanguageService) {
-
+    SpeechEditTemplate, Radio) {
     'use strict';
 
     return new ViewFactory({
