@@ -43,6 +43,9 @@ define([
                 $el.datepicker({
                     format: 'dd-M-yyyy'
                 });
+                $el.on('hide', function(){
+                    $el.change();
+                });
             }
         }
     }
