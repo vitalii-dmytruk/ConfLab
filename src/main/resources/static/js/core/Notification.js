@@ -4,6 +4,18 @@ define([
     'use strict';
 
     return function Notification() {
+        configure();
+
+        return {
+            success: success,
+            info   : info,
+            warn   : warn,
+            error  : error,
+            clear  : clear
+        };
+    };
+
+    function configure() {
         toastr.options = {
             closeButton      : true,
             preventDuplicates: true,
@@ -15,25 +27,25 @@ define([
                 warning: 'notification-warning'
             }
         };
+    }
 
-        this.success = function (msg, title) {
-            toastr.success(msg, title || 'Success');
-        };
+    function success(msg, title) {
+        toastr.success(msg, title || 'Success');
+    }
 
-        this.info = function (msg, title) {
-            toastr.info(msg, title || 'Information');
-        };
+    function info(msg, title) {
+        toastr.info(msg, title || 'Information');
+    }
 
-        this.warn = function (msg, title) {
-            toastr.warning(msg, title || 'Warning');
-        };
+    function warn(msg, title) {
+        toastr.warning(msg, title || 'Warning');
+    }
 
-        this.error = function (msg, title) {
-            toastr.error(msg, title || 'Error');
-        };
+    function error(msg, title) {
+        toastr.error(msg, title || 'Error');
+    }
 
-        this.clear = function () {
-            toastr.clear();
-        }
-    };
+    function clear() {
+        toastr.clear();
+    }
 });

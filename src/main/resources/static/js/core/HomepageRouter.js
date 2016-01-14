@@ -1,9 +1,9 @@
 define([
     'common/Router',
     'core/HomepageView',
-    'core/ConfLabsApp',
+    //'core/Page404View',
     'backbone.radio'
-], function (Router, HomepageView, app, Radio) {
+], function (Router, HomepageView, /*Page404View,*/ Radio) {
 
     'use strict';
 
@@ -27,6 +27,8 @@ define([
     }
 
     function notFound(path) {
-        app.notify.error('Path "' + path + '" does not not exists.');
+        //this.container.show(new Page404View());
+
+        Radio.channel('notify').request('error', 'Path "' + path + '" does not not exists.');
     }
 });

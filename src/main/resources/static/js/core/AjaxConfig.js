@@ -1,7 +1,8 @@
 define([
     'core/ConfLabsApp',
+    'backbone.radio',
     'backbone.marionette'
-], function AjaxConfig(confLab) {
+], function AjaxConfig(confLab, Radio) {
     'use strict';
 
     return function AjaxConfig() {
@@ -23,17 +24,21 @@ define([
     }
 
     function showHttpError(jqXHR) {
-        confLab.notify.error(jqXHR.responseJSON.message, jqXHR.responseJSON.error);
+        notify('error', jqXHR.responseJSON.message, jqXHR.responseJSON.error);
     }
 
     //noinspection JSUnusedLocalSymbols
     function showAjaxError(e, jqXHR) {
         if (jqXHR.readyState != 4) {
-            confLab.notify.error('Connection ' + jqXHR.statusText + ': ' + jqXHR.state());
+            notify('error', 'Connection ' + jqXHR.statusText + ': ' + jqXHR.state());
         }
     }
 
     function showAuthWarning() {
-        confLab.notify.warn('Your session is expired', 'Please sign in');
+        notify('warn', 'Your session is expired', 'Please sign in');
+    }
+
+    function notify(type, message, title) {
+        Radio.channel('notify').request(type, message, title);
     }
 });
