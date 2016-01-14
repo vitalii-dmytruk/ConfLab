@@ -1,8 +1,9 @@
 define([
     'common/Router',
     'core/HomepageView',
+    'core/ConfLabsApp',
     'backbone.radio'
-], function (Router, HomepageView, Radio) {
+], function (Router, HomepageView, app, Radio) {
 
     'use strict';
 
@@ -16,7 +17,8 @@ define([
         },
 
         routes: {
-            '': home
+            ''     : home,
+            '*path': notFound
         }
     });
 
@@ -24,4 +26,7 @@ define([
         this.container.show(new HomepageView());
     }
 
+    function notFound(path) {
+        app.notify.error('Path "' + path + '" does not not exists.');
+    }
 });
