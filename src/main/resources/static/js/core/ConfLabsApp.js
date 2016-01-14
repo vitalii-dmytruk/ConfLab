@@ -1,6 +1,6 @@
 define([
     'core/ConfLabsLayoutView',
-    'core/Notification',
+    'core/NotificationService',
     'core/HomepageRouter',
     'header/HeaderService',
     'menu/MenuService',
@@ -11,7 +11,7 @@ define([
     'account/AccountRouter',
     'speech/LanguageService',
     'backbone.marionette'
-], function (ConfLabsLayoutView, Notification, HomepageRouter, HeaderService, MenuService, SpeakerRouter, SpeechRouter,
+], function (ConfLabsLayoutView, NotificationService, HomepageRouter, HeaderService, MenuService, SpeakerRouter, SpeechRouter,
     EventRouter, AuthService, AccountRouter, LanguageService) {
 
     'use strict';
@@ -21,16 +21,15 @@ define([
         initialize: function () {
             this.layout = new ConfLabsLayoutView();
             this.layout.render();
-
+            this.notification = new NotificationService();
             this.authService = new AuthService({
                 container: this.layout.getRegion('main')
             });
         },
 
-        notify: new Notification(),
-
         onStart: function () {
             var app = this;
+            this.notification.start();
 
             this.authService.refreshSession().always(function () {
                 new LanguageService();
