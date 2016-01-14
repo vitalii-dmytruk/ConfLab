@@ -28,7 +28,12 @@ define([
     function selectFirstItem(view) {
         var firstItem;
         firstItem = view.collection.first();
-        firstItem ? view.activateItem(firstItem) : view.deactivateItem();
+        if (firstItem) {
+            view.activateItem(firstItem);
+        } else {
+            view.deactivateItem();
+            view.previousActive = undefined;
+        }
     }
 
     function updateSelection(model) {
