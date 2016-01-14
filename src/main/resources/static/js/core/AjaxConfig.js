@@ -16,7 +16,8 @@ define([
                 400: showHttpError,
                 403: showHttpError,
                 404: showHttpError,
-                500: showHttpError
+                500: showHttpError,
+                401: showAuthWarning
             }
         });
 
@@ -32,5 +33,9 @@ define([
         if(jqXHR.readyState != 4){
             confLab.notify.error('Connection ' + jqXHR.statusText + ': ' + jqXHR.state());
         }
+    }
+
+    function showAuthWarning() {
+        confLab.notify.warn('Your session is expired', 'Please sign in');
     }
 });

@@ -92,12 +92,10 @@ define([
     }
 
     function setupErrorHandling(authService) {
-        $.ajaxSetup({
-            statusCode: {
-                401: function () {
-                    clearSession(authService);
-                    authService.login();
-                }
+        $(document).ajaxError(function (e, xhr) {
+            if (xhr.status == 401) {
+                clearSession(authService);
+                authService.login();
             }
         });
     }
