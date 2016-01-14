@@ -31,8 +31,8 @@ define([
     });
 
     function showCreateView() {
-        this.eventItemRegion.show(createEditView(this));
         this.itemListRegion.currentView.deactivateItem();
+        this.eventItemRegion.show(createEditView(this));
     }
 
     function createEditView(view) {
@@ -44,7 +44,7 @@ define([
             addAndSelectItem(view, args.model);
         };
         createView.onCancel = function () {
-            view.itemListRegion.currentView.activateItem();
+            view.itemListRegion.currentView.activateItem() || view.eventItemRegion.empty();
         };
 
         return createView;
@@ -71,7 +71,7 @@ define([
             }
         });
 
-        listView.onChildviewActivated = function (child) {
+        listView.onChildviewActivated   = function (child) {
             showItem(view, child.model);
         };
         listView.onChildviewDeactivated = function () {
