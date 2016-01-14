@@ -27,7 +27,7 @@ define([
             });
         },
 
-        notify : new Notification(),
+        notify: new Notification(),
 
         onStart: function () {
             var app = this;

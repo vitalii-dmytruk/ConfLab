@@ -45,7 +45,7 @@ define([
         this.ui.icon.addClass(this.className);
     }
 
-    function execAction(e){
+    function execAction(e) {
         e.preventDefault();
         this.doAction && this.doAction();
     }

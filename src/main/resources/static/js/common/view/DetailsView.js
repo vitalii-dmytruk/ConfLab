@@ -14,10 +14,10 @@ define([
             attachment: '[data-attachment-region]'
         },
 
-        onChildviewEdit : showEditView,
-        onBeforeShow: showShowView,
+        onChildviewEdit: showEditView,
+        onBeforeShow   : showShowView,
 
-        showAttachment : function (view) {
+        showAttachment: function (view) {
             this.showChildView('attachment', view);
         }
     });

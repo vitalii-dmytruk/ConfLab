@@ -34,7 +34,7 @@ var require = {
         "bootstrap"             : {
             "deps": ['jquery']
         },
-        "toastr"              : {
+        "toastr"                : {
             "deps": ['jquery']
         },
         "underscore"            : {
