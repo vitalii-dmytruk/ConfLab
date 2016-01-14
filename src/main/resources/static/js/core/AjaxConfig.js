@@ -4,11 +4,9 @@ define([
 ], function AjaxConfig(confLab) {
     'use strict';
 
-    return Marionette.Object.extend({
-        initialize: function () {
-            confLab.on('before:start', initErrorsHandling);
-        }
-    });
+    return function AjaxConfig() {
+        confLab.on('before:start', initErrorsHandling);
+    };
 
     function initErrorsHandling() {
         $.ajaxSetup({
@@ -30,7 +28,7 @@ define([
 
     //noinspection JSUnusedLocalSymbols
     function showAjaxError(e, jqXHR) {
-        if(jqXHR.readyState != 4){
+        if (jqXHR.readyState != 4) {
             confLab.notify.error('Connection ' + jqXHR.statusText + ': ' + jqXHR.state());
         }
     }
