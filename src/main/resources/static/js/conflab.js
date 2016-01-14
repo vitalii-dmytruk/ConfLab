@@ -1,13 +1,16 @@
 require([
     'core/ConfLabsApp',
+    'core/AjaxConfig',
     'bootstrap',
     'backbone.validation'
-], function (ConfLabApp) {
+], function (confLabApp, AjaxConfig) {
 
     'use strict';
 
     $(function () {
-        new ConfLabApp().start();
+        new AjaxConfig();
+
+        confLabApp.start();
     });
 
     _.extend(Backbone.Validation.callbacks, {

@@ -16,7 +16,8 @@ define([
         },
 
         routes: {
-            '': home
+            ''     : home,
+            '*path': notFound
         }
     });
 
@@ -24,4 +25,7 @@ define([
         this.container.show(new HomepageView());
     }
 
+    function notFound(path) {
+        Radio.channel('notify').request('error', 'Path "' + path + '" does not not exists.');
+    }
 });
