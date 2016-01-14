@@ -41,7 +41,8 @@ define([
             observe   : attribute,
             initialize: function ($el) {
                 $el.datepicker({
-                    format: 'dd-M-yyyy'
+                    format: 'dd-M-yyyy',
+                    orientation: 'bottom'
                 });
                 $el.on('hide', function(){
                     $el.change();
