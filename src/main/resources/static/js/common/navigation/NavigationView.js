@@ -57,7 +57,9 @@ define([
         activeView          = this.previousActive;
         isActiveViewDeleted = activeView && model.get('id') == activeView.model.get('id');
         if (isActiveViewDeleted) {
+            this.previousActive.deactivate();
             this.previousActive = undefined;
+            this.triggerMethod('activeItemDeleted');
         }
     }
 });

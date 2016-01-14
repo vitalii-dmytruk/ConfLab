@@ -13,11 +13,8 @@ define([
             'item:clicked': selectItem
         },
 
-        collectionEvents: {
-            'remove': updateSelection
-        },
-
-        onRenderCollection: selectFirstItem
+        onRenderCollection : selectFirstItem,
+        onActiveItemDeleted: selectFirstItem
     });
 
     function selectItem(view) {
@@ -25,20 +22,9 @@ define([
         this.activateItem(item);
     }
 
-    function selectFirstItem(view) {
+    function selectFirstItem() {
         var firstItem;
-        firstItem = view.collection.first();
-        if (firstItem) {
-            view.activateItem(firstItem);
-        } else {
-            view.deactivateItem();
-            view.previousActive = undefined;
-        }
-    }
-
-    function updateSelection(model) {
-        if (this.previousActive.model.get('id') === model.get('id')) {
-            selectFirstItem(this);
-        }
+        firstItem = this.collection.first();
+        firstItem && this.activateItem(firstItem);
     }
 });
