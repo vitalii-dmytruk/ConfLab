@@ -75,6 +75,11 @@ bower {
 
         'basscss'('7.0.x')
 
+        'toastr'('2.x.x')   {
+            source 'toastr*'
+        }
+
+
         'html.sortable'('0.3.x')
 
         'backbone'('1.2.x') {

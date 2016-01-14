@@ -12,6 +12,7 @@ var require = {
         "auth"                  : 'js/auth',
         "text"                  : 'lib/requirejs-text/text',
         "jquery"                : 'lib/jquery/jquery.min',
+        "toastr"                : 'lib/toastr/toastr.min',
         "select2"               : 'lib/select2/js/select2.full',
         "underscore"            : 'lib/underscore/underscore-min',
         "backbone"              : 'lib/backbone/backbone-min',
@@ -31,6 +32,9 @@ var require = {
             "deps": ['jquery']
         },
         "bootstrap"             : {
+            "deps": ['jquery']
+        },
+        "toastr"              : {
             "deps": ['jquery']
         },
         "underscore"            : {
