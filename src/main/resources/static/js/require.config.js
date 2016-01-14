@@ -21,7 +21,8 @@ var require = {
         "backbone.stickit"      : 'lib/backbone.stickit/backbone.stickit',
         "backbone.nested.models": 'lib/backbone-nested-models/backbone-nested-models',
         "backbone.validation"   : 'lib/backbone-validation/backbone-validation-min',
-        "bootstrap"             : 'lib/bootstrap/js/bootstrap.min'
+        "bootstrap"             : 'lib/bootstrap/js/bootstrap.min',
+        "bootstrap.datepicker"  : 'lib/bootstrap-datepicker/js/bootstrap-datepicker'
     },
     shim   : {
         "jquery"                : {
@@ -31,6 +32,9 @@ var require = {
             "deps": ['jquery']
         },
         "bootstrap"             : {
+            "deps": ['jquery']
+        },
+        "bootstrap.datepicker"             : {
             "deps": ['jquery']
         },
         "underscore"            : {
