@@ -25,14 +25,8 @@ define([
         editBindings: {
             '#name'       : 'name',
             '#description': 'description',
-            '#startDate'  : {
-                observe   : 'startDate',
-                initialize: initDatePicker
-            },
-            '#endDate'    : {
-                observe   : 'endDate',
-                initialize: initDatePicker
-            }
+            '#startDate'  : dateBinding('startDate'),
+            '#endDate'    : dateBinding('endDate')
         },
 
         rowBindings: {
@@ -42,9 +36,14 @@ define([
         }
     });
 
-    function initDatePicker($el) {
-        $el.datepicker({
-            format: 'dd-M-yyyy'
-        });
+    function dateBinding(attribute) {
+        return {
+            observe   : attribute,
+            initialize: function ($el) {
+                $el.datepicker({
+                    format: 'dd-M-yyyy'
+                });
+            }
+        }
     }
 });
