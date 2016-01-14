@@ -2,17 +2,12 @@ define([
     'common/view/ItemViewFactory',
     'text!event/table/EventRowTemplate.html',
     'text!event/details/EventTemplate.html',
-    'text!event/details/EventEditTemplate.html'
+    'text!event/details/EventEditTemplate.html',
+    'bootstrap.datepicker'
 ], function (ItemViewFactory, EventRowTemplate, EventTemplate, EventEditTemplate) {
 
     'use strict';
 
-    var bindings = {
-        '#name'       : 'name',
-        '#description': 'description',
-        '#startDate'  : 'startDate',
-        '#endDate'    : 'endDate'
-    };
     return new ItemViewFactory({
         title     : 'Conference',
         tableTitle: 'Conferences',
@@ -21,8 +16,18 @@ define([
         itemShowTemplate: EventTemplate,
         itemEditTemplate: EventEditTemplate,
 
-        showBindings: bindings,
-        editBindings: bindings,
+        showBindings: {
+            '#name'       : 'name',
+            '#description': 'description',
+            '#startDate'  : 'startDate',
+            '#endDate'    : 'endDate'
+        },
+        editBindings: {
+            '#name'       : 'name',
+            '#description': 'description',
+            '#startDate'  : dateBinding('startDate'),
+            '#endDate'    : dateBinding('endDate')
+        },
 
         rowBindings: {
             '[data-event-name]'      : 'name',
@@ -30,4 +35,18 @@ define([
             '[data-event-end-date]'  : 'endDate'
         }
     });
+
+    function dateBinding(attribute) {
+        return {
+            observe   : attribute,
+            initialize: function ($el) {
+                $el.datepicker({
+                    format: 'dd-M-yyyy'
+                });
+                $el.on('hide', function(){
+                    $el.change();
+                });
+            }
+        }
+    }
 });
