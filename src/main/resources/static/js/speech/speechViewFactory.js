@@ -5,10 +5,10 @@ define([
     'text!speech/details/SpeechTemplate.html',
     'text!speech/details/SpeechEditTemplate.html',
     'backbone.radio',
-    'speech/LanguageService',
+    'speech/LanguageCollection',
     'select2'
 ], function (ViewFactory, SpeakerCollection, SpeechRowTemplate, SpeechShowTemplate,
-             SpeechEditTemplate, Radio, LanguageService) {
+             SpeechEditTemplate, Radio, LanguageCollection) {
 
     'use strict';
 
@@ -42,17 +42,19 @@ define([
             '#description': 'description',
             '#lang'       : {
                 observe      : 'lang',
-                initialize   : function ($el) {
-                    $el.select2({
-                        theme      : 'bootstrap',
-                        placeholder: 'Choose from the list',
-                        allowClear : true
-                    });
-
+                collection   : new LanguageCollection(),
+                initialize   : function ($el, model, options) {
+                    options.collection.fetch().then(function () {
+                        $el.select2({
+                            theme      : 'bootstrap',
+                            placeholder: 'Choose from the list',
+                            allowClear : true
+                        });
+                    })
                 },
                 selectOptions: {
-                    collection   : function () {
-                        return Radio.channel('languages').request('getLanguages');
+                    collection   : function ($el, options) {
+                        return options.collection;
                     },
                     labelPath    : 'name',
                     defaultOption: {

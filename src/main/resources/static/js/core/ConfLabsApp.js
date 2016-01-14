@@ -8,11 +8,10 @@ define([
     'event/EventRouter',
     'auth/AuthService',
     'account/AccountRouter',
-    'speech/LanguageService',
     'backbone.marionette',
     'backbone'
 ], function (ConfLabsLayoutView, HomepageRouter, HeaderService, MenuService, SpeakerRouter, SpeechRouter,
-             EventRouter, AuthService, AccountRouter, LanguageService) {
+             EventRouter, AuthService, AccountRouter) {
 
     'use strict';
 
@@ -31,7 +30,6 @@ define([
             var app = this;
 
             this.authService.refreshSession().always(function () {
-                new LanguageService();
 
                 app.menu = new MenuService({
                     container: app.layout.getRegion('menu')
