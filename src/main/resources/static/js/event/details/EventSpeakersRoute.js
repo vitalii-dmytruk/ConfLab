@@ -18,10 +18,10 @@ define([
 
         render: function () {
             var eventView = speakerViewFactory.newEventView({
-                model                 : this.model,
-                collection            : this.speakers,
-                searchCollection      : this.speakersSearchCollection,
-                attachmentView        : speechViewFactory.attachedItemTableView
+                model           : this.model,
+                collection      : this.speakers,
+                searchCollection: this.speakersSearchCollection,
+                attachmentView  : speechViewFactory.attachedItemTableView
             });
 
             this.view.showSpeakersTab(eventView);

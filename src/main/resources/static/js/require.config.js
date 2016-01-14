@@ -38,7 +38,7 @@ var require = {
         "bootstrap.datepicker"             : {
             "deps": ['jquery']
         },
-        "toastr"              : {
+        "toastr"                : {
             "deps": ['jquery']
         },
         "underscore"            : {
