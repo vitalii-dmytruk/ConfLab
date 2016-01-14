@@ -11,7 +11,8 @@ define([
     'account/AccountRouter',
     'speech/LanguageService',
     'backbone.marionette'
-], function (ConfLabsLayoutView, NotificationService, HomepageRouter, HeaderService, MenuService, SpeakerRouter, SpeechRouter,
+], function (ConfLabsLayoutView, NotificationService, HomepageRouter, HeaderService, MenuService, SpeakerRouter,
+    SpeechRouter,
     EventRouter, AuthService, AccountRouter, LanguageService) {
 
     'use strict';
@@ -22,7 +23,7 @@ define([
             this.layout = new ConfLabsLayoutView();
             this.layout.render();
             this.notification = new NotificationService();
-            this.authService = new AuthService({
+            this.authService  = new AuthService({
                 container: this.layout.getRegion('main')
             });
         },

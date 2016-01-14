@@ -5,13 +5,13 @@ define([
     'use strict';
 
     return Service.extend({
-        channelName : 'notify',
+        channelName: 'notify',
 
-        onStart : function () {
+        onStart: function () {
             this.channel.reply(new Notification())
         },
 
-        onStop : function () {
+        onStop: function () {
             this.channel.stopReplying();
         }
     });
