@@ -25,8 +25,8 @@ define([
         auth.request('isAuthenticated') ? addMenuButton() : removeMenuButton();
 
         function addMenuButton() {
-            router.menuButton.active = router.active;
             Radio.channel('menu').request('add', router.menuButton);
+            router.active && Radio.channel('menu').request('activate', router.menuButton);
             auth.listenToOnce(auth, 'logout', removeMenuButton);
         }
 
