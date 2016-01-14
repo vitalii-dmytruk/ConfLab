@@ -21,9 +21,10 @@ define([
             });
             this.container.show(menu);
             this.channel.reply({
-                add     : menu.addItems,
-                activate: menu.activateItem,
-                remove  : menu.removeItem
+                add       : menu.addItems,
+                activate  : menu.activateItem,
+                remove    : menu.removeItem,
+                deactivate: menu.deactivateItem
             }, menu)
         },
 

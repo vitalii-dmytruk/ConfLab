@@ -1,24 +1,27 @@
 define([
-    'backbone.marionette',
-    'core/HomepageView'
-], function (Marionette, HomepageView) {
+    'common/Router',
+    'core/HomepageView',
+    'backbone.radio'
+], function (Router, HomepageView, Radio) {
 
     'use strict';
 
-    return Marionette.AppRouter.extend({
+    return Router.extend({
+        onBeforeEnter: function () {
+            Radio.channel('menu').request('deactivate');
+        },
 
         initialize: function (options) {
             this.container = options.container;
         },
 
         routes: {
-            '': 'home'
-        },
-
-        home: function () {
-            this.container.show(new HomepageView());
+            '': home
         }
-
     });
+
+    function home() {
+        this.container.show(new HomepageView());
+    }
 
 });
