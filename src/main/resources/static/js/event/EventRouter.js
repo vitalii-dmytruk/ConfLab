@@ -26,7 +26,6 @@ define([
             'events/:id/speakers': getRoute(EventSpeakersRoute),
             'events/:id/speeches': getRoute(EventSpeechesRoute)
         }
-
     });
 
     function getRoute(RouteClass) {
