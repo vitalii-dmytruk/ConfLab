@@ -94,13 +94,7 @@ define([
     function setupErrorHandling(authService) {
         $.ajaxSetup({
             statusCode: {
-                401: function (jqXHR) {
-                    var response = '';
-                    try {
-                        response = jqXHR.responseJSON.error;
-                        console.warn(response);
-                    } catch (err) {
-                    }
+                401: function () {
                     clearSession(authService);
                     authService.login();
                 }
