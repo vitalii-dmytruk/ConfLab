@@ -1,6 +1,6 @@
 package com.intelliarts.conflab.config;
 
-import com.intelliarts.conflab.security.HasAthorityAnnotationSecurityMetadataSource;
+import com.intelliarts.conflab.security.HasAuthorityAnnotationSecurityMetadataSource;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.expression.method.ExpressionBasedAnnotationAttributeFactory;
 import org.springframework.security.access.method.MethodSecurityMetadataSource;
@@ -15,6 +15,6 @@ public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
     protected MethodSecurityMetadataSource customMethodSecurityMetadataSource() {
         ExpressionBasedAnnotationAttributeFactory attributeFactory =
                 new ExpressionBasedAnnotationAttributeFactory(getExpressionHandler());
-        return new HasAthorityAnnotationSecurityMetadataSource(attributeFactory);
+        return new HasAuthorityAnnotationSecurityMetadataSource(attributeFactory);
     }
 }
