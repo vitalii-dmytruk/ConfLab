@@ -23,6 +23,7 @@ define([
                 observe      : 'result',
                 initialize   : function ($el) {
                     $el.select2({
+                        width      : 'style', //fix the select2 bug on FF CL-64
                         theme      : 'bootstrap',
                         placeholder: 'Add from the list',
                         allowClear : true
