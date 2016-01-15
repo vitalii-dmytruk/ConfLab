@@ -2,7 +2,7 @@ define([
     'backbone'
 ], function Model() {
     return Backbone.Model.extend({
-        save : function(){
+        save: function () {
             var deferred = Backbone.Model.prototype.save.apply(this, arguments);
 
             if (!deferred) {

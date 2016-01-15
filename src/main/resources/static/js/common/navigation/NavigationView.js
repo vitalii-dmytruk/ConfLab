@@ -32,16 +32,22 @@ define([
             this.collection.reset(menuItems);
         },
 
-        deactivateItem: function(){
+        deactivateItem: function () {
             this.previousActive && this.previousActive.deactivate();
         },
 
         activateItem: function (menuItem) {
+            var isActivated = false;
+
             if (menuItem) {
                 this.deactivateItem();
                 this.previousActive = this.children.findByModel(menuItem);
             }
-            this.previousActive && this.previousActive.activate();
+            if (this.previousActive) {
+                this.previousActive.activate();
+                isActivated = true;
+            }
+            return isActivated;
         }
     });
 
@@ -51,7 +57,9 @@ define([
         activeView          = this.previousActive;
         isActiveViewDeleted = activeView && model.get('id') == activeView.model.get('id');
         if (isActiveViewDeleted) {
+            this.previousActive.deactivate();
             this.previousActive = undefined;
+            this.triggerMethod('activeItemDeleted');
         }
     }
 });

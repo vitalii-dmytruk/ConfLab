@@ -75,6 +75,11 @@ bower {
 
         'basscss'('7.0.x')
 
+        'toastr'('2.x.x')   {
+            source 'toastr*'
+        }
+
+
         'html.sortable'('0.3.x')
 
         'backbone'('1.2.x') {
@@ -114,6 +119,11 @@ bower {
 
         'select2-bootstrap-theme'('0.1.0-beta.4'){
             source 'dist/*'
+        }
+        'bootstrap-datepicker'('1.5.x'){
+            source 'dist/js/*' >> 'js/'
+            source 'dist/css/*' >> 'css/'
+            source 'dist/locales/*' >> 'locales/'
         }
     }
 

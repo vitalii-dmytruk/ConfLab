@@ -1,5 +1,6 @@
 package com.intelliarts.conflab.core.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.intelliarts.conflab.core.entity.converter.LocalDateConverter;
 import org.hibernate.validator.constraints.Length;
@@ -35,10 +36,12 @@ public class Event {
     @Column
     private String description;
 
+    @JsonFormat(pattern = "dd-MMM-yyyy")
     @Column(name = "start_date")
     @Convert(converter = LocalDateConverter.class)
     private LocalDate startDate;
 
+    @JsonFormat(pattern = "dd-MMM-yyyy")
     @Column(name = "end_date")
     @Convert(converter = LocalDateConverter.class)
     private LocalDate endDate;
