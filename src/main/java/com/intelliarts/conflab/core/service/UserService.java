@@ -7,8 +7,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
-
 @Service
 public class UserService implements UserDetailsService {
 
@@ -22,7 +20,7 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return repository.findByUsername(username)
-                         .orElseThrow(() -> new EntityNotFoundException(
+                         .orElseThrow(() -> new UsernameNotFoundException(
                                  String.format("User with username %s was not found", username)));
     }
 

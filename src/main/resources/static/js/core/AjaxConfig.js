@@ -34,8 +34,8 @@ define([
         }
     }
 
-    function showAuthWarning() {
-        notify('warn', 'Your session is expired', 'Please sign in');
+    function showAuthWarning(jqXHR) {
+        notify('warn', jqXHR.responseJSON.message, 'Please sign in');
     }
 
     function notify(type, message, title) {

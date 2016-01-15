@@ -13,11 +13,11 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Collections;
 
-public class HasAthorityAnnotationSecurityMetadataSource extends AbstractMethodSecurityMetadataSource {
+public class HasAuthorityAnnotationSecurityMetadataSource extends AbstractMethodSecurityMetadataSource {
     private static final String HAS_ROLE = "hasAuthority('%s')";
     private final PrePostInvocationAttributeFactory attributeFactory;
 
-    public HasAthorityAnnotationSecurityMetadataSource(PrePostInvocationAttributeFactory attributeFactory) {
+    public HasAuthorityAnnotationSecurityMetadataSource(PrePostInvocationAttributeFactory attributeFactory) {
         this.attributeFactory = attributeFactory;
     }
 

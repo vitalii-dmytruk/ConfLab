@@ -1,5 +1,6 @@
 package com.intelliarts.conflab.config;
 
+import com.intelliarts.conflab.security.AuthenticationFailedEntryPoint;
 import com.intelliarts.conflab.security.CsrfTokenExceptionHandler;
 import com.intelliarts.conflab.security.CsrfTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     private void login(HttpSecurity http) throws Exception {
-        http.httpBasic();
+        http.httpBasic().authenticationEntryPoint(new AuthenticationFailedEntryPoint());
     }
 
     private void logout(HttpSecurity http) throws Exception {
