@@ -1,7 +1,6 @@
 package com.intelliarts.conflab.core.repository;
 
-import com.intelliarts.conflab.core.entity.StageEntity;
-import org.springframework.stereotype.Repository;
+import com.intelliarts.conflab.core.entity.Stage;
 
-@Repository
-public interface StageRepository extends BaseRepository<StageEntity, Integer> {}
+public interface StageRepository extends BaseRepository<Stage, Integer> {
+}

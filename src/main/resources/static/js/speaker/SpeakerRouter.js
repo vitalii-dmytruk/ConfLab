@@ -1,22 +1,36 @@
 define([
-    'backbone.marionette',
-    'backbone.radio',
-    'speaker/SpeakerController'
-], function (Marionette, Radio, SpeakerController) {
+    'common/MenuAwareRouter',
+    'speaker/table/SpeakerTableRoute',
+    'speaker/details/SpeakerDetailsRoute',
+    'backbone.marionette'
+], function (MenuAwareRouter, SpeakerTableRoute, SpeakerDetailsRoute) {
 
     'use strict';
 
-    return Marionette.AppRouter.extend({
+    return MenuAwareRouter.extend({
+
+        menuButton: new Backbone.Model({
+            name: 'Speakers',
+            path: 'speakers'
+        }),
+
         initialize: function (options) {
-            Radio.channel('menu').request('add', {name: 'Speakers', path: 'speaker'});
-            this.controller = new SpeakerController({container: options.container});
+            this.container = options.container;
         },
 
-        appRoutes: {
-            'speaker': 'speaker'
+        routes: {
+            'speakers'    : getRoute(SpeakerTableRoute),
+            'speakers/:id': getRoute(SpeakerDetailsRoute)
         }
 
     });
 
+    function getRoute(RouteClass) {
+        return function () {
+            return new RouteClass({
+                container: this.container
+            });
+        }
+    }
 
 });

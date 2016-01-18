@@ -1,29 +1,47 @@
 define([
-    'backbone.marionette',
     'backbone.radio',
-    'text!auth/LoginLayoutTemplate.html'
-], function (Marionette, Radio, template) {
+    'text!auth/LoginViewTemplate.html',
+    'backbone',
+    'backbone.marionette',
+    'backbone.stickit'
+], function (Radio, template) {
 
     'use strict';
 
     return Marionette.ItemView.extend({
-        tagName  : 'form',
-        className: 'form-horizontal',
-        template : _.template(template),
+        template: _.template(template),
 
         ui: {
-            username    : 'input#username',
-            password    : 'input#password',
-            signInButton: 'button#signIn'
+            form  : '#login-form',
+            cancel: '#cancel'
         },
 
         events: {
-            'click @ui.signInButton': 'signIn'
+            'submit @ui.form' : login,
+            'click @ui.cancel': cancel
         },
 
-        signIn: function () {
-            Radio.channel('session').request('signIn', this.ui.username.val(), this.ui.password.val());
-            return false;
+        bindings: {
+            '#username': 'username',
+            '#password': 'password'
+        },
+
+        initialize: function () {
+            this.model = new Backbone.Model();
+        },
+
+        onRender: function () {
+            this.stickit();
         }
     });
+
+
+    function login() {
+        this.trigger('login:confirm', this.model);
+        return false;
+    }
+
+    function cancel() {
+        this.trigger('login:cancel', this.model);
+    }
 });

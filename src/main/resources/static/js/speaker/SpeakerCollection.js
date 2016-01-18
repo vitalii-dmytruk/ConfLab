@@ -1,7 +1,15 @@
-define(['speaker/Speaker', 'backbone'], function (Speaker) {
-       return Backbone.Collection.extend({
-           url: "/speakers",
-           model: Speaker
-       });
-   }
-);
+define([
+    'speaker/SpeakerModel',
+    'common/Collection'
+], function (SpeakerModel, Collection) {
+
+    'use strict';
+
+    return Collection.extend({
+        url  : '/speakers',
+        model: SpeakerModel
+    });
+
+});
+
+

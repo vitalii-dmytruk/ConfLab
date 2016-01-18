@@ -1,6 +1,9 @@
-define(['backbone'], function(Backbone){
+define([
+    'common/Model',
+    'backbone'
+], function (Model) {
 
     'use strict';
 
-    return Backbone.Model.extend({});
+    return Model.extend({});
 });

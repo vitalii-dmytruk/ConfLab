@@ -1,0 +1,4 @@
+ALTER TABLE event_speech_speaker_map DROP CONSTRAINT event_speech_speaker_map_speech_speaker_id_fkey;
+ALTER TABLE event_speech_speaker_map
+ADD CONSTRAINT event_speech_speaker_map_speech_speaker_id_fkey
+FOREIGN KEY (speech_speaker_id) REFERENCES speech_speaker (id) ON DELETE CASCADE;

@@ -1,52 +1,35 @@
 define([
     'common/Service',
-    'menu/MenuItems',
-    'menu/MenuView'
-], function (Service, MenuItems, MenuView) {
+    'common/navigation/NavigationView'
+], function (Service, NavigationView) {
 
     'use strict';
 
+    //noinspection JSUnusedGlobalSymbols
     return Service.extend({
 
         channelName: 'menu',
 
         initialize: function (options) {
-            this.container  = options.container;
-            this.collection = new MenuItems();
+            this.container = options.container;
             this.start();
         },
 
         onStart: function () {
-            this.view = new MenuView({collection: this.collection});
-            this.container.show(this.view);
+            var menu = new NavigationView({
+                className: 'nav nav-sidebar'
+            });
+            this.container.show(menu);
             this.channel.reply({
-                add     : this.onAdd,
-                activate: this.onActivate,
-                remove  : this.onRemove
-            }, this)
+                add       : menu.addItems,
+                activate  : menu.activateItem,
+                remove    : menu.removeItem,
+                deactivate: menu.deactivateItem
+            }, menu)
         },
 
         onStop: function () {
             this.channel.reset();
-        },
-
-        onAdd: function (model) {
-            this.collection.add(model);
-        },
-
-        onRemove: function (model) {
-            model = this.collection.findWhere(model);
-            this.collection.remove(model);
-        },
-
-        onActivate: function (model) {
-            this.collection.invoke('set', 'active', false);
-            model = this.collection.findWhere(model);
-            if (model) {
-                model.set('active', true);
-            }
         }
-
     });
-
 });

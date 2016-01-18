@@ -1,7 +1,9 @@
 package com.intelliarts.conflab.core.controller;
 
-import com.intelliarts.conflab.api.Stage;
+import com.intelliarts.conflab.core.entity.Role;
+import com.intelliarts.conflab.core.entity.Stage;
 import com.intelliarts.conflab.core.service.StageService;
+import com.intelliarts.conflab.security.HasAuthority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/stages")
+@HasAuthority(role = Role.ADMIN)
 public class StageController {
     @Autowired
     private StageService stageService;
@@ -25,13 +28,12 @@ public class StageController {
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Stage create(@RequestBody @Validated Stage stage) {
-        return stageService.create(stage);
+        return stageService.save(stage);
     }
 
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE,
                     method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    public List<Stage> getSpeakers() {
+    public List<Stage> getAll() {
         return stageService.getAll();
     }
 }

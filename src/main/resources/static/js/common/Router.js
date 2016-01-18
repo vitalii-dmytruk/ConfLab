@@ -1,8 +1,7 @@
 define([
-    'backbone',
-    'backbone.marionette',
-    'common/Route'
-], function (Backbone, Marionette, Route) {
+    'common/route/Route',
+    'backbone.marionette'
+], function (Route) {
 
     'use strict';
 
@@ -14,11 +13,7 @@ define([
         },
 
         _onHistoryRoute: function (router) {
-            if (this === router) {
-                this.active = true;
-            } else {
-                this.active = false;
-            }
+            this.active = this === router;
         },
 
         execute: function (callback, args) {
@@ -30,7 +25,7 @@ define([
 
             this.triggerMethod.apply(this, ['before:route'].concat(args));
 
-            $.when(this._execute(callback, args)).then(function () {
+            $.when(enterRoute(this, callback, args)).then(function () {
                 if (!self.active) {
                     self.triggerMethod.apply(self, ['enter'].concat(args));
                 }
@@ -39,16 +34,15 @@ define([
             });
         },
 
-        _execute: function (callback, args) {
-            var route = callback.apply(this, args);
-
-            if (route instanceof Route) {
-                return route.enter(args);
-            }
-        },
-
         triggerMethod: Marionette.triggerMethod
 
     });
 
+    function enterRoute(router, callback, args) {
+        var route = callback.apply(router, args);
+
+        if (route instanceof Route) {
+            return route.enter(args);
+        }
+    }
 });
