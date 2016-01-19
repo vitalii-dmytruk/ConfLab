@@ -1,8 +1,8 @@
 package com.intelliarts.conflab.core.controller;
 
-import com.intelliarts.conflab.core.entity.Partner;
+import com.intelliarts.conflab.core.entity.Company;
 import com.intelliarts.conflab.core.entity.Role;
-import com.intelliarts.conflab.core.service.PartnerService;
+import com.intelliarts.conflab.core.service.CompanyService;
 import com.intelliarts.conflab.security.HasAuthority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,43 +19,43 @@ import java.util.List;
 
 @RestController
 @HasAuthority(role = Role.ADMIN)
-@RequestMapping("/partners")
-public class PartnerController {
+@RequestMapping("/companies")
+public class CompanyController {
 
-    private PartnerService partnerService;
+    private CompanyService companyService;
 
     @Autowired
-    public PartnerController(PartnerService partnerService) {
-        this.partnerService = partnerService;
+    public CompanyController(CompanyService companyService) {
+        this.companyService = companyService;
     }
 
     @RequestMapping(method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Partner> findAll() {
-        return partnerService.findAll();
+    public List<Company> findAll() {
+        return companyService.findAll();
     }
 
     @RequestMapping(method = RequestMethod.POST,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Partner create(@RequestBody @Validated Partner partner) {
-        return partnerService.save(partner);
+    public Company create(@RequestBody @Validated Company company) {
+        return companyService.save(company);
     }
 
     @RequestMapping(value = "/{id}",
                     method = RequestMethod.PUT,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public Partner update(@PathVariable("id") Long id, @RequestBody @Validated Partner partner) {
-        partner.setId(id);
-        return partnerService.save(partner);
+    public Company update(@PathVariable("id") Long id, @RequestBody @Validated Company company) {
+        company.setId(id);
+        return companyService.save(company);
     }
 
     @RequestMapping(value = "/{id}",
                     method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public Partner findById(@PathVariable("id") Long id) {
-        return partnerService.findById(id);
+    public Company findById(@PathVariable("id") Long id) {
+        return companyService.findById(id);
     }
 }

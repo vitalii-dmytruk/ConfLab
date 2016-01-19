@@ -10,12 +10,12 @@ import javax.persistence.Table;
 import java.net.URL;
 
 @Entity
-@Table(name = "partner")
-public class Partner {
+@Table(name = "company")
+public class Company {
 
     @Id
-    @SequenceGenerator(name = "partner_seq", sequenceName = "partner_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "partner_seq")
+    @SequenceGenerator(name = "company_seq", sequenceName = "company_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "company_seq")
     @Column
     public Long id;
 
