@@ -47,7 +47,11 @@ public class Event {
     private LocalDate endDate;
 
     @Column
-    private String venue;
+    private String country;
+    @Column
+    private String city;
+    @Column
+    private String address;
 
     @JsonIgnore
     @OneToMany(mappedBy = "event")
@@ -93,12 +97,12 @@ public class Event {
         this.endDate = endDate;
     }
 
-    public String getVenue() {
-        return venue;
+    public String getAddress() {
+        return address;
     }
 
-    public void setVenue(String venue) {
-        this.venue = venue;
+    public void setAddress(String str) {
+        this.address = str;
     }
 
     public Set<EventSpeechSpeaker> getEventSpeechSpeakers() {
@@ -107,5 +111,21 @@ public class Event {
 
     public void setEventSpeechSpeakers(Set<EventSpeechSpeaker> eventSpeechSpeakers) {
         this.eventSpeechSpeakers = eventSpeechSpeakers;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 }
