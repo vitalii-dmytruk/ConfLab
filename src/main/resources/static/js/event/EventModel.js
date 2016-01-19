@@ -14,6 +14,9 @@ define([
                 name       : '',
                 description: '',
                 startDate  : '',
+                country    : '',
+                city       : '',
+                address    : '',
                 endDate    : '',
                 speakers   : []
             }
@@ -23,6 +26,21 @@ define([
                 required : true,
                 minLength: 3,
                 maxLength: 40
+            },
+            address: {
+                required : false,
+                minLength: 2,
+                maxLength: 255
+            },
+            city   : {
+                required : false,
+                minLength: 2,
+                maxLength: 80
+            },
+            country: {
+                required : false,
+                minLength: 2,
+                maxLength: 80
             },
             endDate: function (value, attr, computedState) {
                 if (value < computedState.startDate) {

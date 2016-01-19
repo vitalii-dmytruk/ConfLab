@@ -16,18 +16,8 @@ define([
         itemShowTemplate: EventTemplate,
         itemEditTemplate: EventEditTemplate,
 
-        showBindings: {
-            '#name'       : 'name',
-            '#description': 'description',
-            '#startDate'  : 'startDate',
-            '#endDate'    : 'endDate'
-        },
-        editBindings: {
-            '#name'       : 'name',
-            '#description': 'description',
-            '#startDate'  : dateBinding('startDate'),
-            '#endDate'    : dateBinding('endDate')
-        },
+        showBindings: viewBindings(directBind),
+        editBindings: viewBindings(dateBinding),
 
         rowBindings: {
             '[data-event-name]'      : 'name',
@@ -36,15 +26,32 @@ define([
         }
     });
 
+
+    function viewBindings(dateBinder) {
+        return {
+            '#name'        : 'name',
+            '#description' : 'description',
+            '#eventCountry': 'country',
+            '#eventCity'   : 'city',
+            '#eventAddress': 'address',
+            '#startDate'   : dateBinder('startDate'),
+            '#endDate'     : dateBinder('endDate')
+        }
+    }
+
+    function directBind(attribute) {
+        return attribute;
+    }
+
     function dateBinding(attribute) {
         return {
             observe   : attribute,
             initialize: function ($el) {
                 $el.datepicker({
-                    format: 'dd-M-yyyy',
+                    format     : 'dd-M-yyyy',
                     orientation: 'bottom'
                 });
-                $el.on('hide', function(){
+                $el.on('hide', function () {
                     $el.change();
                 });
             }
