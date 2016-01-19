@@ -23,7 +23,7 @@ public class Partner {
     public String name;
 
     @Column
-    public URL link;
+    public URL url;
 
     public Long getId() {
         return id;
@@ -41,11 +41,11 @@ public class Partner {
         this.name = name;
     }
 
-    public URL getLink() {
-        return link;
+    public URL getUrl() {
+        return url;
     }
 
-    public void setLink(URL link) {
-        this.link = link;
+    public void setUrl(URL link) {
+        this.url = link;
     }
 }

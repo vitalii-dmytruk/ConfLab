@@ -3,7 +3,7 @@ CREATE SEQUENCE partner_id_seq;
 CREATE TABLE partner (
   id   BIGINT       NOT NULL PRIMARY KEY DEFAULT nextval('partner_id_seq'),
   name VARCHAR(255) NOT NULL,
-  link VARCHAR
+  url VARCHAR
 );
 
 CREATE TABLE partner_event (
