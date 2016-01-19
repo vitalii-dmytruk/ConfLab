@@ -46,7 +46,21 @@ define([
             '#name': 'name',
             '#position': 'position',
             '#company': companyBinder(),
-            '#about': 'about'
+            '#about': 'about',
+            '#image'   : {
+                attributes: [{
+                    name   : 'src',
+                    observe: 'image',
+                    onGet  : function (val, options) {
+                        if (val != null) {
+                            var id = options.view.model.id;
+                            return 'img/avatars/' + id + '/' + val;
+                        } else {
+                            return 'img/default-avatar.png';
+                        }
+                    }
+                }]
+            }
         };
     }
 
