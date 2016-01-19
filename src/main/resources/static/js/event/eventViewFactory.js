@@ -16,21 +16,8 @@ define([
         itemShowTemplate: EventTemplate,
         itemEditTemplate: EventEditTemplate,
 
-        showBindings: {
-            '#name'        : 'name',
-            '#description' : 'description',
-            '#startDate'   : 'startDate',
-            '#endDate'     : 'endDate',
-            '#eventCountry': 'country',
-            '#eventCity'   : 'city',
-            '#eventAddress': 'address'
-        },
-        editBindings: {
-            '#name'       : 'name',
-            '#description': 'description',
-            '#startDate'  : dateBinding('startDate'),
-            '#endDate'    : dateBinding('endDate')
-        },
+        showBindings: viewBindings(directBind),
+        editBindings: viewBindings(dateBinding),
 
         rowBindings: {
             '[data-event-name]'      : 'name',
@@ -38,6 +25,23 @@ define([
             '[data-event-end-date]'  : 'endDate'
         }
     });
+
+
+    function viewBindings(dateBinder) {
+        return {
+            '#name'        : 'name',
+            '#description' : 'description',
+            '#eventCountry': 'country',
+            '#eventCity'   : 'city',
+            '#eventAddress': 'address',
+            '#startDate'   : dateBinder('startDate'),
+            '#endDate'     : dateBinder('endDate')
+        }
+    }
+
+    function directBind(attribute) {
+        return attribute;
+    }
 
     function dateBinding(attribute) {
         return {
