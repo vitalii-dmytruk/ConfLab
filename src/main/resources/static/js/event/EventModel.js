@@ -14,6 +14,9 @@ define([
                 name       : '',
                 description: '',
                 startDate  : '',
+                country    : '',
+                city       : '',
+                address    : '',
                 endDate    : '',
                 speakers   : []
             }

@@ -17,10 +17,13 @@ define([
         itemEditTemplate: EventEditTemplate,
 
         showBindings: {
-            '#name'       : 'name',
-            '#description': 'description',
-            '#startDate'  : 'startDate',
-            '#endDate'    : 'endDate'
+            '#name'        : 'name',
+            '#description' : 'description',
+            '#startDate'   : 'startDate',
+            '#endDate'     : 'endDate',
+            '#eventCountry': 'country',
+            '#eventCity'   : 'city',
+            '#eventAddress': 'address'
         },
         editBindings: {
             '#name'       : 'name',
@@ -41,10 +44,10 @@ define([
             observe   : attribute,
             initialize: function ($el) {
                 $el.datepicker({
-                    format: 'dd-M-yyyy',
+                    format     : 'dd-M-yyyy',
                     orientation: 'bottom'
                 });
-                $el.on('hide', function(){
+                $el.on('hide', function () {
                     $el.change();
                 });
             }
