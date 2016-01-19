@@ -6,12 +6,13 @@ define([
     'menu/MenuService',
     'speaker/SpeakerRouter',
     'speech/SpeechRouter',
+    'partner/PartnerRouter',
     'event/EventRouter',
     'auth/AuthService',
     'account/AccountRouter',
     'backbone.marionette'
 ], function (ConfLabsLayoutView, NotificationService, HomepageRouter, HeaderService, MenuService, SpeakerRouter, SpeechRouter,
-    EventRouter, AuthService, AccountRouter) {
+    PartnerRouter, EventRouter, AuthService, AccountRouter) {
 
     'use strict';
 
@@ -57,6 +58,10 @@ define([
                 });
 
                 app.speech = new SpeechRouter({
+                    container: app.layout.getRegion('main')
+                });
+
+                app.partner = new PartnerRouter({
                     container: app.layout.getRegion('main')
                 });
 
