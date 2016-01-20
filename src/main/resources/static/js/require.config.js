@@ -14,7 +14,7 @@ var require = {
         "text"                  : 'lib/requirejs-text/text',
         "jquery"                : 'lib/jquery/jquery.min',
         "toastr"                : 'lib/toastr/toastr.min',
-        "select2"               : 'lib/select2/js/select2.full',
+        "select2"               : 'lib/select2/js/select2',
         "underscore"            : 'lib/underscore/underscore-min',
         "backbone"              : 'lib/backbone/backbone-min',
         "backbone.marionette"   : 'lib/marionette/backbone.marionette',
