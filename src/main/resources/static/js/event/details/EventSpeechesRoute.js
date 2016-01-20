@@ -10,18 +10,18 @@ define([
     return EventDetailsRoute.extend({
 
         fetch: function () {
-            this.speeches                 = new SpeechCollection();
-            this.speeches.url             = this.model.url() + this.speeches.url;
-            this.speechesSearchCollection = new SpeechCollection();
+            this.partners                 = new SpeechCollection();
+            this.partners.url             = this.model.url() + this.partners.url;
+            this.partnersSearchCollection = new SpeechCollection();
 
-            return $.when(this.model.fetch(), this.speeches.fetch(), this.speechesSearchCollection.fetch());
+            return $.when(this.model.fetch(), this.partners.fetch(), this.partnersSearchCollection.fetch());
         },
 
         render: function () {
             var eventView = speechViewFactory.newEventView({
                 model           : this.model,
-                collection      : this.speeches,
-                searchCollection: this.speechesSearchCollection,
+                collection      : this.partners,
+                searchCollection: this.partnersSearchCollection,
                 attachmentView  : speakerViewFactory.attachedItemTableView
             });
             this.view.showSpeechesTab(eventView);

@@ -3,8 +3,10 @@ define([
     'event/table/EventTableRoute',
     'event/details/EventInfoRoute',
     'event/details/EventSpeakersRoute',
-    'event/details/EventSpeechesRoute'
-], function (MenuAwareRouter, EventTableRoute, EventInfoRoute, EventSpeakersRoute, EventSpeechesRoute) {
+    'event/details/EventSpeechesRoute',
+    'event/details/EventPartnersRoute'
+], function (MenuAwareRouter, EventTableRoute, EventInfoRoute, EventSpeakersRoute, EventSpeechesRoute,
+    EventPartnersRoute) {
 
     'use strict';
 
@@ -24,7 +26,8 @@ define([
             'events/:id'         : getRoute(EventInfoRoute),
             'events/:id/info'    : getRoute(EventInfoRoute),
             'events/:id/speakers': getRoute(EventSpeakersRoute),
-            'events/:id/speeches': getRoute(EventSpeechesRoute)
+            'events/:id/speeches': getRoute(EventSpeechesRoute),
+            'events/:id/partners': getRoute(EventPartnersRoute)
         }
     });
 

@@ -89,7 +89,7 @@ define([
         componentView = new options.DetailsView({model: model});
         view.eventItemRegion.show(componentView);
 
-        componentView.showAttachment(new options.attachmentView({
+        options.attachmentView && componentView.showAttachment(new options.attachmentView({
             collection      : getCollection(options, view.model.url() + model.url()),
             searchCollection: getCollection(options, model.url())
         }));
