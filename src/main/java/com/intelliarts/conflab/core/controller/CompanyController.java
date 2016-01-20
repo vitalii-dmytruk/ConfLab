@@ -1,8 +1,8 @@
 package com.intelliarts.conflab.core.controller;
 
-import com.intelliarts.conflab.core.entity.Event;
+import com.intelliarts.conflab.core.entity.Company;
 import com.intelliarts.conflab.core.entity.Role;
-import com.intelliarts.conflab.core.service.EventService;
+import com.intelliarts.conflab.core.service.CompanyService;
 import com.intelliarts.conflab.security.HasAuthority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,43 +19,43 @@ import java.util.List;
 
 @RestController
 @HasAuthority(role = Role.ADMIN)
-@RequestMapping("/events")
-public class EventController {
+@RequestMapping("/companies")
+public class CompanyController {
 
-    private EventService eventService;
+    private CompanyService companyService;
 
     @Autowired
-    public EventController(EventService eventService) {
-        this.eventService = eventService;
+    public CompanyController(CompanyService companyService) {
+        this.companyService = companyService;
     }
 
     @RequestMapping(method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Event> findAll() {
-        return eventService.findAll();
+    public List<Company> findAll() {
+        return companyService.findAll();
     }
 
     @RequestMapping(method = RequestMethod.POST,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Event create(@RequestBody @Validated Event event) {
-        return eventService.save(event);
+    public Company create(@RequestBody @Validated Company company) {
+        company.setId(null);
+        return companyService.save(company);
     }
 
     @RequestMapping(value = "/{id}",
                     method = RequestMethod.PUT,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public Event update(@PathVariable("id") Long id, @RequestBody @Validated Event event) {
-        event.setId(id);
-        return eventService.save(event);
+    public Company update(@PathVariable("id") Long id, @RequestBody @Validated Company company) {
+        return companyService.save(company);
     }
 
     @RequestMapping(value = "/{id}",
                     method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public Event findById(@PathVariable("id") Long id) {
-        return eventService.findById(id);
+    public Company findById(@PathVariable("id") Long id) {
+        return companyService.findById(id);
     }
 }
