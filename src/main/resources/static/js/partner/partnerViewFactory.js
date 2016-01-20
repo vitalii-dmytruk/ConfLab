@@ -18,7 +18,13 @@ define([
 
         showBindings: {
             '#name': 'name',
-            '#url' : 'url'
+            '#url' : {
+                observe   : 'url',
+                attributes: [{
+                    name   : 'href',
+                    observe: 'url'
+                }]
+            }
         },
 
         editBindings: {
