@@ -16,9 +16,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
@@ -44,11 +47,12 @@ public class SpeakerController {
 
     @RequestMapping(value = "/speakers",
                     method = POST,
-                    consumes = MediaType.APPLICATION_JSON_VALUE,
+                    consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Speaker create(@RequestBody @Validated Speaker speaker) {
-        return speakerService.create(speaker);
+    public Speaker create(@RequestPart("speaker") @Validated Speaker speaker,
+            @RequestPart(value = "image") MultipartFile file) throws IOException {
+        return speakerService.create(speaker, file);
     }
 
     @RequestMapping(value = "/speeches/{speechId}/speakers",

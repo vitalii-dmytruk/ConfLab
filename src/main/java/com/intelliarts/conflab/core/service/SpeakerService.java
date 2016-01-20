@@ -5,12 +5,16 @@ import com.intelliarts.conflab.core.entity.Event;
 import com.intelliarts.conflab.core.entity.Speaker;
 import com.intelliarts.conflab.core.entity.Speech;
 import com.intelliarts.conflab.core.entity.SpeechSpeaker;
+import com.intelliarts.conflab.core.repository.ImagesRepository;
+import com.intelliarts.conflab.core.repository.ImagesRepository;
 import com.intelliarts.conflab.core.repository.SpeakerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -21,12 +25,15 @@ public class SpeakerService {
     private CompanyService            companyService;
     private SpeakerRepository         speakerRepository;
     private EventSpeechSpeakerService eventSpeechSpeakerService;
+    private ImagesRepository          imagesRepository;
 
     @Autowired
-    public SpeakerService(CompanyService companyService, SpeakerRepository speakerRepository, EventSpeechSpeakerService eventSpeechSpeakerService) {
+    public SpeakerService(CompanyService companyService, SpeakerRepository speakerRepository, 
+            EventSpeechSpeakerService eventSpeechSpeakerService, ImagesRepository imagesRepository) {
         this.companyService = companyService;
         this.speakerRepository = speakerRepository;
         this.eventSpeechSpeakerService = eventSpeechSpeakerService;
+        this.imagesRepository = imagesRepository;
     }
 
     @Transactional(readOnly = true)
@@ -66,6 +73,16 @@ public class SpeakerService {
         Speaker createdSpeaker = speakerRepository.save(speaker);
         linkToSpeech(createdSpeaker, null);
         return createdSpeaker;
+    }
+
+    @Transactional
+    public Speaker create(Speaker speaker, MultipartFile image) throws IOException {
+        speaker = speakerRepository.save(speaker);
+        if (image != null) {
+            createImage(speaker, image);
+        }
+        linkToSpeech(speaker, null);
+        return speaker;
     }
 
     @Transactional
@@ -128,4 +145,7 @@ public class SpeakerService {
         eventSpeechSpeakerService.deleteEventSpeechSpeakerLinks(event, speaker);
     }
 
+    public void createImage(Speaker speaker, MultipartFile file) throws IOException {
+        imagesRepository.save(String.valueOf(speaker.getId()), file);
+    }
 }
