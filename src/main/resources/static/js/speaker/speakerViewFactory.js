@@ -21,6 +21,18 @@ define([
         },
         '#name'    : 'name',
         '#position': 'position',
+        '#company' : {
+            observe : 'company',
+            onGet : function (value) {
+                return value & value.name;
+            },
+            getVal : function ($el, event, options) {
+
+            },
+            onSet : function (value, options) {
+
+            }
+        },
         '#about'   : 'about'
     };
     return new ViewFactory({
