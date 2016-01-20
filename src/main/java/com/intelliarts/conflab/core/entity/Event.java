@@ -57,6 +57,10 @@ public class Event {
     @OneToMany(mappedBy = "event")
     private Set<EventSpeechSpeaker> eventSpeechSpeakers;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "event")
+    private Set<EventCompany> eventCompanies;
+
     public Long getId() {
         return id;
     }
@@ -111,6 +115,14 @@ public class Event {
 
     public void setEventSpeechSpeakers(Set<EventSpeechSpeaker> eventSpeechSpeakers) {
         this.eventSpeechSpeakers = eventSpeechSpeakers;
+    }
+
+    public Set<EventCompany> getEventCompanies() {
+        return eventCompanies;
+    }
+
+    public void setEventCompanies(Set<EventCompany> eventCompanies) {
+        this.eventCompanies = eventCompanies;
     }
 
     public String getCity() {
