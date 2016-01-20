@@ -19,7 +19,6 @@ import java.util.List;
 
 @RestController
 @HasAuthority(role = Role.ADMIN)
-@RequestMapping("/companies")
 public class CompanyController {
 
     private CompanyService companyService;
@@ -29,13 +28,15 @@ public class CompanyController {
         this.companyService = companyService;
     }
 
-    @RequestMapping(method = RequestMethod.GET,
+    @RequestMapping(value = "/companies",
+                    method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Company> findAll() {
         return companyService.findAll();
     }
 
-    @RequestMapping(method = RequestMethod.POST,
+    @RequestMapping(value = "/companies",
+                    method = RequestMethod.POST,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
@@ -44,18 +45,19 @@ public class CompanyController {
         return companyService.save(company);
     }
 
-    @RequestMapping(value = "/{id}",
+    @RequestMapping(value = "/companies/{companyId}",
                     method = RequestMethod.PUT,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public Company update(@PathVariable("id") Long id, @RequestBody @Validated Company company) {
+    public Company update(@PathVariable("companyId") Long companyId, @RequestBody @Validated Company company) {
+        company.setId(companyId);
         return companyService.save(company);
     }
 
-    @RequestMapping(value = "/{id}",
+    @RequestMapping(value = "/companies/{companyId}",
                     method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public Company findById(@PathVariable("id") Long id) {
-        return companyService.findById(id);
+    public Company findById(@PathVariable("companyId") Long companyId) {
+        return companyService.findById(companyId);
     }
 }
