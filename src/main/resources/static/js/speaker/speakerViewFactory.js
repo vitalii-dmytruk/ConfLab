@@ -11,27 +11,27 @@ define([
     'use strict';
 
     return new ViewFactory({
-        title: 'Speaker',
+        title     : 'Speaker',
         tableTitle: 'Speakers',
 
-        itemRowTemplate: SpeakerRowTemplate,
+        itemRowTemplate : SpeakerRowTemplate,
         itemShowTemplate: SpeakerShowTemplate,
         itemEditTemplate: SpeakerEditTemplate,
 
         searchLabelAttribute: 'name',
 
-        editBindings: viewBindings(companySelectBinder),
-        showBindings: viewBindings(companyNameBinder),
+        editBindings: viewBindings(directImage,companySelectBinder),
+        showBindings: viewBindings(showImage,companyNameBinder),
 
         rowBindings: {
             '[data-name]': 'name',
             '[data-company]': companyNameBinder(),
             '[data-position]': 'position',
-            '[data-email]': 'email'
+            '[data-email]'   : 'email'
         }
     });
 
-    function viewBindings(companyBinder) {
+    function viewBindings(imageBinder, companyBinder) {
         return {
             '#email': {
                 attributes: [{
@@ -47,20 +47,7 @@ define([
             '#position': 'position',
             '#company': companyBinder(),
             '#about': 'about',
-            '#image'   : {
-                attributes: [{
-                    name   : 'src',
-                    observe: 'image',
-                    onGet  : function (val, options) {
-                        if (val != null) {
-                            var id = options.view.model.id;
-                            return 'img/avatars/' + id + '/' + val;
-                        } else {
-                            return 'img/default-avatar.png';
-                        }
-                    }
-                }]
-            }
+            '#image'   : imageBinder()
         };
     }
 
@@ -74,6 +61,27 @@ define([
             onGet: function (value) {
                 return value && value.name;
             }
+        }
+    }
+
+    function directImage(attribute) {
+        return attribute;
+    }
+
+    function showImage(attribute) {
+        return {
+            attributes: [{
+                name   : 'src',
+                observe: attribute,
+                onGet  : function (val, options) {
+                    if (val != null) {
+                        var id = options.view.model.id;
+                        return 'img/avatars/' + id + '/' + val;
+                    } else {
+                        return 'img/default-avatar.png';
+                    }
+                }
+            }]
         }
     }
 });

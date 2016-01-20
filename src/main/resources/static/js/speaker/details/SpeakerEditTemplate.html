@@ -1,5 +1,5 @@
 <br/>
-<form class="form-horizontal">
+<form class="form-horizontal" enctype="multipart/form-data">
     <div class="form-group">
         <label for="name" class="required col-md-2 control-label">Full Name</label>
 
@@ -40,6 +40,15 @@
             <span class="help-block hidden"></span>
         </div>
     </div>
+    <div class="form-group">
+        <label for="image" class="col-md-2 control-label">Image</label>
+
+        <div class="col-md-8">
+            <input id="image" type="file" name="image" accept="image/*">
+            <span class="help-block hidden"></span>
+        </div>
+    </div>
+
     <div class="form-group">
         <div class="col-md-offset-2 col-md-8">
             <button data-submit-btn type="submit" class="btn btn-success">Ok</button>
