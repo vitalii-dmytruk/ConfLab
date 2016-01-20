@@ -40,6 +40,7 @@ public class CompanyController {
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Company create(@RequestBody @Validated Company company) {
+        company.setId(null);
         return companyService.save(company);
     }
 
@@ -48,7 +49,6 @@ public class CompanyController {
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public Company update(@PathVariable("id") Long id, @RequestBody @Validated Company company) {
-        company.setId(id);
         return companyService.save(company);
     }
 
