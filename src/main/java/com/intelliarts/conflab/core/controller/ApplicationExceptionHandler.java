@@ -35,7 +35,7 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
         Throwable cause = ex.getCause();
         if (cause instanceof ConstraintViolationException) {
             ConstraintViolationException cEx = (ConstraintViolationException) cause;
-            message = "Application already contain sent data (Constraint " + cEx.getConstraintName() + " violates).";
+            message = "Application already contain sent data (Constraint '" + cEx.getConstraintName() + "' is violated).";
         } else {
             message = ex.getMessage();
         }
