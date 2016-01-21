@@ -1,18 +1,18 @@
 define([
     'event/details/EventItemViewFactory',
-    'text!partner/table/PartnerRowTemplate.html',
-    'text!partner/details/PartnerTemplate.html',
-    'text!partner/details/PartnerEditTemplate.html'
-], function (ViewFactory, PartnerRowTemplate, PartnerShowTemplate, PartnerEditTemplate) {
+    'text!company/table/CompanyRowTemplate.html',
+    'text!company/details/CompanyTemplate.html',
+    'text!company/details/CompanyEditTemplate.html'
+], function (ViewFactory, CompanyRowTemplate, CompanyShowTemplate, CompanyEditTemplate) {
 
     'use strict';
 
     return new ViewFactory({
-        tableTitle: 'Partners',
+        tableTitle: 'Companies',
 
-        itemRowTemplate : PartnerRowTemplate,
-        itemShowTemplate: PartnerShowTemplate,
-        itemEditTemplate: PartnerEditTemplate,
+        itemRowTemplate : CompanyRowTemplate,
+        itemShowTemplate: CompanyShowTemplate,
+        itemEditTemplate: CompanyEditTemplate,
 
         searchLabelAttribute: 'name',
 
@@ -33,7 +33,7 @@ define([
         },
 
         rowBindings: {
-            '[data-partner-name]': 'name'
+            '[data-company-name]': 'name'
         }
     });
 });

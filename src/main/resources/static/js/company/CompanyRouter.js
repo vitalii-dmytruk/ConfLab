@@ -1,16 +1,16 @@
 define([
     'common/MenuAwareRouter',
-    'partner/table/PartnerTableRoute',
-    'partner/details/PartnerDetailsRoute',
+    'company/table/CompanyTableRoute',
+    'company/details/CompanyDetailsRoute',
     'backbone.marionette'
-], function (MenuAwareRouter, PartnerTableRoute, PartnerDetailsRoute) {
+], function (MenuAwareRouter, CompanyTableRoute, CompanyDetailsRoute) {
 
     'use strict';
 
     return MenuAwareRouter.extend({
 
         menuButton: new Backbone.Model({
-            name: 'Partners',
+            name: 'Companies',
             path: 'companies'
         }),
 
@@ -19,8 +19,8 @@ define([
         },
 
         routes: {
-            'companies'    : getRoute(PartnerTableRoute),
-            'companies/:id': getRoute(PartnerDetailsRoute)
+            'companies'    : getRoute(CompanyTableRoute),
+            'companies/:id': getRoute(CompanyDetailsRoute)
         }
 
     });

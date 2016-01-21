@@ -1,26 +1,26 @@
 define([
     'event/details/EventDetailsRoute',
-    'partner/partnerViewFactory',
-    'partner/PartnerCollection'
-], function (EventDetailsRoute, partnerViewFactory, PartnerCollection) {
+    'company/companyViewFactory',
+    'company/CompanyCollection'
+], function (EventDetailsRoute, companyViewFactory, CompanyCollection) {
 
     'use strict';
 
     return EventDetailsRoute.extend({
 
         fetch: function () {
-            this.partners                 = new PartnerCollection();
-            this.partners.url             = this.model.url() + this.partners.url;
-            this.partnersSearchCollection = new PartnerCollection();
+            this.speeches                 = new CompanyCollection();
+            this.speeches.url             = this.model.url() + this.speeches.url;
+            this.speechesSearchCollection = new CompanyCollection();
 
-            return $.when(this.model.fetch(), this.partners.fetch(), this.partnersSearchCollection.fetch());
+            return $.when(this.model.fetch(), this.speeches.fetch(), this.speechesSearchCollection.fetch());
         },
 
         render: function () {
-            var eventView = partnerViewFactory.newEventView({
+            var eventView = companyViewFactory.newEventView({
                 model           : this.model,
-                collection      : this.partners,
-                searchCollection: this.partnersSearchCollection
+                collection      : this.speeches,
+                searchCollection: this.speechesSearchCollection
             });
             this.view.showPartnersTab(eventView);
         }

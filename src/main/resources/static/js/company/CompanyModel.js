@@ -1,7 +1,7 @@
 define([
     'common/Model',
     'backbone'
-], function PartnerModel(Model) {
+], function CompanyModel(Model) {
 
     'use strict';
 

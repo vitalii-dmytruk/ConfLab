@@ -2,7 +2,7 @@ define([
     'common/CollectionBinding',
     'event/details/EventItemViewFactory',
     'speech/SpeechCollection',
-    'partner/PartnerCollection',
+    'company/CompanyCollection',
     'text!speaker/table/SpeakerRowTemplate.html',
     'text!speaker/details/SpeakerTemplate.html',
     'text!speaker/details/SpeakerEditTemplate.html'
