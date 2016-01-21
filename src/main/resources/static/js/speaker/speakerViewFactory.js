@@ -27,6 +27,7 @@ define([
 
         rowBindings: {
             '[data-name]'    : 'name',
+            '[data-company]' : companyNameBinder(),
             '[data-position]': 'position',
             '[data-email]'   : 'email'
         }
