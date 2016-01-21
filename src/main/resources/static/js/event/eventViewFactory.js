@@ -16,8 +16,8 @@ define([
         itemShowTemplate: EventTemplate,
         itemEditTemplate: EventEditTemplate,
 
-        showBindings: viewBindings(directBind),
-        editBindings: viewBindings(dateBinding),
+        showBindings: viewBindings(directBind, contactsBinder),
+        editBindings: viewBindings(dateBinding, directBind),
 
         rowBindings: {
             '[data-event-name]'      : 'name',
@@ -27,20 +27,31 @@ define([
     });
 
 
-    function viewBindings(dateBinder) {
+    function viewBindings(dateBinder, contactsBinder) {
         return {
-            '#name'        : 'name',
-            '#description' : 'description',
-            '#eventCountry': 'country',
-            '#eventCity'   : 'city',
-            '#eventAddress': 'address',
-            '#startDate'   : dateBinder('startDate'),
-            '#endDate'     : dateBinder('endDate')
+            '#name'         : 'name',
+            '#description'  : 'description',
+            '#eventCountry' : 'country',
+            '#eventCity'    : 'city',
+            '#eventAddress' : 'address',
+            '#eventContacts': contactsBinder('contacts'),
+            '#startDate'    : dateBinder('startDate'),
+            '#endDate'      : dateBinder('endDate')
         }
     }
 
     function directBind(attribute) {
         return attribute;
+    }
+
+    function contactsBinder(attr) {
+        return {
+            observe     : attr,
+            updateMethod: 'html',
+            onGet       : function (value) {
+                return value.replace(/\n/g, '<br/>');
+            }
+        }
     }
 
     function dateBinding(attribute) {

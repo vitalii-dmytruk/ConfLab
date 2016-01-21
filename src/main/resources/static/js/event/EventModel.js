@@ -18,6 +18,7 @@ define([
                 city       : '',
                 address    : '',
                 endDate    : '',
+                contacts   : '',
                 speakers   : []
             }
         },
