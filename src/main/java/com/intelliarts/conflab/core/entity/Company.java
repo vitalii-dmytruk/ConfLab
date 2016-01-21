@@ -1,13 +1,18 @@
 package com.intelliarts.conflab.core.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.validator.constraints.NotBlank;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.net.URL;
+import java.util.Set;
 
 @Entity
 @Table(name = "company")
@@ -19,11 +24,16 @@ public class Company {
     @Column
     public Long id;
 
+    @NotBlank
     @Column
     public String name;
 
     @Column
     public URL url;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "company")
+    private Set<EventCompany> eventCompanies;
 
     public Long getId() {
         return id;
@@ -47,5 +57,13 @@ public class Company {
 
     public void setUrl(URL link) {
         this.url = link;
+    }
+
+    public Set<EventCompany> getEventCompanies() {
+        return eventCompanies;
+    }
+
+    public void setEventCompanies(Set<EventCompany> eventCompanies) {
+        this.eventCompanies = eventCompanies;
     }
 }
