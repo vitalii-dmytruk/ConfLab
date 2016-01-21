@@ -22,6 +22,7 @@ define([
                 maxLength: 255
             },
             url : {
+                required : false,
                 pattern: 'url',
                 msg    : 'Please enter a valid URL (e.g. http://www.example.com)'
             }
