@@ -15,7 +15,7 @@ define([
                 position: '',
                 about   : '',
                 email   : '',
-                company : {}
+                company : null
             }
         },
         validation: {

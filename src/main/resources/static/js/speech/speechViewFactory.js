@@ -1,14 +1,13 @@
 define([
+    'common/CollectionBinding',
     'event/details/EventItemViewFactory',
     'speaker/SpeakerCollection',
     'text!speech/table/SpeechRowTemplate.html',
     'text!speech/details/SpeechTemplate.html',
     'text!speech/details/SpeechEditTemplate.html',
-    'backbone.radio',
-    'speech/LanguageCollection',
-    'select2'
-], function (ViewFactory, SpeakerCollection, SpeechRowTemplate, SpeechShowTemplate,
-             SpeechEditTemplate, Radio, LanguageCollection) {
+    'speech/LanguageCollection'
+], function (CollectionBinding, ViewFactory, SpeakerCollection, SpeechRowTemplate, SpeechShowTemplate,
+    SpeechEditTemplate, LanguageCollection) {
 
     'use strict';
 
@@ -40,28 +39,7 @@ define([
         editBindings: {
             '#title'      : 'title',
             '#description': 'description',
-            '#lang'       : {
-                observe      : 'lang',
-                collection   : new LanguageCollection(),
-                initialize   : function ($el, model, options) {
-                    options.collection.fetch().then(function () {
-                        $el.select2({
-                            theme      : 'bootstrap',
-                            placeholder: 'Choose from the list',
-                            allowClear : true
-                        });
-                    })
-                },
-                selectOptions: {
-                    collection   : function ($el, options) {
-                        return options.collection;
-                    },
-                    labelPath    : 'name',
-                    defaultOption: {
-                        value: null
-                    }
-                }
-            }
+            '#lang'       : new CollectionBinding(LanguageCollection, 'lang')
         },
 
         rowBindings: {
