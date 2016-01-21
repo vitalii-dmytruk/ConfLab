@@ -108,10 +108,9 @@ public class SpeakerService {
     @Transactional
     public Speaker createAndLinkToEventSpeech(Speaker speaker, Speech speech, Event event) {
         eventSpeechSpeakerService.deleteEventSpeechNullSpeakerLink(event, speech);
-        Speaker createdSpeaker = create(speaker);
-        SpeechSpeaker speechSpeaker = linkToSpeech(createdSpeaker, speech);
+        SpeechSpeaker speechSpeaker = linkToSpeech(speaker, speech);
         eventSpeechSpeakerService.createEventSpeechSpeakerLink(event, speechSpeaker);
-        return createdSpeaker;
+        return speaker;
     }
 
     @Transactional
@@ -126,13 +125,6 @@ public class SpeakerService {
         if (findByEventAndSpeech(event, speech).isEmpty()) {
             eventSpeechSpeakerService.createEventSpeechSpeakerLink(event, speech, null);
         }
-    }
-
-    @Transactional
-    public Speaker createAndLinkToEvent(Speaker speaker, Event event) {
-        Speaker createdSpeaker = create(speaker);
-        linkToEvent(createdSpeaker, event);
-        return createdSpeaker;
     }
 
     @Transactional

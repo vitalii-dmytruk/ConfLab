@@ -76,13 +76,16 @@ public class SpeakerController {
     }
 
     @RequestMapping(value = "/events/{eventId}/speakers", method = POST,
-                    consumes = MediaType.APPLICATION_JSON_VALUE,
+                    consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Speaker createAndLinkToEvent(@PathVariable("eventId") Long eventId,
-            @RequestBody @Validated Speaker speaker) {
+            @RequestPart("speaker") @Validated Speaker speaker, @RequestPart("image") MultipartFile file)
+            throws IOException {
         Event event = eventService.findById(eventId);
-        return speakerService.createAndLinkToEvent(speaker, event);
+        speaker = speakerService.create(speaker, file);
+        speakerService.linkToEvent(speaker, event);
+        return speaker;
     }
 
     @RequestMapping(value = "/events/{eventId}/speakers/{speakerId}",
@@ -155,12 +158,17 @@ public class SpeakerController {
 
     @RequestMapping(value = "/events/{eventId}/speeches/{speechId}/speakers",
                     method = POST,
+                    consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public Speaker createAndLinkToEventSpeech(@PathVariable("eventId") Long eventId,
-            @PathVariable("speechId") Long speechId, @RequestBody @Validated Speaker speaker) {
+            @PathVariable("speechId") Long speechId, @RequestPart("speaker") @Validated Speaker speaker,
+            @RequestPart("image") MultipartFile file) throws IOException {
         Event event = eventService.findById(eventId);
         Speech speech = speechService.findById(speechId);
-        return speakerService.createAndLinkToEventSpeech(speaker, speech, event);
+        speaker = speakerService.create(speaker, file);
+
+        speakerService.createAndLinkToEventSpeech(speaker, speech, event);
+        return speaker;
     }
 
     @RequestMapping(value = "/events/{eventId}/speeches/{speechId}/speakers/{speakerId}",
