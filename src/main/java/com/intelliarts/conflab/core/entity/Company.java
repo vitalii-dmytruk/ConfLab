@@ -1,6 +1,7 @@
 package com.intelliarts.conflab.core.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,6 +24,7 @@ public class Company {
     @Column
     public Long id;
 
+    @NotBlank
     @Column
     public String name;
 

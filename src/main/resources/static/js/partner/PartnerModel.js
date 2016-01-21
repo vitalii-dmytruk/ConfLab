@@ -12,7 +12,18 @@ define([
             return {
                 id  : null,
                 name: '',
-                url: ''
+                url : ''
+            }
+        },
+        validation: {
+            name: {
+                required : true,
+                minLength: 1,
+                maxLength: 255
+            },
+            url : {
+                pattern: 'url',
+                msg    : 'Please enter a valid URL (e.g. http://www.example.com)'
             }
         }
     });
