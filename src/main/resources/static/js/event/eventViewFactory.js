@@ -49,7 +49,7 @@ define([
             observe     : attr,
             updateMethod: 'html',
             onGet       : function (value) {
-                return value.replace(/\n/g, '<br/>');
+                return value && value.replace(/\n/g, '<br/>');
             }
         }
     }
