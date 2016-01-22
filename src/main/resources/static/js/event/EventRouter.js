@@ -1,10 +1,10 @@
 define([
     'common/MenuAwareRouter',
     'event/table/EventTableRoute',
-    'event/details/EventInfoRoute',
-    'event/details/EventSpeakersRoute',
-    'event/details/EventSpeechesRoute',
-    'event/details/EventPartnersRoute'
+    'event/details/info/EventInfoRoute',
+    'event/details/speakers/EventSpeakersRoute',
+    'event/details/speeches/EventSpeechesRoute',
+    'event/details/partners/EventPartnersRoute'
 ], function (MenuAwareRouter, EventTableRoute, EventInfoRoute, EventSpeakersRoute, EventSpeechesRoute,
     EventPartnersRoute) {
 
