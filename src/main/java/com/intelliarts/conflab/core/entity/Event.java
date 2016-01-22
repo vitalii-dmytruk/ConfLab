@@ -53,6 +53,7 @@ public class Event {
     @Column
     private String address;
     @Column
+    @Length(max = 255, message = "Event contacts value is greater then {max} characters.")
     private String contacts;
 
     @JsonIgnore

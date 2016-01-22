@@ -43,6 +43,10 @@ define([
                 minLength: 2,
                 maxLength: 80
             },
+            contacts   : {
+                required : false,
+                maxLength: 255
+            },
             endDate: function (value, attr, computedState) {
                 if (value < computedState.startDate) {
                     return "End date can not be earlier than start date";
