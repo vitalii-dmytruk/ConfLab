@@ -152,6 +152,8 @@ karma {
     browsers = ['PhantomJS', 'Firefox']
     frameworks = ['jasmine']
     reporters = ['junit']
+    junitReporter = [outputDir     : 'build/test-results',
+                     useBrowserName: true]
     plugins = [
             'karma-jasmine',
             'karma-junit-reporter',
