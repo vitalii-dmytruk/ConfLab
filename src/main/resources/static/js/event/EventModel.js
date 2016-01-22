@@ -18,6 +18,7 @@ define([
                 city       : '',
                 address    : '',
                 endDate    : '',
+                contacts   : '',
                 speakers   : []
             }
         },
@@ -41,6 +42,10 @@ define([
                 required : false,
                 minLength: 2,
                 maxLength: 80
+            },
+            contacts   : {
+                required : false,
+                maxLength: 255
             },
             endDate: function (value, attr, computedState) {
                 if (value < computedState.startDate) {

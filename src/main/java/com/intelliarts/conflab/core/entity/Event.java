@@ -52,6 +52,9 @@ public class Event {
     private String city;
     @Column
     private String address;
+    @Column
+    @Length(max = 255, message = "Event contacts value is greater then {max} characters.")
+    private String contacts;
 
     @JsonIgnore
     @OneToMany(mappedBy = "event")
@@ -139,5 +142,13 @@ public class Event {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public String getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(String contacts) {
+        this.contacts = contacts;
     }
 }
