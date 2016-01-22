@@ -14,6 +14,7 @@ buildscript {
 
 plugins {
     id 'com.craigburke.bower-installer' version '2.5.1'
+    id 'com.craigburke.karma' version '1.4.1'
 }
 
 apply plugin: 'java'
@@ -35,6 +36,7 @@ idea {
     module {
         sourceDirs += file('src/main')
         testSourceDirs += file('src/test')
+        testSourceDirs += file('src/assets')
     }
 }
 
@@ -132,4 +134,31 @@ bower {
     ]
 }
 
+project.ext {
+    jasmineDependencies = [
+                           'karma-firefox-launcher',
+                           'karma-junit-reporter']
+}
+
+task setupTestDependencies(type: NpmTask) {
+    outputs.dir file('node_modules')
+    args = ['install'] + jasmineDependencies
+}
+
+karma {
+    colors = true
+    profile 'angularJS'
+    logLevel = 'INFO'
+    browsers = ['PhantomJS', 'Firefox']
+    frameworks = ['jasmine']
+    reporters = ['junit']
+    plugins = [
+            'karma-jasmine',
+            'karma-junit-reporter',
+            'karma-phantomjs-launcher',
+            'karma-firefox-launcher'
+    ]
+}
+
 assemble.dependsOn(bowerRefresh)
+karmaRun.dependsOn(setupTestDependencies)
