@@ -64,6 +64,21 @@ bower {
 
         'jqueryui'()
 
+        'jquery-file-upload'('9.x') {
+            source 'css/jquery.fileupload.css' >> 'css/'
+            source 'js/jquery.fileupload.js' >> 'js/'
+            source 'js/vendor/jquery.ui.widget.js' >> 'js/'
+
+            excludes 'blueimp-tmpl'
+            excludes 'blueimp-load-image'
+            excludes 'blueimp-canvas-to-blob'
+        }
+
+        'croppie'(){
+            source '*.css' >> 'css/'
+            source '*.js' >> 'js/'
+        }
+
         'underscore'('1.8.x') {
             source 'underscore*'
         }

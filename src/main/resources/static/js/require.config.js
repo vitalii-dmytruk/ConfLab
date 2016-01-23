@@ -12,6 +12,9 @@ var require = {
         "auth"                  : 'js/auth',
         "text"                  : 'lib/requirejs-text/text',
         "jquery"                : 'lib/jquery/jquery.min',
+        "jquery.file.upload"    : 'lib/jquery-file-upload/js/jquery.fileupload',
+        "jquery.ui.widget"      : 'lib/jquery-file-upload/js/jquery.ui.widget',
+        "croppie"               : 'lib/croppie/js/croppie',
         "toastr"                : 'lib/toastr/toastr.min',
         "select2"               : 'lib/select2/js/select2',
         "underscore"            : 'lib/underscore/underscore-min',
@@ -28,6 +31,9 @@ var require = {
     shim   : {
         "jquery"                : {
             exports: "$"
+        },
+        "jquery.file.upload"    : {
+            "deps": ['jquery', 'jquery.ui.widget']
         },
         "select2"               : {
             "deps": ['jquery']

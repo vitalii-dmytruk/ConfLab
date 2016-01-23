@@ -1,6 +1,21 @@
 <br/>
 <form class="form-horizontal" enctype="multipart/form-data">
-    <div class="form-group">
+
+    <div id="croppie-div" class="col-md-3 centered">
+        <div id="croppie"></div>
+        <button id="croppie-submit" class="btn">Submit photo</button>
+        <input id="imagebase64" type="hidden" name="imagebase64">
+    </div>
+
+    <div id="avatar-div" class="col-md-3 centered">
+        <img id="avatar-img" src="/img/default.gif"/>
+
+        <span class="btn btn-default btn-file">
+            Upload new photo... <input id="upload-avatar-button" type="file">
+        </span>
+    </div>
+
+    <div class="col-md-9 form-group">
         <label for="name" class="required col-md-2 control-label">Full Name</label>
 
         <div class="col-md-8">
@@ -8,7 +23,8 @@
             <span class="help-block hidden"></span>
         </div>
     </div>
-    <div class="form-group">
+
+    <div class="col-md-9 form-group">
         <label for="email" class="required col-md-2 control-label">Email</label>
 
         <div class="col-md-8">
@@ -24,7 +40,8 @@
             <span class="help-block hidden"></span>
         </div>
     </div>
-    <div class="form-group">
+   
+    <div class="col-md-9 form-group">
         <label for="position" class="col-md-2 control-label">Position</label>
 
         <div class="col-md-8">
@@ -32,7 +49,7 @@
             <span class="help-block hidden"></span>
         </div>
     </div>
-    <div class="form-group">
+    <div class="col-md-9 form-group">
         <label for="about" class="col-md-2 control-label">About</label>
 
         <div class="col-md-8">
@@ -40,19 +57,12 @@
             <span class="help-block hidden"></span>
         </div>
     </div>
-    <div class="form-group">
-        <label for="image" class="col-md-2 control-label">Image</label>
-
-        <div class="col-md-8">
-            <input id="image" type="file" name="image" accept="image/*">
-            <span class="help-block hidden"></span>
-        </div>
-    </div>
 
     <div class="form-group">
-        <div class="col-md-offset-2 col-md-8">
+        <div class="col-md-offset-4 col-md-2">
             <button data-submit-btn type="submit" class="btn btn-success">Ok</button>
             <div data-cancel-btn class="btn btn-default">Cancel</div>
         </div>
     </div>
+
 </form>
