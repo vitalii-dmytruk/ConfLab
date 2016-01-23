@@ -1,11 +1,11 @@
 package com.intelliarts.conflab.config;
 
 
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class MultipartResolverConfig extends CommonsMultipartResolver {
+public class MultipartResolverConfig extends StandardServletMultipartResolver {
 
     private static final String MULTIPART = "multipart/";
 

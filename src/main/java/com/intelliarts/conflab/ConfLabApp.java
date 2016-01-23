@@ -10,7 +10,7 @@ import org.springframework.boot.context.embedded.ErrorPage;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.multipart.MultipartResolver;
 
 @SpringBootApplication
 public class ConfLabApp {
@@ -39,7 +39,7 @@ public class ConfLabApp {
     }
 
     @Bean
-    public CommonsMultipartResolver filterMultipartResolver() {
+    public MultipartResolver filterMultipartResolver() {
         return new MultipartResolverConfig();
     }
 }
