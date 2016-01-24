@@ -1,8 +1,9 @@
 define([
     'event/details/EventDetailsRoute',
+    'event/details/partners/PartnerLevelRoute',
     'company/companyViewFactory',
     'company/CompanyCollection'
-], function (EventDetailsRoute, companyViewFactory, CompanyCollection) {
+], function (EventDetailsRoute, PartnerLevelRoute, companyViewFactory, CompanyCollection) {
 
     'use strict';
 
@@ -20,7 +21,8 @@ define([
             var eventView = companyViewFactory.newEventView({
                 model           : this.model,
                 collection      : this.speeches,
-                searchCollection: this.speechesSearchCollection
+                searchCollection: this.speechesSearchCollection,
+                attachmentRoute : new PartnerLevelRoute()
             });
             this.view.showPartnersTab(eventView);
         }
