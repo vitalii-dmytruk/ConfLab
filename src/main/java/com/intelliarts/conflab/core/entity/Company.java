@@ -1,6 +1,7 @@
 package com.intelliarts.conflab.core.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.intelliarts.conflab.core.entity.validation.UrlLength;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.Column;
@@ -28,6 +29,7 @@ public class Company {
     @Column
     public String name;
 
+    @UrlLength(max = 255, message = "Company URL value is greater then {max} characters.")
     @Column
     public URL url;
 

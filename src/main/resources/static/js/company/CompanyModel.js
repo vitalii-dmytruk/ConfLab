@@ -21,11 +21,14 @@ define([
                 minLength: 1,
                 maxLength: 255
             },
-            url : {
-                required : false,
+            url : [{
+                required: false
+            }, {
+                maxLength: 255
+            }, {
                 pattern: 'url',
                 msg    : 'Please enter a valid URL (e.g. http://www.example.com)'
-            }
+            }]
         }
     });
 });
