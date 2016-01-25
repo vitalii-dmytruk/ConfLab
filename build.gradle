@@ -113,7 +113,7 @@ bower {
 
         'requirejs-text'()
 
-        'select2'('4.0.1') {
+        'select2'('4.x') {
             source 'dist/js/*' >> 'js/'
             source 'dist/css/*' >> 'css/'
         }
@@ -134,8 +134,7 @@ bower {
 }
 
 project.ext {
-    jasmineDependencies = [
-            'karma-junit-reporter']
+    jasmineDependencies = ['karma-junit-reporter']
 }
 
 task setupTestDependencies(type: NpmTask) {
