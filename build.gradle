@@ -145,7 +145,6 @@ task setupTestDependencies(type: NpmTask) {
 
 karma {
     colors = true
-    profile 'angularJS'
     logLevel = 'INFO'
     browsers = ['PhantomJS']
     frameworks = ['jasmine']
@@ -156,6 +155,10 @@ karma {
             'karma-jasmine',
             'karma-junit-reporter',
             'karma-phantomjs-launcher',
+    ]
+
+    files = [
+            'src/test/js/**.*js'
     ]
 }
 
