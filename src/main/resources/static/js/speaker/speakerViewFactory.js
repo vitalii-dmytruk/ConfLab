@@ -58,7 +58,7 @@ define([
         return {
             observe: 'company',
             onGet: function (value) {
-                return value && value.name;
+                return value && 'at ' + value.name;
             }
         }
     }
