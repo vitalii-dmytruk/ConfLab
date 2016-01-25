@@ -5,6 +5,8 @@ define([
     'text!speaker/table/SpeakerRowTemplate.html',
     'text!speaker/details/SpeakerTemplate.html',
     'text!speaker/details/SpeakerEditTemplate.html'
+    'jquery.file.upload',
+    'croppie'
 ], function (CollectionBinding, ViewFactory, CompanyCollection, SpeakerRowTemplate,
              SpeakerShowTemplate, SpeakerEditTemplate) {
 
@@ -65,7 +67,24 @@ define([
     }
 
     function directImage(attribute) {
-        return attribute;
+        return {
+            attributes: [{
+                name   : 'src',
+                observe: attribute,
+                onGet  : function (val, options) {
+                    if (val != null) {
+                        var id      = options.view.model.id;
+                        var path    = '/img/avatars/' + id + '/' + val;
+                        var urlPath = "url('" + path + "')";
+                        $('div[data-drop-zone]').css('background', urlPath);
+                        return "background: " + urlPath + ' no-repeat center;  background-size: 160px 160px';
+                        //return 'img/avatars/' + id + '/' + val;
+                    } else {
+                        return 'img/default-avatar.png';
+                    }
+                }
+            }]
+        }
     }
 
     function showImage(attribute) {

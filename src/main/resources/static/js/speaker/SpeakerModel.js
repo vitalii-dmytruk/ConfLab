@@ -41,7 +41,7 @@ define([
         },
 
         sync: function (method, model, options) {
-            if (method === 'create') {
+            if (method === 'create' || method === 'update') {
                 options = _.extend(options || {}, {
                     contentType: false,
                     data       : getFormData(this)
@@ -52,17 +52,42 @@ define([
     });
 
     function getFormData(model) {
+        var formData     = new FormData();
+        var $avatarInput = $('#upload-avatar-button');
+        var fileName;
+        var fileData     = $('#imagebase64').val();
 
-        var formData;
-        var fileData;
+        if ($avatarInput[0].files != null && fileData) {
+            fileName               = $avatarInput[0].files[0].name;
+            model.attributes.image = fileName;
+            formData.append('image', dataURItoBlob(fileData), fileName);
+        }
 
-        fileData = $('input[name="image"]')[0].files[0];
-        model.attributes.image= fileData.name;
-        formData = new FormData();
         formData.append('speaker', new Blob([JSON.stringify(model.toJSON())], {
             type: "application/json"
         }));
-        formData.append('image', fileData);
+
         return formData;
+    }
+
+    function dataURItoBlob(dataURI) {
+        // convert base64/URLEncoded data component to raw binary data held in a string
+        var byteString;
+        if (dataURI.split(',')[0].indexOf('base64') >= 0) {
+            byteString = atob(dataURI.split(',')[1]);
+        } else {
+            byteString = unescape(dataURI.split(',')[1]);
+        }
+
+        // separate out the mime component
+        var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+        // write the bytes of the string to a typed array
+        var ia = new Uint8Array(byteString.length);
+        for (var i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+
+        return new Blob([ia], {type: mimeString});
     }
 });
