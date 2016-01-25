@@ -88,11 +88,7 @@ define([
 
         componentView = new options.DetailsView({model: model});
         view.eventItemRegion.show(componentView);
-
-        options.attachmentView && componentView.showAttachment(new options.attachmentView({
-            collection      : getCollection(options, view.model.url() + model.url()),
-            searchCollection: getCollection(options, model.url())
-        }));
+        options.attachmentRoute.enter([componentView.attachment, view.model, model]);
     }
 
     function addAndSelectItem(view, model) {
@@ -133,12 +129,5 @@ define([
 
     function findItem(collection, model) {
         return collection.get(model.get('id'))
-    }
-
-    function getCollection(options, url) {
-        var collection = new options.attachedCollectionType();
-        collection.url = url + collection.url;
-        collection.fetch();
-        return collection;
     }
 });

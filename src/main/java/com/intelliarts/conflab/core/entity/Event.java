@@ -62,7 +62,7 @@ public class Event {
 
     @JsonIgnore
     @OneToMany(mappedBy = "event")
-    private Set<EventCompany> eventCompanies;
+    private Set<Partner> partners;
 
     public Long getId() {
         return id;
@@ -120,12 +120,12 @@ public class Event {
         this.eventSpeechSpeakers = eventSpeechSpeakers;
     }
 
-    public Set<EventCompany> getEventCompanies() {
-        return eventCompanies;
+    public Set<Partner> getPartners() {
+        return partners;
     }
 
-    public void setEventCompanies(Set<EventCompany> eventCompanies) {
-        this.eventCompanies = eventCompanies;
+    public void setPartners(Set<Partner> partners) {
+        this.partners = partners;
     }
 
     public String getCity() {

@@ -6,7 +6,7 @@ var require = {
         "common"                : 'js/common',
         "menu"                  : 'js/menu',
         "header"                : 'js/header',
-        "partner"               : 'js/partner',
+        "company"               : 'js/company',
         "speaker"               : 'js/speaker',
         "speech"                : 'js/speech',
         "event"                 : 'js/event',

@@ -1,7 +1,6 @@
 package com.intelliarts.conflab.core.service;
 
 import com.intelliarts.conflab.core.entity.Company;
-import com.intelliarts.conflab.core.entity.Event;
 import com.intelliarts.conflab.core.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,18 +9,15 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class CompanyService {
 
-    private CompanyRepository   companyRepository;
-    private EventCompanyService eventCompanyService;
+    private CompanyRepository companyRepository;
 
     @Autowired
-    public CompanyService(CompanyRepository companyRepository, EventCompanyService eventCompanyService) {
+    public CompanyService(CompanyRepository companyRepository) {
         this.companyRepository = companyRepository;
-        this.eventCompanyService = eventCompanyService;
     }
 
     @Transactional(readOnly = true)
@@ -33,11 +29,6 @@ public class CompanyService {
     public Company findById(Long id) {
         Optional<Company> company = companyRepository.findOne(id);
         return company.orElseThrow(() -> new EntityNotFoundException("Company with ID '" + id + "' " + "not found."));
-    }
-
-    @Transactional(readOnly = true)
-    public Set<Company> findByEvent(Event event) {
-        return companyRepository.findByEventId(event.getId());
     }
 
     @Transactional
@@ -54,20 +45,4 @@ public class CompanyService {
         return companyRepository.save(company);
     }
 
-    @Transactional
-    public Company createAndLinkToEvent(Company company, Event event) {
-        Company createdCompany = create(company);
-        linkToEvent(createdCompany, event);
-        return createdCompany;
-    }
-
-    @Transactional
-    public void linkToEvent(Company company, Event event) {
-        eventCompanyService.creteEventCompanyLink(event, company);
-    }
-
-    @Transactional
-    public void unlinkFromEvent(Company company, Event event) {
-        eventCompanyService.deleteEventCompanyLink(event, company);
-    }
 }

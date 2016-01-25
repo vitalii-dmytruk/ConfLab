@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "event_company")
-public class EventCompany {
+public class Partner {
 
     @Id
     @Column
@@ -29,10 +29,14 @@ public class EventCompany {
     @JoinColumn(name = "company_id")
     private Company company;
 
-    public EventCompany() {
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "partner_level_id", insertable = false)
+    private PartnerLevel partnerLevel;
+
+    public Partner() {
     }
 
-    public EventCompany(Event event, Company company) {
+    public Partner(Event event, Company company) {
         this.event = event;
         this.company = company;
     }
@@ -59,5 +63,13 @@ public class EventCompany {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public PartnerLevel getPartnerLevel() {
+        return partnerLevel;
+    }
+
+    public void setPartnerLevel(PartnerLevel partnerLevel) {
+        this.partnerLevel = partnerLevel;
     }
 }

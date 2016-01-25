@@ -1,8 +1,8 @@
 define([
     'common/route/Route',
-    'partner/PartnerModel',
-    'partner/partnerViewFactory'
-], function (Route, PartnerModel, partnerViewFactory) {
+    'company/CompanyModel',
+    'company/companyViewFactory'
+], function (Route, CompanyModel, companyViewFactory) {
 
     'use strict';
 
@@ -13,12 +13,12 @@ define([
         },
 
         fetch: function (id) {
-            this.model = new PartnerModel({id: id});
+            this.model = new CompanyModel({id: id});
             return this.model.fetch();
         },
 
         render: function () {
-            this.view = new partnerViewFactory.itemDetailsView({model: this.model});
+            this.view = new companyViewFactory.itemDetailsView({model: this.model});
             this.container.show(this.view);
         }
     });
