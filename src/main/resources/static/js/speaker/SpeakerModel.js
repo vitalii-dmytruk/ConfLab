@@ -31,6 +31,11 @@ define([
             },
             position: {
                 maxLength: 255
+            },
+            company : function (company) {
+                if(company && company.name && company.name.length > 255){
+                    return "Company name should not be longer than 255 characters."
+                }
             }
         }
     });
