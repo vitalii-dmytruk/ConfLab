@@ -35,7 +35,7 @@ define([
 
     function viewBindings(imageBinder, companyBinder) {
         return {
-            '#email': {
+            '#email'   : {
                 attributes: [{
                     name: 'href',
                     observe: 'email',
@@ -45,11 +45,11 @@ define([
                 }],
                 observe: 'email'
             },
-            '#name': 'name',
+            '#name'    : 'name',
             '#position': 'position',
             '#company': companyBinder(),
-            '#about': 'about',
-            '#image'   : imageBinder()
+            '#about'   : 'about',
+            '#avatar-img'   : imageBinder('image')
         };
     }
 
@@ -72,15 +72,20 @@ define([
                 name   : 'src',
                 observe: attribute,
                 onGet  : function (val, options) {
-                    if (val != null) {
-                        var id      = options.view.model.id;
-                        var path    = '/img/avatars/' + id + '/' + val;
-                        var urlPath = "url('" + path + "')";
-                        $('div[data-drop-zone]').css('background', urlPath);
-                        return "background: " + urlPath + ' no-repeat center;  background-size: 160px 160px';
-                        //return 'img/avatars/' + id + '/' + val;
+                    var defaultAvatarPath = '/img/default-avatar.png';
+
+                    var image = options.view.model.attributes.image;
+                    if (defaultAvatarPath != image) {
+                        $('#remove-button').on('click', function () {
+                            console.log('click');
+                        })
+                    }
+
+                    //return val || '/img/default-avatar.png';
+                    if (val) {
+                        return val;
                     } else {
-                        return 'img/default-avatar.png';
+                        return '/img/default-avatar.png';
                     }
                 }
             }]
@@ -92,13 +97,8 @@ define([
             attributes: [{
                 name   : 'src',
                 observe: attribute,
-                onGet  : function (val, options) {
-                    if (val != null) {
-                        var id = options.view.model.id;
-                        return 'img/avatars/' + id + '/' + val;
-                    } else {
-                        return 'img/default-avatar.png';
-                    }
+                onGet  : function (val) {
+                    return val;
                 }
             }]
         }

@@ -22,6 +22,7 @@ import java.util.Set;
 @Service
 public class SpeakerService {
 
+    private static final String DEFAULT_AVATAR = "/img/default-avatar.png";
     private CompanyService            companyService;
     private SpeakerRepository         speakerRepository;
     private EventSpeechSpeakerService eventSpeechSpeakerService;
@@ -80,7 +81,12 @@ public class SpeakerService {
         speaker = speakerRepository.save(speaker);
         if (image != null) {
             createImage(speaker, image);
+            speaker.setImage("/img/avatars/" + speaker.getId() + "/" + image.getOriginalFilename());
+        } else {
+            speaker.setImage(DEFAULT_AVATAR);
         }
+        speakerRepository.save(speaker);
+
         linkToSpeech(speaker, null);
         return speaker;
     }
@@ -94,8 +100,27 @@ public class SpeakerService {
     }
 
     @Transactional
-    public Speaker createAndLinkToSpeech(Speaker speaker, Speech speech) {
-        Speaker createdSpeaker = create(speaker);
+    public Speaker update(Speaker speaker, MultipartFile file) throws IOException {
+        if (speaker.getImage() == null) {
+            imagesRepository.remove(String.valueOf(speaker.getId()));
+            if (file == null) {
+                speaker.setImage(DEFAULT_AVATAR);
+            } else {
+                speaker.setImage("/img/avatars/" + speaker.getId() + "/" + file.getOriginalFilename());
+                imagesRepository.save(String.valueOf(speaker.getId()), file);
+            }
+        } else {
+            if (file != null) {
+                speaker.setImage("/img/avatars/" + speaker.getId() + "/" + file.getOriginalFilename());
+                imagesRepository.save(String.valueOf(speaker.getId()), file);
+            }
+        }
+        return speakerRepository.save(speaker);
+    }
+
+    @Transactional
+    public Speaker createAndLinkToSpeech(Speaker speaker, Speech speech, MultipartFile file) throws IOException {
+        Speaker createdSpeaker = create(speaker, file);
         linkToSpeech(createdSpeaker, speech);
         return createdSpeaker;
     }

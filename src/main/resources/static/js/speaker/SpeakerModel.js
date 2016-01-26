@@ -53,13 +53,11 @@ define([
 
     function getFormData(model) {
         var formData     = new FormData();
+        var fileName     = 'avatar.png';
         var $avatarInput = $('#upload-avatar-button');
-        var fileName;
         var fileData     = $('#imagebase64').val();
 
         if ($avatarInput[0].files != null && fileData) {
-            fileName               = $avatarInput[0].files[0].name;
-            model.attributes.image = fileName;
             formData.append('image', dataURItoBlob(fileData), fileName);
         }
 

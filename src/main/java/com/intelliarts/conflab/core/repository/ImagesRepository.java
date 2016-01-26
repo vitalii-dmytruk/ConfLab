@@ -25,4 +25,13 @@ public class ImagesRepository {
         File destinationFile = new File(filePath);
         file.transferTo(destinationFile);
     }
+
+    public void remove(String folderId) {
+        String folderPath = rootPath + "/" + folderId;
+        File folder = new File(folderPath);
+
+        if (folder.exists() && folder.isDirectory()) {
+            folder.delete();
+        }
+    }
 }

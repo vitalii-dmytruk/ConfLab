@@ -1,1 +1,0 @@
-ALTER TABLE speaker ADD COLUMN image VARCHAR(25);
