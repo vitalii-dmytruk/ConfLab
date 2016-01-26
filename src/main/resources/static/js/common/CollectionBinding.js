@@ -38,6 +38,10 @@ define([
     function buildFromModel($el, options, labelPath) {
         var item, model;
 
+        if(!$el.val()){
+            return null;
+        }
+
         item            = {};
         item[labelPath] = $el.val();
         model           = new options.collection.model(item);
