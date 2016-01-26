@@ -4,7 +4,7 @@ define([
     'company/CompanyCollection',
     'text!speaker/table/SpeakerRowTemplate.html',
     'text!speaker/details/SpeakerTemplate.html',
-    'text!speaker/details/SpeakerEditTemplate.html'
+    'text!speaker/details/SpeakerEditTemplate.html',
     'jquery.file.upload',
     'croppie'
 ], function (CollectionBinding, ViewFactory, CompanyCollection, SpeakerRowTemplate,
