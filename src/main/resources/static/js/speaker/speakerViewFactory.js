@@ -1,18 +1,23 @@
 define([
     'common/CollectionBinding',
     'event/details/EventItemViewFactory',
+    'speaker/details/SpeakerEditView',
     'company/CompanyCollection',
     'text!speaker/table/SpeakerRowTemplate.html',
     'text!speaker/details/SpeakerTemplate.html',
-    'text!speaker/details/SpeakerEditTemplate.html',
-    'jquery.file.upload',
-    'croppie'
-], function (CollectionBinding, ViewFactory, CompanyCollection, SpeakerRowTemplate,
-             SpeakerShowTemplate, SpeakerEditTemplate) {
+    'text!speaker/details/SpeakerEditTemplate.html'
+], function (CollectionBinding, ViewFactory, SpeakerEditView, CompanyCollection, SpeakerRowTemplate,
+    SpeakerShowTemplate, SpeakerEditTemplate) {
 
     'use strict';
 
-    return new ViewFactory({
+    var viewFactory = ViewFactory.extend({
+        getEditView: function () {
+            return SpeakerEditView;
+        }
+    });
+
+    return new viewFactory({
         title     : 'Speaker',
         tableTitle: 'Speakers',
 
@@ -22,12 +27,12 @@ define([
 
         searchLabelAttribute: 'name',
 
-        editBindings: viewBindings(directImage,companySelectBinder),
-        showBindings: viewBindings(showImage,companyNameBinder),
+        editBindings: viewBindings(directImage, companySelectBinder),
+        showBindings: viewBindings(showImage, companyNameBinder),
 
         rowBindings: {
-            '[data-name]': 'name',
-            '[data-company]': companyNameBinder(),
+            '[data-name]'    : 'name',
+            '[data-company]' : companyNameBinder(),
             '[data-position]': 'position',
             '[data-email]'   : 'email'
         }
@@ -35,21 +40,21 @@ define([
 
     function viewBindings(imageBinder, companyBinder) {
         return {
-            '#email'   : {
+            '#email'     : {
                 attributes: [{
-                    name: 'href',
+                    name   : 'href',
                     observe: 'email',
-                    onGet: function (val) {
+                    onGet  : function (val) {
                         return 'mailto:' + val;
                     }
                 }],
-                observe: 'email'
+                observe   : 'email'
             },
-            '#name'    : 'name',
-            '#position': 'position',
-            '#company': companyBinder(),
-            '#about'   : 'about',
-            '#avatar-img'   : imageBinder('image')
+            '#name'      : 'name',
+            '#position'  : 'position',
+            '#company'   : companyBinder(),
+            '#about'     : 'about',
+            '#avatar-img': imageBinder('image')
         };
     }
 
@@ -60,7 +65,7 @@ define([
     function companyNameBinder() {
         return {
             observe: 'company',
-            onGet: function (value) {
+            onGet  : function (value) {
                 return value && value.name;
             }
         }

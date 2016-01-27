@@ -34,7 +34,7 @@ define([
                 maxLength: 255
             },
             company : function (company) {
-                if(company && company.name && company.name.length > 255){
+                if (company && company.name && company.name.length > 255) {
                     return "Company name should not be longer than 255 characters."
                 }
             }
@@ -52,12 +52,11 @@ define([
     });
 
     function getFormData(model) {
-        var formData     = new FormData();
-        var fileName     = 'avatar.png';
-        var $avatarInput = $('#upload-avatar-button');
-        var fileData     = $('#imagebase64').val();
+        var formData = new FormData(),
+            fileName = 'avatar.png',
+            fileData = model.image;
 
-        if ($avatarInput[0].files != null && fileData) {
+        if (fileData) {
             formData.append('image', dataURItoBlob(fileData), fileName);
         }
 

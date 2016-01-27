@@ -18,7 +18,7 @@ public class ImagesRepository {
         File folder = new File(folderPath);
 
         if (!(folder.exists() || folder.isDirectory())) {
-            folder.mkdir();
+            folder.mkdirs();
         }
 
         String filePath = folder.getAbsolutePath() + "/" + file.getOriginalFilename();
