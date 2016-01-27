@@ -74,7 +74,7 @@ bower {
             excludes 'blueimp-canvas-to-blob'
         }
 
-        'croppie'(){
+        'croppie'('git://github.com/approce/Croppie'){
             source '*.css' >> 'css/'
             source '*.js' >> 'js/'
         }

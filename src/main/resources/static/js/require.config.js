@@ -14,7 +14,7 @@ var require = {
         "jquery"                : 'lib/jquery/jquery.min',
         "jquery.file.upload"    : 'lib/jquery-file-upload/js/jquery.fileupload',
         "jquery.ui.widget"      : 'lib/jquery-file-upload/js/jquery.ui.widget',
-        "croppie"               : 'lib/croppie/js/croppie',
+        "croppie"               : 'lib/croppie/js/croppie.min',
         "toastr"                : 'lib/toastr/toastr.min',
         "select2"               : 'lib/select2/js/select2',
         "underscore"            : 'lib/underscore/underscore-min',
