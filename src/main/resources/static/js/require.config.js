@@ -4,7 +4,6 @@ var require = {
         "core"                  : 'js/core',
         "account"               : 'js/account',
         "common"                : 'js/common',
-        "menu"                  : 'js/menu',
         "header"                : 'js/header',
         "company"               : 'js/company',
         "speaker"               : 'js/speaker',
