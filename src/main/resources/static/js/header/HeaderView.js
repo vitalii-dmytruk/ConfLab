@@ -10,7 +10,8 @@ define([
         className: 'container-fluid',
 
         regions: {
-            accountMenu: '#account-menu-region'
+            accountMenuRegion: '#account-menu-region',
+            appMenuRegion:'#app-manu-region'
         }
 
     });

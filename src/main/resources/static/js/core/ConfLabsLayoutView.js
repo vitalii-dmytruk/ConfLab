@@ -11,7 +11,6 @@ define([
         template: _.template(template),
         regions : {
             header: '[data-header-region]',
-            menu  : '[data-menu-region]',
             main  : '[data-main-region]',
             footer: '[data-footer-region]'
         }

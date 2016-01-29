@@ -47,11 +47,22 @@ public class Event {
     private LocalDate endDate;
 
     @Column
-    private String venue;
+    private String country;
+    @Column
+    private String city;
+    @Column
+    private String address;
+    @Column
+    @Length(max = 255, message = "Event contacts value is greater then {max} characters.")
+    private String contacts;
 
     @JsonIgnore
     @OneToMany(mappedBy = "event")
     private Set<EventSpeechSpeaker> eventSpeechSpeakers;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "event")
+    private Set<Partner> partners;
 
     public Long getId() {
         return id;
@@ -93,12 +104,12 @@ public class Event {
         this.endDate = endDate;
     }
 
-    public String getVenue() {
-        return venue;
+    public String getAddress() {
+        return address;
     }
 
-    public void setVenue(String venue) {
-        this.venue = venue;
+    public void setAddress(String str) {
+        this.address = str;
     }
 
     public Set<EventSpeechSpeaker> getEventSpeechSpeakers() {
@@ -107,5 +118,37 @@ public class Event {
 
     public void setEventSpeechSpeakers(Set<EventSpeechSpeaker> eventSpeechSpeakers) {
         this.eventSpeechSpeakers = eventSpeechSpeakers;
+    }
+
+    public Set<Partner> getPartners() {
+        return partners;
+    }
+
+    public void setPartners(Set<Partner> partners) {
+        this.partners = partners;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(String contacts) {
+        this.contacts = contacts;
     }
 }

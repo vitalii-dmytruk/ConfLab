@@ -1,5 +1,6 @@
 package com.intelliarts.conflab.core.service;
 
+import com.intelliarts.conflab.core.entity.Company;
 import com.intelliarts.conflab.core.entity.Event;
 import com.intelliarts.conflab.core.entity.Speaker;
 import com.intelliarts.conflab.core.entity.Speech;
@@ -17,11 +18,13 @@ import java.util.Set;
 @Service
 public class SpeakerService {
 
+    private CompanyService            companyService;
     private SpeakerRepository         speakerRepository;
     private EventSpeechSpeakerService eventSpeechSpeakerService;
 
     @Autowired
-    public SpeakerService(SpeakerRepository speakerRepository, EventSpeechSpeakerService eventSpeechSpeakerService) {
+    public SpeakerService(CompanyService companyService, SpeakerRepository speakerRepository, EventSpeechSpeakerService eventSpeechSpeakerService) {
+        this.companyService = companyService;
         this.speakerRepository = speakerRepository;
         this.eventSpeechSpeakerService = eventSpeechSpeakerService;
     }
@@ -55,6 +58,11 @@ public class SpeakerService {
     @Transactional
     public Speaker create(Speaker speaker) {
         speaker.setId(null);
+        Company company = speaker.getCompany();
+        if (company != null && company.getId() != null) {
+            Company persistedCompany = companyService.findById(company.getId());
+            speaker.setCompany(persistedCompany);
+        }
         Speaker createdSpeaker = speakerRepository.save(speaker);
         linkToSpeech(createdSpeaker, null);
         return createdSpeaker;

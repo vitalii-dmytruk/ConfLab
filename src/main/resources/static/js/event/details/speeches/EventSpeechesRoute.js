@@ -1,9 +1,12 @@
 define([
     'event/details/EventDetailsRoute',
+    'event/details/EventItemAttachmentRoute',
     'speech/speechViewFactory',
     'speaker/speakerViewFactory',
-    'speech/SpeechCollection'
-], function (EventDetailsRoute, speechViewFactory, speakerViewFactory, SpeechCollection) {
+    'speech/SpeechCollection',
+    'speaker/SpeakerCollection'
+], function (EventDetailsRoute, EventItemAttachmentRoute, speechViewFactory, speakerViewFactory,
+             SpeechCollection, SpeakerCollection) {
 
     'use strict';
 
@@ -22,7 +25,10 @@ define([
                 model           : this.model,
                 collection      : this.speeches,
                 searchCollection: this.speechesSearchCollection,
-                attachmentView  : speakerViewFactory.attachedItemTableView
+                attachmentRoute : new EventItemAttachmentRoute({
+                    attachedCollectionType: SpeakerCollection,
+                    attachmentView        : speakerViewFactory.attachedItemTableView
+                })
             });
             this.view.showSpeechesTab(eventView);
         }

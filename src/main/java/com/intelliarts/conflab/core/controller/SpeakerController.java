@@ -51,12 +51,12 @@ public class SpeakerController {
         return speakerService.create(speaker);
     }
 
-    @RequestMapping(value = "/speeches/{id}/speakers",
+    @RequestMapping(value = "/speeches/{speechId}/speakers",
                     method = POST,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Speaker createAndLinkToSpeech(@PathVariable("id") Long speechId, @RequestBody @Validated Speaker speaker) {
+    public Speaker createAndLinkToSpeech(@PathVariable("speechId") Long speechId, @RequestBody @Validated Speaker speaker) {
         Speech speech = speechService.findById(speechId);
         return speakerService.createAndLinkToSpeech(speaker, speech);
     }
@@ -100,20 +100,20 @@ public class SpeakerController {
         speakerService.unlinkFromEvent(speaker, event);
     }
 
-    @RequestMapping(value = "/speakers/{id}",
+    @RequestMapping(value = "/speakers/{speakerId}",
                     method = RequestMethod.PUT,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public Speaker update(@PathVariable("id") Long id, @RequestBody @Validated Speaker speaker) {
-        speaker.setId(id);
+    public Speaker update(@PathVariable("speakerId") Long speakerId, @RequestBody @Validated Speaker speaker) {
+        speaker.setId(speakerId);
         return speakerService.update(speaker);
     }
 
-    @RequestMapping(value = "/speakers/{id}",
+    @RequestMapping(value = "/speakers/{speakerId}",
                     method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public Speaker getById(@PathVariable("id") Long id) {
-        return speakerService.findById(id);
+    public Speaker getById(@PathVariable("speakerId") Long speakerId) {
+        return speakerService.findById(speakerId);
     }
 
     @RequestMapping(value = "/speakers",
@@ -123,19 +123,19 @@ public class SpeakerController {
         return speakerService.findAll();
     }
 
-    @RequestMapping(value = "/speeches/{id}/speakers",
+    @RequestMapping(value = "/speeches/{speechId}/speakers",
                     method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public Set<Speaker> findBySpeechId(@PathVariable("id") Long id) {
-        Speech speech = speechService.findById(id);
+    public Set<Speaker> findBySpeechId(@PathVariable("speechId") Long speechId) {
+        Speech speech = speechService.findById(speechId);
         return speakerService.findBySpeech(speech);
     }
 
-    @RequestMapping(value = "/events/{id}/speakers",
+    @RequestMapping(value = "/events/{eventId}/speakers",
                     method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public Set<Speaker> findByEventId(@PathVariable("id") Long id) {
-        Event event = eventService.findById(id);
+    public Set<Speaker> findByEventId(@PathVariable("eventId") Long eventId) {
+        Event event = eventService.findById(eventId);
         return speakerService.findByEvent(event);
     }
 
