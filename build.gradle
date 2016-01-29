@@ -139,7 +139,10 @@ project.ext {
 
 task setupTestDependencies(type: NpmTask) {
     outputs.dir file('node_modules')
-    args = ['install'] + jasmineDependencies
+    args = ['install']
+    jasmineDependencies.each {
+        args.add("$it")
+    }
 }
 
 karma {
