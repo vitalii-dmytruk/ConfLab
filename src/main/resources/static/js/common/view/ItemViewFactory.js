@@ -39,7 +39,6 @@ define([
             });
 
             this.itemDetailsView = DetailsView.extend({
-                title   : this.title,
                 EditView: this.itemEditView,
                 ShowView: this.itemShowView
             });

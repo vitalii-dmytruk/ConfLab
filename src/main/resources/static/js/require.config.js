@@ -4,8 +4,8 @@ var require = {
         "core"                  : 'js/core',
         "account"               : 'js/account',
         "common"                : 'js/common',
-        "menu"                  : 'js/menu',
         "header"                : 'js/header',
+        "company"               : 'js/company',
         "speaker"               : 'js/speaker',
         "speech"                : 'js/speech',
         "event"                 : 'js/event',
@@ -13,7 +13,7 @@ var require = {
         "text"                  : 'lib/requirejs-text/text',
         "jquery"                : 'lib/jquery/jquery.min',
         "toastr"                : 'lib/toastr/toastr.min',
-        "select2"               : 'lib/select2/js/select2.full',
+        "select2"               : 'lib/select2/js/select2',
         "underscore"            : 'lib/underscore/underscore-min',
         "backbone"              : 'lib/backbone/backbone-min',
         "backbone.marionette"   : 'lib/marionette/backbone.marionette',
@@ -35,7 +35,7 @@ var require = {
         "bootstrap"             : {
             "deps": ['jquery']
         },
-        "bootstrap.datepicker"             : {
+        "bootstrap.datepicker"  : {
             "deps": ['jquery']
         },
         "toastr"                : {

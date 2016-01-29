@@ -6,13 +6,15 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -30,7 +32,6 @@ public class Speaker {
     @Column
     private Long id;
 
-    @NotEmpty
     @Column(nullable = false, unique = true)
     @NotBlank(message = "Speaker name cannot be empty.")
     @Length(max = 255, message = "Speaker name is greater then {max} characters.")
@@ -47,6 +48,10 @@ public class Speaker {
 
     @Column
     private String about;
+
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name="company_id")
+    private Company company;
 
     @JsonIgnore
     @OneToMany(mappedBy = "speaker")
@@ -98,5 +103,13 @@ public class Speaker {
 
     public void setSpeechSpeakers(Set<SpeechSpeaker> speechSpeakers) {
         this.speechSpeakers = speechSpeakers;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 }

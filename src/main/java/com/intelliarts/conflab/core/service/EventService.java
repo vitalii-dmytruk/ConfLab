@@ -15,7 +15,7 @@ public class EventService {
     private EventRepository eventRepository;
 
     @Autowired
-    public EventService(EventRepository eventRepository, EventSpeechSpeakerService eventSpeechSpeakerService) {
+    public EventService(EventRepository eventRepository) {
         this.eventRepository = eventRepository;
     }
 

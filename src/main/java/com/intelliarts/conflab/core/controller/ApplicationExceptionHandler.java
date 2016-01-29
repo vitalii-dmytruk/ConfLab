@@ -2,25 +2,37 @@ package com.intelliarts.conflab.core.controller;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CONFLICT;
 
 @ControllerAdvice
-public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler {
+public class ApplicationExceptionHandler {
 
     private static final String MSG_TEMPLATE = "Request parameter '%s' has invalid value '%s'.";
 
     @ExceptionHandler({MethodArgumentTypeMismatchException.class})
     public void badArguments(HttpServletResponse res, MethodArgumentTypeMismatchException e) throws IOException {
         res.sendError(BAD_REQUEST.value(), String.format(MSG_TEMPLATE, e.getName(), e.getValue()));
+    }
+
+    @ExceptionHandler({MethodArgumentNotValidException.class})
+    public void handleMethodArgumentNotValidException(HttpServletResponse res, MethodArgumentNotValidException e)
+            throws IOException {
+        res.sendError(BAD_REQUEST.value(), e.getBindingResult()
+                                            .getAllErrors()
+                                            .stream()
+                                            .map(ObjectError::getDefaultMessage)
+                                            .collect(Collectors.joining("\n")));
     }
 
     @ExceptionHandler({IllegalArgumentException.class})
@@ -35,7 +47,8 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
         Throwable cause = ex.getCause();
         if (cause instanceof ConstraintViolationException) {
             ConstraintViolationException cEx = (ConstraintViolationException) cause;
-            message = "Application already contain sent data (Constraint " + cEx.getConstraintName() + " violates).";
+            message =
+                    "Application already contain sent data (Constraint '" + cEx.getConstraintName() + "' is violated).";
         } else {
             message = ex.getMessage();
         }
