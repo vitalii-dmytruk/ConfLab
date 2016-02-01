@@ -12,7 +12,8 @@ define([
             return {
                 id  : null,
                 name: '',
-                url : ''
+                url : '',
+                image: '/img/default-logo.png'
             }
         },
         validation: {

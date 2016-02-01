@@ -1,13 +1,20 @@
 define([
     'event/details/EventItemViewFactory',
+    'company/details/CompanyEditView',
     'text!company/table/CompanyRowTemplate.html',
     'text!company/details/CompanyTemplate.html',
     'text!company/details/CompanyEditTemplate.html'
-], function (ViewFactory, CompanyRowTemplate, CompanyShowTemplate, CompanyEditTemplate) {
+], function (ViewFactory, CompanyEditView, CompanyRowTemplate, CompanyShowTemplate, CompanyEditTemplate) {
 
     'use strict';
 
-    return new ViewFactory({
+    var viewFactory = ViewFactory.extend({
+        getEditView: function () {
+            return CompanyEditView;
+        }
+    });
+
+    return new viewFactory({
         tableTitle: 'Companies',
 
         itemRowTemplate : CompanyRowTemplate,
@@ -23,6 +30,12 @@ define([
                 attributes: [{
                     name   : 'href',
                     observe: 'url'
+                }]
+            },
+            '#logo': {
+                attributes: [{
+                    name   : 'src',
+                    observe: 'image'
                 }]
             }
         },
