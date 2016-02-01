@@ -3,54 +3,55 @@
 
     <div id="avatar" class="col-md-3 text-center"></div>
 
-    <div class="col-md-9 form-group">
-        <label for="name" class="required col-md-2 control-label">Full Name</label>
+    <div class="col-md-9">
+        <div class="form-group">
+            <label for="name" class="required col-md-2 control-label">Full Name</label>
 
-        <div class="col-md-8">
-            <input id="name" type="text" class="form-control" placeholder="Name" maxlength="255">
-            <span class="help-block hidden"></span>
+            <div class="col-md-8">
+                <input id="name" type="text" class="form-control" placeholder="Name" maxlength="255">
+                <span class="help-block hidden"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="email" class="required col-md-2 control-label">Email</label>
+
+            <div class="col-md-8">
+                <input id="email" class="form-control" placeholder="Email">
+                <span class="help-block hidden"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="company" class="col-md-2 control-label">Company</label>
+
+            <div class="col-md-8">
+                <select id="company" class="form-control"></select>
+                <span class="help-block hidden"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="position" class="col-md-2 control-label">Position</label>
+
+            <div class="col-md-8">
+                <input id="position" type="text" class="form-control" placeholder="Position" maxlength="255">
+                <span class="help-block hidden"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="about" class="col-md-2 control-label">About</label>
+
+            <div class="col-md-8">
+                <textarea class="form-control" rows="3" id="about" placeholder="Short story"></textarea>
+                <span class="help-block hidden"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-8">
+                <button data-submit-btn type="submit" class="btn btn-success">Ok</button>
+                <div data-cancel-btn class="btn btn-default">Cancel</div>
+            </div>
         </div>
     </div>
-
-    <div class="col-md-9 form-group">
-        <label for="email" class="required col-md-2 control-label">Email</label>
-
-        <div class="col-md-8">
-            <input id="email" class="form-control" placeholder="Email">
-            <span class="help-block hidden"></span>
-        </div>
-    </div>
-    <div class="col-md-9 form-group">
-        <label for="company" class="col-md-2 control-label">Company</label>
-
-        <div class="col-md-8">
-            <select id="company" class="form-control"></select>
-            <span class="help-block hidden"></span>
-        </div>
-    </div>
-
-    <div class="col-md-9 form-group">
-        <label for="position" class="col-md-2 control-label">Position</label>
-
-        <div class="col-md-8">
-            <input id="position" type="text" class="form-control" placeholder="Position" maxlength="255">
-            <span class="help-block hidden"></span>
-        </div>
-    </div>
-    <div class="col-md-9 form-group">
-        <label for="about" class="col-md-2 control-label">About</label>
-
-        <div class="col-md-8">
-            <textarea class="form-control" rows="3" id="about" placeholder="Short story"></textarea>
-            <span class="help-block hidden"></span>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <div class="col-md-offset-4 col-md-2">
-            <button data-submit-btn type="submit" class="btn btn-success">Ok</button>
-            <div data-cancel-btn class="btn btn-default">Cancel</div>
-        </div>
-    </div>
-
 </form>
