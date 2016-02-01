@@ -26,18 +26,22 @@ public class FilesManager {
 
     public String saveSpeakerAvatar(Long speakerId, MultipartFile file) throws IOException {
 
-        String speakerFolderPath = String.format(filesRootPath + SPEAKER_AVATAR_PATH_TEMPLATE, speakerId);
+        String speakerFolderPath = getSpeakerFolderPath(speakerId);
 
         filesRepository.save(speakerFolderPath, file);
 
         return speakerFolderPath + "/" + file.getOriginalFilename();
     }
 
-    public void remove(String path) {
-        File folder = new File(path);
+    public void removeIfExist(Long speakerId) {
+        File folder = new File(getSpeakerFolderPath(speakerId));
         if (folder.exists() && folder.isDirectory()) {
             folder.delete();
         }
+    }
+
+    private String getSpeakerFolderPath(Long speakerId) {
+        return String.format(filesRootPath + SPEAKER_AVATAR_PATH_TEMPLATE, speakerId);
     }
 
     private void validate(MultipartFile file) {

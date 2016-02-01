@@ -63,7 +63,7 @@ define([
             model           = this.model,
             defaultImageUrl = model.defaults()[imageUrlAttr];
 
-        model.set(imageUrlAttr, defaultImageUrl);
+        model.set(imageUrlAttr, null);
         model.image         = null;
         this.ui.imageEl.attr('src', defaultImageUrl);
         this.ui.imageDeleteBtn.addClass('hidden');

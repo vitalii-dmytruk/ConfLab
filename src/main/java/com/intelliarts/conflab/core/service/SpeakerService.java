@@ -93,18 +93,13 @@ public class SpeakerService {
     @Transactional
     public Speaker update(Speaker speaker, MultipartFile file) throws IOException {
         if (speaker.getImage() == null) {
-            filesManager.remove(String.valueOf(speaker.getId()));
-            if (file == null) {
-                speaker.setImage(DEFAULT_AVATAR);
-            } else {
-                String avatarPath = filesManager.saveSpeakerAvatar(speaker.getId(), file);
-                speaker.setImage(avatarPath);
-            }
-        } else {
-            if (file != null) {
-                String avatarPath = filesManager.saveSpeakerAvatar(speaker.getId(), file);
-                speaker.setImage(avatarPath);
-            }
+            filesManager.removeIfExist(speaker.getId());
+            speaker.setImage(DEFAULT_AVATAR);
+        }
+
+        if (file != null) {
+            String avatarPath = filesManager.saveSpeakerAvatar(speaker.getId(), file);
+            speaker.setImage(avatarPath);
         }
         return speakerRepository.save(speaker);
     }
