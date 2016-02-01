@@ -7,6 +7,8 @@ define([
     'use strict';
 
     return Marionette.LayoutView.extend({
+        className: 'row',
+
         behaviors: {
             form: {
                 behaviorClass: FormBehavior

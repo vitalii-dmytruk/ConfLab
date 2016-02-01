@@ -7,6 +7,8 @@ define([
     'use strict';
 
     return Marionette.LayoutView.extend({
+        className: 'row',
+
         behaviors: {
             form: {
                 behaviorClass: FormBehavior
@@ -23,13 +25,13 @@ define([
                 model       : this.model,
                 imageUrlAttr: 'image',
                 viewport    : {
-                    width : 200,
-                    height: 200,
+                    width : 150,
+                    height: 150,
                     type  : 'rectangle'
                 },
                 boundary    : {
-                    width : 200,
-                    height: 200
+                    width : 150,
+                    height: 150
                 }
             }).show();
         }
