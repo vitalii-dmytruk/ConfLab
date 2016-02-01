@@ -27,8 +27,15 @@ define([
 
         searchLabelAttribute: 'name',
 
-        editBindings: viewBindings(directImage, companySelectBinder),
-        showBindings: viewBindings(showImage, companyNameBinder),
+        editBindings: viewBindings(companySelectBinder),
+        showBindings: _.extend(viewBindings(companyNameBinder), {
+            '#avatar-img': {
+                attributes: [{
+                    name   : 'src',
+                    observe: 'image'
+                }]
+            }
+        }),
 
         rowBindings: {
             '[data-name]'    : 'name',
@@ -38,9 +45,9 @@ define([
         }
     });
 
-    function viewBindings(imageBinder, companyBinder) {
+    function viewBindings(companyBinder) {
         return {
-            '#email'     : {
+            '#email'   : {
                 attributes: [{
                     name   : 'href',
                     observe: 'email',
@@ -50,11 +57,11 @@ define([
                 }],
                 observe   : 'email'
             },
-            '#name'      : 'name',
-            '#position'  : 'position',
-            '#company'   : companyBinder(),
-            '#about'     : 'about',
-            '#avatar-img': imageBinder('image')
+            '#name'    : 'name',
+            '#position': 'position',
+            '#company' : companyBinder(),
+            '#about'   : 'about'
+
         };
     }
 
@@ -71,41 +78,4 @@ define([
         }
     }
 
-    function directImage(attribute) {
-        return {
-            attributes: [{
-                name   : 'src',
-                observe: attribute,
-                onGet  : function (val, options) {
-                    var defaultAvatarPath = '/img/default-avatar.png';
-
-                    var image = options.view.model.attributes.image;
-                    if (defaultAvatarPath != image) {
-                        $('#remove-button').on('click', function () {
-                            console.log('click');
-                        })
-                    }
-
-                    //return val || '/img/default-avatar.png';
-                    if (val) {
-                        return val;
-                    } else {
-                        return '/img/default-avatar.png';
-                    }
-                }
-            }]
-        }
-    }
-
-    function showImage(attribute) {
-        return {
-            attributes: [{
-                name   : 'src',
-                observe: attribute,
-                onGet  : function (val) {
-                    return val;
-                }
-            }]
-        }
-    }
 });
