@@ -1,6 +1,5 @@
 package com.intelliarts.conflab.core.repository;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -8,28 +7,21 @@ import java.io.File;
 import java.io.IOException;
 
 @Component
-public class ImagesRepository {
+public class FilesRepository {
 
-    @Value("${images.path}")
-    private String rootPath;
-
-    public void save(String folderId, MultipartFile file) throws IOException {
-        String folderPath = rootPath + "/" + folderId;
+    public void save(String folderPath, MultipartFile file) throws IOException {
         File folder = new File(folderPath);
-
         if (!(folder.exists() || folder.isDirectory())) {
             folder.mkdirs();
         }
 
         String filePath = folder.getAbsolutePath() + "/" + file.getOriginalFilename();
-        File destinationFile = new File(filePath);
-        file.transferTo(destinationFile);
+
+        file.transferTo(new File(filePath));
     }
 
-    public void remove(String folderId) {
-        String folderPath = rootPath + "/" + folderId;
-        File folder = new File(folderPath);
-
+    public void remove(String path) {
+        File folder = new File(path);
         if (folder.exists() && folder.isDirectory()) {
             folder.delete();
         }

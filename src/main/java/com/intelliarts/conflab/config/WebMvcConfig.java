@@ -8,11 +8,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Configuration
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
-    @Value("${images.path}")
-    private String imagesFolder;
+    @Value("${files.path}")
+    private String filesRootFolder;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/img/avatars/**").addResourceLocations("file:" + imagesFolder + "/");
+        registry.addResourceHandler("/files/**").addResourceLocations("file:" + filesRootFolder);
     }
 }

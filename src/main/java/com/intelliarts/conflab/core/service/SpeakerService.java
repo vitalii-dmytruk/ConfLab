@@ -5,8 +5,6 @@ import com.intelliarts.conflab.core.entity.Event;
 import com.intelliarts.conflab.core.entity.Speaker;
 import com.intelliarts.conflab.core.entity.Speech;
 import com.intelliarts.conflab.core.entity.SpeechSpeaker;
-import com.intelliarts.conflab.core.repository.ImagesRepository;
-import com.intelliarts.conflab.core.repository.ImagesRepository;
 import com.intelliarts.conflab.core.repository.SpeakerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,15 +24,15 @@ public class SpeakerService {
     private CompanyService            companyService;
     private SpeakerRepository         speakerRepository;
     private EventSpeechSpeakerService eventSpeechSpeakerService;
-    private ImagesRepository          imagesRepository;
+    private FilesManager              filesManager;
 
     @Autowired
-    public SpeakerService(CompanyService companyService, SpeakerRepository speakerRepository, 
-            EventSpeechSpeakerService eventSpeechSpeakerService, ImagesRepository imagesRepository) {
+    public SpeakerService(CompanyService companyService, SpeakerRepository speakerRepository,
+            EventSpeechSpeakerService eventSpeechSpeakerService, FilesManager filesManager) {
         this.companyService = companyService;
         this.speakerRepository = speakerRepository;
         this.eventSpeechSpeakerService = eventSpeechSpeakerService;
-        this.imagesRepository = imagesRepository;
+        this.filesManager = filesManager;
     }
 
     @Transactional(readOnly = true)
@@ -64,24 +62,17 @@ public class SpeakerService {
     }
 
     @Transactional
-    public Speaker create(Speaker speaker) {
+    public Speaker create(Speaker speaker, MultipartFile imageFile) throws IOException {
         speaker.setId(null);
         Company company = speaker.getCompany();
         if (company != null && company.getId() != null) {
             Company persistedCompany = companyService.findById(company.getId());
             speaker.setCompany(persistedCompany);
         }
-        Speaker createdSpeaker = speakerRepository.save(speaker);
-        linkToSpeech(createdSpeaker, null);
-        return createdSpeaker;
-    }
 
-    @Transactional
-    public Speaker create(Speaker speaker, MultipartFile image) throws IOException {
-        speaker = speakerRepository.save(speaker);
-        if (image != null) {
-            createImage(speaker, image);
-            speaker.setImage("/img/avatars/" + speaker.getId() + "/" + image.getOriginalFilename());
+        if (imageFile != null) {
+            String avatarPath = filesManager.saveSpeakerAvatar(speaker.getId(), imageFile);
+            speaker.setImage(avatarPath);
         } else {
             speaker.setImage(DEFAULT_AVATAR);
         }
@@ -102,17 +93,17 @@ public class SpeakerService {
     @Transactional
     public Speaker update(Speaker speaker, MultipartFile file) throws IOException {
         if (speaker.getImage() == null) {
-            imagesRepository.remove(String.valueOf(speaker.getId()));
+            filesManager.remove(String.valueOf(speaker.getId()));
             if (file == null) {
                 speaker.setImage(DEFAULT_AVATAR);
             } else {
-                speaker.setImage("/img/avatars/" + speaker.getId() + "/" + file.getOriginalFilename());
-                imagesRepository.save(String.valueOf(speaker.getId()), file);
+                String avatarPath = filesManager.saveSpeakerAvatar(speaker.getId(), file);
+                speaker.setImage(avatarPath);
             }
         } else {
             if (file != null) {
-                speaker.setImage("/img/avatars/" + speaker.getId() + "/" + file.getOriginalFilename());
-                imagesRepository.save(String.valueOf(speaker.getId()), file);
+                String avatarPath = filesManager.saveSpeakerAvatar(speaker.getId(), file);
+                speaker.setImage(avatarPath);
             }
         }
         return speakerRepository.save(speaker);
@@ -160,9 +151,5 @@ public class SpeakerService {
     @Transactional
     public void unlinkFromEvent(Speaker speaker, Event event) {
         eventSpeechSpeakerService.deleteEventSpeechSpeakerLinks(event, speaker);
-    }
-
-    public void createImage(Speaker speaker, MultipartFile file) throws IOException {
-        imagesRepository.save(String.valueOf(speaker.getId()), file);
     }
 }
