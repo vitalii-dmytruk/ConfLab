@@ -30,7 +30,7 @@ public class FilesRepository {
             try {
                 Files.walkFileTree(path, new DeleteFileVisitor());
             } catch (IOException e) {
-                throw new FileSystemException("Speaker avatar is not deleted.", e);
+                throw new FileSystemException("File is not deleted.", e);
             }
         }
     }

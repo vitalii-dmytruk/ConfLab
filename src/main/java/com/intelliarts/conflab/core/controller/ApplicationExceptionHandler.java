@@ -1,5 +1,6 @@
 package com.intelliarts.conflab.core.controller;
 
+import com.intelliarts.conflab.core.service.FileSystemException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.validation.ObjectError;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CONFLICT;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @ControllerAdvice
 public class ApplicationExceptionHandler {
@@ -38,6 +40,11 @@ public class ApplicationExceptionHandler {
     @ExceptionHandler({IllegalArgumentException.class})
     public void invalidArguments(HttpServletResponse res) throws IOException {
         res.sendError(BAD_REQUEST.value());
+    }
+
+    @ExceptionHandler({FileSystemException.class})
+    public void handleFileSystemErrors(HttpServletResponse res, FileSystemException e) throws IOException {
+        res.sendError(INTERNAL_SERVER_ERROR.value(), e.getMessage());
     }
 
     @ExceptionHandler({DataIntegrityViolationException.class})
