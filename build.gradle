@@ -14,6 +14,7 @@ buildscript {
 
 plugins {
     id 'com.craigburke.bower-installer' version '2.5.1'
+    id 'com.craigburke.karma' version '1.4.1'
 }
 
 apply plugin: 'java'
@@ -63,6 +64,21 @@ bower {
 
         'jqueryui'()
 
+        'jquery-file-upload'('9.x') {
+            source 'css/jquery.fileupload.css' >> 'css/'
+            source 'js/jquery.fileupload.js' >> 'js/'
+            source 'js/vendor/jquery.ui.widget.js' >> 'js/'
+
+            excludes 'blueimp-tmpl'
+            excludes 'blueimp-load-image'
+            excludes 'blueimp-canvas-to-blob'
+        }
+
+        'croppie'('git://github.com/approce/Croppie'){
+            source '*.css' >> 'css/'
+            source '*.js' >> 'js/'
+        }
+
         'underscore'('1.8.x') {
             source 'underscore*'
         }
@@ -75,7 +91,7 @@ bower {
 
         'basscss'('7.0.x')
 
-        'toastr'('2.x.x')   {
+        'toastr'('2.x.x') {
             source 'toastr*'
         }
 
@@ -102,7 +118,7 @@ bower {
             source 'backbone-nested-models*'
         }
 
-        'backbone-validation'('0.11.5'){
+        'backbone-validation'('0.11.5') {
             source 'dist/*'
         }
 
@@ -112,15 +128,15 @@ bower {
 
         'requirejs-text'()
 
-        'select2'('4.0.1') {
+        'select2'('4.x') {
             source 'dist/js/*' >> 'js/'
             source 'dist/css/*' >> 'css/'
         }
 
-        'select2-bootstrap-theme'('0.1.0-beta.4'){
+        'select2-bootstrap-theme'('0.1.0-beta.4') {
             source 'dist/*'
         }
-        'bootstrap-datepicker'('1.5.x'){
+        'bootstrap-datepicker'('1.5.x') {
             source 'dist/js/*' >> 'js/'
             source 'dist/css/*' >> 'css/'
             source 'dist/locales/*' >> 'locales/'
@@ -132,4 +148,36 @@ bower {
     ]
 }
 
+project.ext {
+    jasmineDependencies = ['karma-junit-reporter']
+}
+
+task setupTestDependencies(type: NpmTask) {
+    outputs.dir file('node_modules')
+    args = ['install']
+    jasmineDependencies.each {
+        args.add("$it")
+    }
+}
+
+karma {
+    colors = true
+    logLevel = 'INFO'
+    browsers = ['PhantomJS']
+    frameworks = ['jasmine']
+    reporters = ['junit']
+    junitReporter = [outputDir     : 'build/test-results',
+                     useBrowserName: true]
+    plugins = [
+            'karma-jasmine',
+            'karma-junit-reporter',
+            'karma-phantomjs-launcher',
+    ]
+
+    files = [
+            'src/test/js/**.*js'
+    ]
+}
+
 assemble.dependsOn(bowerRefresh)
+karmaRun.dependsOn(setupTestDependencies)

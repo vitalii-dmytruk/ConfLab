@@ -6,6 +6,10 @@ define([
     'use strict';
 
     return Model.extend({
-        urlRoot: '/languages'
+        urlRoot : '/languages',
+        defaults: {
+            id  : null,
+            name: ''
+        }
     });
 });

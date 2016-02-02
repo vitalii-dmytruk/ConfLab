@@ -1,28 +1,17 @@
 define([
+    'common/behavior/FormBehavior',
     'backbone.marionette',
     'backbone.stickit',
     'backbone.validation'
-], function () {
+], function (FormBehavior) {
 
     'use strict';
 
     return Marionette.ItemView.extend({
-        initialize: function () {
-            Backbone.Validation.bind(this);
-        },
-
-        ui: {
-            submitBtn: '[data-submit-btn]',
-            cancelBtn: '[data-cancel-btn]'
-        },
-
-        triggers: {
-            'click @ui.submitBtn': 'submit',
-            'click @ui.cancelBtn': 'cancel'
-        },
-
-        onRender: function () {
-            this.stickit();
+        behaviors: {
+            form: {
+                behaviorClass: FormBehavior
+            }
         }
     });
 });

@@ -1,5 +1,6 @@
 package com.intelliarts.conflab.core.service;
 
+import com.intelliarts.conflab.core.entity.Company;
 import com.intelliarts.conflab.core.entity.Event;
 import com.intelliarts.conflab.core.entity.Speaker;
 import com.intelliarts.conflab.core.entity.Speech;
@@ -8,8 +9,10 @@ import com.intelliarts.conflab.core.repository.SpeakerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -17,13 +20,19 @@ import java.util.Set;
 @Service
 public class SpeakerService {
 
+    private static final String DEFAULT_AVATAR = "/img/default-avatar.png";
+    private CompanyService            companyService;
     private SpeakerRepository         speakerRepository;
     private EventSpeechSpeakerService eventSpeechSpeakerService;
+    private FilesManager              filesManager;
 
     @Autowired
-    public SpeakerService(SpeakerRepository speakerRepository, EventSpeechSpeakerService eventSpeechSpeakerService) {
+    public SpeakerService(CompanyService companyService, SpeakerRepository speakerRepository,
+            EventSpeechSpeakerService eventSpeechSpeakerService, FilesManager filesManager) {
+        this.companyService = companyService;
         this.speakerRepository = speakerRepository;
         this.eventSpeechSpeakerService = eventSpeechSpeakerService;
+        this.filesManager = filesManager;
     }
 
     @Transactional(readOnly = true)
@@ -53,24 +62,48 @@ public class SpeakerService {
     }
 
     @Transactional
-    public Speaker create(Speaker speaker) {
+    public Speaker create(Speaker speaker, MultipartFile imageFile) throws IOException {
         speaker.setId(null);
-        Speaker createdSpeaker = speakerRepository.save(speaker);
-        linkToSpeech(createdSpeaker, null);
-        return createdSpeaker;
+        Company company = speaker.getCompany();
+        if (company != null && company.getId() != null) {
+            Company persistedCompany = companyService.findById(company.getId());
+            speaker.setCompany(persistedCompany);
+        }
+        speakerRepository.save(speaker);
+
+        if (imageFile != null) {
+            String avatarPath = filesManager.saveSpeakerAvatar(speaker.getId(), imageFile);
+            speaker.setImage(avatarPath);
+        } else {
+            speaker.setImage(DEFAULT_AVATAR);
+        }
+        speakerRepository.save(speaker);
+
+        linkToSpeech(speaker, null);
+        return speaker;
     }
 
     @Transactional
-    public Speaker update(Speaker speaker) {
+    public Speaker update(Speaker speaker, MultipartFile file) throws IOException {
         if (speaker.getId() == null) {
             throw new IllegalArgumentException("Speaker Id is not specified");
         }
+        if (file != null) {
+            String avatarPath = filesManager.saveSpeakerAvatar(speaker.getId(), file);
+            speaker.setImage(avatarPath);
+        } else if (speaker.getImage() == null) {
+            filesManager.removeIfExist(speaker.getId());
+            speaker.setImage(DEFAULT_AVATAR);
+        } else{
+            speaker.setImage(findById(speaker.getId()).getImage());
+        }
+
         return speakerRepository.save(speaker);
     }
 
     @Transactional
-    public Speaker createAndLinkToSpeech(Speaker speaker, Speech speech) {
-        Speaker createdSpeaker = create(speaker);
+    public Speaker createAndLinkToSpeech(Speaker speaker, Speech speech, MultipartFile file) throws IOException {
+        Speaker createdSpeaker = create(speaker, file);
         linkToSpeech(createdSpeaker, speech);
         return createdSpeaker;
     }
@@ -83,10 +116,9 @@ public class SpeakerService {
     @Transactional
     public Speaker createAndLinkToEventSpeech(Speaker speaker, Speech speech, Event event) {
         eventSpeechSpeakerService.deleteEventSpeechNullSpeakerLink(event, speech);
-        Speaker createdSpeaker = create(speaker);
-        SpeechSpeaker speechSpeaker = linkToSpeech(createdSpeaker, speech);
+        SpeechSpeaker speechSpeaker = linkToSpeech(speaker, speech);
         eventSpeechSpeakerService.createEventSpeechSpeakerLink(event, speechSpeaker);
-        return createdSpeaker;
+        return speaker;
     }
 
     @Transactional
@@ -104,13 +136,6 @@ public class SpeakerService {
     }
 
     @Transactional
-    public Speaker createAndLinkToEvent(Speaker speaker, Event event) {
-        Speaker createdSpeaker = create(speaker);
-        linkToEvent(createdSpeaker, event);
-        return createdSpeaker;
-    }
-
-    @Transactional
     public void linkToEvent(Speaker speaker, Event event) {
         eventSpeechSpeakerService.createEventSpeechSpeakerLink(event, null, speaker);
     }
@@ -119,5 +144,4 @@ public class SpeakerService {
     public void unlinkFromEvent(Speaker speaker, Event event) {
         eventSpeechSpeakerService.deleteEventSpeechSpeakerLinks(event, speaker);
     }
-
 }

@@ -15,6 +15,7 @@ define([
                 400: showHttpError,
                 403: showHttpError,
                 404: showHttpError,
+                409: showHttpError,
                 500: showHttpError,
                 401: showAuthWarning
             }

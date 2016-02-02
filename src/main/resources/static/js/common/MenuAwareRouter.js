@@ -14,7 +14,7 @@ define([
         },
 
         onBeforeEnter: function () {
-            Radio.channel('menu').request('activate', this.menuButton);
+            Radio.channel('header').request('activate', this.menuButton);
         }
 
     });
@@ -25,13 +25,13 @@ define([
         auth.request('isAuthenticated') ? addMenuButton() : removeMenuButton();
 
         function addMenuButton() {
-            Radio.channel('menu').request('add', router.menuButton);
-            router.active && Radio.channel('menu').request('activate', router.menuButton);
+            Radio.channel('header').request('add', router.menuButton);
+            router.active && Radio.channel('header').request('activate', router.menuButton);
             auth.listenToOnce(auth, 'logout', removeMenuButton);
         }
 
         function removeMenuButton() {
-            Radio.channel('menu').request('remove', router.menuButton);
+            Radio.channel('header').request('remove', router.menuButton);
             auth.listenToOnce(auth, 'login', addMenuButton);
         }
     }
