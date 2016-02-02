@@ -50,7 +50,7 @@ public class SpeakerController {
                     produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Speaker create(@RequestPart("speaker") @Validated Speaker speaker,
-            @RequestPart(value = "image", required = false) MultipartFile file) throws IOException {
+            @RequestPart(value = "image", required = false) MultipartFile file) {
         return speakerService.create(speaker, file);
     }
 
@@ -59,7 +59,7 @@ public class SpeakerController {
                     consumes = MULTIPART_FORM_DATA_VALUE,
                     produces = APPLICATION_JSON_VALUE)
     public Speaker update(@PathVariable("speakerId") Long id, @RequestPart("speaker") @Validated Speaker speaker,
-            @RequestPart(value = "image", required = false) MultipartFile file) throws IOException {
+            @RequestPart(value = "image", required = false) MultipartFile file) {
         speaker.setId(id);
         return speakerService.update(speaker, file);
     }
@@ -85,7 +85,7 @@ public class SpeakerController {
     @ResponseStatus(HttpStatus.CREATED)
     public Speaker createAndLinkToSpeech(@PathVariable("speechId") Long speechId,
             @RequestPart("speaker") @Validated Speaker speaker,
-            @RequestPart(value = "image", required = false) MultipartFile file) throws IOException {
+            @RequestPart(value = "image", required = false) MultipartFile file) {
         Speech speech = speechService.findById(speechId);
         return speakerService.createAndLinkToSpeech(speaker, speech, file);
     }
@@ -168,10 +168,8 @@ public class SpeakerController {
             @RequestPart(value = "image", required = false) MultipartFile file) throws IOException {
         Event event = eventService.findById(eventId);
         Speech speech = speechService.findById(speechId);
-        speaker = speakerService.create(speaker, file);
 
-        speakerService.createAndLinkToEventSpeech(speaker, speech, event);
-        return speaker;
+        return speakerService.createAndLinkToEventSpeech(speaker, file, speech, event);
     }
 
     @RequestMapping(value = "/events/{eventId}/speeches/{speechId}/speakers/{speakerId}",

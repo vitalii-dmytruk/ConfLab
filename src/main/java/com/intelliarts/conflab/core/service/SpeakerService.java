@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -62,29 +61,16 @@ public class SpeakerService {
     }
 
     @Transactional
-    public Speaker create(Speaker speaker, MultipartFile imageFile) throws IOException {
-        speaker.setId(null);
-        Company company = speaker.getCompany();
-        if (company != null && company.getId() != null) {
-            Company persistedCompany = companyService.findById(company.getId());
-            speaker.setCompany(persistedCompany);
-        }
-        speakerRepository.save(speaker);
-
-        if (imageFile != null) {
-            String avatarPath = filesManager.saveSpeakerAvatar(speaker.getId(), imageFile);
-            speaker.setImage(avatarPath);
-        } else {
-            speaker.setImage(DEFAULT_AVATAR);
-        }
-        speakerRepository.save(speaker);
+    public Speaker create(Speaker speaker, MultipartFile imageFile) {
+        saveSpeaker(speaker);
+        saveSpeakerImage(speaker, imageFile);
 
         linkToSpeech(speaker, null);
         return speaker;
     }
 
     @Transactional
-    public Speaker update(Speaker speaker, MultipartFile file) throws IOException {
+    public Speaker update(Speaker speaker, MultipartFile file) {
         if (speaker.getId() == null) {
             throw new IllegalArgumentException("Speaker Id is not specified");
         }
@@ -92,9 +78,9 @@ public class SpeakerService {
             String avatarPath = filesManager.saveSpeakerAvatar(speaker.getId(), file);
             speaker.setImage(avatarPath);
         } else if (speaker.getImage() == null) {
-            filesManager.removeIfExist(speaker.getId());
+            filesManager.removeSpeakerAvatar(speaker.getId());
             speaker.setImage(DEFAULT_AVATAR);
-        } else{
+        } else {
             speaker.setImage(findById(speaker.getId()).getImage());
         }
 
@@ -102,7 +88,7 @@ public class SpeakerService {
     }
 
     @Transactional
-    public Speaker createAndLinkToSpeech(Speaker speaker, Speech speech, MultipartFile file) throws IOException {
+    public Speaker createAndLinkToSpeech(Speaker speaker, Speech speech, MultipartFile file) {
         Speaker createdSpeaker = create(speaker, file);
         linkToSpeech(createdSpeaker, speech);
         return createdSpeaker;
@@ -114,11 +100,12 @@ public class SpeakerService {
     }
 
     @Transactional
-    public Speaker createAndLinkToEventSpeech(Speaker speaker, Speech speech, Event event) {
+    public Speaker createAndLinkToEventSpeech(Speaker speaker, MultipartFile file, Speech speech, Event event) {
         eventSpeechSpeakerService.deleteEventSpeechNullSpeakerLink(event, speech);
-        SpeechSpeaker speechSpeaker = linkToSpeech(speaker, speech);
+        Speaker createdSpeaker = create(speaker, file);
+        SpeechSpeaker speechSpeaker = linkToSpeech(createdSpeaker, speech);
         eventSpeechSpeakerService.createEventSpeechSpeakerLink(event, speechSpeaker);
-        return speaker;
+        return createdSpeaker;
     }
 
     @Transactional
@@ -143,5 +130,25 @@ public class SpeakerService {
     @Transactional
     public void unlinkFromEvent(Speaker speaker, Event event) {
         eventSpeechSpeakerService.deleteEventSpeechSpeakerLinks(event, speaker);
+    }
+
+    private void saveSpeaker(Speaker speaker) {
+        speaker.setId(null);
+        Company company = speaker.getCompany();
+        if (company != null && company.getId() != null) {
+            Company persistedCompany = companyService.findById(company.getId());
+            speaker.setCompany(persistedCompany);
+        }
+        speakerRepository.save(speaker);
+    }
+
+    private void saveSpeakerImage(Speaker speaker, MultipartFile imageFile) {
+        if (imageFile != null) {
+            String avatarPath = filesManager.saveSpeakerAvatar(speaker.getId(), imageFile);
+            speaker.setImage(avatarPath);
+        } else {
+            speaker.setImage(DEFAULT_AVATAR);
+        }
+        speakerRepository.save(speaker);
     }
 }
