@@ -33,6 +33,9 @@ public class Company {
     @Column
     public URL url;
 
+    @Column
+    private String image;
+
     @JsonIgnore
     @OneToMany(mappedBy = "company")
     private Set<Partner> partners;
@@ -59,6 +62,14 @@ public class Company {
 
     public void setUrl(URL link) {
         this.url = link;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public Set<Partner> getPartners() {
