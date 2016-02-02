@@ -14,7 +14,7 @@ import java.util.Optional;
 @Service
 public class CompanyService {
 
-    private static final String DEFAULT_AVATAR = "/img/default-logo.png";
+    private static final String DEFAULT_LOGO = "/img/default-logo.png";
 
     private CompanyRepository companyRepository;
     private FilesManager      filesManager;
@@ -43,7 +43,7 @@ public class CompanyService {
             String logoPath = filesManager.saveCompanyLogo(company.getId(), imageFile);
             company.setImage(logoPath);
         } else {
-            company.setImage(DEFAULT_AVATAR);
+            company.setImage(DEFAULT_LOGO);
         }
         return companyRepository.save(company);
     }
@@ -58,7 +58,7 @@ public class CompanyService {
             company.setImage(logoPath);
         } else if (company.getImage() == null) {
             filesManager.removeCompanyLogo(company.getId());
-            company.setImage(DEFAULT_AVATAR);
+            company.setImage(DEFAULT_LOGO);
         } else {
             company.setImage(findById(company.getId()).getImage());
         }
