@@ -83,24 +83,20 @@ public class SpeakerService {
     }
 
     @Transactional
-    public Speaker update(Speaker speaker) {
+    public Speaker update(Speaker speaker, MultipartFile file) throws IOException {
         if (speaker.getId() == null) {
             throw new IllegalArgumentException("Speaker Id is not specified");
         }
-        return speakerRepository.save(speaker);
-    }
-
-    @Transactional
-    public Speaker update(Speaker speaker, MultipartFile file) throws IOException {
-        if (speaker.getImage() == null) {
-            filesManager.removeIfExist(speaker.getId());
-            speaker.setImage(DEFAULT_AVATAR);
-        }
-
         if (file != null) {
             String avatarPath = filesManager.saveSpeakerAvatar(speaker.getId(), file);
             speaker.setImage(avatarPath);
+        } else if (speaker.getImage() == null) {
+            filesManager.removeIfExist(speaker.getId());
+            speaker.setImage(DEFAULT_AVATAR);
+        } else{
+            speaker.setImage(findById(speaker.getId()).getImage());
         }
+
         return speakerRepository.save(speaker);
     }
 
