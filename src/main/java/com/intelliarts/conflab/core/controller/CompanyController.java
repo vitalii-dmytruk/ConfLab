@@ -44,7 +44,7 @@ public class CompanyController {
                     consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Company create(@RequestPart @Validated Company company,
+    public Company create(@RequestPart("company") @Validated Company company,
             @RequestPart(value = "image", required = false) MultipartFile imageFile) {
         return companyService.create(company, imageFile);
     }
@@ -53,7 +53,7 @@ public class CompanyController {
                     method = PUT,
                     consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public Company update(@PathVariable("companyId") Long companyId, @RequestPart @Validated Company company,
+    public Company update(@PathVariable("companyId") Long companyId, @RequestPart("company") @Validated Company company,
             @RequestPart(value = "image", required = false) MultipartFile imageFile) {
         company.setId(companyId);
         return companyService.update(company, imageFile);

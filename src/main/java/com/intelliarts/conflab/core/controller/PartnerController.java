@@ -59,7 +59,7 @@ public class PartnerController {
                     consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Company createAndLinkToEvent(@PathVariable("eventId") Long eventId, @RequestPart @Validated Company company,
+    public Company createAndLinkToEvent(@PathVariable("eventId") Long eventId, @RequestPart("company") @Validated Company company,
             @RequestPart(value = "image", required = false) MultipartFile imageFile) {
         Event event = eventService.findById(eventId);
         return partnerService.createAndLinkToEvent(event, company, imageFile);
