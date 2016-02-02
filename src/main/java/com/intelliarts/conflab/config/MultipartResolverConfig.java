@@ -1,6 +1,7 @@
 package com.intelliarts.conflab.config;
 
 
+import org.springframework.http.HttpMethod;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,13 +16,13 @@ public class MultipartResolverConfig extends StandardServletMultipartResolver {
     }
 
     public boolean isMultipartContent(HttpServletRequest request) {
-        String method = request.getMethod().toLowerCase();
-        String contentType = request.getContentType();
+        HttpMethod method = HttpMethod.resolve(request.getMethod().toUpperCase());
 
-        if (!"post".equals(method) && !"put".equals(method)) {
-            return false;
+        if (HttpMethod.POST == method || HttpMethod.PUT == method) {
+            String contentType = request.getContentType();
+            return contentType != null && contentType.toLowerCase().startsWith(MULTIPART);
         }
 
-        return contentType != null && contentType.toLowerCase().startsWith(MULTIPART);
+        return false;
     }
 }
