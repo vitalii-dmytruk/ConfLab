@@ -9,15 +9,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 @RestController
 @HasAuthority(role = Role.ADMIN)
@@ -38,21 +40,23 @@ public class CompanyController {
     }
 
     @RequestMapping(value = "/companies",
-                    method = RequestMethod.POST,
-                    consumes = MediaType.APPLICATION_JSON_VALUE,
+                    method = POST,
+                    consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Company create(@RequestBody @Validated Company company) {
-        return companyService.create(company);
+    public Company create(@RequestPart @Validated Company company,
+            @RequestPart(value = "image", required = false) MultipartFile imageFile) {
+        return companyService.create(company, imageFile);
     }
 
     @RequestMapping(value = "/companies/{companyId}",
-                    method = RequestMethod.PUT,
-                    consumes = MediaType.APPLICATION_JSON_VALUE,
+                    method = PUT,
+                    consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public Company update(@PathVariable("companyId") Long companyId, @RequestBody @Validated Company company) {
+    public Company update(@PathVariable("companyId") Long companyId, @RequestPart @Validated Company company,
+            @RequestPart(value = "image", required = false) MultipartFile imageFile) {
         company.setId(companyId);
-        return companyService.update(company);
+        return companyService.update(company, imageFile);
     }
 
     @RequestMapping(value = "/companies/{companyId}",

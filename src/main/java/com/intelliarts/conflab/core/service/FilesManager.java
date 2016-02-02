@@ -40,6 +40,14 @@ public class FilesManager {
         }
     }
 
+    public String saveCompanyLogo(Long id, MultipartFile imageFile) {
+        return "/img/default-logo.png";
+    }
+
+    public void removeCompanyLogo(Long id) {
+
+    }
+
     private String getSpeakerFolderPath(Long speakerId) {
         return String.format(filesRootPath + SPEAKER_AVATAR_PATH_TEMPLATE, speakerId);
     }

@@ -8,6 +8,7 @@ import com.intelliarts.conflab.core.repository.PartnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Set;
@@ -32,8 +33,8 @@ public class PartnerService {
     }
 
     @Transactional
-    public Company createAndLinkToEvent(Event event, Company company) {
-        Company createdCompany = companyService.create(company);
+    public Company createAndLinkToEvent(Event event, Company company, MultipartFile imageFile) {
+        Company createdCompany = companyService.create(company, imageFile);
         linkToEvent(event, createdCompany);
         return createdCompany;
     }
