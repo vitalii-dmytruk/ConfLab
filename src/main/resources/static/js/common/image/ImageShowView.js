@@ -1,7 +1,8 @@
 define([
     'text!common/image/ImageShowTemplate.html',
+    'backbone.radio',
     'backbone.marionette'
-], function (template) {
+], function (template, Radio) {
 
     'use strict';
 
@@ -52,9 +53,8 @@ define([
                 view.triggerMethod('image:uploaded', e.target.result);
             };
             reader.readAsDataURL(file);
-        }
-        else {
-            swal("Sorry - you're browser doesn't support the FileReader API");
+        } else {
+            notify("Sorry - you're browser doesn't support the FileReader API");
         }
     }
 
@@ -69,4 +69,7 @@ define([
         this.ui.imageDeleteBtn.addClass('hidden');
     }
 
+    function notify(message) {
+        Radio.channel('notify').error(message);
+    }
 });
