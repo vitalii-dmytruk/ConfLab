@@ -69,6 +69,7 @@ public class SpeakerService {
             Company persistedCompany = companyService.findById(company.getId());
             speaker.setCompany(persistedCompany);
         }
+        speakerRepository.save(speaker);
 
         if (imageFile != null) {
             String avatarPath = filesManager.saveSpeakerAvatar(speaker.getId(), imageFile);

@@ -9,13 +9,13 @@ import java.io.IOException;
 @Component
 public class FilesRepository {
 
-    public void save(String folderPath, MultipartFile file) throws IOException {
+    public void save(String folderPath, String fileName, MultipartFile file) throws IOException {
         File folder = new File(folderPath);
         if (!(folder.exists() || folder.isDirectory())) {
             folder.mkdirs();
         }
 
-        String filePath = folder.getAbsolutePath() + "/" + file.getOriginalFilename();
+        String filePath = folder.getAbsolutePath() + "/" + fileName;
 
         file.transferTo(new File(filePath));
     }
