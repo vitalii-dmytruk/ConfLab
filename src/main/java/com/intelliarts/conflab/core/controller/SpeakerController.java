@@ -10,6 +10,7 @@ import com.intelliarts.conflab.core.service.SpeechService;
 import com.intelliarts.conflab.security.HasAuthority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,6 +63,36 @@ public class SpeakerController {
             @RequestPart(value = "image", required = false) MultipartFile file) {
         speaker.setId(id);
         return speakerService.update(speaker, file);
+    }
+
+    @RequestMapping(value = "/speakers/{speakerId}/avatar",
+                    method = POST,
+                    consumes = MULTIPART_FORM_DATA_VALUE,
+                    produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public String createAvatar(@PathVariable("speakerId") Long id,
+            @RequestPart("image") MultipartFile file) {
+        Speaker speaker = speakerService.findById(id);
+        return speakerService.createAvatar(speaker, file).getImage();
+    }
+
+    @RequestMapping(value = "/speakers/{speakerId}/avatar",
+                    method = PUT,
+                    consumes = MULTIPART_FORM_DATA_VALUE,
+                    produces = APPLICATION_JSON_VALUE)
+    public String updateAvatar(@PathVariable("speakerId") Long id,
+            @RequestPart("image") MultipartFile file) {
+        Speaker speaker = speakerService.findById(id);
+        return speakerService.updateAvatar(speaker, file).getImage();
+    }
+
+    @RequestMapping(value = "/speakers/{speakerId}/avatar",
+                    method = DELETE,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
+    public String deleteAvatar(@PathVariable("speakerId") Long speakerId){
+        Speaker speaker = speakerService.findById(speakerId);
+        Speaker updatedSpeaker = speakerService.deleteAvatar(speaker);
+        return updatedSpeaker.getImage();
     }
 
     @RequestMapping(value = "/speakers/{speakerId}",

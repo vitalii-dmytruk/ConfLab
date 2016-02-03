@@ -84,9 +84,10 @@ public class CompanyController {
     @RequestMapping(value = "/companies/{companyId}/logo",
                     method = DELETE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public void deleteLogo(@PathVariable("companyId") Long companyId){
+    public String deleteLogo(@PathVariable("companyId") Long companyId){
         Company company = companyService.findById(companyId);
-        companyService.deleteLogo(company);
+        Company updatedCompany = companyService.deleteLogo(company);
+        return updatedCompany.getImage();
     }
 
     @RequestMapping(value = "/companies/{companyId}",

@@ -75,9 +75,9 @@ public class SpeakerService {
             throw new IllegalArgumentException("Speaker Id is not specified");
         }
 
-        updateImage(speaker, file);
+        Speaker updatedSpeaker = updateImage(speaker, file);
 
-        return speakerRepository.save(speaker);
+        return speakerRepository.save(updatedSpeaker);
     }
 
     @Transactional
@@ -125,17 +125,38 @@ public class SpeakerService {
         eventSpeechSpeakerService.deleteEventSpeechSpeakerLinks(event, speaker);
     }
 
-    private void updateImage(Speaker speaker, MultipartFile file) {
+    public Speaker createAvatar(Speaker speaker, MultipartFile file) {
+        return createSpeakerImage(speaker, file);
+    }
+
+    public Speaker updateAvatar(Speaker speaker, MultipartFile file) {
+        Speaker updatedSpeaker = updateImage(speaker, file);
+        return speakerRepository.save(updatedSpeaker);
+    }
+
+    public Speaker deleteAvatar(Speaker speaker) {
+        String image = deleteImage(speaker);
+        speaker.setImage(image);
+        return speakerRepository.save(speaker);
+    }
+
+    private Speaker updateImage(Speaker speaker, MultipartFile file) {
         String image;
         if (file != null) {
             image = filesManager.saveSpeakerAvatar(speaker.getId(), file);
         } else if (speaker.getImage() == null) {
-            filesManager.removeSpeakerAvatar(speaker.getId());
-            image = DEFAULT_AVATAR;
+            image = deleteImage(speaker);
         } else {
             image = findById(speaker.getId()).getImage();
         }
         speaker.setImage(image);
+
+        return speaker;
+    }
+
+    private String deleteImage(Speaker speaker) {
+        filesManager.removeSpeakerAvatar(speaker.getId());
+        return DEFAULT_AVATAR;
     }
 
     private Speaker createSpeaker(Speaker speaker) {
@@ -153,13 +174,13 @@ public class SpeakerService {
         return company.getId() == null;
     }
 
-    private void createSpeakerImage(Speaker speaker, MultipartFile imageFile) {
+    private Speaker createSpeakerImage(Speaker speaker, MultipartFile imageFile) {
         if (imageFile != null) {
             String avatarPath = filesManager.saveSpeakerAvatar(speaker.getId(), imageFile);
             speaker.setImage(avatarPath);
         } else {
             speaker.setImage(DEFAULT_AVATAR);
         }
-        speakerRepository.save(speaker);
+        return speakerRepository.save(speaker);
     }
 }
