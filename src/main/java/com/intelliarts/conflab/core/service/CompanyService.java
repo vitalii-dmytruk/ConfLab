@@ -38,14 +38,10 @@ public class CompanyService {
 
     @Transactional
     public Company create(Company company, MultipartFile imageFile) {
-        company.setId(null);
-        if (imageFile != null) {
-            String logoPath = filesManager.saveCompanyLogo(company.getId(), imageFile);
-            company.setImage(logoPath);
-        } else {
-            company.setImage(DEFAULT_LOGO);
-        }
-        return companyRepository.save(company);
+        Company createdCompany = createCompany(company);
+        createImage(createdCompany, imageFile);
+
+        return createdCompany;
     }
 
     @Transactional
@@ -53,16 +49,37 @@ public class CompanyService {
         if (company.getId() == null) {
             throw new IllegalArgumentException("Company Id is not specified");
         }
-        if (imageFile != null) {
-            String logoPath = filesManager.saveCompanyLogo(company.getId(), imageFile);
-            company.setImage(logoPath);
-        } else if (company.getImage() == null) {
-            filesManager.removeCompanyLogo(company.getId());
-            company.setImage(DEFAULT_LOGO);
-        } else {
-            company.setImage(findById(company.getId()).getImage());
-        }
+
+        updateImage(company, imageFile);
         return companyRepository.save(company);
     }
 
+    private void updateImage(Company company, MultipartFile imageFile) {
+        String image;
+        if (imageFile != null) {
+            image = filesManager.saveCompanyLogo(company.getId(), imageFile);
+        } else if (company.getImage() == null) {
+            filesManager.removeCompanyLogo(company.getId());
+            image = DEFAULT_LOGO;
+        } else {
+            image = findById(company.getId()).getImage();
+        }
+        company.setImage(image);
+    }
+
+    private void createImage(Company company, MultipartFile imageFile) {
+        if (imageFile != null) {
+            String logoPath = filesManager.saveCompanyLogo(company.getId(), imageFile);
+            company.setImage(logoPath);
+        } else {
+            company.setImage(DEFAULT_LOGO);
+        }
+
+        companyRepository.save(company);
+    }
+
+    private Company createCompany(Company company) {
+        company.setId(null);
+        return companyRepository.save(company);
+    }
 }

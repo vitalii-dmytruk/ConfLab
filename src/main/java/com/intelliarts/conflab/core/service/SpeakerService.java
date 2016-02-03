@@ -62,11 +62,11 @@ public class SpeakerService {
 
     @Transactional
     public Speaker create(Speaker speaker, MultipartFile imageFile) {
-        saveSpeaker(speaker);
-        saveSpeakerImage(speaker, imageFile);
+        Speaker createdSpeaker = createSpeaker(speaker);
+        createSpeakerImage(createdSpeaker, imageFile);
 
-        linkToSpeech(speaker, null);
-        return speaker;
+        linkToSpeech(createdSpeaker, null);
+        return createdSpeaker;
     }
 
     @Transactional
@@ -74,15 +74,8 @@ public class SpeakerService {
         if (speaker.getId() == null) {
             throw new IllegalArgumentException("Speaker Id is not specified");
         }
-        if (file != null) {
-            String avatarPath = filesManager.saveSpeakerAvatar(speaker.getId(), file);
-            speaker.setImage(avatarPath);
-        } else if (speaker.getImage() == null) {
-            filesManager.removeSpeakerAvatar(speaker.getId());
-            speaker.setImage(DEFAULT_AVATAR);
-        } else {
-            speaker.setImage(findById(speaker.getId()).getImage());
-        }
+
+        updateImage(speaker, file);
 
         return speakerRepository.save(speaker);
     }
@@ -132,17 +125,35 @@ public class SpeakerService {
         eventSpeechSpeakerService.deleteEventSpeechSpeakerLinks(event, speaker);
     }
 
-    private void saveSpeaker(Speaker speaker) {
-        speaker.setId(null);
-        Company company = speaker.getCompany();
-        if (company != null && company.getId() != null) {
-            Company persistedCompany = companyService.findById(company.getId());
-            speaker.setCompany(persistedCompany);
+    private void updateImage(Speaker speaker, MultipartFile file) {
+        String image;
+        if (file != null) {
+            image = filesManager.saveSpeakerAvatar(speaker.getId(), file);
+        } else if (speaker.getImage() == null) {
+            filesManager.removeSpeakerAvatar(speaker.getId());
+            image = DEFAULT_AVATAR;
+        } else {
+            image = findById(speaker.getId()).getImage();
         }
-        speakerRepository.save(speaker);
+        speaker.setImage(image);
     }
 
-    private void saveSpeakerImage(Speaker speaker, MultipartFile imageFile) {
+    private Speaker createSpeaker(Speaker speaker) {
+        speaker.setId(null);
+        Company company = speaker.getCompany();
+        if (company != null) {
+            Company persistedCompany = isNewCompany(company) ? companyService.create(company, null) :
+                    companyService.findById(company.getId());
+            speaker.setCompany(persistedCompany);
+        }
+        return speakerRepository.save(speaker);
+    }
+
+    private boolean isNewCompany(Company company) {
+        return company.getId() == null;
+    }
+
+    private void createSpeakerImage(Speaker speaker, MultipartFile imageFile) {
         if (imageFile != null) {
             String avatarPath = filesManager.saveSpeakerAvatar(speaker.getId(), imageFile);
             speaker.setImage(avatarPath);
