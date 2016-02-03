@@ -54,28 +54,48 @@ public class CompanyService {
         return companyRepository.save(company);
     }
 
-    private void updateImage(Company company, MultipartFile imageFile) {
+    public Company createLogo(Company company, MultipartFile imageFile) {
+        return createImage(company, imageFile);
+    }
+
+    public Company updateLogo(Company company, MultipartFile imageFile) {
+        Company updatedCompany = updateImage(company, imageFile);
+        return  companyRepository.save(updatedCompany);
+    }
+
+    public Company deleteLogo(Company company) {
+        String image = deleteImage(company);
+        company.setImage(image);
+        return  companyRepository.save(company);
+    }
+
+    private Company updateImage(Company company, MultipartFile imageFile) {
         String image;
+
         if (imageFile != null) {
             image = filesManager.saveCompanyLogo(company.getId(), imageFile);
         } else if (company.getImage() == null) {
-            filesManager.removeCompanyLogo(company.getId());
-            image = DEFAULT_LOGO;
+            image = deleteImage(company);
         } else {
             image = findById(company.getId()).getImage();
         }
         company.setImage(image);
+
+        return company;
     }
 
-    private void createImage(Company company, MultipartFile imageFile) {
-        if (imageFile != null) {
-            String logoPath = filesManager.saveCompanyLogo(company.getId(), imageFile);
-            company.setImage(logoPath);
-        } else {
-            company.setImage(DEFAULT_LOGO);
-        }
+    private String deleteImage(Company company) {
+        filesManager.removeCompanyLogo(company.getId());
+        return DEFAULT_LOGO;
+    }
 
-        companyRepository.save(company);
+    private Company createImage(Company company, MultipartFile imageFile) {
+        String logoPath = imageFile != null ?
+                filesManager.saveCompanyLogo(company.getId(), imageFile) :
+                DEFAULT_LOGO;
+        company.setImage(logoPath);
+
+        return companyRepository.save(company);
     }
 
     private Company createCompany(Company company) {

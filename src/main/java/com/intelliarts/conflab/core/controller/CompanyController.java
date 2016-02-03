@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
@@ -57,6 +58,35 @@ public class CompanyController {
             @RequestPart(value = "image", required = false) MultipartFile imageFile) {
         company.setId(companyId);
         return companyService.update(company, imageFile);
+    }
+
+    @RequestMapping(value = "/companies/{companyId}/logo",
+                    method = POST,
+                    consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public Company createLogo(@PathVariable("companyId") Long companyId,
+            @RequestPart("image") MultipartFile imageFile) {
+        Company company = companyService.findById(companyId);
+        return companyService.createLogo(company, imageFile);
+    }
+
+    @RequestMapping(value = "/companies/{companyId}/logo",
+                    method = PUT,
+                    consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
+    public Company updateLogo(@PathVariable("companyId") Long companyId,
+            @RequestPart("image") MultipartFile imageFile) {
+        Company company = companyService.findById(companyId);
+        return companyService.updateLogo(company, imageFile);
+    }
+
+    @RequestMapping(value = "/companies/{companyId}/logo",
+                    method = DELETE,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
+    public void deleteLogo(@PathVariable("companyId") Long companyId){
+        Company company = companyService.findById(companyId);
+        companyService.deleteLogo(company);
     }
 
     @RequestMapping(value = "/companies/{companyId}",
