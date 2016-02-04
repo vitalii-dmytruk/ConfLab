@@ -1,12 +1,14 @@
 define([
-    'common/Model',
+    'common/image/ImageModel',
     'backbone'
-], function CompanyModel(Model) {
+], function CompanyModel(ImageModel) {
 
     'use strict';
 
-    return Model.extend({
-        urlRoot: '/companies',
+    var MAIN_URL = '/companies';
+
+    return ImageModel.extend({
+        urlRoot: MAIN_URL,
 
         defaults  : function () {
             return {
@@ -32,29 +34,8 @@ define([
             }]
         },
 
-        sync: function (method, model, options) {
-            if (method === 'create' || method === 'update') {
-                options = _.extend(options || {}, {
-                    contentType: false,
-                    data       : getFormData(this)
-                });
-            }
-            return Backbone.sync(method, model, options);
+        getUrl: function () {
+            return MAIN_URL + '/' + this.get('id') + "/logo";
         }
     });
-    function getFormData(model) {
-        var formData = new FormData(),
-            fileName = 'logo.png',
-            fileData = model.image;
-
-        if (fileData) {
-            formData.append('image', fileData, fileName);
-        }
-
-        formData.append('company', new Blob([JSON.stringify(model.toJSON())], {
-            type: "application/json"
-        }));
-
-        return formData;
-    }
 });

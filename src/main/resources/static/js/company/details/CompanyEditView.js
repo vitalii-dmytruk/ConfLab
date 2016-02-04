@@ -15,7 +15,7 @@ define([
             }
         },
 
-        regions  : {
+        regions: {
             logoRegion: '#logo'
         },
 
@@ -30,10 +30,7 @@ define([
                     height: 150,
                     type  : 'rectangle'
                 },
-                boundary    : {
-                    width : 150,
-                    height: 150
-                }
+                imageClass  : 'logo'
             }).show();
         }
     });

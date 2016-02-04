@@ -15,7 +15,7 @@ define([
             }
         },
 
-        regions  : {
+        regions: {
             avatarRegion: '#avatar'
         },
 
@@ -30,10 +30,7 @@ define([
                     height: 200,
                     type  : 'rectangle'
                 },
-                boundary    : {
-                    width : 200,
-                    height: 200
-                }
+                imageClass  : 'avatar'
             }).show();
         }
     });

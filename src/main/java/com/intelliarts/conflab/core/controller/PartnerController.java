@@ -14,11 +14,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Set;
@@ -56,13 +55,12 @@ public class PartnerController {
 
     @RequestMapping(value = "/events/{eventId}/companies",
                     method = POST,
-                    consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+                    consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Company createAndLinkToEvent(@PathVariable("eventId") Long eventId, @RequestPart("company") @Validated Company company,
-            @RequestPart(value = "image", required = false) MultipartFile imageFile) {
+    public Company createAndLinkToEvent(@PathVariable("eventId") Long eventId, @RequestBody @Validated Company company) {
         Event event = eventService.findById(eventId);
-        return partnerService.createAndLinkToEvent(event, company, imageFile);
+        return partnerService.createAndLinkToEvent(event, company);
     }
 
     @RequestMapping(value = "/events/{eventId}/companies/{companyId}",

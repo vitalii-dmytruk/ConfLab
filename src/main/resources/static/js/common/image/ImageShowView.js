@@ -28,10 +28,12 @@ define([
 
     function initImage(view) {
         var options = view.options;
-        view.ui.imageEl.on('error', function () {
+        var $img = view.ui.imageEl;
+        $img.on('error', function () {
             this.src = options.defaultImage;
         });
-        view.ui.imageEl.attr('src', options.url || view.model.get(options.imageUrlAttr) || "");
+        $img.attr('src', options.url || view.model.get(options.imageUrlAttr) || "");
+        $img.addClass(options.imageClass)
     }
 
     function updateDeleteBtnState(view) {
@@ -59,7 +61,6 @@ define([
 
     function deleteImage() {
         var model       = this.model;
-
         model.isDeleted = true;
         model.image     = null;
         this.ui.imageEl.attr('src', "");

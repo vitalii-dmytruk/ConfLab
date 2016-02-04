@@ -1,13 +1,13 @@
 define([
-        'common/Model',
+        'common/image/ImageModel',
         'backbone',
         'jquery'
-    ], function (Model) {
+    ], function (ImageModel) {
 
         'use strict';
 
         var MAIN_URL = '/speakers';
-        return Model.extend({
+        return ImageModel.extend({
             urlRoot: MAIN_URL,
 
             defaults  : function () {
@@ -41,56 +41,10 @@ define([
                     }
                 }
             },
-            saveImage : function () {
-                return this.image ? buildUpdateImagePromise(this) : buildNoImagePromise(this);
+
+            getUrl: function () {
+                return MAIN_URL + '/' + this.get('id') + "/avatar";
             }
         });
-
-
-        function buildNoImagePromise(model) {
-            var promise;
-            if (model.get('image') && model.isDeleted) {
-                promise = $.ajax({
-                    url    : getUrl(model),
-                    type   : 'DELETE',
-                    success: function () {
-                        model.set('image', null);
-                    }
-                });
-            } else {
-                promise = $.Deferred().resolve();
-            }
-
-            return promise;
-        }
-
-        function buildUpdateImagePromise(model) {
-
-            return $.ajax({
-                url        : getUrl(model),
-                type       : model.get('image') ? 'PUT' : 'POST',
-                contentType: false,
-                data       : getFormData(model),
-                dataType   : 'text',
-                processData: false,
-                success    : function (response) {
-                    model.set('image', response);
-                }
-            });
-        }
-
-        function getUrl(model) {
-            return MAIN_URL + '/' + model.get('id') + "/avatar";
-        }
-
-        function getFormData(model) {
-            var formData = new FormData(),
-                fileName = 'avatar.png',
-                fileData = model.image;
-
-            fileData && formData.append('image', fileData, fileName);
-
-            return formData;
-        }
     }
 );

@@ -156,7 +156,7 @@ public class SpeakerService {
         speaker.setId(null);
         Company company = speaker.getCompany();
         if (company != null) {
-            Company persistedCompany = isNewCompany(company) ? companyService.create(company, null) :
+            Company persistedCompany = isNewCompany(company) ? companyService.create(company) :
                     companyService.findById(company.getId());
             speaker.setCompany(persistedCompany);
         }

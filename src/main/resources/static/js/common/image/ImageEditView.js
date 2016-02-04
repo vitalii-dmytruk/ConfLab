@@ -14,8 +14,7 @@ define([
 
     function showImageView(options, url) {
         var imageShowView = new ImageShowView({
-            height      : options.boundary.height,
-            width       : options.boundary.width,
+            imageClass  : options.imageClass,
             url         : url,
             model       : options.model,
             defaultImage: options.defaultImage,
@@ -35,7 +34,7 @@ define([
             model         : options.model,
             croppieOptions: {
                 viewport: options.viewport,
-                boundary: options.boundary
+                boundary: options.viewport
             }
         });
 

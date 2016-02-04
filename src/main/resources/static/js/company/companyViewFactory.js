@@ -9,8 +9,23 @@ define([
     'use strict';
 
     var viewFactory = ViewFactory.extend({
-        getEditView: function () {
+        getEditView   : function () {
             return CompanyEditView;
+        },
+        getDetailsView: function () {
+            var ParentDetailsView = ViewFactory.prototype.getDetailsView.apply(this, arguments);
+
+            return ParentDetailsView.extend({
+                saveModel: function (model) {
+                    var view = this;
+                    return ParentDetailsView.prototype.saveModel.apply(this, arguments)
+                        .then(function () {
+                            return model.saveImage().then(function () {
+                                view.model.set('image', model.get('image'));
+                            });
+                        });
+                }
+            });
         }
     });
 
@@ -32,15 +47,7 @@ define([
                     observe: 'url'
                 }]
             },
-            '#logo': {
-                attributes: [{
-                    name   : 'src',
-                    observe: 'image',
-                    onGet : function (value) {
-                        return value || '/img/default-logo.jpg';
-                    }
-                }]
-            }
+            '#logo': logoBindings()
         },
 
         editBindings: {
@@ -49,7 +56,25 @@ define([
         },
 
         rowBindings: {
-            '[data-company-name]': 'name'
+            '[data-company-name]': 'name',
+            '[data-logo]': logoBindings()
         }
     });
+
+    function logoBindings(){
+        return {
+            initialize   : function ($el) {
+                $el.one('error', function () {
+                    this.src = '/img/invalid-image.png';
+                });
+            },
+            attributes: [{
+                name   : 'src',
+                observe: 'image',
+                onGet  : function (value) {
+                    return value || '/img/default-logo.jpg';
+                }
+            }]
+        }
+    }
 });

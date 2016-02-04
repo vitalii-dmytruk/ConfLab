@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -42,22 +43,20 @@ public class CompanyController {
 
     @RequestMapping(value = "/companies",
                     method = POST,
-                    consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+                    consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Company create(@RequestPart("company") @Validated Company company,
-            @RequestPart(value = "image", required = false) MultipartFile imageFile) {
-        return companyService.create(company, imageFile);
+    public Company create(@RequestBody @Validated Company company) {
+        return companyService.create(company);
     }
 
     @RequestMapping(value = "/companies/{companyId}",
                     method = PUT,
-                    consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+                    consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public Company update(@PathVariable("companyId") Long companyId, @RequestPart("company") @Validated Company company,
-            @RequestPart(value = "image", required = false) MultipartFile imageFile) {
+    public Company update(@PathVariable("companyId") Long companyId, @RequestBody @Validated Company company) {
         company.setId(companyId);
-        return companyService.update(company, imageFile);
+        return companyService.update(company);
     }
 
     @RequestMapping(value = "/companies/{companyId}/logo",
@@ -65,29 +64,28 @@ public class CompanyController {
                     consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Company createLogo(@PathVariable("companyId") Long companyId,
+    public String createLogo(@PathVariable("companyId") Long companyId,
             @RequestPart("image") MultipartFile imageFile) {
         Company company = companyService.findById(companyId);
-        return companyService.createLogo(company, imageFile);
+        return companyService.createLogo(company, imageFile).getImage();
     }
 
     @RequestMapping(value = "/companies/{companyId}/logo",
                     method = PUT,
                     consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public Company updateLogo(@PathVariable("companyId") Long companyId,
+    public String updateLogo(@PathVariable("companyId") Long companyId,
             @RequestPart("image") MultipartFile imageFile) {
         Company company = companyService.findById(companyId);
-        return companyService.updateLogo(company, imageFile);
+        return companyService.updateLogo(company, imageFile).getImage();
     }
 
     @RequestMapping(value = "/companies/{companyId}/logo",
                     method = DELETE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public String deleteLogo(@PathVariable("companyId") Long companyId){
+    public void deleteLogo(@PathVariable("companyId") Long companyId){
         Company company = companyService.findById(companyId);
-        Company updatedCompany = companyService.deleteLogo(company);
-        return updatedCompany.getImage();
+        companyService.deleteLogo(company);
     }
 
     @RequestMapping(value = "/companies/{companyId}",

@@ -44,19 +44,12 @@ define([
 
         editBindings: viewBindings(companySelectBinder),
         showBindings: _.extend(viewBindings(companyNameBinder), {
-            '#avatar-img': {
-                attributes: [{
-                    name   : 'src',
-                    observe: 'image',
-                    onGet : function (value) {
-                        return value || '/img/default-avatar.png';
-                    }
-                }]
-            }
+            '#avatar-img': avatarBinder()
         }),
 
         rowBindings: {
             '[data-name]'    : 'name',
+            '[data-avatar]'  : avatarBinder(),
             '[data-company]' : companyNameBinder(),
             '[data-position]': 'position',
             '[data-email]'   : 'email'
@@ -96,4 +89,20 @@ define([
         }
     }
 
+    function avatarBinder() {
+        return {
+            initialize   : function ($el) {
+                $el.one('error', function () {
+                    this.src = '/img/invalid-image.png';
+                });
+            },
+            attributes: [{
+                name   : 'src',
+                observe: 'image',
+                onGet : function (value) {
+                    return value || '/img/default-avatar.png';
+                }
+            }]
+        }
+    }
 });

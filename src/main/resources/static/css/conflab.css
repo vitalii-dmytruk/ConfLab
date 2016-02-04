@@ -243,9 +243,20 @@ div[data-descendant-region] * #table-title {
     width: 200px;
 }
 
+.avatar-icon {
+    height: 64px;
+    width: 64px;
+    margin-right: 15px;
+}
+
 .logo {
     height: 150px;
     width: 150px;
+}
+
+.logo-icon {
+    height: 32px;
+    width: 32px;
 }
 
 #croppie {
