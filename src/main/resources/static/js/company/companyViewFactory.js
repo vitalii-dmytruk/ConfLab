@@ -35,7 +35,10 @@ define([
             '#logo': {
                 attributes: [{
                     name   : 'src',
-                    observe: 'image'
+                    observe: 'image',
+                    onGet : function (value) {
+                        return value || '/img/default-logo.jpg';
+                    }
                 }]
             }
         },

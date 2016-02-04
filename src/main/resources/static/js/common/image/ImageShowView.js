@@ -2,7 +2,7 @@ define([
     'text!common/image/ImageShowTemplate.html',
     'backbone.radio',
     'backbone.marionette'
-], function (template, Radio) {
+], function ImageShowView(template, Radio) {
 
     'use strict';
 
@@ -28,17 +28,16 @@ define([
 
     function initImage(view) {
         var options = view.options;
-        view.ui.imageEl.attr({
-            src  : options.url || view.model.get(options.imageUrlAttr),
-            style: 'height:' + options.height + 'px;width:' + options.width + 'px;'
+        view.ui.imageEl.on('error', function () {
+            this.src = options.defaultImage;
         });
+        view.ui.imageEl.attr('src', options.url || view.model.get(options.imageUrlAttr) || "");
     }
 
     function updateDeleteBtnState(view) {
-        var imageUrlAttr    = view.options.imageUrlAttr,
-            model           = view.model,
-            defaultImageUrl = model.defaults()[imageUrlAttr],
-            isImageChanged  = model.get(imageUrlAttr) !== defaultImageUrl || model.image;
+        var imageUrlAttr   = view.options.imageUrlAttr,
+            model          = view.model,
+            isImageChanged = model.get(imageUrlAttr) || model.image;
         view.ui.imageDeleteBtn.toggleClass('hidden', !isImageChanged);
     }
 
@@ -59,17 +58,15 @@ define([
     }
 
     function deleteImage() {
-        var imageUrlAttr    = this.options.imageUrlAttr,
-            model           = this.model,
-            defaultImageUrl = model.defaults()[imageUrlAttr];
+        var model       = this.model;
 
-        model.set(imageUrlAttr, null);
-        model.image         = null;
-        this.ui.imageEl.attr('src', defaultImageUrl);
+        model.isDeleted = true;
+        model.image     = null;
+        this.ui.imageEl.attr('src', "");
         this.ui.imageDeleteBtn.addClass('hidden');
     }
 
     function notify(message) {
-        Radio.channel('notify').error(message);
+        Radio.channel('notify').warn(message);
     }
 });

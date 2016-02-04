@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -47,22 +48,20 @@ public class SpeakerController {
 
     @RequestMapping(value = "/speakers",
                     method = POST,
-                    consumes = MULTIPART_FORM_DATA_VALUE,
+                    consumes = APPLICATION_JSON_VALUE,
                     produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Speaker create(@RequestPart("speaker") @Validated Speaker speaker,
-            @RequestPart(value = "image", required = false) MultipartFile file) {
-        return speakerService.create(speaker, file);
+    public Speaker create(@RequestPart("speaker") @Validated Speaker speaker) {
+        return speakerService.create(speaker);
     }
 
     @RequestMapping(value = "/speakers/{speakerId}",
                     method = PUT,
-                    consumes = MULTIPART_FORM_DATA_VALUE,
+                    consumes = APPLICATION_JSON_VALUE,
                     produces = APPLICATION_JSON_VALUE)
-    public Speaker update(@PathVariable("speakerId") Long id, @RequestPart("speaker") @Validated Speaker speaker,
-            @RequestPart(value = "image", required = false) MultipartFile file) {
+    public Speaker update(@PathVariable("speakerId") Long id, @RequestBody @Validated Speaker speaker) {
         speaker.setId(id);
-        return speakerService.update(speaker, file);
+        return speakerService.update(speaker);
     }
 
     @RequestMapping(value = "/speakers/{speakerId}/avatar",
@@ -72,6 +71,10 @@ public class SpeakerController {
     @ResponseStatus(HttpStatus.CREATED)
     public String createAvatar(@PathVariable("speakerId") Long id,
             @RequestPart("image") MultipartFile file) {
+        if (file == null) {
+            throw new IllegalArgumentException("Avatar file is not specified.");
+        }
+
         Speaker speaker = speakerService.findById(id);
         return speakerService.createAvatar(speaker, file).getImage();
     }
@@ -82,6 +85,10 @@ public class SpeakerController {
                     produces = APPLICATION_JSON_VALUE)
     public String updateAvatar(@PathVariable("speakerId") Long id,
             @RequestPart("image") MultipartFile file) {
+        if (file == null) {
+            throw new IllegalArgumentException("Avatar file is not specified.");
+        }
+
         Speaker speaker = speakerService.findById(id);
         return speakerService.updateAvatar(speaker, file).getImage();
     }
@@ -89,10 +96,9 @@ public class SpeakerController {
     @RequestMapping(value = "/speakers/{speakerId}/avatar",
                     method = DELETE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public String deleteAvatar(@PathVariable("speakerId") Long speakerId){
+    public void deleteAvatar(@PathVariable("speakerId") Long speakerId){
         Speaker speaker = speakerService.findById(speakerId);
-        Speaker updatedSpeaker = speakerService.deleteAvatar(speaker);
-        return updatedSpeaker.getImage();
+        speakerService.deleteAvatar(speaker);
     }
 
     @RequestMapping(value = "/speakers/{speakerId}",
@@ -111,14 +117,13 @@ public class SpeakerController {
 
     @RequestMapping(value = "/speeches/{speechId}/speakers",
                     method = POST,
-                    consumes = MULTIPART_FORM_DATA_VALUE,
+                    consumes = APPLICATION_JSON_VALUE,
                     produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Speaker createAndLinkToSpeech(@PathVariable("speechId") Long speechId,
-            @RequestPart("speaker") @Validated Speaker speaker,
-            @RequestPart(value = "image", required = false) MultipartFile file) {
+            @RequestBody @Validated Speaker speaker) {
         Speech speech = speechService.findById(speechId);
-        return speakerService.createAndLinkToSpeech(speaker, speech, file);
+        return speakerService.createAndLinkToSpeech(speaker, speech);
     }
 
     @RequestMapping(value = "/speeches/{speechId}/speakers/{speakerId}",
@@ -133,14 +138,13 @@ public class SpeakerController {
 
     @RequestMapping(value = "/events/{eventId}/speakers",
                     method = POST,
-                    consumes = MULTIPART_FORM_DATA_VALUE,
+                    consumes = APPLICATION_JSON_VALUE,
                     produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Speaker createAndLinkToEvent(@PathVariable("eventId") Long eventId,
-            @RequestPart("speaker") @Validated Speaker speaker,
-            @RequestPart(value = "image", required = false) MultipartFile file) throws IOException {
+            @RequestBody @Validated Speaker speaker) throws IOException {
         Event event = eventService.findById(eventId);
-        speaker = speakerService.create(speaker, file);
+        speaker = speakerService.create(speaker);
         speakerService.linkToEvent(speaker, event);
         return speaker;
     }
@@ -192,15 +196,14 @@ public class SpeakerController {
 
     @RequestMapping(value = "/events/{eventId}/speeches/{speechId}/speakers",
                     method = POST,
-                    consumes = MULTIPART_FORM_DATA_VALUE,
+                    consumes = APPLICATION_JSON_VALUE,
                     produces = APPLICATION_JSON_VALUE)
     public Speaker createAndLinkToEventSpeech(@PathVariable("eventId") Long eventId,
-            @PathVariable("speechId") Long speechId, @RequestPart("speaker") @Validated Speaker speaker,
-            @RequestPart(value = "image", required = false) MultipartFile file) throws IOException {
+            @PathVariable("speechId") Long speechId, @RequestBody @Validated Speaker speaker) throws IOException {
         Event event = eventService.findById(eventId);
         Speech speech = speechService.findById(speechId);
 
-        return speakerService.createAndLinkToEventSpeech(speaker, file, speech, event);
+        return speakerService.createAndLinkToEventSpeech(speaker, speech, event);
     }
 
     @RequestMapping(value = "/events/{eventId}/speeches/{speechId}/speakers/{speakerId}",

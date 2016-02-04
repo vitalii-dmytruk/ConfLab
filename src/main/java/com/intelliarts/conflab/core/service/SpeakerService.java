@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -61,28 +62,27 @@ public class SpeakerService {
     }
 
     @Transactional
-    public Speaker create(Speaker speaker, MultipartFile imageFile) {
+    public Speaker create(Speaker speaker) {
         Speaker createdSpeaker = createSpeaker(speaker);
-        createSpeakerImage(createdSpeaker, imageFile);
 
         linkToSpeech(createdSpeaker, null);
         return createdSpeaker;
     }
 
     @Transactional
-    public Speaker update(Speaker speaker, MultipartFile file) {
+    public Speaker update(Speaker speaker) {
         if (speaker.getId() == null) {
             throw new IllegalArgumentException("Speaker Id is not specified");
         }
 
-        Speaker updatedSpeaker = updateImage(speaker, file);
-
-        return speakerRepository.save(updatedSpeaker);
+        String oldImage = findById(speaker.getId()).getImage();
+        speaker.setImage(oldImage);
+        return   speakerRepository.save(speaker);
     }
 
     @Transactional
-    public Speaker createAndLinkToSpeech(Speaker speaker, Speech speech, MultipartFile file) {
-        Speaker createdSpeaker = create(speaker, file);
+    public Speaker createAndLinkToSpeech(Speaker speaker, Speech speech) {
+        Speaker createdSpeaker = create(speaker);
         linkToSpeech(createdSpeaker, speech);
         return createdSpeaker;
     }
@@ -93,9 +93,9 @@ public class SpeakerService {
     }
 
     @Transactional
-    public Speaker createAndLinkToEventSpeech(Speaker speaker, MultipartFile file, Speech speech, Event event) {
+    public Speaker createAndLinkToEventSpeech(Speaker speaker, Speech speech, Event event) {
         eventSpeechSpeakerService.deleteEventSpeechNullSpeakerLink(event, speech);
-        Speaker createdSpeaker = create(speaker, file);
+        Speaker createdSpeaker = create(speaker);
         SpeechSpeaker speechSpeaker = linkToSpeech(createdSpeaker, speech);
         eventSpeechSpeakerService.createEventSpeechSpeakerLink(event, speechSpeaker);
         return createdSpeaker;
@@ -125,38 +125,31 @@ public class SpeakerService {
         eventSpeechSpeakerService.deleteEventSpeechSpeakerLinks(event, speaker);
     }
 
-    public Speaker createAvatar(Speaker speaker, MultipartFile file) {
-        return createSpeakerImage(speaker, file);
-    }
+    @Transactional
+    public Speaker createAvatar(Speaker speaker, @NotNull MultipartFile file) {
+        String avatarPath = filesManager.saveSpeakerAvatar(speaker.getId(), file);
+        speaker.setImage(avatarPath);
 
-    public Speaker updateAvatar(Speaker speaker, MultipartFile file) {
-        Speaker updatedSpeaker = updateImage(speaker, file);
-        return speakerRepository.save(updatedSpeaker);
-    }
-
-    public Speaker deleteAvatar(Speaker speaker) {
-        String image = deleteImage(speaker);
-        speaker.setImage(image);
         return speakerRepository.save(speaker);
     }
 
-    private Speaker updateImage(Speaker speaker, MultipartFile file) {
-        String image;
-        if (file != null) {
-            image = filesManager.saveSpeakerAvatar(speaker.getId(), file);
-        } else if (speaker.getImage() == null) {
-            image = deleteImage(speaker);
-        } else {
-            image = findById(speaker.getId()).getImage();
-        }
-        speaker.setImage(image);
-
-        return speaker;
+    @Transactional
+    public Speaker updateAvatar(Speaker speaker, @NotNull MultipartFile file) {
+        deleteImage(speaker);
+        return createAvatar(speaker, file);
     }
 
-    private String deleteImage(Speaker speaker) {
-        filesManager.removeSpeakerAvatar(speaker.getId());
-        return DEFAULT_AVATAR;
+    @Transactional
+    public void deleteAvatar(Speaker speaker) {
+        deleteImage(speaker);
+        speaker.setImage(null);
+        speakerRepository.save(speaker);
+    }
+
+    private void deleteImage(Speaker speaker) {
+        if (!(speaker.getImage() == null || speaker.getImage().equals(DEFAULT_AVATAR))) {
+            filesManager.removeSpeakerAvatar(speaker.getId());
+        }
     }
 
     private Speaker createSpeaker(Speaker speaker) {
@@ -174,13 +167,4 @@ public class SpeakerService {
         return company.getId() == null;
     }
 
-    private Speaker createSpeakerImage(Speaker speaker, MultipartFile imageFile) {
-        if (imageFile != null) {
-            String avatarPath = filesManager.saveSpeakerAvatar(speaker.getId(), imageFile);
-            speaker.setImage(avatarPath);
-        } else {
-            speaker.setImage(DEFAULT_AVATAR);
-        }
-        return speakerRepository.save(speaker);
-    }
 }

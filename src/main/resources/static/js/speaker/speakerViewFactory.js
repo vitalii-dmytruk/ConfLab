@@ -12,8 +12,23 @@ define([
     'use strict';
 
     var viewFactory = ViewFactory.extend({
-        getEditView: function () {
+        getEditView   : function () {
             return SpeakerEditView;
+        },
+        getDetailsView: function () {
+            var ParentDetailsView = ViewFactory.prototype.getDetailsView.apply(this, arguments);
+
+            return ParentDetailsView.extend({
+                saveModel: function (model) {
+                    var view = this;
+                    return ParentDetailsView.prototype.saveModel.apply(this, arguments)
+                        .then(function () {
+                            return model.saveImage().then(function () {
+                                view.model.set('image', model.get('image'));
+                            });
+                        });
+                }
+            });
         }
     });
 
@@ -32,7 +47,10 @@ define([
             '#avatar-img': {
                 attributes: [{
                     name   : 'src',
-                    observe: 'image'
+                    observe: 'image',
+                    onGet : function (value) {
+                        return value || '/img/default-avatar.png';
+                    }
                 }]
             }
         }),

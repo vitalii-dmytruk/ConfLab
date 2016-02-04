@@ -2,7 +2,7 @@ define([
     'common/image/ImageShowView',
     'common/image/ImageCropView',
     'backbone.marionette'
-], function (ImageShowView, ImageCropView) {
+], function ImageEditView(ImageShowView, ImageCropView) {
 
     'use strict';
 
@@ -18,6 +18,7 @@ define([
             width       : options.boundary.width,
             url         : url,
             model       : options.model,
+            defaultImage: options.defaultImage,
             imageUrlAttr: options.imageUrlAttr
         });
 

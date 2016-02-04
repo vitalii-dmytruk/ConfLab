@@ -13,7 +13,7 @@ define([
                 id  : null,
                 name: '',
                 url : '',
-                image: '/img/default-logo.png'
+                image: null
             }
         },
         validation: {

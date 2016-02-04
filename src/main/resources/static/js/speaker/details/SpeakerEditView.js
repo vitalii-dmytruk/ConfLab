@@ -23,11 +23,12 @@ define([
             new ImageEditView({
                 container   : this.avatarRegion,
                 model       : this.model,
+                defaultImage: '/img/default-avatar.png',
                 imageUrlAttr: 'image',
                 viewport    : {
                     width : 200,
                     height: 200,
-                    type  : 'circle'
+                    type  : 'rectangle'
                 },
                 boundary    : {
                     width : 200,

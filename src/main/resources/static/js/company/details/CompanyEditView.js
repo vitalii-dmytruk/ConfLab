@@ -23,6 +23,7 @@ define([
             new ImageEditView({
                 container   : this.logoRegion,
                 model       : this.model,
+                defaultImage: '/img/default-logo.jpg',
                 imageUrlAttr: 'image',
                 viewport    : {
                     width : 150,
