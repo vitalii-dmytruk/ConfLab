@@ -51,7 +51,7 @@ public class SpeakerController {
                     consumes = APPLICATION_JSON_VALUE,
                     produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Speaker create(@RequestPart("speaker") @Validated Speaker speaker) {
+    public Speaker create(@RequestBody @Validated Speaker speaker) {
         return speakerService.create(speaker);
     }
 
