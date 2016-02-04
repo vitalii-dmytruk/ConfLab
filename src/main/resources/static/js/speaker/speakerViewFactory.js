@@ -1,52 +1,78 @@
 define([
     'common/CollectionBinding',
     'event/details/EventItemViewFactory',
+    'speaker/details/SpeakerEditView',
     'company/CompanyCollection',
     'text!speaker/table/SpeakerRowTemplate.html',
     'text!speaker/details/SpeakerTemplate.html',
     'text!speaker/details/SpeakerEditTemplate.html'
-], function (CollectionBinding, ViewFactory, CompanyCollection, SpeakerRowTemplate,
-             SpeakerShowTemplate, SpeakerEditTemplate) {
+], function (CollectionBinding, ViewFactory, SpeakerEditView, CompanyCollection, SpeakerRowTemplate,
+    SpeakerShowTemplate, SpeakerEditTemplate) {
 
     'use strict';
 
-    return new ViewFactory({
-        title: 'Speaker',
+    var viewFactory = ViewFactory.extend({
+        getEditView   : function () {
+            return SpeakerEditView;
+        },
+        getDetailsView: function () {
+            var ParentDetailsView = ViewFactory.prototype.getDetailsView.apply(this, arguments);
+
+            return ParentDetailsView.extend({
+                saveModel: function (model) {
+                    var view = this;
+                    return ParentDetailsView.prototype.saveModel.apply(this, arguments)
+                        .then(function () {
+                            return model.saveImage().then(function () {
+                                view.model.set('image', model.get('image'));
+                            });
+                        });
+                }
+            });
+        }
+    });
+
+    return new viewFactory({
+        title     : 'Speaker',
         tableTitle: 'Speakers',
 
-        itemRowTemplate: SpeakerRowTemplate,
+        itemRowTemplate : SpeakerRowTemplate,
         itemShowTemplate: SpeakerShowTemplate,
         itemEditTemplate: SpeakerEditTemplate,
 
         searchLabelAttribute: 'name',
 
         editBindings: viewBindings(companySelectBinder),
-        showBindings: viewBindings(companyNameBinder),
+        showBindings: _.extend(viewBindings(companyNameBinder), {
+            '#avatar-img': avatarBinder()
+        }),
 
         rowBindings: {
-            '[data-name]': 'name',
-            '[data-company]': companyNameBinder(),
+            '[data-name]'    : 'name',
+            '[data-avatar]'  : avatarBinder(),
+            '[data-company]' : companyNameBinder(),
             '[data-position]': 'position',
-            '[data-email]': 'email'
+            '[data-email]'   : 'email'
         }
     });
 
     function viewBindings(companyBinder) {
         return {
-            '#email': {
+            '#email'   : {
                 attributes: [{
-                    name: 'href',
+                    name   : 'href',
                     observe: 'email',
-                    onGet: function (val) {
+                    onGet  : function (val) {
                         return 'mailto:' + val;
                     }
                 }],
-                observe: 'email'
+                observe   : 'email'
             },
-            '#name': 'name',
+            '#name'    : 'name',
             '#position': 'position',
-            '#company': companyBinder(),
-            '#about': 'about'
+            '#company' : companyBinder(),
+            '#about'   : 'about'
+
         };
     }
 
@@ -57,9 +83,26 @@ define([
     function companyNameBinder() {
         return {
             observe: 'company',
-            onGet: function (value) {
+            onGet  : function (value) {
                 return value && value.name;
             }
+        }
+    }
+
+    function avatarBinder() {
+        return {
+            initialize   : function ($el) {
+                $el.one('error', function () {
+                    this.src = '/img/invalid-image.png';
+                });
+            },
+            attributes: [{
+                name   : 'src',
+                observe: 'image',
+                onGet : function (value) {
+                    return value || '/img/default-avatar.png';
+                }
+            }]
         }
     }
 });

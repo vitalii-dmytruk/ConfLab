@@ -3,8 +3,9 @@ define([
     'common/view/EditView',
     'common/search/SearchView',
     'text!common/view/ItemsInEventTemplate.html',
+    'backbone.radio',
     'backbone.marionette'
-], function EventItemView(EventItemListView, EditView, SearchView, template) {
+], function EventItemView(EventItemListView, EditView, SearchView, template, Radio) {
 
     //noinspection JSUnusedGlobalSymbols
     return Marionette.LayoutView.extend({
@@ -99,11 +100,11 @@ define([
         if (findItem(collection, model)) {
             deferred = $.Deferred().resolve();
         } else {
-            deferred = addItem(model, collection);
+            deferred = addItem(model, collection).then(notifySuccess(view, model));
         }
 
         deferred.done(function () {
-            selectItem(view, model)
+            selectItem(view, model);
         });
     }
 
@@ -129,5 +130,17 @@ define([
 
     function findItem(collection, model) {
         return collection.get(model.get('id'))
+    }
+
+    function notifySuccess(view, item) {
+        var itemName, eventName, message;
+
+        itemName  = item.get(view.options.searchLabelAttribute);
+        eventName = view.model.get('name');
+        message   = '"' + itemName + '" added to the "' + eventName + '" event';
+
+        return function () {
+            Radio.channel('notify').request('success', message);
+        }
     }
 });

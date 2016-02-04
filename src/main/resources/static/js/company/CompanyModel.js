@@ -1,18 +1,21 @@
 define([
-    'common/Model',
+    'common/image/ImageModel',
     'backbone'
-], function CompanyModel(Model) {
+], function CompanyModel(ImageModel) {
 
     'use strict';
 
-    return Model.extend({
-        urlRoot: '/companies',
+    var MAIN_URL = '/companies';
+
+    return ImageModel.extend({
+        urlRoot: MAIN_URL,
 
         defaults  : function () {
             return {
                 id  : null,
                 name: '',
-                url : ''
+                url : '',
+                image: null
             }
         },
         validation: {
@@ -29,6 +32,10 @@ define([
                 pattern: 'url',
                 msg    : 'Please enter a valid URL (e.g. http://www.example.com)'
             }]
+        },
+
+        getUrl: function () {
+            return MAIN_URL + '/' + this.get('id') + "/logo";
         }
     });
 });

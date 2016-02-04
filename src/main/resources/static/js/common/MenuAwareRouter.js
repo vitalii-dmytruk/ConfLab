@@ -26,7 +26,7 @@ define([
 
         function addMenuButton() {
             Radio.channel('header').request('add', router.menuButton);
-            router.active && Radio.channel('menu').request('activate', router.menuButton);
+            router.active && Radio.channel('header').request('activate', router.menuButton);
             auth.listenToOnce(auth, 'logout', removeMenuButton);
         }
 

@@ -49,6 +49,9 @@ public class Speaker {
     @Column
     private String about;
 
+    @Column
+    private String image;
+
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name="company_id")
     private Company company;
@@ -111,5 +114,13 @@ public class Speaker {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

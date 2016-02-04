@@ -9,8 +9,10 @@ import com.intelliarts.conflab.core.repository.SpeakerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -18,15 +20,19 @@ import java.util.Set;
 @Service
 public class SpeakerService {
 
+    private static final String DEFAULT_AVATAR = "/img/default-avatar.png";
     private CompanyService            companyService;
     private SpeakerRepository         speakerRepository;
     private EventSpeechSpeakerService eventSpeechSpeakerService;
+    private FilesManager              filesManager;
 
     @Autowired
-    public SpeakerService(CompanyService companyService, SpeakerRepository speakerRepository, EventSpeechSpeakerService eventSpeechSpeakerService) {
+    public SpeakerService(CompanyService companyService, SpeakerRepository speakerRepository,
+            EventSpeechSpeakerService eventSpeechSpeakerService, FilesManager filesManager) {
         this.companyService = companyService;
         this.speakerRepository = speakerRepository;
         this.eventSpeechSpeakerService = eventSpeechSpeakerService;
+        this.filesManager = filesManager;
     }
 
     @Transactional(readOnly = true)
@@ -57,13 +63,8 @@ public class SpeakerService {
 
     @Transactional
     public Speaker create(Speaker speaker) {
-        speaker.setId(null);
-        Company company = speaker.getCompany();
-        if (company != null && company.getId() != null) {
-            Company persistedCompany = companyService.findById(company.getId());
-            speaker.setCompany(persistedCompany);
-        }
-        Speaker createdSpeaker = speakerRepository.save(speaker);
+        Speaker createdSpeaker = createSpeaker(speaker);
+
         linkToSpeech(createdSpeaker, null);
         return createdSpeaker;
     }
@@ -73,7 +74,10 @@ public class SpeakerService {
         if (speaker.getId() == null) {
             throw new IllegalArgumentException("Speaker Id is not specified");
         }
-        return speakerRepository.save(speaker);
+
+        String oldImage = findById(speaker.getId()).getImage();
+        speaker.setImage(oldImage);
+        return   speakerRepository.save(speaker);
     }
 
     @Transactional
@@ -112,13 +116,6 @@ public class SpeakerService {
     }
 
     @Transactional
-    public Speaker createAndLinkToEvent(Speaker speaker, Event event) {
-        Speaker createdSpeaker = create(speaker);
-        linkToEvent(createdSpeaker, event);
-        return createdSpeaker;
-    }
-
-    @Transactional
     public void linkToEvent(Speaker speaker, Event event) {
         eventSpeechSpeakerService.createEventSpeechSpeakerLink(event, null, speaker);
     }
@@ -126,6 +123,48 @@ public class SpeakerService {
     @Transactional
     public void unlinkFromEvent(Speaker speaker, Event event) {
         eventSpeechSpeakerService.deleteEventSpeechSpeakerLinks(event, speaker);
+    }
+
+    @Transactional
+    public Speaker createAvatar(Speaker speaker, @NotNull MultipartFile file) {
+        String avatarPath = filesManager.saveSpeakerAvatar(speaker.getId(), file);
+        speaker.setImage(avatarPath);
+
+        return speakerRepository.save(speaker);
+    }
+
+    @Transactional
+    public Speaker updateAvatar(Speaker speaker, @NotNull MultipartFile file) {
+        deleteImage(speaker);
+        return createAvatar(speaker, file);
+    }
+
+    @Transactional
+    public void deleteAvatar(Speaker speaker) {
+        deleteImage(speaker);
+        speaker.setImage(null);
+        speakerRepository.save(speaker);
+    }
+
+    private void deleteImage(Speaker speaker) {
+        if (!(speaker.getImage() == null || speaker.getImage().equals(DEFAULT_AVATAR))) {
+            filesManager.removeSpeakerAvatar(speaker.getId());
+        }
+    }
+
+    private Speaker createSpeaker(Speaker speaker) {
+        speaker.setId(null);
+        Company company = speaker.getCompany();
+        if (company != null) {
+            Company persistedCompany = isNewCompany(company) ? companyService.create(company) :
+                    companyService.findById(company.getId());
+            speaker.setCompany(persistedCompany);
+        }
+        return speakerRepository.save(speaker);
+    }
+
+    private boolean isNewCompany(Company company) {
+        return company.getId() == null;
     }
 
 }

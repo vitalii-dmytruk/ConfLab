@@ -58,8 +58,7 @@ public class PartnerController {
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Company createAndLinkToEvent(@PathVariable("eventId") Long eventId,
-            @RequestBody @Validated Company company) {
+    public Company createAndLinkToEvent(@PathVariable("eventId") Long eventId, @RequestBody @Validated Company company) {
         Event event = eventService.findById(eventId);
         return partnerService.createAndLinkToEvent(event, company);
     }
