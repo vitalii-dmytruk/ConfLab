@@ -1,8 +1,6 @@
 package com.intelliarts.conflab.core.entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
@@ -10,27 +8,16 @@ import org.hibernate.validator.constraints.NotBlank;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.util.Set;
 
 
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Table(name = "speaker")
-public class Speaker {
-
-    @Id
-    @SequenceGenerator(name = "speaker_seq", sequenceName = "speaker_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "speaker_seq")
-    @Column
-    private Long id;
+public class Speaker extends AbstractPersistable<Long> {
 
     @Column(nullable = false, unique = true)
     @NotBlank(message = "Speaker name cannot be empty.")
@@ -59,14 +46,6 @@ public class Speaker {
     @JsonIgnore
     @OneToMany(mappedBy = "speaker")
     private Set<SpeechSpeaker> speechSpeakers;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
