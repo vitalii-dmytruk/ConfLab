@@ -76,7 +76,7 @@ public class SpeakerController {
         }
 
         Speaker speaker = speakerService.findById(id);
-        return speakerService.createAvatar(speaker, file).getImage();
+        return speakerService.createImage(speaker, file);
     }
 
     @RequestMapping(value = "/speakers/{speakerId}/avatar",
@@ -90,7 +90,7 @@ public class SpeakerController {
         }
 
         Speaker speaker = speakerService.findById(id);
-        return speakerService.updateAvatar(speaker, file).getImage();
+        return speakerService.updateImage(speaker, file);
     }
 
     @RequestMapping(value = "/speakers/{speakerId}/avatar",
@@ -98,7 +98,7 @@ public class SpeakerController {
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public void deleteAvatar(@PathVariable("speakerId") Long speakerId){
         Speaker speaker = speakerService.findById(speakerId);
-        speakerService.deleteAvatar(speaker);
+        speakerService.deleteImage(speaker);
     }
 
     @RequestMapping(value = "/speakers/{speakerId}",

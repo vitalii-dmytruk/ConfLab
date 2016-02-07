@@ -7,7 +7,7 @@ import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 
 @MappedSuperclass
-public class AbstractPersistable<ID extends Serializable> implements Persistable<ID> {
+public abstract class AbstractPersistable<ID extends Serializable> implements Persistable<ID> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

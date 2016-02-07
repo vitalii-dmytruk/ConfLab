@@ -5,19 +5,17 @@ import com.intelliarts.conflab.core.repository.LanguageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
-public class LanguageService {
-
-    private LanguageRepository languageRepository;
+public class LanguageService extends AbstractBaseService<Language, Long, LanguageRepository> {
+    private static final String ENTITY_NAME = "Language";
 
     @Autowired
     public LanguageService(LanguageRepository languageRepository) {
-        this.languageRepository = languageRepository;
+        super(languageRepository);
     }
 
-    public List<Language> findAll() {
-        return languageRepository.findAll();
+    @Override
+    protected String getEntityName() {
+        return ENTITY_NAME;
     }
 }

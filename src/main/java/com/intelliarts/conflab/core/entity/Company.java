@@ -13,7 +13,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "company")
-public class Company extends AbstractPersistable<Long> {
+public class Company extends AbstractImageAwareEntity<Long> {
 
     @NotBlank
     @Column
@@ -22,9 +22,6 @@ public class Company extends AbstractPersistable<Long> {
     @UrlLength(max = 255, message = "Company URL value is greater then {max} characters.")
     @Column
     public URL url;
-
-    @Column
-    private String image;
 
     @JsonIgnore
     @OneToMany(mappedBy = "company")
@@ -44,14 +41,6 @@ public class Company extends AbstractPersistable<Long> {
 
     public void setUrl(URL link) {
         this.url = link;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 
     public Set<Partner> getPartners() {

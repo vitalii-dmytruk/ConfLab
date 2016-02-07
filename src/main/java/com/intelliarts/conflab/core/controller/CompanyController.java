@@ -66,8 +66,11 @@ public class CompanyController {
     @ResponseStatus(HttpStatus.CREATED)
     public String createLogo(@PathVariable("companyId") Long companyId,
             @RequestPart("image") MultipartFile imageFile) {
+        if (imageFile == null) {
+            throw new IllegalArgumentException("Logo file is not specified.");
+        }
         Company company = companyService.findById(companyId);
-        return companyService.createLogo(company, imageFile).getImage();
+        return companyService.createImage(company, imageFile);
     }
 
     @RequestMapping(value = "/companies/{companyId}/logo",
@@ -76,8 +79,11 @@ public class CompanyController {
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public String updateLogo(@PathVariable("companyId") Long companyId,
             @RequestPart("image") MultipartFile imageFile) {
+        if (imageFile == null) {
+            throw new IllegalArgumentException("Logo file is not specified.");
+        }
         Company company = companyService.findById(companyId);
-        return companyService.updateLogo(company, imageFile).getImage();
+        return companyService.updateImage(company, imageFile);
     }
 
     @RequestMapping(value = "/companies/{companyId}/logo",
@@ -85,7 +91,7 @@ public class CompanyController {
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public void deleteLogo(@PathVariable("companyId") Long companyId){
         Company company = companyService.findById(companyId);
-        companyService.deleteLogo(company);
+        companyService.deleteImage(company);
     }
 
     @RequestMapping(value = "/companies/{companyId}",

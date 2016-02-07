@@ -10,7 +10,7 @@ import javax.persistence.Table;
 import java.util.Set;
 
 @Entity
-@Table(name = "PartnerLevel")
+@Table(name = "partner_level")
 public class PartnerLevel extends AbstractPersistable<Long> {
 
     @Length(max = 80, message = "Partner level name value is greater then {max} characters.")

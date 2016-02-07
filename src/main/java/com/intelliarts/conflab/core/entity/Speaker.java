@@ -17,7 +17,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "speaker")
-public class Speaker extends AbstractPersistable<Long> {
+public class Speaker extends AbstractImageAwareEntity<Long> {
 
     @Column(nullable = false, unique = true)
     @NotBlank(message = "Speaker name cannot be empty.")
@@ -36,11 +36,8 @@ public class Speaker extends AbstractPersistable<Long> {
     @Column
     private String about;
 
-    @Column
-    private String image;
-
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinColumn(name="company_id")
+    @JoinColumn(name = "company_id")
     private Company company;
 
     @JsonIgnore
@@ -93,13 +90,5 @@ public class Speaker extends AbstractPersistable<Long> {
 
     public void setCompany(Company company) {
         this.company = company;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 }

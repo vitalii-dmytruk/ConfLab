@@ -13,9 +13,6 @@ import java.nio.file.Paths;
 @Service
 public class FilesManager {
 
-    private static final String SPEAKER_AVATAR_FOLDER = "avatars";
-    private static final String COMPANY_LOGO_FOLDER = "logos";
-
     @Value("${images.folder.path}")
     private String          filesRoot;
     @Autowired
@@ -28,24 +25,7 @@ public class FilesManager {
         this.filesRepository = filesRepository;
     }
 
-    public String saveSpeakerAvatar(Long speakerId, MultipartFile file) {
-        return saveImage(speakerId, file, SPEAKER_AVATAR_FOLDER);
-    }
-
-    public void removeSpeakerAvatar(Long speakerId) {
-        removeImage(speakerId, SPEAKER_AVATAR_FOLDER);
-    }
-
-    public String saveCompanyLogo(Long companyId, MultipartFile imageFile) {
-        return saveImage(companyId, imageFile, COMPANY_LOGO_FOLDER);
-    }
-
-    public void removeCompanyLogo(Long companyId) {
-        removeImage(companyId, COMPANY_LOGO_FOLDER);
-    }
-
-
-    private String saveImage(Long id, MultipartFile file, String folderName) {
+    public String saveImage(String id, MultipartFile file, String folderName) {
         validateImage(file);
 
         String fileName = createFileName(file);
@@ -56,8 +36,8 @@ public class FilesManager {
         return imagesPathName + filePath;
     }
 
-    private void removeImage(Long speakerId, String folderName) {
-        Path relativeImageFolderPath = getImageFolderPath(speakerId, folderName);
+    public void removeImage(String id, String folderName) {
+        Path relativeImageFolderPath = getImageFolderPath(id, folderName);
         Path absoluteImageFolderPath = resolveImagePath(relativeImageFolderPath);
         filesRepository.remove(absoluteImageFolderPath);
     }
@@ -87,9 +67,9 @@ public class FilesManager {
         return Paths.get(filesRoot).resolve(filePath);
     }
 
-    private Path getImageFolderPath(Long id, String folderName) {
+    private Path getImageFolderPath(String id, String folderName) {
         Path path = Paths.get(folderName);
-        return path.resolve(id.toString());
+        return path.resolve(id);
     }
 
     public enum SupportedImageTypes {

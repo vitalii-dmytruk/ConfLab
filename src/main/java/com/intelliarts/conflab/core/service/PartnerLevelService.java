@@ -4,30 +4,19 @@ import com.intelliarts.conflab.core.entity.PartnerLevel;
 import com.intelliarts.conflab.core.repository.PartnerLevelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityNotFoundException;
-import java.util.List;
-import java.util.Optional;
 
 @Service
-public class PartnerLevelService {
-    private PartnerLevelRepository partnerLevelRepository;
+public class PartnerLevelService extends AbstractBaseService<PartnerLevel, Long, PartnerLevelRepository> {
+    private static final String ENTITY_NAME = "Partner Level";
 
     @Autowired
     public PartnerLevelService(PartnerLevelRepository partnerLevelRepository) {
-        this.partnerLevelRepository = partnerLevelRepository;
+        super(partnerLevelRepository);
     }
 
-    @Transactional(readOnly = true)
-    public List<PartnerLevel> findAll() {
-        return partnerLevelRepository.findAll();
+    @Override
+    protected String getEntityName() {
+        return ENTITY_NAME;
     }
 
-    @Transactional(readOnly = true)
-    public PartnerLevel findById(Long id) {
-        Optional<PartnerLevel> partnerLevel = partnerLevelRepository.findOne(id);
-        return partnerLevel.orElseThrow(
-                () -> new EntityNotFoundException("Partner Level with ID '" + id + "' not found."));
-    }
 }
