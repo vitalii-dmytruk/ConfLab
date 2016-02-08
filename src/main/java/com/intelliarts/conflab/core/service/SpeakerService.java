@@ -9,75 +9,45 @@ import com.intelliarts.conflab.core.repository.SpeakerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.EntityNotFoundException;
-import javax.validation.constraints.NotNull;
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
-public class SpeakerService {
+public class SpeakerService extends AbstractImageAwareService<Speaker, Long, SpeakerRepository> {
 
-    private static final String DEFAULT_AVATAR = "/img/default-avatar.png";
     private CompanyService            companyService;
-    private SpeakerRepository         speakerRepository;
     private EventSpeechSpeakerService eventSpeechSpeakerService;
-    private FilesManager              filesManager;
 
     @Autowired
     public SpeakerService(CompanyService companyService, SpeakerRepository speakerRepository,
             EventSpeechSpeakerService eventSpeechSpeakerService, FilesManager filesManager) {
+        super("Speaker", speakerRepository, "avatars", filesManager);
         this.companyService = companyService;
-        this.speakerRepository = speakerRepository;
         this.eventSpeechSpeakerService = eventSpeechSpeakerService;
-        this.filesManager = filesManager;
-    }
-
-    @Transactional(readOnly = true)
-    public List<Speaker> findAll() {
-        return speakerRepository.findAll();
-    }
-
-    @Transactional(readOnly = true)
-    public Speaker findById(Long id) {
-        Optional<Speaker> speaker = speakerRepository.findOne(id);
-        return speaker.orElseThrow(() -> new EntityNotFoundException("Speaker with ID '" + id + "' not found."));
     }
 
     @Transactional(readOnly = true)
     public Set<Speaker> findBySpeech(Speech speech) {
-        return speakerRepository.findBySpeechId(speech.getId());
+        return repository.findBySpeechId(speech.getId());
     }
 
     @Transactional(readOnly = true)
     public Set<Speaker> findByEvent(Event event) {
-        return speakerRepository.findByEventId(event.getId());
+        return repository.findByEventId(event.getId());
     }
 
     @Transactional(readOnly = true)
     public Set<Speaker> findByEventAndSpeech(Event event, Speech speech) {
-        return speakerRepository.findByEventAndSpeech(event.getId(), speech.getId());
+        return repository.findByEventAndSpeech(event.getId(), speech.getId());
     }
 
     @Transactional
+    @Override
     public Speaker create(Speaker speaker) {
         Speaker createdSpeaker = createSpeaker(speaker);
 
         linkToSpeech(createdSpeaker, null);
         return createdSpeaker;
-    }
-
-    @Transactional
-    public Speaker update(Speaker speaker) {
-        if (speaker.getId() == null) {
-            throw new IllegalArgumentException("Speaker Id is not specified");
-        }
-
-        String oldImage = findById(speaker.getId()).getImage();
-        speaker.setImage(oldImage);
-        return   speakerRepository.save(speaker);
     }
 
     @Transactional
@@ -125,42 +95,15 @@ public class SpeakerService {
         eventSpeechSpeakerService.deleteEventSpeechSpeakerLinks(event, speaker);
     }
 
-    @Transactional
-    public Speaker createAvatar(Speaker speaker, @NotNull MultipartFile file) {
-        String avatarPath = filesManager.saveSpeakerAvatar(speaker.getId(), file);
-        speaker.setImage(avatarPath);
-
-        return speakerRepository.save(speaker);
-    }
-
-    @Transactional
-    public Speaker updateAvatar(Speaker speaker, @NotNull MultipartFile file) {
-        deleteImage(speaker);
-        return createAvatar(speaker, file);
-    }
-
-    @Transactional
-    public void deleteAvatar(Speaker speaker) {
-        deleteImage(speaker);
-        speaker.setImage(null);
-        speakerRepository.save(speaker);
-    }
-
-    private void deleteImage(Speaker speaker) {
-        if (!(speaker.getImage() == null || speaker.getImage().equals(DEFAULT_AVATAR))) {
-            filesManager.removeSpeakerAvatar(speaker.getId());
-        }
-    }
-
     private Speaker createSpeaker(Speaker speaker) {
         speaker.setId(null);
         Company company = speaker.getCompany();
         if (company != null) {
-            Company persistedCompany = isNewCompany(company) ? companyService.create(company) :
-                    companyService.findById(company.getId());
+            Company persistedCompany =
+                    isNewCompany(company) ? companyService.create(company) : companyService.findById(company.getId());
             speaker.setCompany(persistedCompany);
         }
-        return speakerRepository.save(speaker);
+        return repository.save(speaker);
     }
 
     private boolean isNewCompany(Company company) {

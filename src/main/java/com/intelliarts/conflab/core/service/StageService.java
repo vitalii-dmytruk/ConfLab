@@ -5,23 +5,12 @@ import com.intelliarts.conflab.core.repository.StageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
-public class StageService {
-    private StageRepository stageRepository;
+public class StageService extends AbstractBaseService<Stage, Integer, StageRepository> {
 
     @Autowired
     public StageService(StageRepository stageRepository) {
-        this.stageRepository = stageRepository;
+        super("Stage", stageRepository);
     }
 
-    public Stage save(Stage stage) {
-        return stageRepository.save(stage);
-    }
-
-
-    public List<Stage> getAll() {
-        return stageRepository.findAll();
-    }
 }

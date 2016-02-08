@@ -9,64 +9,41 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
-import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
-public class SpeechService {
+public class SpeechService extends AbstractBaseService<Speech, Long, SpeechRepository> {
 
-    private SpeechRepository          speechRepository;
     private EventSpeechSpeakerService eventSpeechSpeakerService;
 
     @Autowired
     public SpeechService(SpeechRepository speechRepository, EventSpeechSpeakerService eventSpeechSpeakerService) {
-        this.speechRepository = speechRepository;
+        super("Speech", speechRepository);
         this.eventSpeechSpeakerService = eventSpeechSpeakerService;
     }
 
     @Transactional(readOnly = true)
-    public List<Speech> findAll() {
-        return speechRepository.findAll();
-    }
-
-    @Transactional(readOnly = true)
-    public Speech findById(Long id) {
-        Optional<Speech> speech = speechRepository.findOne(id);
-        return speech.orElseThrow(() -> new EntityNotFoundException("Speech with ID '" + id + "' not found."));
-    }
-
-    @Transactional(readOnly = true)
     public Set<Speech> findBySpeaker(Speaker speaker) {
-        return speechRepository.findBySpeakerId(speaker.getId());
+        return repository.findBySpeakerId(speaker.getId());
     }
 
     @Transactional(readOnly = true)
     public Set<Speech> findByEvent(Event event) {
-        return speechRepository.findByEventId(event.getId());
+        return repository.findByEventId(event.getId());
     }
 
     @Transactional(readOnly = true)
     public Set<Speech> findByEventAndSpeaker(Event event, Speaker speaker) {
-        return speechRepository.findByEventAndSpeaker(event.getId(), speaker.getId());
+        return repository.findByEventAndSpeaker(event.getId(), speaker.getId());
     }
 
     @Transactional
+    @Override
     public Speech create(Speech speech) {
-        speech.setId(null);
-        Speech createdSpeech = speechRepository.save(speech);
+        Speech createdSpeech = super.create(speech);
         linkToSpeaker(createdSpeech, null);
         return createdSpeech;
-    }
-
-    @Transactional
-    public Speech update(Speech speech) {
-        if (speech.getId() == null) {
-            throw new IllegalArgumentException("Speech Id is not specified");
-        }
-        return speechRepository.save(speech);
     }
 
     @Transactional

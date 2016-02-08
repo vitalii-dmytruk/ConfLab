@@ -40,7 +40,7 @@ public class EventController {
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Event create(@RequestBody @Validated Event event) {
-        return eventService.save(event);
+        return eventService.create(event);
     }
 
     @RequestMapping(value = "/{id}",
@@ -49,7 +49,7 @@ public class EventController {
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public Event update(@PathVariable("id") Long id, @RequestBody @Validated Event event) {
         event.setId(id);
-        return eventService.save(event);
+        return eventService.update(event);
     }
 
     @RequestMapping(value = "/{id}",
