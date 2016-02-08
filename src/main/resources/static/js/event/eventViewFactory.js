@@ -9,8 +9,9 @@ define([
     'use strict';
 
     return new ItemViewFactory({
-        title     : 'Conference',
-        tableTitle: 'Conferences',
+        title       : 'Conference',
+        tableTitle  : 'Conferences',
+        rowItemClass: 'event-row-item',
 
         itemRowTemplate : EventRowTemplate,
         itemShowTemplate: EventTemplate,

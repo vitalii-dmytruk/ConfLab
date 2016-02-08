@@ -284,3 +284,7 @@ div[data-descendant-region] * #table-title {
     cursor: inherit;
     display: block;
 }
+
+.event-row-item{
+    min-height: 90px;
+}
