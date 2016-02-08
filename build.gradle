@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '1.3.1.RELEASE'
+        springBootVersion = '1.3.2.RELEASE'
     }
     repositories {
         mavenCentral()
@@ -14,7 +14,7 @@ buildscript {
 
 plugins {
     id 'com.craigburke.bower-installer' version '2.5.1'
-    id 'com.craigburke.karma' version '1.4.1'
+    id 'com.craigburke.karma' version '1.4.3'
 }
 
 apply plugin: 'java'
@@ -45,7 +45,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-security")
     compile("org.springframework.security:spring-security-core:4.0.3.RELEASE")
     compile("org.flywaydb:flyway-core:3.2.1")
-    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.6.4")
+    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.7.1")
     runtime("org.postgresql:postgresql:9.4-1206-jdbc42")
 
     testCompile('junit:junit:4.12')
@@ -89,7 +89,7 @@ bower {
             source 'dist/fonts/**' >> 'fonts/'
         }
 
-        'basscss'('7.0.x')
+        'basscss'('7.1.x')
 
         'toastr'('2.x.x') {
             source 'toastr*'
@@ -114,11 +114,11 @@ bower {
             source 'backbone.stickit.js'
         }
 
-        'backbone-nested-models'('blittle/backbone-nested-models#v2.0.2') {
+        'backbone-nested-models'('blittle/backbone-nested-models#v2.0.x') {
             source 'backbone-nested-models*'
         }
 
-        'backbone-validation'('0.11.5') {
+        'backbone-validation'('0.11.x') {
             source 'dist/*'
         }
 
@@ -136,7 +136,7 @@ bower {
         'select2-bootstrap-theme'('0.1.0-beta.4') {
             source 'dist/*'
         }
-        'bootstrap-datepicker'('1.5.x') {
+        'bootstrap-datepicker'('1.6.x') {
             source 'dist/js/*' >> 'js/'
             source 'dist/css/*' >> 'css/'
             source 'dist/locales/*' >> 'locales/'
