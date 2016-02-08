@@ -11,21 +11,21 @@ define([
     'use strict';
 
     return new ViewFactory({
-        title: 'Speech',
+        title     : 'Speech',
         tableTitle: 'Speeches',
 
-        itemRowTemplate: SpeechRowTemplate,
+        itemRowTemplate : SpeechRowTemplate,
         itemShowTemplate: SpeechShowTemplate,
         itemEditTemplate: SpeechEditTemplate,
 
         searchLabelAttribute: 'title',
 
         showBindings: {
-            '#title': 'title',
+            '#title'      : 'title',
             '#description': 'description',
-            '#lang': {
+            '#lang'       : {
                 observe: 'lang',
-                onGet: function (value) {
+                onGet  : function (value) {
                     if (value) {
                         return value.name;
                     }
@@ -34,28 +34,19 @@ define([
         },
 
         editBindings: {
-            '#title': 'title',
+            '#title'      : 'title',
             '#description': 'description',
-            '#lang': new CollectionBinding(LanguageCollection, 'lang')
+            '#lang'       : new CollectionBinding(LanguageCollection, 'lang')
         },
 
         rowBindings: {
-            '[data-speech-title]': 'title',
-            '[data-speech-lang]': {
+            '[data-speech-title]'      : 'title',
+            '[data-speech-description]': 'description',
+            '[data-speech-lang]'       : {
                 observe: 'lang',
-                onGet: function (value) {
+                onGet  : function (value) {
                     if (value) {
                         return value.name;
-                    }
-                }
-            },
-            '[data-speech-description]': {
-                observe: 'description',
-                onGet: function (value) {
-                    if (value.length > 250) {
-                        return value.substring(0, 250) + "...";
-                    } else {
-                        return value;
                     }
                 }
             }

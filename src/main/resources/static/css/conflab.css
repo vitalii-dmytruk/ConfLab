@@ -284,3 +284,19 @@ div[data-descendant-region] * #table-title {
     cursor: inherit;
     display: block;
 }
+
+.list-group-item div {
+    overflow: hidden;
+}
+
+.event-row-item {
+    height: 70px;
+}
+
+.speaker-row-item {
+    height: 70px;
+}
+
+.speech-row-item {
+    height: 70px;
+}
