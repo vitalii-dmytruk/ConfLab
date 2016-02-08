@@ -288,3 +288,7 @@ div[data-descendant-region] * #table-title {
 .event-row-item{
     min-height: 90px;
 }
+
+.speaker-row-item{
+    min-height: 90px;
+}
