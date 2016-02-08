@@ -15,7 +15,7 @@ define([
     return Marionette.Object.extend({
         props: [
             'itemRowTemplate', 'itemShowTemplate', 'itemEditTemplate', 'showBindings', 'editBindings', 'rowBindings',
-            'title', 'tableTitle', 'rowItemClass', 'searchLabelAttribute'
+            'title', 'tableTitle', 'searchLabelAttribute'
         ],
 
         initialize: function (options) {
@@ -59,9 +59,7 @@ define([
         },
 
         getRowView: function () {
-            return RowView.extend({
-                className: this.rowItemClass ? 'list-group-item ' + this.rowItemClass : 'list-group-item '
-            });
+            return RowView;
         },
 
         getTableView: function () {
