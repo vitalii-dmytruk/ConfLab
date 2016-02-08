@@ -17,6 +17,15 @@ define([
         },
         onRender  : function () {
             this.stickit();
+        },
+
+        ui    : {
+            croppable: '.croppable'
+        },
+        events: {
+            'click @ui.croppable': function () {
+                this.ui.croppable.toggleClass('cropped');
+            }
         }
     });
 });
