@@ -35,7 +35,6 @@ define([
     return new viewFactory({
         title     : 'Speaker',
         tableTitle: 'Speakers',
-        rowItemClass : 'speaker-row-item',
 
         itemRowTemplate : SpeakerRowTemplate,
         itemShowTemplate: SpeakerShowTemplate,
