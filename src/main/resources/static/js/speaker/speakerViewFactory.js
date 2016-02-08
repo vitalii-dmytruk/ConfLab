@@ -7,7 +7,7 @@ define([
     'text!speaker/details/SpeakerTemplate.html',
     'text!speaker/details/SpeakerEditTemplate.html'
 ], function (CollectionBinding, ViewFactory, SpeakerEditView, CompanyCollection, SpeakerRowTemplate,
-    SpeakerShowTemplate, SpeakerEditTemplate) {
+             SpeakerShowTemplate, SpeakerEditTemplate) {
 
     'use strict';
 
@@ -23,10 +23,10 @@ define([
                     var view = this;
                     return ParentDetailsView.prototype.saveModel.apply(this, arguments)
                         .then(function () {
-                            return model.saveImage().then(function () {
-                                view.model.set('image', model.get('image'));
-                            });
-                        });
+                                  return model.saveImage().then(function () {
+                                      view.model.set('image', model.get('image'));
+                                  });
+                              });
                 }
             });
         }
@@ -91,7 +91,7 @@ define([
 
     function avatarBinder() {
         return {
-            initialize   : function ($el) {
+            initialize: function ($el) {
                 $el.one('error', function () {
                     this.src = '/img/invalid-image.png';
                 });
@@ -99,7 +99,7 @@ define([
             attributes: [{
                 name   : 'src',
                 observe: 'image',
-                onGet : function (value) {
+                onGet  : function (value) {
                     return value || '/img/default-avatar.png';
                 }
             }]

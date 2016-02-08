@@ -61,7 +61,7 @@ define([
                 $el.datepicker({
                     format     : 'dd-M-yyyy',
                     orientation: 'bottom',
-                    autoclose: true
+                    autoclose  : true
                 });
                 $el.on('hide', function () {
                     $el.change();
