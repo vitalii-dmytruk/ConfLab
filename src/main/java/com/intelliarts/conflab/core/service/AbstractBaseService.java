@@ -13,14 +13,15 @@ import java.util.Optional;
 public abstract class AbstractBaseService<E extends Persistable<ID>, ID extends Serializable, R extends
         BaseRepository<E, ID>> {
 
-    private final String ENTITY_NOT_FOUND_MSG;
-    private final String ID_IS_NOT_SPECIFIED_MSG;
+    private final String entityNotFoundMsg;
+    private final String idIsNotSpecifiedMsg;
+
     protected final R repository;
 
-    protected AbstractBaseService(R repository) {
+    protected AbstractBaseService(String entityName, R repository) {
         this.repository = repository;
-        this.ID_IS_NOT_SPECIFIED_MSG = getEntityName() + " Id is not specified";
-        this.ENTITY_NOT_FOUND_MSG = getEntityName() + " with ID '%d'not found.";
+        this.idIsNotSpecifiedMsg = entityName + " Id is not specified";
+        this.entityNotFoundMsg = entityName + " with ID '%d'not found.";
     }
 
     public R getRepository() {
@@ -35,7 +36,7 @@ public abstract class AbstractBaseService<E extends Persistable<ID>, ID extends 
     @Transactional(readOnly = true)
     public E findById(ID id) {
         Optional<E> entity = repository.findOne(id);
-        return entity.orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND_MSG, id)));
+        return entity.orElseThrow(() -> new EntityNotFoundException(String.format(entityNotFoundMsg, id)));
     }
 
     @Transactional
@@ -47,11 +48,9 @@ public abstract class AbstractBaseService<E extends Persistable<ID>, ID extends 
     @Transactional
     public E update(E entity) {
         if (entity.getId() == null) {
-            throw new IllegalArgumentException(ID_IS_NOT_SPECIFIED_MSG);
+            throw new IllegalArgumentException(idIsNotSpecifiedMsg);
         }
         return repository.save(entity);
     }
-
-    abstract protected String getEntityName();
 
 }

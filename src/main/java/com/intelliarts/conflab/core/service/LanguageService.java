@@ -7,15 +7,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class LanguageService extends AbstractBaseService<Language, Long, LanguageRepository> {
-    private static final String ENTITY_NAME = "Language";
 
     @Autowired
     public LanguageService(LanguageRepository languageRepository) {
-        super(languageRepository);
+        super("Language", languageRepository);
     }
 
-    @Override
-    protected String getEntityName() {
-        return ENTITY_NAME;
-    }
 }

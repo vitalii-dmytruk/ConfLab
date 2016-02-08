@@ -10,11 +10,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService extends AbstractBaseService<User, Long, UserRepository> implements UserDetailsService {
-    private static final String ENTITY_NAME = "User";
 
     @Autowired
     public UserService(UserRepository userRepository) {
-        super(userRepository);
+        super("User", userRepository);
     }
 
     @Override
@@ -22,11 +21,6 @@ public class UserService extends AbstractBaseService<User, Long, UserRepository>
         return repository.findByUsername(username)
                          .orElseThrow(() -> new UsernameNotFoundException(
                                  String.format("User with username %s was not found", username)));
-    }
-
-    @Override
-    protected String getEntityName() {
-        return ENTITY_NAME;
     }
 
 }

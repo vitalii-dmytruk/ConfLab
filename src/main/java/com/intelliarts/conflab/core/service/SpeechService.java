@@ -14,13 +14,12 @@ import java.util.Set;
 
 @Service
 public class SpeechService extends AbstractBaseService<Speech, Long, SpeechRepository> {
-    private static final String ENTITY_NAME = "Speech";
 
     private EventSpeechSpeakerService eventSpeechSpeakerService;
 
     @Autowired
     public SpeechService(SpeechRepository speechRepository, EventSpeechSpeakerService eventSpeechSpeakerService) {
-        super(speechRepository);
+        super("Speech", speechRepository);
         this.eventSpeechSpeakerService = eventSpeechSpeakerService;
     }
 
@@ -113,11 +112,6 @@ public class SpeechService extends AbstractBaseService<Speech, Long, SpeechRepos
     @Transactional
     public void unlinkFromEvent(Speech speech, Event event) {
         eventSpeechSpeakerService.deleteEventSpeechSpeakerLinks(event, speech);
-    }
-
-    @Override
-    protected String getEntityName() {
-        return ENTITY_NAME;
     }
 
     private boolean hasSpeakers(Set<SpeechSpeaker> speechSpeakers) {

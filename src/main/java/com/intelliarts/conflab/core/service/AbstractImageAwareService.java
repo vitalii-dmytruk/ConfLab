@@ -12,33 +12,34 @@ public abstract class AbstractImageAwareService<E extends ImageAwareEntity<ID>, 
         ImageAwareRepository<E, ID>>
         extends AbstractBaseService<E, ID, R> {
 
+    private final String folderName;
+
     private FilesManager filesManager;
 
-    protected AbstractImageAwareService(R repository, FilesManager filesManager) {
-        super(repository);
+    protected AbstractImageAwareService(String entityName, R repository, String folderName, FilesManager filesManager) {
+        super(entityName, repository);
         this.filesManager = filesManager;
+        this.folderName = folderName;
     }
 
     @Transactional
     public String createImage(E entity, @NotNull MultipartFile imageFile) {
         ID entityId = entity.getId();
-        String imagePath = filesManager.saveImage(entityId.toString(), imageFile, getFolderName());
+        String imagePath = filesManager.saveImage(entityId.toString(), imageFile, folderName);
         repository.updateImage(imagePath, entityId);
         return imagePath;
     }
 
     @Transactional
     public String updateImage(E entity, @NotNull MultipartFile imageFile) {
-        filesManager.removeImage(entity.getId().toString(), getFolderName());
+        filesManager.removeImage(entity.getId().toString(), folderName);
         return createImage(entity, imageFile);
     }
 
     @Transactional
     public void deleteImage(E entity) {
         ID entityId = entity.getId();
-        filesManager.removeImage(entityId.toString(), getFolderName());
+        filesManager.removeImage(entityId.toString(), folderName);
         repository.updateImage(null, entityId);
     }
-
-    protected abstract String getFolderName();
 }

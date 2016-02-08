@@ -14,17 +14,14 @@ import java.util.Set;
 
 @Service
 public class SpeakerService extends AbstractImageAwareService<Speaker, Long, SpeakerRepository> {
-    private static final String ENTITY_NAME           = "Speaker";
-    private static final String SPEAKER_AVATAR_FOLDER = "avatars";
 
     private CompanyService            companyService;
     private EventSpeechSpeakerService eventSpeechSpeakerService;
 
-
     @Autowired
     public SpeakerService(CompanyService companyService, SpeakerRepository speakerRepository,
             EventSpeechSpeakerService eventSpeechSpeakerService, FilesManager filesManager) {
-        super(speakerRepository, filesManager);
+        super("Speaker", speakerRepository, "avatars", filesManager);
         this.companyService = companyService;
         this.eventSpeechSpeakerService = eventSpeechSpeakerService;
     }
@@ -96,16 +93,6 @@ public class SpeakerService extends AbstractImageAwareService<Speaker, Long, Spe
     @Transactional
     public void unlinkFromEvent(Speaker speaker, Event event) {
         eventSpeechSpeakerService.deleteEventSpeechSpeakerLinks(event, speaker);
-    }
-
-    @Override
-    protected String getFolderName() {
-        return SPEAKER_AVATAR_FOLDER;
-    }
-
-    @Override
-    protected String getEntityName() {
-        return ENTITY_NAME;
     }
 
     private Speaker createSpeaker(Speaker speaker) {

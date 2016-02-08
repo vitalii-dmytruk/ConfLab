@@ -7,16 +7,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class StageService extends AbstractBaseService<Stage, Integer, StageRepository> {
-    private static final String ENTITY_NAME = "Stage";
 
     @Autowired
     public StageService(StageRepository stageRepository) {
-        super(stageRepository);
-    }
-
-    @Override
-    protected String getEntityName() {
-        return ENTITY_NAME;
+        super("Stage", stageRepository);
     }
 
 }

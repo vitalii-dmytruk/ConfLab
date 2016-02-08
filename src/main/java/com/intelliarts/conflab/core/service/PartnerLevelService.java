@@ -7,16 +7,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PartnerLevelService extends AbstractBaseService<PartnerLevel, Long, PartnerLevelRepository> {
-    private static final String ENTITY_NAME = "Partner Level";
 
     @Autowired
     public PartnerLevelService(PartnerLevelRepository partnerLevelRepository) {
-        super(partnerLevelRepository);
-    }
-
-    @Override
-    protected String getEntityName() {
-        return ENTITY_NAME;
+        super("Partner Level", partnerLevelRepository);
     }
 
 }
