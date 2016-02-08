@@ -300,3 +300,11 @@ div[data-descendant-region] * #table-title {
 .speech-row-item {
     height: 70px;
 }
+
+.cropped {
+    display: block;
+    white-space: nowrap;
+    height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
