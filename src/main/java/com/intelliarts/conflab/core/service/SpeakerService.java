@@ -1,5 +1,6 @@
 package com.intelliarts.conflab.core.service;
 
+import com.intelliarts.conflab.core.entity.Company;
 import com.intelliarts.conflab.core.entity.Event;
 import com.intelliarts.conflab.core.entity.Speaker;
 import com.intelliarts.conflab.core.entity.Speech;
@@ -9,63 +10,44 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
-public class SpeakerService {
+public class SpeakerService extends AbstractImageAwareService<Speaker, Long, SpeakerRepository> {
 
-    private SpeakerRepository         speakerRepository;
+    private CompanyService            companyService;
     private EventSpeechSpeakerService eventSpeechSpeakerService;
 
     @Autowired
-    public SpeakerService(SpeakerRepository speakerRepository, EventSpeechSpeakerService eventSpeechSpeakerService) {
-        this.speakerRepository = speakerRepository;
+    public SpeakerService(CompanyService companyService, SpeakerRepository speakerRepository,
+            EventSpeechSpeakerService eventSpeechSpeakerService, FilesManager filesManager) {
+        super("Speaker", speakerRepository, "avatars", filesManager);
+        this.companyService = companyService;
         this.eventSpeechSpeakerService = eventSpeechSpeakerService;
     }
 
     @Transactional(readOnly = true)
-    public List<Speaker> findAll() {
-        return speakerRepository.findAll();
-    }
-
-    @Transactional(readOnly = true)
-    public Speaker findById(Long id) {
-        Optional<Speaker> speaker = speakerRepository.findOne(id);
-        return speaker.orElseThrow(() -> new EntityNotFoundException("Speaker with ID '" + id + "' not found."));
-    }
-
-    @Transactional(readOnly = true)
     public Set<Speaker> findBySpeech(Speech speech) {
-        return speakerRepository.findBySpeechId(speech.getId());
+        return repository.findBySpeechId(speech.getId());
     }
 
     @Transactional(readOnly = true)
     public Set<Speaker> findByEvent(Event event) {
-        return speakerRepository.findByEventId(event.getId());
+        return repository.findByEventId(event.getId());
     }
 
     @Transactional(readOnly = true)
     public Set<Speaker> findByEventAndSpeech(Event event, Speech speech) {
-        return speakerRepository.findByEventAndSpeech(event.getId(), speech.getId());
+        return repository.findByEventAndSpeech(event.getId(), speech.getId());
     }
 
     @Transactional
+    @Override
     public Speaker create(Speaker speaker) {
-        speaker.setId(null);
-        Speaker createdSpeaker = speakerRepository.save(speaker);
+        Speaker createdSpeaker = createSpeaker(speaker);
+
         linkToSpeech(createdSpeaker, null);
         return createdSpeaker;
-    }
-
-    @Transactional
-    public Speaker update(Speaker speaker) {
-        if (speaker.getId() == null) {
-            throw new IllegalArgumentException("Speaker Id is not specified");
-        }
-        return speakerRepository.save(speaker);
     }
 
     @Transactional
@@ -104,13 +86,6 @@ public class SpeakerService {
     }
 
     @Transactional
-    public Speaker createAndLinkToEvent(Speaker speaker, Event event) {
-        Speaker createdSpeaker = create(speaker);
-        linkToEvent(createdSpeaker, event);
-        return createdSpeaker;
-    }
-
-    @Transactional
     public void linkToEvent(Speaker speaker, Event event) {
         eventSpeechSpeakerService.createEventSpeechSpeakerLink(event, null, speaker);
     }
@@ -118,6 +93,21 @@ public class SpeakerService {
     @Transactional
     public void unlinkFromEvent(Speaker speaker, Event event) {
         eventSpeechSpeakerService.deleteEventSpeechSpeakerLinks(event, speaker);
+    }
+
+    private Speaker createSpeaker(Speaker speaker) {
+        speaker.setId(null);
+        Company company = speaker.getCompany();
+        if (company != null) {
+            Company persistedCompany =
+                    isNewCompany(company) ? companyService.create(company) : companyService.findById(company.getId());
+            speaker.setCompany(persistedCompany);
+        }
+        return repository.save(speaker);
+    }
+
+    private boolean isNewCompany(Company company) {
+        return company.getId() == null;
     }
 
 }

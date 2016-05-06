@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Set;
 
 @Repository
-public interface SpeakerRepository extends BaseRepository<Speaker, Long> {
+public interface SpeakerRepository extends ImageAwareRepository<Speaker, Long> {
 
     @Query(value = "SELECT DISTINCT speaker " +
                    "FROM EventSpeechSpeaker eventSpeechSpeaker " +

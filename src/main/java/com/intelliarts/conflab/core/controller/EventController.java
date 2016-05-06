@@ -1,7 +1,9 @@
 package com.intelliarts.conflab.core.controller;
 
 import com.intelliarts.conflab.core.entity.Event;
+import com.intelliarts.conflab.core.entity.Role;
 import com.intelliarts.conflab.core.service.EventService;
+import com.intelliarts.conflab.security.HasAuthority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
+@HasAuthority(role = Role.ADMIN)
 @RequestMapping("/events")
 public class EventController {
 
@@ -37,7 +40,7 @@ public class EventController {
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Event create(@RequestBody @Validated Event event) {
-        return eventService.save(event);
+        return eventService.create(event);
     }
 
     @RequestMapping(value = "/{id}",
@@ -46,7 +49,7 @@ public class EventController {
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public Event update(@PathVariable("id") Long id, @RequestBody @Validated Event event) {
         event.setId(id);
-        return eventService.save(event);
+        return eventService.update(event);
     }
 
     @RequestMapping(value = "/{id}",

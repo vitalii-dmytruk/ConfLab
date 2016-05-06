@@ -9,24 +9,14 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
 @Table(name = "events")
-public class Event {
-
-    @Id
-    @Column
-    @SequenceGenerator(name = "event_seq", sequenceName = "event_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "event_seq")
-    private Long id;
+public class Event extends AbstractPersistable<Long> {
 
     @Column
     @NotEmpty
@@ -47,19 +37,22 @@ public class Event {
     private LocalDate endDate;
 
     @Column
-    private String venue;
+    private String country;
+    @Column
+    private String city;
+    @Column
+    private String address;
+    @Column
+    @Length(max = 255, message = "Event contacts value is greater then {max} characters.")
+    private String contacts;
 
     @JsonIgnore
     @OneToMany(mappedBy = "event")
     private Set<EventSpeechSpeaker> eventSpeechSpeakers;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @JsonIgnore
+    @OneToMany(mappedBy = "event")
+    private Set<Partner> partners;
 
     public String getName() {
         return name;
@@ -93,12 +86,12 @@ public class Event {
         this.endDate = endDate;
     }
 
-    public String getVenue() {
-        return venue;
+    public String getAddress() {
+        return address;
     }
 
-    public void setVenue(String venue) {
-        this.venue = venue;
+    public void setAddress(String str) {
+        this.address = str;
     }
 
     public Set<EventSpeechSpeaker> getEventSpeechSpeakers() {
@@ -107,5 +100,37 @@ public class Event {
 
     public void setEventSpeechSpeakers(Set<EventSpeechSpeaker> eventSpeechSpeakers) {
         this.eventSpeechSpeakers = eventSpeechSpeakers;
+    }
+
+    public Set<Partner> getPartners() {
+        return partners;
+    }
+
+    public void setPartners(Set<Partner> partners) {
+        this.partners = partners;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(String contacts) {
+        this.contacts = contacts;
     }
 }

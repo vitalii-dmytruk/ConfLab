@@ -4,16 +4,19 @@ var require = {
         "core"                  : 'js/core',
         "account"               : 'js/account',
         "common"                : 'js/common',
-        "menu"                  : 'js/menu',
         "header"                : 'js/header',
+        "company"               : 'js/company',
         "speaker"               : 'js/speaker',
         "speech"                : 'js/speech',
         "event"                 : 'js/event',
         "auth"                  : 'js/auth',
         "text"                  : 'lib/requirejs-text/text',
         "jquery"                : 'lib/jquery/jquery.min',
+        "jquery.file.upload"    : 'lib/jquery-file-upload/js/jquery.fileupload',
+        "jquery.ui.widget"      : 'lib/jquery-file-upload/js/jquery.ui.widget',
+        "croppie"               : 'lib/croppie/js/croppie.min',
         "toastr"                : 'lib/toastr/toastr.min',
-        "select2"               : 'lib/select2/js/select2.full',
+        "select2"               : 'lib/select2/js/select2',
         "underscore"            : 'lib/underscore/underscore-min',
         "backbone"              : 'lib/backbone/backbone-min',
         "backbone.marionette"   : 'lib/marionette/backbone.marionette',
@@ -29,13 +32,16 @@ var require = {
         "jquery"                : {
             exports: "$"
         },
+        "jquery.file.upload"    : {
+            "deps": ['jquery', 'jquery.ui.widget']
+        },
         "select2"               : {
             "deps": ['jquery']
         },
         "bootstrap"             : {
             "deps": ['jquery']
         },
-        "bootstrap.datepicker"             : {
+        "bootstrap.datepicker"  : {
             "deps": ['jquery']
         },
         "toastr"                : {

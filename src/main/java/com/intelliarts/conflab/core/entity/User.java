@@ -10,24 +10,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User implements UserDetails {
-    @Id
-    @SequenceGenerator(name = "users_seq", sequenceName = "users_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_seq")
-    @Column
-    private Long id;
+public class User  extends AbstractPersistable<Long> implements UserDetails {
 
     @NotBlank(message = "Username cannot be empty")
     @Length(max = 50, message = "Username cannot be longer than {max} characters")
@@ -58,14 +49,6 @@ public class User implements UserDetails {
                joinColumns = @JoinColumn(name = "user_id"),
                inverseJoinColumns = @JoinColumn(name = "authority_id"))
     private Set<Authority> authorities;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     @Override
     public String getUsername() {

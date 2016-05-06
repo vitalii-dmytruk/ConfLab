@@ -17,6 +17,16 @@ define([
         onChildviewEdit: showEditView,
         onBeforeShow   : showShowView,
 
+        saveModel: function (model) {
+            var view = this;
+
+            return model.save(null, {
+                success: function () {
+                    view.model.set(model.attributes);
+                }
+            });
+        },
+
         showAttachment: function (view) {
             this.showChildView('attachment', view);
         }
@@ -38,11 +48,7 @@ define([
     }
 
     function save(args) {
-        var view = this;
-        args.model.save().done(function () {
-            view.model.set(args.model.attributes);
-            showShowView.call(view);
-        });
+        this.saveModel(args.model).done(showShowView.bind(this));
     }
 
 

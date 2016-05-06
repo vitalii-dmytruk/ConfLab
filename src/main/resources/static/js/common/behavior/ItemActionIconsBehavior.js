@@ -6,8 +6,8 @@ define([
     //noinspection JSUnusedGlobalSymbols
     return Marionette.Behavior.extend({
         ui: {
-            actionIcons: '[data-actions]',
-            icon       : '.glyphicon'
+            actionIcons: '.actions',
+            icon       : '.actions>.glyphicon'
         },
 
         events: {

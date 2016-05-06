@@ -28,12 +28,12 @@ public class StageController {
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Stage create(@RequestBody @Validated Stage stage) {
-        return stageService.save(stage);
+        return stageService.create(stage);
     }
 
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE,
                     method = RequestMethod.GET)
     public List<Stage> getAll() {
-        return stageService.getAll();
+        return stageService.findAll();
     }
 }
