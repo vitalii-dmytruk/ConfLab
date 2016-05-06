@@ -6,6 +6,8 @@ define([
 
     'use strict';
 
+    var SUPPORTED_IMAGE_SIZE = 10; //in Megabytes
+
     return Marionette.ItemView.extend({
         template: _.template(template),
 
@@ -28,7 +30,7 @@ define([
 
     function initImage(view) {
         var options = view.options;
-        var $img = view.ui.imageEl;
+        var $img    = view.ui.imageEl;
         $img.on('error', function () {
             this.src = options.defaultImage;
         });
@@ -48,14 +50,22 @@ define([
             files = e.target.files,
             file  = files && files[0];
 
-        if (file) {
+        if (validate(file)) {
             var reader    = new FileReader();
             reader.onload = function (e) {
                 view.triggerMethod('image:uploaded', e.target.result);
             };
             reader.readAsDataURL(file);
-        } else {
+        }
+    }
+
+    function validate(file) {
+        if (!file) {
             notify("Sorry - you're browser doesn't support the FileReader API");
+        } else if (file.size > SUPPORTED_IMAGE_SIZE * 1024 * 1024) {
+            notify('Maximum file size is ' + SUPPORTED_IMAGE_SIZE + ' megabytes');
+        } else {
+            return true;
         }
     }
 
@@ -68,6 +78,6 @@ define([
     }
 
     function notify(message) {
-        Radio.channel('notify').warn(message);
+        Radio.channel('notify').request('error', message);
     }
 });
