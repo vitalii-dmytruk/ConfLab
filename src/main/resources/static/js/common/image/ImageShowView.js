@@ -50,7 +50,7 @@ define([
             files = e.target.files,
             file  = files && files[0];
 
-        if (validate(file)) {
+        if (isValid(file)) {
             var reader    = new FileReader();
             reader.onload = function (e) {
                 view.triggerMethod('image:uploaded', e.target.result);
@@ -59,7 +59,7 @@ define([
         }
     }
 
-    function validate(file) {
+    function isValid(file) {
         if (!file) {
             notify("Sorry - you're browser doesn't support the FileReader API");
         } else if (file.size > SUPPORTED_IMAGE_SIZE * 1024 * 1024) {
