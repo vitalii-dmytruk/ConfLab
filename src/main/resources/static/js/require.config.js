@@ -27,7 +27,9 @@ var require = {
         "backbone.nested.models": 'lib/backbone-nested-models/backbone-nested-models',
         "backbone.validation"   : 'lib/backbone-validation/backbone-validation-min',
         "bootstrap"             : 'lib/bootstrap/js/bootstrap.min',
-        "bootstrap.datepicker"  : 'lib/bootstrap-datepicker/js/bootstrap-datepicker'
+        "bootstrap.datepicker"  : 'lib/bootstrap-datepicker/js/bootstrap-datepicker',
+        "moment"                : 'lib/moment/moment',
+        "fullcalendar"          : 'lib/fullcalendar/fullcalendar'
     },
     shim   : {
         "jquery"                : {
@@ -67,6 +69,9 @@ var require = {
         },
         "backbone.validation"   : {
             "deps": ['backbone', 'underscore']
+        },
+        "fullcalendar"          : {
+            "deps": ['jquery', 'moment']
         }
     }
 };
