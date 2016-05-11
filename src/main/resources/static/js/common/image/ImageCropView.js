@@ -11,11 +11,13 @@ define([
 
         ui: {
             croppie       : '#croppie',
-            submitImageBtn: '#submit-image-btn'
+            submitImageBtn: '#submit-image-btn',
+            cancelImageBtn: '#cancel-image-btn'
         },
 
         events: {
-            'click @ui.submitImageBtn': updateImage
+            'click @ui.submitImageBtn': updateImage,
+            'click @ui.cancelImageBtn': cancel
         },
 
         onRender: initCroppie
@@ -38,6 +40,11 @@ define([
             view.triggerMethod('image:updated', url)
         });
     }
+
+    function cancel() {
+        this.triggerMethod('cancel');
+    }
+
     function dataURItoBlob(dataURI) {
         // convert base64/URLEncoded data component to raw binary data held in a string
         var byteString;

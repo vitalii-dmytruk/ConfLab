@@ -42,6 +42,10 @@ define([
             showImageView(options, url)
         };
 
+        imageCropView.onCancel = function () {
+            showImageView(options)
+        };
+
         options.container.show(imageCropView);
     }
 });
