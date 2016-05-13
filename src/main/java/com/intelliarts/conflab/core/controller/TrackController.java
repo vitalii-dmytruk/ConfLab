@@ -1,8 +1,8 @@
 package com.intelliarts.conflab.core.controller;
 
 import com.intelliarts.conflab.core.entity.Role;
-import com.intelliarts.conflab.core.entity.Stage;
-import com.intelliarts.conflab.core.service.StageService;
+import com.intelliarts.conflab.core.entity.Track;
+import com.intelliarts.conflab.core.service.TrackService;
 import com.intelliarts.conflab.security.HasAuthority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,23 +17,23 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/stages")
+@RequestMapping("/tracks")
 @HasAuthority(role = Role.ADMIN)
-public class StageController {
+public class TrackController {
     @Autowired
-    private StageService stageService;
+    private TrackService trackService;
 
     @RequestMapping(method = RequestMethod.POST,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Stage create(@RequestBody @Validated Stage stage) {
-        return stageService.create(stage);
+    public Track create(@RequestBody @Validated Track track) {
+        return trackService.create(track);
     }
 
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE,
                     method = RequestMethod.GET)
-    public List<Stage> getAll() {
-        return stageService.findAll();
+    public List<Track> getAll() {
+        return trackService.findAll();
     }
 }

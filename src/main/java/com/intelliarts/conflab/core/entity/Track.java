@@ -9,15 +9,15 @@ import javax.persistence.Table;
 import javax.validation.constraints.Min;
 
 @Entity
-@Table(name = "stage")
-public class Stage extends AbstractPersistable<Integer> {
+@Table(name = "track")
+public class Track extends AbstractPersistable<Integer> {
 
-    @NotBlank(message = "Stage title cannot be empty.")
-    @Length(max = 50, message = "Stage title is greater then {max} characters.")
+    @NotBlank(message = "Track title cannot be empty.")
+    @Length(max = 50, message = "Track title is greater then {max} characters.")
     @Column(nullable = false)
     private String title;
 
-    @Min(value = 2, message = "Stage don't have minimal ({value}) capacity.")
+    @Min(value = 2, message = "Track don't have minimal ({value}) capacity.")
     @Column(nullable = false, unique = true)
     private int capacity;
 
