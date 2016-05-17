@@ -11,7 +11,7 @@ define([
             return {
                 id      : null,
                 name    : null,
-                capacity: null
+                capacity: 0
             }
         },
 
@@ -21,7 +21,8 @@ define([
                 maxLength: 255
             },
             capacity: {
-                range: [0, 10000000]
+                required: false,
+                range   : [0, 10000000]
             }
         }
     });
