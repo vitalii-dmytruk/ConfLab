@@ -27,9 +27,13 @@ define([
 
         onBeforeShow: function () {
             this.itemListRegion.show(createListView(this));
-            this.selectEventItemRegion.show(createSearchView(this));
+            isSearchNeeded(this) && this.selectEventItemRegion.show(createSearchView(this));
         }
     });
+
+    function isSearchNeeded(view) {
+        return view.options.searchCollection;
+    }
 
     function showCreateView() {
         this.itemListRegion.currentView.deactivateItem();
