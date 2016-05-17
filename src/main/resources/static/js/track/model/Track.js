@@ -5,6 +5,7 @@ define([
     'use strict';
 
     return Backbone.Model.extend({
+        urlRoot: '/tracks',
 
         defaults: function () {
             return {
