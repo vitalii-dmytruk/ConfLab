@@ -6,9 +6,12 @@ define([
 
     return Backbone.Model.extend({
 
-        defaults: {
-            name   : null,
-            capacity: null
+        defaults: function () {
+            return {
+                id      : null,
+                name    : null,
+                capacity: null
+            }
         }
     });
 });
