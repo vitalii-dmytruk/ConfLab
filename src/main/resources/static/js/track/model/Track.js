@@ -7,7 +7,7 @@ define([
     return Backbone.Model.extend({
 
         defaults: {
-            title   : null,
+            name   : null,
             capacity: null
         }
     });

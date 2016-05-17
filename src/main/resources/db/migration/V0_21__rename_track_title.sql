@@ -1,0 +1,1 @@
+ALTER TABLE track RENAME COLUMN title TO name;
