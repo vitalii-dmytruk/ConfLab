@@ -13,6 +13,16 @@ define([
                 name    : null,
                 capacity: null
             }
+        },
+
+        validation: {
+            name    : {
+                required : true,
+                maxLength: 255
+            },
+            capacity: {
+                range: [0, 10000000]
+            }
         }
     });
 });
