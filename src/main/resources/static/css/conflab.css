@@ -308,3 +308,16 @@ div[data-descendant-region] * #table-title {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+
+/* test */
+
+.grid-stack {
+    background: lightgoldenrodyellow;
+}
+
+.grid-stack-item-content {
+    color: #2c3e50;
+    text-align: center;
+    background-color: #18bc9c;
+}

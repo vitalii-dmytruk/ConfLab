@@ -62,18 +62,6 @@ bower {
             source 'dist/*'
         }
 
-        'jqueryui'()
-
-        'jquery-file-upload'('9.x') {
-            source 'css/jquery.fileupload.css' >> 'css/'
-            source 'js/jquery.fileupload.js' >> 'js/'
-            source 'js/vendor/jquery.ui.widget.js' >> 'js/'
-
-            excludes 'blueimp-tmpl'
-            excludes 'blueimp-load-image'
-            excludes 'blueimp-canvas-to-blob'
-        }
-
         'croppie'('git://github.com/approce/Croppie') {
             source '*.css' >> 'css/'
             source '*.js' >> 'js/'
@@ -94,7 +82,6 @@ bower {
         'toastr'('2.x.x') {
             source 'toastr*'
         }
-
 
         'html.sortable'('0.3.x')
 
@@ -143,10 +130,15 @@ bower {
             source 'dist/locales/*' >> 'locales/'
         }
 
-        'fullcalendar'('2.7.1'){
+        'fullcalendar'('2.7.1') {
             source 'dist/*'
         }
 
+        'gridstack'('0.2.x') {
+            source 'dist/*'
+
+            excludes 'lodash'
+        }
     }
 
     additional = [
