@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @Table(name = "track")
 public class Track extends AbstractPersistable<Integer> {
 
-    @NotBlank(message = "Track title cannot be empty.")
+    @NotBlank(message = "Track name cannot be empty.")
     @Length(max = 50, message = "Track name is greater then {max} characters.")
     @Column(nullable = false)
     private String name;
@@ -27,7 +27,7 @@ public class Track extends AbstractPersistable<Integer> {
     }
 
     @ManyToOne
-    @JoinColumn(name = "event_id")
+    @JoinColumn(name = "event_id", updatable = false)
     @JsonIgnore
     private Event event;
 
