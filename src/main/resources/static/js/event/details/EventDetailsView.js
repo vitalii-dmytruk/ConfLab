@@ -57,6 +57,11 @@ define([
             this.currentTabRegion.show(view);
         },
 
+        showScheduleTab: function (view) {
+            this.tabs.activateItem(this.scheduleTab);
+            this.currentTabRegion.show(view);
+        },
+
         showTracksTab: function (view) {
             this.tabs.activateItem(this.tracksTab);
             this.currentTabRegion.show(view);
@@ -72,13 +77,15 @@ define([
         view.speakersTab = createTabModel(eventId, 'Speakers', '/speakers');
         view.speechesTab = createTabModel(eventId, 'Speeches', '/speeches');
         view.partnersTab = createTabModel(eventId, 'Partners', '/partners');
+        view.scheduleTab = createTabModel(eventId, 'Schedule', '/schedule');
         view.tracksTab   = createTabModel(eventId, 'Tracks', '/tracks');
 
         return [view.infoTab,
                 view.speakersTab,
                 view.speechesTab,
                 view.partnersTab,
-                view.tracksTab];
+                view.tracksTab,
+                view.scheduleTab];
     }
 
     function createTabModel(eventId, name, path) {

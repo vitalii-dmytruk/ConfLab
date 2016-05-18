@@ -1,7 +1,7 @@
 define([
     'event/details/EventDetailsRoute',
     'event/details/tracks/TrackViewFactory',
-    'track/model/TracksCollection'
+    'track/TracksCollection'
 ], function EventTracksRouter(EventDetailsRoute, trackViewFactory, TracksCollection) {
 
     'use strict';

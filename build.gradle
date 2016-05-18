@@ -62,18 +62,6 @@ bower {
             source 'dist/*'
         }
 
-        'jqueryui'()
-
-        'jquery-file-upload'('9.x') {
-            source 'css/jquery.fileupload.css' >> 'css/'
-            source 'js/jquery.fileupload.js' >> 'js/'
-            source 'js/vendor/jquery.ui.widget.js' >> 'js/'
-
-            excludes 'blueimp-tmpl'
-            excludes 'blueimp-load-image'
-            excludes 'blueimp-canvas-to-blob'
-        }
-
         'croppie'('git://github.com/approce/Croppie') {
             source '*.css' >> 'css/'
             source '*.js' >> 'js/'
@@ -94,7 +82,6 @@ bower {
         'toastr'('2.x.x') {
             source 'toastr*'
         }
-
 
         'html.sortable'('0.3.x')
 
@@ -136,10 +123,17 @@ bower {
         'select2-bootstrap-theme'('0.1.0-beta.4') {
             source 'dist/*'
         }
+
         'bootstrap-datepicker'('1.6.x') {
             source 'dist/js/*' >> 'js/'
             source 'dist/css/*' >> 'css/'
             source 'dist/locales/*' >> 'locales/'
+        }
+
+        'gridstack'('0.2.x') {
+            source 'dist/*'
+
+            excludes 'lodash'
         }
     }
 

@@ -13,12 +13,11 @@ var require = {
         "auth"                  : 'js/auth',
         "text"                  : 'lib/requirejs-text/text',
         "jquery"                : 'lib/jquery/jquery.min',
-        "jquery.file.upload"    : 'lib/jquery-file-upload/js/jquery.fileupload',
-        "jquery.ui.widget"      : 'lib/jquery-file-upload/js/jquery.ui.widget',
+        "jquery-ui"             : 'lib/jquery-ui/jquery-ui',
         "croppie"               : 'lib/croppie/js/croppie.min',
         "toastr"                : 'lib/toastr/toastr.min',
         "select2"               : 'lib/select2/js/select2',
-        "underscore"            : 'lib/underscore/underscore-min',
+        "underscore"            : 'lib/underscore/underscore',
         "backbone"              : 'lib/backbone/backbone-min',
         "backbone.marionette"   : 'lib/marionette/backbone.marionette',
         "backbone.babysitter"   : 'lib/backbone.babysitter/backbone.babysitter',
@@ -27,14 +26,13 @@ var require = {
         "backbone.nested.models": 'lib/backbone-nested-models/backbone-nested-models',
         "backbone.validation"   : 'lib/backbone-validation/backbone-validation-min',
         "bootstrap"             : 'lib/bootstrap/js/bootstrap.min',
-        "bootstrap.datepicker"  : 'lib/bootstrap-datepicker/js/bootstrap-datepicker'
+        "bootstrap.datepicker"  : 'lib/bootstrap-datepicker/js/bootstrap-datepicker',
+        "moment"                : 'lib/moment/moment',
+        "gridstack"             : 'lib/gridstack/gridstack'
     },
     shim   : {
         "jquery"                : {
             exports: "$"
-        },
-        "jquery.file.upload"    : {
-            "deps": ['jquery', 'jquery.ui.widget']
         },
         "select2"               : {
             "deps": ['jquery']
@@ -67,6 +65,19 @@ var require = {
         },
         "backbone.validation"   : {
             "deps": ['backbone', 'underscore']
+        },
+        "gridstack"             : {
+            "deps": ['jquery', 'jquery-ui', 'underscore']
+        }
+    },
+    map: {
+        '*': {
+            'jquery-ui/mouse': 'jquery-ui',
+            'jquery-ui/draggable': 'jquery-ui',
+            'jquery-ui/widget': 'jquery-ui',
+            'jquery-ui/resizable': 'jquery-ui',
+            'jquery-ui/core': 'jquery-ui',
+            'lodash': 'underscore'
         }
     }
 };

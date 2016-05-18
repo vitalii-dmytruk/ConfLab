@@ -1,6 +1,6 @@
 define([
     'common/Collection',
-    'track/model/Track'
+    'track/Track'
 ], function TracksCollection(Collection, Model) {
     'use strict';
 
