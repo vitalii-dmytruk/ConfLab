@@ -1,0 +1,2 @@
+ALTER TABLE track ADD COLUMN event_id BIGINT NOT NULL;
+ALTER TABLE track ADD FOREIGN KEY (event_id) REFERENCES events (id);

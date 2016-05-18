@@ -8,6 +8,7 @@ var require = {
         "company"               : 'js/company',
         "speaker"               : 'js/speaker',
         "speech"                : 'js/speech',
+        "track"                 : 'js/track',
         "event"                 : 'js/event',
         "auth"                  : 'js/auth',
         "text"                  : 'lib/requirejs-text/text',
