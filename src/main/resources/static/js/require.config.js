@@ -28,7 +28,6 @@ var require = {
         "bootstrap"             : 'lib/bootstrap/js/bootstrap.min',
         "bootstrap.datepicker"  : 'lib/bootstrap-datepicker/js/bootstrap-datepicker',
         "moment"                : 'lib/moment/moment',
-        "fullcalendar"          : 'lib/fullcalendar/fullcalendar',
         "gridstack"             : 'lib/gridstack/gridstack'
     },
     shim   : {
@@ -66,9 +65,6 @@ var require = {
         },
         "backbone.validation"   : {
             "deps": ['backbone', 'underscore']
-        },
-        "fullcalendar"          : {
-            "deps": ['jquery', 'moment']
         },
         "gridstack"             : {
             "deps": ['jquery', 'jquery-ui', 'underscore']

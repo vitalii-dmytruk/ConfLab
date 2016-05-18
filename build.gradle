@@ -130,10 +130,6 @@ bower {
             source 'dist/locales/*' >> 'locales/'
         }
 
-        'fullcalendar'('2.7.1') {
-            source 'dist/*'
-        }
-
         'gridstack'('0.2.x') {
             source 'dist/*'
 
