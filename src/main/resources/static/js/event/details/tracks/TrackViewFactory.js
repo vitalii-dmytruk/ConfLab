@@ -1,8 +1,8 @@
 define([
     'common/CollectionBinding',
     'event/details/EventItemViewFactory',
-    'text!track/view/TrackShowTemplate.html',
-    'text!track/view/TrackEditTemplate.html'
+    'text!track/details/TrackShowTemplate.html',
+    'text!track/details/TrackEditTemplate.html'
 ], function (CollectionBinding, EventItemViewFactory, TrackShowTemplate,TrackEditTemplate) {
 
     'use strict';
