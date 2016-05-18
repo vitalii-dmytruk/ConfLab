@@ -40,7 +40,7 @@ public class PartnerService {
 
     @Transactional
     public void linkToEvent(Event event, Company company) {
-        partnerRepository.save(new Partner(event, company));
+        partnerRepository.create(new Partner(event, company));
     }
 
     @Transactional
@@ -52,7 +52,7 @@ public class PartnerService {
     public void updatePartnerLevel(Event event, Company company, PartnerLevel partnerLevel) {
         Partner partner = findByEventAndCompany(event, company);
         partner.setPartnerLevel(partnerLevel);
-        partnerRepository.save(partner);
+        partnerRepository.update(partner);
     }
 
     @Transactional(readOnly = true)
@@ -62,7 +62,7 @@ public class PartnerService {
 
     private Partner findByEventAndCompany(Event event, Company company) {
         return partnerRepository.findByEventAndCompany(event, company)
-                                     .orElseThrow(() -> new EntityNotFoundException(
-                                             String.format(ERR_MSG, company.getName(), event.getName())));
+                                .orElseThrow(() -> new EntityNotFoundException(
+                                        String.format(ERR_MSG, company.getName(), event.getName())));
     }
 }

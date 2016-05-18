@@ -4,9 +4,7 @@ import com.intelliarts.conflab.core.entity.Event;
 import com.intelliarts.conflab.core.entity.Role;
 import com.intelliarts.conflab.core.entity.Speaker;
 import com.intelliarts.conflab.core.entity.Speech;
-import com.intelliarts.conflab.core.service.EventService;
 import com.intelliarts.conflab.core.service.SpeakerService;
-import com.intelliarts.conflab.core.service.SpeechService;
 import com.intelliarts.conflab.security.HasAuthority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,14 +34,10 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 public class SpeakerController {
 
     private SpeakerService speakerService;
-    private SpeechService  speechService;
-    private EventService   eventService;
 
     @Autowired
-    public SpeakerController(SpeakerService speakerService, SpeechService speechService, EventService eventService) {
+    public SpeakerController(SpeakerService speakerService) {
         this.speakerService = speakerService;
-        this.speechService = speechService;
-        this.eventService = eventService;
     }
 
     @RequestMapping(value = "/speakers",
@@ -59,8 +53,8 @@ public class SpeakerController {
                     method = PUT,
                     consumes = APPLICATION_JSON_VALUE,
                     produces = APPLICATION_JSON_VALUE)
-    public Speaker update(@PathVariable("speakerId") Long id, @RequestBody @Validated Speaker speaker) {
-        speaker.setId(id);
+    public Speaker update(@PathVariable("speakerId") Speaker existedSpeaker, @RequestBody @Validated Speaker speaker) {
+        speaker.setId(existedSpeaker.getId());
         return speakerService.update(speaker);
     }
 
@@ -69,13 +63,10 @@ public class SpeakerController {
                     consumes = MULTIPART_FORM_DATA_VALUE,
                     produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public String createAvatar(@PathVariable("speakerId") Long id,
-            @RequestPart("image") MultipartFile file) {
+    public String createAvatar(@PathVariable("speakerId") Speaker speaker, @RequestPart("image") MultipartFile file) {
         if (file == null) {
             throw new IllegalArgumentException("Avatar file is not specified.");
         }
-
-        Speaker speaker = speakerService.findById(id);
         return speakerService.createImage(speaker, file);
     }
 
@@ -83,29 +74,25 @@ public class SpeakerController {
                     method = PUT,
                     consumes = MULTIPART_FORM_DATA_VALUE,
                     produces = APPLICATION_JSON_VALUE)
-    public String updateAvatar(@PathVariable("speakerId") Long id,
-            @RequestPart("image") MultipartFile file) {
+    public String updateAvatar(@PathVariable("speakerId") Speaker speaker, @RequestPart("image") MultipartFile file) {
         if (file == null) {
             throw new IllegalArgumentException("Avatar file is not specified.");
         }
-
-        Speaker speaker = speakerService.findById(id);
         return speakerService.updateImage(speaker, file);
     }
 
     @RequestMapping(value = "/speakers/{speakerId}/avatar",
                     method = DELETE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public void deleteAvatar(@PathVariable("speakerId") Long speakerId){
-        Speaker speaker = speakerService.findById(speakerId);
+    public void deleteAvatar(@PathVariable("speakerId") Speaker speaker) {
         speakerService.deleteImage(speaker);
     }
 
     @RequestMapping(value = "/speakers/{speakerId}",
                     method = GET,
                     produces = APPLICATION_JSON_VALUE)
-    public Speaker getById(@PathVariable("speakerId") Long speakerId) {
-        return speakerService.findById(speakerId);
+    public Speaker getById(@PathVariable("speakerId") Speaker speaker) {
+        return speaker;
     }
 
     @RequestMapping(value = "/speakers",
@@ -120,9 +107,8 @@ public class SpeakerController {
                     consumes = APPLICATION_JSON_VALUE,
                     produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Speaker createAndLinkToSpeech(@PathVariable("speechId") Long speechId,
+    public Speaker createAndLinkToSpeech(@PathVariable("speechId") Speech speech,
             @RequestBody @Validated Speaker speaker) {
-        Speech speech = speechService.findById(speechId);
         return speakerService.createAndLinkToSpeech(speaker, speech);
     }
 
@@ -130,9 +116,7 @@ public class SpeakerController {
                     method = PUT,
                     consumes = APPLICATION_JSON_VALUE,
                     produces = APPLICATION_JSON_VALUE)
-    public void linkToSpeech(@PathVariable("speechId") Long speechId, @PathVariable("speakerId") Long speakerId) {
-        Speech speech = speechService.findById(speechId);
-        Speaker speaker = speakerService.findById(speakerId);
+    public void linkToSpeech(@PathVariable("speechId") Speech speech, @PathVariable("speakerId") Speaker speaker) {
         speakerService.linkToSpeech(speaker, speech);
     }
 
@@ -141,9 +125,8 @@ public class SpeakerController {
                     consumes = APPLICATION_JSON_VALUE,
                     produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Speaker createAndLinkToEvent(@PathVariable("eventId") Long eventId,
-            @RequestBody @Validated Speaker speaker) throws IOException {
-        Event event = eventService.findById(eventId);
+    public Speaker createAndLinkToEvent(@PathVariable("eventId") Event event, @RequestBody @Validated Speaker speaker)
+            throws IOException {
         speaker = speakerService.create(speaker);
         speakerService.linkToEvent(speaker, event);
         return speaker;
@@ -153,44 +136,36 @@ public class SpeakerController {
                     method = PUT,
                     consumes = APPLICATION_JSON_VALUE,
                     produces = APPLICATION_JSON_VALUE)
-    public void linkToEvent(@PathVariable("eventId") Long eventId, @PathVariable("speakerId") Long speakerId) {
-        Event event = eventService.findById(eventId);
-        Speaker speaker = speakerService.findById(speakerId);
+    public void linkToEvent(@PathVariable("eventId") Event event, @PathVariable("speakerId") Speaker speaker) {
         speakerService.linkToEvent(speaker, event);
     }
 
     @RequestMapping(value = "/events/{eventId}/speakers/{speakerId}",
                     method = DELETE,
                     produces = APPLICATION_JSON_VALUE)
-    public void unlinkFromEvent(@PathVariable("eventId") Long eventId, @PathVariable("speakerId") Long speakerId) {
-        Event event = eventService.findById(eventId);
-        Speaker speaker = speakerService.findById(speakerId);
+    public void unlinkFromEvent(@PathVariable("eventId") Event event, @PathVariable("speakerId") Speaker speaker) {
         speakerService.unlinkFromEvent(speaker, event);
     }
 
     @RequestMapping(value = "/speeches/{speechId}/speakers",
                     method = GET,
                     produces = APPLICATION_JSON_VALUE)
-    public Set<Speaker> findBySpeechId(@PathVariable("speechId") Long speechId) {
-        Speech speech = speechService.findById(speechId);
+    public Set<Speaker> findBySpeechId(@PathVariable("speechId") Speech speech) {
         return speakerService.findBySpeech(speech);
     }
 
     @RequestMapping(value = "/events/{eventId}/speakers",
                     method = GET,
                     produces = APPLICATION_JSON_VALUE)
-    public Set<Speaker> findByEventId(@PathVariable("eventId") Long eventId) {
-        Event event = eventService.findById(eventId);
+    public Set<Speaker> findByEventId(@PathVariable("eventId") Event event) {
         return speakerService.findByEvent(event);
     }
 
     @RequestMapping(value = "/events/{eventId}/speeches/{speechId}/speakers",
                     method = GET,
                     produces = APPLICATION_JSON_VALUE)
-    public Set<Speaker> findByEventAndSpeech(@PathVariable("eventId") Long eventId,
-            @PathVariable("speechId") Long speechId) {
-        Event event = eventService.findById(eventId);
-        Speech speech = speechService.findById(speechId);
+    public Set<Speaker> findByEventAndSpeech(@PathVariable("eventId") Event event,
+            @PathVariable("speechId") Speech speech) {
         return speakerService.findByEventAndSpeech(event, speech);
     }
 
@@ -198,33 +173,24 @@ public class SpeakerController {
                     method = POST,
                     consumes = APPLICATION_JSON_VALUE,
                     produces = APPLICATION_JSON_VALUE)
-    public Speaker createAndLinkToEventSpeech(@PathVariable("eventId") Long eventId,
-            @PathVariable("speechId") Long speechId, @RequestBody @Validated Speaker speaker) throws IOException {
-        Event event = eventService.findById(eventId);
-        Speech speech = speechService.findById(speechId);
-
+    public Speaker createAndLinkToEventSpeech(@PathVariable("eventId") Event event,
+            @PathVariable("speechId") Speech speech, @RequestBody @Validated Speaker speaker) throws IOException {
         return speakerService.createAndLinkToEventSpeech(speaker, speech, event);
     }
 
     @RequestMapping(value = "/events/{eventId}/speeches/{speechId}/speakers/{speakerId}",
                     method = PUT,
                     produces = APPLICATION_JSON_VALUE)
-    public void linkToEvent(@PathVariable("speechId") Long speechId, @PathVariable("eventId") Long eventId,
-            @PathVariable("speakerId") Long speakerId) {
-        Speaker speaker = speakerService.findById(speakerId);
-        Speech speech = speechService.findById(speechId);
-        Event event = eventService.findById(eventId);
+    public void linkToEvent(@PathVariable("eventId") Event event, @PathVariable("speechId") Speech speech,
+            @PathVariable("speakerId") Speaker speaker) {
         speakerService.linkToEventSpeech(speaker, speech, event);
     }
 
     @RequestMapping(value = "/events/{eventId}/speeches/{speechId}/speakers/{speakerId}",
                     method = DELETE,
                     produces = APPLICATION_JSON_VALUE)
-    public void removeFromEventSpeech(@PathVariable("eventId") Long eventId, @PathVariable("speechId") Long speechId,
-            @PathVariable("speakerId") Long speakerId) {
-        Event event = eventService.findById(eventId);
-        Speaker speaker = speakerService.findById(speakerId);
-        Speech speech = speechService.findById(speechId);
+    public void removeFromEventSpeech(@PathVariable("eventId") Event event, @PathVariable("speechId") Speech speech,
+            @PathVariable("speakerId") Speaker speaker) {
         speakerService.unlinkFromEventSpeech(speaker, speech, event);
     }
 }

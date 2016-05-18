@@ -1,5 +1,6 @@
 package com.intelliarts.conflab.core.controller;
 
+import com.intelliarts.conflab.core.entity.Event;
 import com.intelliarts.conflab.core.entity.Track;
 import com.intelliarts.conflab.core.service.TrackService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,13 @@ import java.util.List;
 
 @RestController
 public class TrackController {
-    @Autowired
+
     private TrackService trackService;
+
+    @Autowired
+    public TrackController(TrackService trackService) {
+        this.trackService = trackService;
+    }
 
     @RequestMapping(value = "/events/{eventId}/tracks",
                     produces = MediaType.APPLICATION_JSON_VALUE,
@@ -32,8 +38,9 @@ public class TrackController {
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Track create(@PathVariable("eventId") Long eventId, @RequestBody @Validated Track track) {
-        return trackService.create(eventId, track);
+    public Track create(@PathVariable("eventId") Event event, @RequestBody @Validated Track track) {
+        track.setEvent(event);
+        return trackService.create(track);
     }
 
     @RequestMapping(value = "tracks/{trackId}",
@@ -41,8 +48,7 @@ public class TrackController {
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public Track update(@PathVariable("trackId") Integer trackId,
-            @RequestBody @Validated Track track) {
+    public Track update(@PathVariable("trackId") Integer trackId, @RequestBody @Validated Track track) {
         validateTrackId(track, trackId);
         return trackService.update(track);
     }

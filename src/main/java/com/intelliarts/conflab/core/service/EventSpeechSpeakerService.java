@@ -30,7 +30,7 @@ public class EventSpeechSpeakerService {
 
     @Transactional
     public SpeechSpeaker createSpeechSpeakerLink(Speech speech, Speaker speaker) {
-        return speechSpeakerRepository.save(new SpeechSpeaker(speech, speaker));
+        return speechSpeakerRepository.create(new SpeechSpeaker(speech, speaker));
     }
 
     @Transactional(readOnly = true)
@@ -54,12 +54,12 @@ public class EventSpeechSpeakerService {
     @Transactional
     public EventSpeechSpeaker createEventSpeechSpeakerLink(Event event, Speech speech, Speaker speaker) {
         SpeechSpeaker speechSpeaker = findSpeechSpeakerLink(speech, speaker);
-        return eventSpeechSpeakerRepository.save(new EventSpeechSpeaker(event, speechSpeaker));
+        return eventSpeechSpeakerRepository.create(new EventSpeechSpeaker(event, speechSpeaker));
     }
 
     @Transactional
     public EventSpeechSpeaker createEventSpeechSpeakerLink(Event event, SpeechSpeaker speechSpeaker) {
-        return eventSpeechSpeakerRepository.save(new EventSpeechSpeaker(event, speechSpeaker));
+        return eventSpeechSpeakerRepository.create(new EventSpeechSpeaker(event, speechSpeaker));
     }
 
     @Transactional

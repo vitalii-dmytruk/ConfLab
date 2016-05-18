@@ -1,20 +1,23 @@
 package com.intelliarts.conflab.core.repository;
 
+import com.intelliarts.conflab.core.entity.Persistable;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.Repository;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Optional;
 
 @NoRepositoryBean
-public interface BaseRepository<T, ID extends Serializable> extends Repository<T, ID> {
+public interface BaseRepository<E extends Persistable<ID>, ID extends Serializable> extends Repository<E, ID> {
 
-    List<T> findAll();
+    List<E> findAll();
 
-    Optional<T> findOne(ID id);
+    E findOne(ID id);
 
-    T save(T persisted);
+    E create(E entity);
 
-    void delete(ID id);
+    E update(E entity);
+
+    void delete(E entity);
+
 }
