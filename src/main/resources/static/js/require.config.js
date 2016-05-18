@@ -13,7 +13,7 @@ var require = {
         "auth"                  : 'js/auth',
         "text"                  : 'lib/requirejs-text/text',
         "jquery"                : 'lib/jquery/jquery.min',
-        "jquery-ui"             : 'lib/jquery-ui/jquery-ui',
+        "jquery-ui"             : 'lib/jquery-ui/',
         "croppie"               : 'lib/croppie/js/croppie.min',
         "toastr"                : 'lib/toastr/toastr.min',
         "select2"               : 'lib/select2/js/select2',
@@ -67,16 +67,11 @@ var require = {
             "deps": ['backbone', 'underscore']
         },
         "gridstack"             : {
-            "deps": ['jquery', 'jquery-ui', 'underscore']
+            "deps": ['jquery',  'underscore']
         }
     },
     map: {
         '*': {
-            'jquery-ui/mouse': 'jquery-ui',
-            'jquery-ui/draggable': 'jquery-ui',
-            'jquery-ui/widget': 'jquery-ui',
-            'jquery-ui/resizable': 'jquery-ui',
-            'jquery-ui/core': 'jquery-ui',
             'lodash': 'underscore'
         }
     }

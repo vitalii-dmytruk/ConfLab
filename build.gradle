@@ -62,6 +62,19 @@ bower {
             source 'dist/*'
         }
 
+        'jqueryui'('1.11.4') {
+            source 'ui/core.js' >> '/jquery-ui/'
+            source 'ui/resizable.js' >> '/jquery-ui/'
+            source 'ui/widget.js' >> '/jquery-ui/'
+            source 'ui/draggable.js' >> '/jquery-ui/'
+            source 'ui/mouse.js' >> '/jquery-ui/'
+            source 'ui/minified/core.min.js' >> '/jquery-ui/'
+            source 'ui/minified/resizable.min.js' >> '/jquery-ui/'
+            source 'ui/minified/widget.min.js' >> '/jquery-ui/'
+            source 'ui/minified/draggable.min.js' >> '/jquery-ui/'
+            source 'ui/minified/mouse.min.js' >> '/jquery-ui/'
+        }
+
         'croppie'('git://github.com/approce/Croppie') {
             source '*.css' >> 'css/'
             source '*.js' >> 'js/'
@@ -76,8 +89,6 @@ bower {
             source 'dist/css/*' >> 'css/'
             source 'dist/fonts/**' >> 'fonts/'
         }
-
-        'basscss'('7.1.x')
 
         'toastr'('2.x.x') {
             source 'toastr*'
@@ -134,6 +145,7 @@ bower {
             source 'dist/*'
 
             excludes 'lodash'
+            excludes 'jquery-ui'
         }
     }
 
