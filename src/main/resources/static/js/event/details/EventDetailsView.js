@@ -57,7 +57,7 @@ define([
             this.currentTabRegion.show(view);
         },
 
-        showScheduleTab: function(view){
+        showScheduleTab: function (view) {
             this.tabs.activateItem(this.scheduleTab);
             this.currentTabRegion.show(view);
         },
@@ -84,8 +84,8 @@ define([
                 view.speakersTab,
                 view.speechesTab,
                 view.partnersTab,
-                view.scheduleTab,
-                view.tracksTab];
+                view.tracksTab,
+                view.scheduleTab];
     }
 
     function createTabModel(eventId, name, path) {
