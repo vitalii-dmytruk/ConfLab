@@ -2,6 +2,8 @@ package com.intelliarts.conflab.core.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.intelliarts.conflab.core.entity.validation.UrlLength;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.Column;
@@ -17,37 +19,19 @@ public class Company extends AbstractImageAwareEntity<Long> {
 
     @NotBlank
     @Column
+    @Getter
+    @Setter
     public String name;
 
     @UrlLength(max = 255, message = "Company URL value is greater then {max} characters.")
     @Column
+    @Getter
+    @Setter
     public URL url;
 
     @JsonIgnore
     @OneToMany(mappedBy = "company")
+    @Getter
+    @Setter
     private Set<Partner> partners;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public URL getUrl() {
-        return url;
-    }
-
-    public void setUrl(URL link) {
-        this.url = link;
-    }
-
-    public Set<Partner> getPartners() {
-        return partners;
-    }
-
-    public void setPartners(Set<Partner> partners) {
-        this.partners = partners;
-    }
 }

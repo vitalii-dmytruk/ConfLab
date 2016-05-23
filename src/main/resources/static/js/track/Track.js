@@ -1,10 +1,10 @@
 define([
-    'backbone'
-], function Track() {
+    'common/Model'
+], function Track(Model) {
 
     'use strict';
 
-    return Backbone.Model.extend({
+    return Model.extend({
         urlRoot: '/tracks',
 
         defaults: function () {

@@ -1,5 +1,8 @@
 package com.intelliarts.conflab.core.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -13,13 +16,19 @@ public class SpeechSpeaker extends AbstractPersistable<Long> {
 
     @ManyToOne
     @JoinColumn(name = "speech_id")
+    @Getter
+    @Setter
     private Speech speech;
 
     @ManyToOne
     @JoinColumn(name = "speaker_id")
+    @Getter
+    @Setter
     private Speaker speaker;
 
     @OneToMany(mappedBy = "speechSpeaker")
+    @Getter
+    @Setter
     private Set<EventSpeechSpeaker> eventSpeechSpeakers;
 
     public SpeechSpeaker() {
@@ -29,29 +38,4 @@ public class SpeechSpeaker extends AbstractPersistable<Long> {
         this.speech = speech;
         this.speaker = speaker;
     }
-
-    public Speech getSpeech() {
-        return speech;
-    }
-
-    public void setSpeech(Speech speech) {
-        this.speech = speech;
-    }
-
-    public Speaker getSpeaker() {
-        return speaker;
-    }
-
-    public void setSpeaker(Speaker speaker) {
-        this.speaker = speaker;
-    }
-
-    public Set<EventSpeechSpeaker> getEventSpeechSpeakers() {
-        return eventSpeechSpeakers;
-    }
-
-    public void setEventSpeechSpeakers(Set<EventSpeechSpeaker> eventSpeechSpeakers) {
-        this.eventSpeechSpeakers = eventSpeechSpeakers;
-    }
 }
-
