@@ -42,6 +42,8 @@ public class Event extends AbstractPersistable<Long> {
     @JsonFormat(pattern = "dd-MMM-yyyy")
     @Column(name = "end_date")
     @Convert(converter = LocalDateConverter.class)
+    @Getter
+    @Setter
     private LocalDate endDate;
 
     @Column
