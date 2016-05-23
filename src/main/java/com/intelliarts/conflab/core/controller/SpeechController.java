@@ -87,7 +87,7 @@ public class SpeechController {
         speechService.linkToEvent(speech, event);
     }
 
-    @RequestMapping(value = "events/{eventId}/speeches/{speechId}",
+    @RequestMapping(value = "/events/{eventId}/speeches/{speechId}",
                     method = RequestMethod.DELETE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public void removeFromEvent(@PathVariable("eventId") Event event, @PathVariable("speechId") Speech speech) {
@@ -120,14 +120,14 @@ public class SpeechController {
     @RequestMapping(value = "/speakers/{speakerId}/speeches",
                     method = GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public Set<Speech> findBySpeakerId(@PathVariable("speakerId") Speaker speaker) {
+    public Set<Speech> findBySpeaker(@PathVariable("speakerId") Speaker speaker) {
         return speechService.findBySpeaker(speaker);
     }
 
     @RequestMapping(value = "/events/{eventId}/speeches",
                     method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public Set<Speech> findByEventId(@PathVariable("eventId") Event event) {
+    public Set<Speech> findByEvent(@PathVariable("eventId") Event event) {
         return speechService.findByEvent(event);
     }
 

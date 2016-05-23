@@ -150,14 +150,14 @@ public class SpeakerController {
     @RequestMapping(value = "/speeches/{speechId}/speakers",
                     method = GET,
                     produces = APPLICATION_JSON_VALUE)
-    public Set<Speaker> findBySpeechId(@PathVariable("speechId") Speech speech) {
+    public Set<Speaker> findBySpeech(@PathVariable("speechId") Speech speech) {
         return speakerService.findBySpeech(speech);
     }
 
     @RequestMapping(value = "/events/{eventId}/speakers",
                     method = GET,
                     produces = APPLICATION_JSON_VALUE)
-    public Set<Speaker> findByEventId(@PathVariable("eventId") Event event) {
+    public Set<Speaker> findByEvent(@PathVariable("eventId") Event event) {
         return speakerService.findByEvent(event);
     }
 
@@ -181,7 +181,7 @@ public class SpeakerController {
     @RequestMapping(value = "/events/{eventId}/speeches/{speechId}/speakers/{speakerId}",
                     method = PUT,
                     produces = APPLICATION_JSON_VALUE)
-    public void linkToEvent(@PathVariable("eventId") Event event, @PathVariable("speechId") Speech speech,
+    public void linkToEventSpeech(@PathVariable("eventId") Event event, @PathVariable("speechId") Speech speech,
             @PathVariable("speakerId") Speaker speaker) {
         speakerService.linkToEventSpeech(speaker, speech, event);
     }
