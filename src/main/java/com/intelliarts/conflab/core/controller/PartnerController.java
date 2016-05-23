@@ -4,8 +4,6 @@ import com.intelliarts.conflab.core.entity.Company;
 import com.intelliarts.conflab.core.entity.Event;
 import com.intelliarts.conflab.core.entity.PartnerLevel;
 import com.intelliarts.conflab.core.entity.Role;
-import com.intelliarts.conflab.core.service.CompanyService;
-import com.intelliarts.conflab.core.service.EventService;
 import com.intelliarts.conflab.core.service.PartnerLevelService;
 import com.intelliarts.conflab.core.service.PartnerService;
 import com.intelliarts.conflab.security.HasAuthority;
@@ -31,16 +29,11 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 @HasAuthority(role = Role.ADMIN)
 public class PartnerController {
 
-    private EventService        eventService;
-    private CompanyService      companyService;
     private PartnerService      partnerService;
     private PartnerLevelService partnerLevelService;
 
     @Autowired
-    public PartnerController(EventService eventService, CompanyService companyService, PartnerService partnerService,
-            PartnerLevelService partnerLevelService) {
-        this.eventService = eventService;
-        this.companyService = companyService;
+    public PartnerController(PartnerService partnerService, PartnerLevelService partnerLevelService) {
         this.partnerService = partnerService;
         this.partnerLevelService = partnerLevelService;
     }
@@ -48,8 +41,7 @@ public class PartnerController {
     @RequestMapping(value = "/events/{eventId}/companies",
                     method = GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public Set<Company> findByEvent(@PathVariable("eventId") Long eventId) {
-        Event event = eventService.findById(eventId);
+    public Set<Company> findByEvent(@PathVariable("eventId") Event event) {
         return partnerService.findByEvent(event);
     }
 
@@ -58,8 +50,7 @@ public class PartnerController {
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Company createAndLinkToEvent(@PathVariable("eventId") Long eventId, @RequestBody @Validated Company company) {
-        Event event = eventService.findById(eventId);
+    public Company createAndLinkToEvent(@PathVariable("eventId") Event event, @RequestBody @Validated Company company) {
         return partnerService.createAndLinkToEvent(event, company);
     }
 
@@ -67,18 +58,14 @@ public class PartnerController {
                     method = PUT,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public void linkToEvent(@PathVariable("eventId") Long eventId, @PathVariable("companyId") Long companyId) {
-        Event event = eventService.findById(eventId);
-        Company company = companyService.findById(companyId);
+    public void linkToEvent(@PathVariable("eventId") Event event, @PathVariable("companyId") Company company) {
         partnerService.linkToEvent(event, company);
     }
 
     @RequestMapping(value = "/events/{eventId}/companies/{companyId}",
                     method = DELETE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public void unlinkFromEvent(@PathVariable("eventId") Long eventId, @PathVariable("companyId") Long companyId) {
-        Event event = eventService.findById(eventId);
-        Company company = companyService.findById(companyId);
+    public void unlinkFromEvent(@PathVariable("eventId") Event event, @PathVariable("companyId") Company company) {
         partnerService.unlinkFromEvent(event, company);
     }
 
@@ -86,21 +73,16 @@ public class PartnerController {
                     method = PUT,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public void updatePartnerLevel(@PathVariable("eventId") Long eventId, @PathVariable("companyId") Long companyId,
-            @PathVariable("partnerLevelId") Long partnerLevelId) {
-        Event event = eventService.findById(eventId);
-        Company company = companyService.findById(companyId);
-        PartnerLevel partnerLevel = partnerLevelService.findById(partnerLevelId);
+    public void updatePartnerLevel(@PathVariable("eventId") Event event, @PathVariable("companyId") Company company,
+            @PathVariable("partnerLevelId") PartnerLevel partnerLevel) {
         partnerService.updatePartnerLevel(event, company, partnerLevel);
     }
 
     @RequestMapping(value = "/events/{eventId}/companies/{companyId}/partnerLevels",
                     method = GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public PartnerLevel getPartnerLevel(@PathVariable("eventId") Long eventId,
-            @PathVariable("companyId") Long companyId) {
-        Event event = eventService.findById(eventId);
-        Company company = companyService.findById(companyId);
+    public PartnerLevel getPartnerLevel(@PathVariable("eventId") Event event,
+            @PathVariable("companyId") Company company) {
         return partnerService.getPartnerLevel(event, company);
     }
 

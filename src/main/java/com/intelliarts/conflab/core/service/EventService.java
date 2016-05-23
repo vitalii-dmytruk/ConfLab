@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class EventService extends AbstractBaseService<Event, Long, EventRepository> {
+public class EventService extends DefaultService<Event, Long> {
     @Autowired
     public EventService(EventRepository eventRepository) {
-        super("Event", eventRepository);
+        super(eventRepository);
     }
 }

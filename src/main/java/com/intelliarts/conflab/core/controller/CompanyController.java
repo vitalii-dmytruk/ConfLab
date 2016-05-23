@@ -64,12 +64,11 @@ public class CompanyController {
                     consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public String createLogo(@PathVariable("companyId") Long companyId,
+    public String createLogo(@PathVariable("companyId") Company company,
             @RequestPart("image") MultipartFile imageFile) {
         if (imageFile == null) {
             throw new IllegalArgumentException("Logo file is not specified.");
         }
-        Company company = companyService.findById(companyId);
         return companyService.createImage(company, imageFile);
     }
 
@@ -77,28 +76,26 @@ public class CompanyController {
                     method = PUT,
                     consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public String updateLogo(@PathVariable("companyId") Long companyId,
+    public String updateLogo(@PathVariable("companyId") Company company,
             @RequestPart("image") MultipartFile imageFile) {
         if (imageFile == null) {
             throw new IllegalArgumentException("Logo file is not specified.");
         }
-        Company company = companyService.findById(companyId);
         return companyService.updateImage(company, imageFile);
     }
 
     @RequestMapping(value = "/companies/{companyId}/logo",
                     method = DELETE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public void deleteLogo(@PathVariable("companyId") Long companyId){
-        Company company = companyService.findById(companyId);
+    public void deleteLogo(@PathVariable("companyId") Company company) {
         companyService.deleteImage(company);
     }
 
     @RequestMapping(value = "/companies/{companyId}",
                     method = GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public Company findById(@PathVariable("companyId") Long companyId) {
-        return companyService.findById(companyId);
+    public Company findById(@PathVariable("companyId") Company company) {
+        return company;
     }
 
 }

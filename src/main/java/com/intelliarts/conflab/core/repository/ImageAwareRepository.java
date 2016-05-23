@@ -9,7 +9,8 @@ import org.springframework.data.repository.query.Param;
 import java.io.Serializable;
 
 @NoRepositoryBean
-public interface ImageAwareRepository<E extends ImageAwareEntity, ID extends Serializable> extends BaseRepository<E, ID> {
+public interface ImageAwareRepository<E extends ImageAwareEntity<ID>, ID extends Serializable>
+        extends BaseRepository<E, ID> {
 
     @Modifying
     @Query("update #{#entityName} entity set image=:image where entity.id = :entityId")

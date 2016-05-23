@@ -4,118 +4,49 @@ import com.intelliarts.conflab.core.entity.Event;
 import com.intelliarts.conflab.core.entity.Speaker;
 import com.intelliarts.conflab.core.entity.Speech;
 import com.intelliarts.conflab.core.entity.SpeechSpeaker;
-import com.intelliarts.conflab.core.repository.SpeechRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
 import java.util.Set;
 
-@Service
-public class SpeechService extends AbstractBaseService<Speech, Long, SpeechRepository> {
 
-    private EventSpeechSpeakerService eventSpeechSpeakerService;
-
-    @Autowired
-    public SpeechService(SpeechRepository speechRepository, EventSpeechSpeakerService eventSpeechSpeakerService) {
-        super("Speech", speechRepository);
-        this.eventSpeechSpeakerService = eventSpeechSpeakerService;
-    }
+public interface SpeechService extends BaseService<Speech, Long> {
+    @Transactional(readOnly = true)
+    Set<Speech> findBySpeaker(Speaker speaker);
 
     @Transactional(readOnly = true)
-    public Set<Speech> findBySpeaker(Speaker speaker) {
-        return repository.findBySpeakerId(speaker.getId());
-    }
+    Set<Speech> findByEvent(Event event);
 
     @Transactional(readOnly = true)
-    public Set<Speech> findByEvent(Event event) {
-        return repository.findByEventId(event.getId());
-    }
-
-    @Transactional(readOnly = true)
-    public Set<Speech> findByEventAndSpeaker(Event event, Speaker speaker) {
-        return repository.findByEventAndSpeaker(event.getId(), speaker.getId());
-    }
+    Set<Speech> findByEventAndSpeaker(Event event, Speaker speaker);
 
     @Transactional
     @Override
-    public Speech create(Speech speech) {
-        Speech createdSpeech = super.create(speech);
-        linkToSpeaker(createdSpeech, null);
-        return createdSpeech;
-    }
+    Speech create(Speech speech);
 
     @Transactional
-    public Speech createAndLinkToSpeaker(Speech speech, Speaker speaker) {
-        Speech createdSpeech = create(speech);
-        linkToSpeaker(createdSpeech, speaker);
-        return createdSpeech;
-    }
+    Speech createAndLinkToSpeaker(Speech speech, Speaker speaker);
 
     @Transactional
-    public SpeechSpeaker linkToSpeaker(Speech speech, Speaker speaker) {
-        return eventSpeechSpeakerService.createSpeechSpeakerLink(speech, speaker);
-    }
+    SpeechSpeaker linkToSpeaker(Speech speech, Speaker speaker);
 
     @Transactional
-    public void unlinkFromSpeaker(Long speechId, Speaker speaker) {
-        Speech speech = findById(speechId);
-        eventSpeechSpeakerService.deleteSpeechSpeakerLink(speech, speaker);
-    }
+    void unlinkFromSpeaker(Long speechId, Speaker speaker);
 
     @Transactional
-    public Speech createAndLinkToEventSpeaker(Speech speech, Speaker speaker, Event event) {
-        eventSpeechSpeakerService.deleteEventNullSpeechSpeakerLink(event, speaker);
-        Speech createdSpeech = create(speech);
-        SpeechSpeaker speechSpeaker = linkToSpeaker(speech, speaker);
-        eventSpeechSpeakerService.createEventSpeechSpeakerLink(event, speechSpeaker);
-        return createdSpeech;
-    }
+    Speech createAndLinkToEventSpeaker(Speech speech, Speaker speaker, Event event);
 
     @Transactional
-    public void linkToEventSpeaker(Speech speech, Speaker speaker, Event event) {
-        eventSpeechSpeakerService.deleteEventNullSpeechOrNullSpeakerLinks(event, speech, speaker);
-        eventSpeechSpeakerService.createEventSpeechSpeakerLink(event, speech, speaker);
-    }
+    void linkToEventSpeaker(Speech speech, Speaker speaker, Event event);
 
     @Transactional
-    public void unlinkFromEventSpeaker(Speech speech, Speaker speaker, Event event) {
-        eventSpeechSpeakerService.deleteEventSpeechSpeakerLink(event, speech, speaker);
-        if (findByEventAndSpeaker(event, speaker).isEmpty()) {
-            eventSpeechSpeakerService.createEventSpeechSpeakerLink(event, null, speaker);
-        }
-    }
+    void unlinkFromEventSpeaker(Speech speech, Speaker speaker, Event event);
 
     @Transactional
-    public Speech createAndLinkToEvent(Speech speech, Event event) {
-        Speech createdSpeech = create(speech);
-        linkToEvent(createdSpeech, event);
-        return createdSpeech;
-    }
+    Speech createAndLinkToEvent(Speech speech, Event event);
 
     @Transactional
-    public void linkToEvent(Speech speech, Event event) {
-        Set<SpeechSpeaker> speechSpeakers = eventSpeechSpeakerService.findSpeechSpeakerLink(speech);
-        if (hasSpeakers(speechSpeakers)) {
-            speechSpeakers.forEach(speechSpeaker -> {
-                if (Objects.nonNull(speechSpeaker.getSpeaker())) {
-                    eventSpeechSpeakerService.deleteEventNullSpeechSpeakerLink(event, speechSpeaker.getSpeaker());
-                    eventSpeechSpeakerService.createEventSpeechSpeakerLink(event, speechSpeaker);
-                }
-            });
-        } else {
-            eventSpeechSpeakerService.createEventSpeechSpeakerLink(event, speechSpeakers.iterator().next());
-        }
-    }
+    void linkToEvent(Speech speech, Event event);
 
     @Transactional
-    public void unlinkFromEvent(Speech speech, Event event) {
-        eventSpeechSpeakerService.deleteEventSpeechSpeakerLinks(event, speech);
-    }
-
-    private boolean hasSpeakers(Set<SpeechSpeaker> speechSpeakers) {
-        return speechSpeakers.size() > 1;
-    }
-
+    void unlinkFromEvent(Speech speech, Event event);
 }
