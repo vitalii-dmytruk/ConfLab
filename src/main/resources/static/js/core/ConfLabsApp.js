@@ -3,22 +3,22 @@ define([
     'core/NotificationService',
     'core/HomepageRouter',
     'header/HeaderService',
-    'menu/MenuService',
     'speaker/SpeakerRouter',
     'speech/SpeechRouter',
+    'company/CompanyRouter',
     'event/EventRouter',
     'auth/AuthService',
     'account/AccountRouter',
     'backbone.marionette'
-], function (ConfLabsLayoutView, NotificationService, HomepageRouter, HeaderService, MenuService, SpeakerRouter, SpeechRouter,
-    EventRouter, AuthService, AccountRouter) {
+], function (ConfLabsLayoutView, NotificationService, HomepageRouter, HeaderService, SpeakerRouter, SpeechRouter,
+    CompanyRouter, EventRouter, AuthService, AccountRouter) {
 
     'use strict';
 
     var ConfLabApp = Marionette.Application.extend({
 
         initialize: function () {
-            this.layout = new ConfLabsLayoutView();
+            this.layout       = new ConfLabsLayoutView();
             this.layout.render();
             this.notification = new NotificationService();
             this.authService  = new AuthService({
@@ -31,10 +31,6 @@ define([
             this.notification.start();
 
             this.authService.refreshSession().always(function () {
-
-                app.menu = new MenuService({
-                    container: app.layout.getRegion('menu')
-                });
 
                 app.header = new HeaderService({
                     container: app.layout.getRegion('header')
@@ -57,6 +53,10 @@ define([
                 });
 
                 app.speech = new SpeechRouter({
+                    container: app.layout.getRegion('main')
+                });
+
+                app.company = new CompanyRouter({
                     container: app.layout.getRegion('main')
                 });
 

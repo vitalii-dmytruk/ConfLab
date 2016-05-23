@@ -1,102 +1,59 @@
 package com.intelliarts.conflab.core.entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.util.Set;
 
-
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Table(name = "speaker")
-public class Speaker {
+public class Speaker extends AbstractImageAwareEntity<Long> {
 
-    @Id
-    @SequenceGenerator(name = "speaker_seq", sequenceName = "speaker_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "speaker_seq")
-    @Column
-    private Long id;
-
-    @NotEmpty
     @Column(nullable = false, unique = true)
     @NotBlank(message = "Speaker name cannot be empty.")
     @Length(max = 255, message = "Speaker name is greater then {max} characters.")
+    @Getter
+    @Setter
     private String name;
 
     @Email(message = "'${validatedValue}' is not valid email address.")
     @NotBlank(message = "Email address is not specified.")
     @Column(nullable = false, unique = true)
+    @Getter
+    @Setter
     private String email;
 
     @Length(max = 255, message = "Speaker position is greater then {max} characters.")
     @Column
+    @Getter
+    @Setter
     private String position;
 
     @Column
+    @Getter
+    @Setter
     private String about;
+
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "company_id")
+    @Getter
+    @Setter
+    private Company company;
 
     @JsonIgnore
     @OneToMany(mappedBy = "speaker")
+    @Getter
+    @Setter
     private Set<SpeechSpeaker> speechSpeakers;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPosition() {
-        return position;
-    }
-
-    public void setPosition(String position) {
-        this.position = position;
-    }
-
-    public String getAbout() {
-        return about;
-    }
-
-    public void setAbout(String about) {
-        this.about = about;
-    }
-
-    public Set<SpeechSpeaker> getSpeechSpeakers() {
-        return speechSpeakers;
-    }
-
-    public void setSpeechSpeakers(Set<SpeechSpeaker> speechSpeakers) {
-        this.speechSpeakers = speechSpeakers;
-    }
 }

@@ -2,8 +2,9 @@ define([
     'backbone.radio',
     'common/Service',
     'header/HeaderView',
-    'header/HeaderModel'
-], function (Radio, Service, HeaderView, HeaderModel) {
+    'header/HeaderModel',
+    'common/navigation/NavigationView'
+], function (Radio, Service, HeaderView, HeaderModel, NavigationView) {
 
     'use strict';
 
@@ -17,17 +18,28 @@ define([
         },
 
         onStart: function () {
-            this.view = new HeaderView({
+            var appMenu = new NavigationView({
+                className: 'nav navbar-nav'
+            });
+            this.view   = new HeaderView({
                 model: new HeaderModel()
             });
             this.container.show(this.view);
+            this.view.appMenuRegion.show(appMenu);
+
             this.channel.reply({
                 showAccountMenu: this.showAccountMenu
-            }, this)
+            }, this);
+            this.channel.reply({
+                add       : appMenu.addItems,
+                activate  : appMenu.activateItem,
+                remove    : appMenu.removeItem,
+                deactivate: appMenu.deactivateItem
+            }, appMenu)
         },
 
         showAccountMenu: function (accountMenuView) {
-            this.view.showChildView('accountMenu', accountMenuView);
+            this.view.accountMenuRegion.show(accountMenuView);
         }
 
     });

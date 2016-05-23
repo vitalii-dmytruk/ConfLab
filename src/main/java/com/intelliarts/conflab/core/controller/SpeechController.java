@@ -4,8 +4,6 @@ import com.intelliarts.conflab.core.entity.Event;
 import com.intelliarts.conflab.core.entity.Role;
 import com.intelliarts.conflab.core.entity.Speaker;
 import com.intelliarts.conflab.core.entity.Speech;
-import com.intelliarts.conflab.core.service.EventService;
-import com.intelliarts.conflab.core.service.SpeakerService;
 import com.intelliarts.conflab.core.service.SpeechService;
 import com.intelliarts.conflab.security.HasAuthority;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,15 +29,11 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 @HasAuthority(role = Role.ADMIN)
 public class SpeechController {
 
-    private SpeechService  speechService;
-    private SpeakerService speakerService;
-    private EventService   eventService;
+    private SpeechService speechService;
 
     @Autowired
-    public SpeechController(SpeechService speechService, SpeakerService speakerService, EventService eventService) {
+    public SpeechController(SpeechService speechService) {
         this.speechService = speechService;
-        this.speakerService = speakerService;
-        this.eventService = eventService;
     }
 
     @RequestMapping(value = "/speeches",
@@ -51,13 +45,13 @@ public class SpeechController {
         return speechService.create(speech);
     }
 
-    @RequestMapping(value = "/speakers/{id}/speeches", method = POST,
+    @RequestMapping(value = "/speakers/{speakerId}/speeches", method = POST,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Speech createAndLinkToSpeaker(@PathVariable("id") Long speakerId, @RequestBody @Validated Speech speech) {
+    public Speech createAndLinkToSpeaker(@PathVariable("speakerId") Speaker speaker,
+            @RequestBody @Validated Speech speech) {
         speech.setId(null);
-        Speaker speaker = speakerService.findById(speakerId);
         return speechService.createAndLinkToSpeaker(speech, speaker);
     }
 
@@ -65,17 +59,14 @@ public class SpeechController {
                     method = PUT,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public void linkToSpeaker(@PathVariable("speechId") Long speechId, @PathVariable("speakerId") Long speakerId) {
-        Speaker speaker = speakerService.findById(speakerId);
-        Speech speech = speechService.findById(speechId);
+    public void linkToSpeaker(@PathVariable("speakerId") Speaker speaker, @PathVariable("speechId") Speech speech) {
         speechService.linkToSpeaker(speech, speaker);
     }
 
     @RequestMapping(value = {"/speakers/{speakerId}/speeches/{speechId}", "/speeches/{speechId}/speakers/{speakerId}"},
                     method = DELETE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public void unlinkFromSpeaker(@PathVariable("speakerId") Long speakerId, @PathVariable("speechId") Long speechId) {
-        Speaker speaker = speakerService.findById(speakerId);
+    public void unlinkFromSpeaker(@PathVariable("speakerId") Speaker speaker, @PathVariable("speechId") Long speechId) {
         speechService.unlinkFromSpeaker(speechId, speaker);
     }
 
@@ -84,8 +75,7 @@ public class SpeechController {
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Speech createAndLinkToEvent(@PathVariable("eventId") Long eventId, @RequestBody @Validated Speech speech) {
-        Event event = eventService.findById(eventId);
+    public Speech createAndLinkToEvent(@PathVariable("eventId") Event event, @RequestBody @Validated Speech speech) {
         return speechService.createAndLinkToEvent(speech, event);
     }
 
@@ -93,18 +83,14 @@ public class SpeechController {
                     method = PUT,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public void linkToEvent(@PathVariable("eventId") Long eventId, @PathVariable("speechId") Long speechId) {
-        Event event = eventService.findById(eventId);
-        Speech speech = speechService.findById(speechId);
+    public void linkToEvent(@PathVariable("eventId") Event event, @PathVariable("speechId") Speech speech) {
         speechService.linkToEvent(speech, event);
     }
 
-    @RequestMapping(value = "events/{eventId}/speeches/{speechId}",
+    @RequestMapping(value = "/events/{eventId}/speeches/{speechId}",
                     method = RequestMethod.DELETE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public void removeFromEvent(@PathVariable("eventId") Long eventId, @PathVariable("speechId") Long speechId) {
-        Event event = eventService.findById(eventId);
-        Speech speech = speechService.findById(speechId);
+    public void removeFromEvent(@PathVariable("eventId") Event event, @PathVariable("speechId") Speech speech) {
         speechService.unlinkFromEvent(speech, event);
     }
 
@@ -115,77 +101,65 @@ public class SpeechController {
         return speechService.findAll();
     }
 
-    @RequestMapping(value = "/speeches/{id}",
+    @RequestMapping(value = "/speeches/{speechId}",
                     method = PUT,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public Speech update(@PathVariable("id") Long id, @RequestBody @Validated Speech speech) {
-        speech.setId(id);
+    public Speech update(@PathVariable("speechId") Speech existedSpeech, @RequestBody @Validated Speech speech) {
+        speech.setId(existedSpeech.getId());
         return speechService.update(speech);
     }
 
-    @RequestMapping(value = "/speeches/{id}",
+    @RequestMapping(value = "/speeches/{speechId}",
                     method = GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public Speech findById(@PathVariable("id") Long id) {
-        return speechService.findById(id);
+    public Speech findById(@PathVariable("speechId") Long speechId) {
+        return speechService.findById(speechId);
     }
 
-    @RequestMapping(value = "/speakers/{id}/speeches",
+    @RequestMapping(value = "/speakers/{speakerId}/speeches",
                     method = GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public Set<Speech> findBySpeakerId(@PathVariable("id") Long speakerId) {
-        Speaker speaker = speakerService.findById(speakerId);
+    public Set<Speech> findBySpeaker(@PathVariable("speakerId") Speaker speaker) {
         return speechService.findBySpeaker(speaker);
     }
 
-    @RequestMapping(value = "/events/{id}/speeches",
+    @RequestMapping(value = "/events/{eventId}/speeches",
                     method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public Set<Speech> findByEventId(@PathVariable("id") Long id) {
-        Event event = eventService.findById(id);
+    public Set<Speech> findByEvent(@PathVariable("eventId") Event event) {
         return speechService.findByEvent(event);
     }
 
     @RequestMapping(value = "/events/{eventId}/speakers/{speakerId}/speeches",
                     method = GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public Set<Speech> findByEventAndSpeaker(@PathVariable("speakerId") Long speakerId,
-            @PathVariable("eventId") Long eventId) {
-        Event event = eventService.findById(eventId);
-        Speaker speaker = speakerService.findById(speakerId);
+    public Set<Speech> findByEventAndSpeaker(@PathVariable("eventId") Event event,
+            @PathVariable("speakerId") Speaker speaker) {
         return speechService.findByEventAndSpeaker(event, speaker);
     }
 
     @RequestMapping(value = "/events/{eventId}/speakers/{speakerId}/speeches",
                     method = POST,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public Speech createAndLinkToEventSpeaker(@PathVariable("speakerId") Long speakerId,
-            @PathVariable("eventId") Long eventId, @RequestBody @Validated Speech speech) {
-        Event event = eventService.findById(eventId);
-        Speaker speaker = speakerService.findById(speakerId);
+    public Speech createAndLinkToEventSpeaker(@PathVariable("eventId") Event event,
+            @PathVariable("speakerId") Speaker speaker, @RequestBody @Validated Speech speech) {
         return speechService.createAndLinkToEventSpeaker(speech, speaker, event);
     }
 
     @RequestMapping(value = "/events/{eventId}/speakers/{speakerId}/speeches/{speechId}",
                     method = PUT,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public void linkToEventSpeaker(@PathVariable("speakerId") Long speakerId, @PathVariable("eventId") Long eventId,
-            @PathVariable("speechId") Long speechId) {
-        Event event = eventService.findById(eventId);
-        Speaker speaker = speakerService.findById(speakerId);
-        Speech speech = speechService.findById(speechId);
+    public void linkToEventSpeaker(@PathVariable("eventId") Event event, @PathVariable("speakerId") Speaker speaker,
+            @PathVariable("speechId") Speech speech) {
         speechService.linkToEventSpeaker(speech, speaker, event);
     }
 
     @RequestMapping(value = "/events/{eventId}/speakers/{speakerId}/speeches/{speechId}",
                     method = RequestMethod.DELETE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public void removeFromEventSpeaker(@PathVariable("eventId") Long eventId, @PathVariable("speakerId") Long speakerId,
-            @PathVariable("speechId") Long speechId) {
-        Event event = eventService.findById(eventId);
-        Speaker speaker = speakerService.findById(speakerId);
-        Speech speech = speechService.findById(speechId);
+    public void removeFromEventSpeaker(@PathVariable("eventId") Event event, @PathVariable("speakerId") Speaker speaker,
+            @PathVariable("speechId") Speech speech) {
         speechService.unlinkFromEventSpeaker(speech, speaker, event);
     }
 }

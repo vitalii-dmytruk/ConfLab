@@ -4,17 +4,20 @@ var require = {
         "core"                  : 'js/core',
         "account"               : 'js/account',
         "common"                : 'js/common',
-        "menu"                  : 'js/menu',
         "header"                : 'js/header',
+        "company"               : 'js/company',
         "speaker"               : 'js/speaker',
         "speech"                : 'js/speech',
+        "track"                 : 'js/track',
         "event"                 : 'js/event',
         "auth"                  : 'js/auth',
         "text"                  : 'lib/requirejs-text/text',
         "jquery"                : 'lib/jquery/jquery.min',
+        "jquery-ui"             : 'lib/jquery-ui/',
+        "croppie"               : 'lib/croppie/js/croppie.min',
         "toastr"                : 'lib/toastr/toastr.min',
-        "select2"               : 'lib/select2/js/select2.full',
-        "underscore"            : 'lib/underscore/underscore-min',
+        "select2"               : 'lib/select2/js/select2',
+        "underscore"            : 'lib/underscore/underscore',
         "backbone"              : 'lib/backbone/backbone-min',
         "backbone.marionette"   : 'lib/marionette/backbone.marionette',
         "backbone.babysitter"   : 'lib/backbone.babysitter/backbone.babysitter',
@@ -23,7 +26,9 @@ var require = {
         "backbone.nested.models": 'lib/backbone-nested-models/backbone-nested-models',
         "backbone.validation"   : 'lib/backbone-validation/backbone-validation-min',
         "bootstrap"             : 'lib/bootstrap/js/bootstrap.min',
-        "bootstrap.datepicker"  : 'lib/bootstrap-datepicker/js/bootstrap-datepicker'
+        "bootstrap.datepicker"  : 'lib/bootstrap-datepicker/js/bootstrap-datepicker',
+        "moment"                : 'lib/moment/moment',
+        "gridstack"             : 'lib/gridstack/gridstack'
     },
     shim   : {
         "jquery"                : {
@@ -35,7 +40,7 @@ var require = {
         "bootstrap"             : {
             "deps": ['jquery']
         },
-        "bootstrap.datepicker"             : {
+        "bootstrap.datepicker"  : {
             "deps": ['jquery']
         },
         "toastr"                : {
@@ -60,6 +65,14 @@ var require = {
         },
         "backbone.validation"   : {
             "deps": ['backbone', 'underscore']
+        },
+        "gridstack"             : {
+            "deps": ['jquery',  'underscore']
+        }
+    },
+    map: {
+        '*': {
+            'lodash': 'underscore'
         }
     }
 };

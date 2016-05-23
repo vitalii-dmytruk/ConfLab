@@ -3,8 +3,9 @@ define([
     'common/view/EditView',
     'common/search/SearchView',
     'text!common/view/ItemsInEventTemplate.html',
+    'backbone.radio',
     'backbone.marionette'
-], function EventItemView(EventItemListView, EditView, SearchView, template) {
+], function EventItemView(EventItemListView, EditView, SearchView, template, Radio) {
 
     //noinspection JSUnusedGlobalSymbols
     return Marionette.LayoutView.extend({
@@ -26,9 +27,13 @@ define([
 
         onBeforeShow: function () {
             this.itemListRegion.show(createListView(this));
-            this.selectEventItemRegion.show(createSearchView(this));
+            isSearchNeeded(this) && this.selectEventItemRegion.show(createSearchView(this));
         }
     });
+
+    function isSearchNeeded(view) {
+        return view.options.searchCollection;
+    }
 
     function showCreateView() {
         this.itemListRegion.currentView.deactivateItem();
@@ -88,11 +93,7 @@ define([
 
         componentView = new options.DetailsView({model: model});
         view.eventItemRegion.show(componentView);
-
-        componentView.showAttachment(new options.attachmentView({
-            collection      : getCollection(options, view.model.url() + model.url()),
-            searchCollection: getCollection(options, model.url())
-        }));
+        options.attachmentRoute.enter([componentView.attachment, view.model, model]);
     }
 
     function addAndSelectItem(view, model) {
@@ -103,11 +104,11 @@ define([
         if (findItem(collection, model)) {
             deferred = $.Deferred().resolve();
         } else {
-            deferred = addItem(model, collection);
+            deferred = addItem(model, collection).then(notifySuccess(view, model));
         }
 
         deferred.done(function () {
-            selectItem(view, model)
+            selectItem(view, model);
         });
     }
 
@@ -135,10 +136,15 @@ define([
         return collection.get(model.get('id'))
     }
 
-    function getCollection(options, url) {
-        var collection = new options.attachedCollectionType();
-        collection.url = url + collection.url;
-        collection.fetch();
-        return collection;
+    function notifySuccess(view, item) {
+        var itemName, eventName, message;
+
+        itemName  = item.get(view.options.searchLabelAttribute);
+        eventName = view.model.get('name');
+        message   = '"' + itemName + '" added to the "' + eventName + '" event';
+
+        return function () {
+            Radio.channel('notify').request('success', message);
+        }
     }
 });

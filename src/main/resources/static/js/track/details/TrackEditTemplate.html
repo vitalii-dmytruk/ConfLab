@@ -1,0 +1,27 @@
+<br/>
+<form class="form-horizontal">
+    <div class="form-group">
+        <label for="name" class="col-md-2 control-label required">Name</label>
+
+        <div class="col-md-8">
+            <input id="name" type="text" class="form-control" placeholder="Name" maxlength="255">
+            <span class="help-block hidden"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="capacity" class="col-md-2 control-label">Capacity</label>
+
+        <div class="col-md-8">
+            <input id="capacity" type="number" class="form-control" placeholder="Capacity" min="0"
+                   max="1000000"/>
+            <span class="help-block hidden"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-8">
+            <button data-submit-btn type="submit" class="btn btn-success">Ok</button>
+            <div data-cancel-btn class="btn btn-default">Cancel</div>
+        </div>
+    </div>
+</form>

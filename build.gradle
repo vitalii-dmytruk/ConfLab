@@ -1,19 +1,20 @@
 buildscript {
     ext {
-        springBootVersion = '1.3.1.RELEASE'
+        springBootVersion = '1.3.3.RELEASE'
     }
     repositories {
         mavenCentral()
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-        classpath("io.spring.gradle:dependency-management-plugin:0.5.4.RELEASE")
-        classpath("org.flywaydb:flyway-gradle-plugin:3.2.1")
+        classpath("io.spring.gradle:dependency-management-plugin:0.5.6.RELEASE")
+        classpath("org.flywaydb:flyway-gradle-plugin:4.0")
     }
 }
 
 plugins {
     id 'com.craigburke.bower-installer' version '2.5.1'
+    id 'com.craigburke.karma' version '1.4.3'
 }
 
 apply plugin: 'java'
@@ -42,9 +43,10 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
     compile("org.springframework.boot:spring-boot-starter-security")
-    compile("org.springframework.security:spring-security-core:4.0.3.RELEASE")
-    compile("org.flywaydb:flyway-core:3.2.1")
-    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.6.4")
+    compile("org.springframework.security:spring-security-core:4.0.4.RELEASE")
+    compile("org.flywaydb:flyway-core:4.0")
+    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.7.3")
+    compile "org.projectlombok:lombok:1.16.8"
     runtime("org.postgresql:postgresql:9.4-1206-jdbc42")
 
     testCompile('junit:junit:4.12')
@@ -61,7 +63,23 @@ bower {
             source 'dist/*'
         }
 
-        'jqueryui'()
+        'jqueryui'('1.11.4') {
+            source 'ui/core.js' >> '/jquery-ui/'
+            source 'ui/resizable.js' >> '/jquery-ui/'
+            source 'ui/widget.js' >> '/jquery-ui/'
+            source 'ui/draggable.js' >> '/jquery-ui/'
+            source 'ui/mouse.js' >> '/jquery-ui/'
+            source 'ui/minified/core.min.js' >> '/jquery-ui/'
+            source 'ui/minified/resizable.min.js' >> '/jquery-ui/'
+            source 'ui/minified/widget.min.js' >> '/jquery-ui/'
+            source 'ui/minified/draggable.min.js' >> '/jquery-ui/'
+            source 'ui/minified/mouse.min.js' >> '/jquery-ui/'
+        }
+
+        'croppie'('git://github.com/approce/Croppie') {
+            source '*.css' >> 'css/'
+            source '*.js' >> 'js/'
+        }
 
         'underscore'('1.8.x') {
             source 'underscore*'
@@ -73,12 +91,9 @@ bower {
             source 'dist/fonts/**' >> 'fonts/'
         }
 
-        'basscss'('7.0.x')
-
-        'toastr'('2.x.x')   {
+        'toastr'('2.x.x') {
             source 'toastr*'
         }
-
 
         'html.sortable'('0.3.x')
 
@@ -98,11 +113,11 @@ bower {
             source 'backbone.stickit.js'
         }
 
-        'backbone-nested-models'('blittle/backbone-nested-models#v2.0.2') {
+        'backbone-nested-models'('blittle/backbone-nested-models#v2.0.x') {
             source 'backbone-nested-models*'
         }
 
-        'backbone-validation'('0.11.5'){
+        'backbone-validation'('0.11.x') {
             source 'dist/*'
         }
 
@@ -112,18 +127,26 @@ bower {
 
         'requirejs-text'()
 
-        'select2'('4.0.1') {
+        'select2'('4.x') {
             source 'dist/js/*' >> 'js/'
             source 'dist/css/*' >> 'css/'
         }
 
-        'select2-bootstrap-theme'('0.1.0-beta.4'){
+        'select2-bootstrap-theme'('0.1.0-beta.4') {
             source 'dist/*'
         }
-        'bootstrap-datepicker'('1.5.x'){
+
+        'bootstrap-datepicker'('1.6.x') {
             source 'dist/js/*' >> 'js/'
             source 'dist/css/*' >> 'css/'
             source 'dist/locales/*' >> 'locales/'
+        }
+
+        'gridstack'('0.2.x') {
+            source 'dist/*'
+
+            excludes 'lodash'
+            excludes 'jquery-ui'
         }
     }
 
@@ -132,4 +155,35 @@ bower {
     ]
 }
 
+project.ext {
+    jasmineDependencies = ['karma-junit-reporter']
+}
+
+task setupTestDependencies(type: NpmTask) {
+    outputs.dir file('node_modules')
+    args = ['install']
+    jasmineDependencies.each {
+        args.add("$it")
+    }
+}
+
+karma {
+    colors = true
+    browsers = ['PhantomJS']
+    frameworks = ['jasmine']
+    reporters = ['junit']
+    junitReporter = [outputDir     : 'build/test-results',
+                     useBrowserName: true]
+    plugins = [
+            'karma-jasmine',
+            'karma-junit-reporter',
+            'karma-phantomjs-launcher',
+    ]
+
+    files = [
+            'src/test/js/**.*js'
+    ]
+}
+
 assemble.dependsOn(bowerRefresh)
+karmaRun.dependsOn(setupTestDependencies)

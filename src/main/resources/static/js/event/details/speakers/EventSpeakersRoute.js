@@ -1,9 +1,12 @@
 define([
     'event/details/EventDetailsRoute',
-    'speaker/speakerViewFactory',
+    'event/details/EventItemAttachmentRoute',
     'speech/speechViewFactory',
+    'speaker/speakerViewFactory',
+    'speech/SpeechCollection',
     'speaker/SpeakerCollection'
-], function (EventDetailsRoute, speakerViewFactory, speechViewFactory, SpeakerCollection) {
+], function (EventDetailsRoute, EventItemAttachmentRoute, speechViewFactory, speakerViewFactory,
+             SpeechCollection, SpeakerCollection) {
     'use strict';
 
     return EventDetailsRoute.extend({
@@ -21,7 +24,10 @@ define([
                 model           : this.model,
                 collection      : this.speakers,
                 searchCollection: this.speakersSearchCollection,
-                attachmentView  : speechViewFactory.attachedItemTableView
+                attachmentRoute: new EventItemAttachmentRoute({
+                    attachedCollectionType: SpeechCollection,
+                    attachmentView        : speechViewFactory.attachedItemTableView
+                })
             });
 
             this.view.showSpeakersTab(eventView);

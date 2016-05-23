@@ -8,7 +8,7 @@ define([
 
     return Router.extend({
         onBeforeEnter: function () {
-            Radio.channel('menu').request('deactivate');
+            Radio.channel('header').request('deactivate');
         },
 
         initialize: function (options) {
