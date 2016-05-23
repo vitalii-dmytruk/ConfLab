@@ -2,6 +2,8 @@ package com.intelliarts.conflab.core.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
@@ -23,6 +25,8 @@ public class User  extends AbstractPersistable<Long> implements UserDetails {
     @NotBlank(message = "Username cannot be empty")
     @Length(max = 50, message = "Username cannot be longer than {max} characters")
     @Column(nullable = false)
+    @Getter
+    @Setter
     private String username;
 
     @JsonIgnore
@@ -32,32 +36,31 @@ public class User  extends AbstractPersistable<Long> implements UserDetails {
     @Email(message = "Invalid user email")
     @Length(max = 50, message = "User's email cannot be longer than {max} characters")
     @Column(nullable = false, unique = true)
+    @Getter
+    @Setter
     private String email;
 
     @NotBlank(message = "User's First Name cannot be empty")
     @Length(max = 255, message = "User's First Name cannot be longer than {max} characters")
     @Column(nullable = false, name = "first_name")
+    @Getter
+    @Setter
     private String firstName;
 
     @NotBlank(message = "User's Last Name cannot be empty")
     @Length(max = 255, message = "User's Last Name cannot be longer than {max} characters")
     @Column(nullable = false, name = "last_name")
+    @Getter
+    @Setter
     private String lastName;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_authority",
                joinColumns = @JoinColumn(name = "user_id"),
                inverseJoinColumns = @JoinColumn(name = "authority_id"))
+    @Getter
+    @Setter
     private Set<Authority> authorities;
-
-    @Override
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     @JsonIgnore
     public String getPassword() {
@@ -67,39 +70,6 @@ public class User  extends AbstractPersistable<Long> implements UserDetails {
     @JsonProperty
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    @Override
-    public Set<Authority> getAuthorities() {
-        return authorities;
-    }
-
-    public void setAuthorities(Set<Authority> authorities) {
-        this.authorities = authorities;
     }
 
     @Override
@@ -121,5 +91,4 @@ public class User  extends AbstractPersistable<Long> implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
 }

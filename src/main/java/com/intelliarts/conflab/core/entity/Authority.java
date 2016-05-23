@@ -1,5 +1,7 @@
 package com.intelliarts.conflab.core.entity;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Entity;
@@ -13,15 +15,9 @@ import java.util.Objects;
 public class Authority extends AbstractPersistable<Integer> implements GrantedAuthority {
 
     @Enumerated(EnumType.STRING)
+    @Getter
+    @Setter
     private Role role;
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
 
     @Override
     public String getAuthority() {
