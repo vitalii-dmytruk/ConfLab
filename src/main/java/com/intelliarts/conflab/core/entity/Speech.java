@@ -15,32 +15,31 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.Set;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "speech")
 public class Speech extends AbstractPersistable<Long> {
 
     @Column(columnDefinition = "TEXT")
-    @Getter
-    @Setter
     private String description;
 
     @NotBlank(message = "Speech title cannot be empty.")
     @Length(max = 255, message = "Speech title is greater then {max} characters.")
     @Column(nullable = false, unique = true)
     @NotEmpty
-    @Getter
-    @Setter
     private String title;
 
     @ManyToOne
     @JoinColumn(name = "lang_id")
-    @Getter
-    @Setter
     private Language lang;
 
     @JsonIgnore
     @OneToMany(mappedBy = "speech")
-    @Getter
-    @Setter
     private Set<SpeechSpeaker> speechSpeakers;
+
+    @ManyToOne
+    @JoinColumn(name = "event_id", updatable = false)
+    private Event event;
+
 }
