@@ -11,9 +11,11 @@ define([
     'use strict';
 
     return ItemDetailsRoute.extend({
-        itemModelClass       : SpeechModel,
-        collectionClass      : SpeakerCollection,
-        itemDetailsView      : SpeechDetailsLayoutView,
-        attachedItemTableView: speakerViewFactory.itemTableView
+        itemModelClass : SpeechModel,
+        itemDetailsView: SpeechDetailsLayoutView,
+
+        attachedCollectionTitle: 'Speakers',
+        attachedRowView        : speakerViewFactory.itemRowView,
+        collectionClass        : SpeakerCollection
     });
 });
