@@ -1,16 +1,16 @@
 define([
     'common/route/ItemDetailsRoute',
-    'speaker/speakerViewFactory',
+    'speaker/details/SpeakerShowView',
     'speech/speechViewFactory',
     'speaker/SpeakerModel',
     'speech/SpeechCollection'
-], function (ItemDetailsRoute, speakerViewFactory, speechViewFactory, SpeakerModel, SpeechCollection) {
+], function (ItemDetailsRoute, SpeakerShowView, speechViewFactory, SpeakerModel, SpeechCollection) {
 
     'use strict';
 
     return ItemDetailsRoute.extend({
         itemModelClass : SpeakerModel,
-        itemDetailsView: speakerViewFactory.itemDetailsView,
+        itemDetailsView: SpeakerShowView,
 
         attachedCollectionTitle: 'Speeches',
         attachedRowView        : speechViewFactory.itemRowView,
