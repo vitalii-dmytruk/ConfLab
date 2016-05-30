@@ -1,6 +1,6 @@
 define([
     'common/route/Route',
-    'common/TableController',
+    'common/ListController',
     'common/view/DetailsLayout'
 ], function (Route, TableController, DetailsLayout) {
 

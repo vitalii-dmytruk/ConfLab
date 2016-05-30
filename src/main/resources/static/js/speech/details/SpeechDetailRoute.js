@@ -1,12 +1,10 @@
 define([
     'common/route/ItemDetailsRoute',
-    'speech/speechViewFactory',
     'speaker/speakerViewFactory',
     'speech/SpeechModel',
     'speaker/SpeakerCollection',
     'speech/details/SpeechShowView'
-], function (ItemDetailsRoute, speechViewFactory, speakerViewFactory, SpeechModel, SpeakerCollection,
-             SpeechShowView) {
+], function (ItemDetailsRoute, speakerViewFactory, SpeechModel, SpeakerCollection, SpeechShowView) {
 
     'use strict';
 

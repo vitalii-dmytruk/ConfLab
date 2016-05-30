@@ -1,5 +1,5 @@
 define([
-    'text!common/view/TableTemplate.html',
+    'text!common/view/ListTemplate.html',
     'common/search/SearchView',
     'backbone.marionette'
 ], function (template, SearchView) {

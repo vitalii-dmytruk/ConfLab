@@ -1,6 +1,6 @@
 define([
     'common/route/Route',
-    'common/view/TableComponentView'
+    'common/view/ListComponentView'
 ], function TableController(Route, TableComponentView) {
 
     'use strict';

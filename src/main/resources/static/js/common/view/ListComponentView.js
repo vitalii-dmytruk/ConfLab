@@ -1,5 +1,5 @@
 define([
-    'text!common/view/TableTemplate.html',
+    'text!common/view/ListTemplate.html',
     'backbone.marionette'
 ], function (template) {
     'use strict';
