@@ -2,7 +2,7 @@ define([
     'common/route/Route',
     'common/ListController',
     'common/view/DetailsLayout'
-], function (Route, TableController, DetailsLayout) {
+], function (Route, ListController, DetailsLayout) {
 
     'use strict';
 
@@ -38,7 +38,7 @@ define([
     }
 
     function showAttachment(container, attachedCollectionTitle, attachedRowView, collection) {
-        new TableController({
+        new ListController({
             title          : attachedCollectionTitle,
             container      : container,
             attachedRowView: attachedRowView,

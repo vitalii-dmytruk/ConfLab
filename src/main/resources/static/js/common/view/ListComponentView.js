@@ -1,7 +1,7 @@
 define([
     'text!common/view/ListTemplate.html',
     'backbone.marionette'
-], function (template) {
+], function ListComponentView(template) {
     'use strict';
 
     return Marionette.LayoutView.extend({
