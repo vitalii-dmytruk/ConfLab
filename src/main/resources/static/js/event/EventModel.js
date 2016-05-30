@@ -55,7 +55,7 @@ define([
                 if (validateMsg) {
                     return validateMsg;
                 }
-                if (value < computedState.startDate) {
+                if (new Date(value).getTime() < new Date(computedState.startDate).getTime()) {
                     return 'End date can not be earlier than start date';
                 }
             }
