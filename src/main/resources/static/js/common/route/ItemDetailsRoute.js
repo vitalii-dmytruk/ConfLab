@@ -1,7 +1,8 @@
 define([
     'common/route/Route',
-    'common/TableController'
-], function (Route, TableController) {
+    'common/TableController',
+    'common/view/DetailsLayout'
+], function (Route, TableController, DetailsLayout) {
 
     'use strict';
 
@@ -20,21 +21,28 @@ define([
         },
 
         render: function () {
-            this.view = new this.itemDetailsView({model: this.model});
-            this.container.show(this.view);
+            var layout           = new DetailsLayout(),
+                detailsRegion    = layout.getRegion('content'),
+                attachmentRegion = layout.getRegion('attachment');
 
-            showAttachment(this);
+            this.container.show(layout);
+
+            showDetailsView(detailsRegion, this.itemDetailsView, this.model);
+            showAttachment(attachmentRegion, this.attachedCollectionTitle, this.attachedRowView,
+                           this.collection);
         }
     });
 
-    function showAttachment(route) {
-        var tableController = new TableController({
-            title          : route.attachedCollectionTitle,
-            container      : route.view.getRegion('attachment'),
-            attachedRowView: route.attachedRowView,
-            collection     : route.collection
-        });
+    function showDetailsView(container, ViewClass, model) {
+        container.show(new ViewClass({model: model}));
+    }
 
-        tableController.enter();
+    function showAttachment(container, attachedCollectionTitle, attachedRowView, collection) {
+        new TableController({
+            title          : attachedCollectionTitle,
+            container      : container,
+            attachedRowView: attachedRowView,
+            collection     : collection
+        }).enter();
     }
 });
