@@ -1,6 +1,8 @@
 define([
-    'common/route/Route'
-], function (Route) {
+    'common/route/Route',
+    'common/ListController',
+    'common/view/DetailsLayout'
+], function (Route, ListController, DetailsLayout) {
 
     'use strict';
 
@@ -11,23 +13,36 @@ define([
         },
 
         fetch: function (id) {
-            this.model            = new this.itemModelClass({id: id});
-            this.collection       = new this.collectionClass();
-            this.collection.url   = this.model.url() + this.collection.url;
-            this.searchCollection = new this.collectionClass();
+            this.model          = new this.itemModelClass({id: id});
+            this.collection     = new this.collectionClass();
+            this.collection.url = this.model.url() + this.collection.url;
 
-            return $.when(this.model.fetch(), this.collection.fetch(), this.searchCollection.fetch());
+            return $.when(this.model.fetch(), this.collection.fetch());
         },
 
         render: function () {
-            this.view = new this.itemDetailsView({model: this.model});
-            this.container.show(this.view);
+            var layout           = new DetailsLayout(),
+                detailsRegion    = layout.getRegion('content'),
+                attachmentRegion = layout.getRegion('attachment');
 
-            this.view.showAttachment(new this.attachedItemTableView({
-                    collection      : this.collection,
-                    searchCollection: this.searchCollection
-                })
-            );
+            this.container.show(layout);
+
+            showDetailsView(detailsRegion, this.itemDetailsView, this.model);
+            showAttachment(attachmentRegion, this.attachedCollectionTitle, this.attachedRowView,
+                           this.collection);
         }
     });
+
+    function showDetailsView(container, ViewClass, model) {
+        container.show(new ViewClass({model: model}));
+    }
+
+    function showAttachment(container, attachedCollectionTitle, attachedRowView, collection) {
+        new ListController({
+            title          : attachedCollectionTitle,
+            container      : container,
+            attachedRowView: attachedRowView,
+            collection     : collection
+        }).enter();
+    }
 });

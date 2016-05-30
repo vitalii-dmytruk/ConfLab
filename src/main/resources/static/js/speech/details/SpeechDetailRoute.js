@@ -1,17 +1,19 @@
 define([
     'common/route/ItemDetailsRoute',
-    'speech/speechViewFactory',
     'speaker/speakerViewFactory',
     'speech/SpeechModel',
-    'speaker/SpeakerCollection'
-], function (ItemDetailsRoute, speechViewFactory, speakerViewFactory, SpeechModel, SpeakerCollection) {
+    'speaker/SpeakerCollection',
+    'speech/details/SpeechShowView'
+], function (ItemDetailsRoute, speakerViewFactory, SpeechModel, SpeakerCollection, SpeechShowView) {
 
     'use strict';
 
     return ItemDetailsRoute.extend({
-        itemModelClass       : SpeechModel,
-        collectionClass      : SpeakerCollection,
-        itemDetailsView      : speechViewFactory.itemDetailsView,
-        attachedItemTableView: speakerViewFactory.attachedItemTableView
+        itemModelClass : SpeechModel,
+        itemDetailsView: SpeechShowView,
+
+        attachedCollectionTitle: 'Speakers',
+        attachedRowView        : speakerViewFactory.itemRowView,
+        collectionClass        : SpeakerCollection
     });
 });
