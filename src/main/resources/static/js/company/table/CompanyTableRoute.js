@@ -8,6 +8,9 @@ define([
 
     return ItemTableRoute.extend({
         collectionClass: CompanyCollection,
-        tableView      : companyViewFactory.itemTableView
+
+        title  : 'Companies',
+        rowView: companyViewFactory.itemRowView,
+        EditView: companyViewFactory.itemEditView
     });
 });

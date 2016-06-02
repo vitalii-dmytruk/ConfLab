@@ -8,6 +8,9 @@ define([
 
     return ItemTableRoute.extend({
         collectionClass: SpeakerCollection,
-        tableView      : speakerViewFactory.itemTableView
+
+        title   : 'Speakers',
+        rowView : speakerViewFactory.itemRowView,
+        EditView: speakerViewFactory.itemEditView
     });
 });

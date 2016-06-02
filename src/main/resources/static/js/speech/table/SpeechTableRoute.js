@@ -8,6 +8,8 @@ define([
 
     return ItemTableRoute.extend({
         collectionClass: SpeechCollection,
-        tableView      : speechViewFactory.itemTableView
+
+        title  : 'Speeches',
+        rowView: speechViewFactory.itemRowView
     });
 });

@@ -1,6 +1,7 @@
 define([
-    'common/route/Route'
-], function (Route) {
+    'common/route/Route',
+    'common/ListController'
+], function (Route, ListController) {
 
     'use strict';
 
@@ -15,11 +16,13 @@ define([
         },
 
         render: function () {
-            var view = new this.tableView({
-                collection: this.collection
-            });
-            this.container.show(view);
+            new ListController({
+                title     : this.title,
+                collection: this.collection,
+                rowView   : this.rowView,
+                container : this.container,
+                EditView  : this.EditView
+            }).enter();
         }
-
     });
 });

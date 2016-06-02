@@ -8,6 +8,9 @@ define([
 
     return ItemTableRoute.extend({
         collectionClass: EventCollection,
-        tableView      : eventViewFactory.itemTableView
+
+        title   : 'Conferences',
+        rowView : eventViewFactory.itemRowView,
+        EditView: eventViewFactory.itemEditView
     });
 });
