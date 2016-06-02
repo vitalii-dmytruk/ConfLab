@@ -7,11 +7,7 @@ define([
 
     return Route.extend({
 
-        initialize: function (options) {
-            this.options = options;
-        },
-
-        enter: function () {
+        render: function () {
             var listView    = new ListView();
             this.editRegion = listView.editRegion;
 
