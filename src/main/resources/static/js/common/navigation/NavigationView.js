@@ -25,7 +25,7 @@ define([
         },
 
         removeItem: function (menuItem) {
-            this.collection.remove(this.collection.findWhere(menuItem));
+            this.collection.remove(menuItem);
         },
 
         resetItems: function (menuItems) {

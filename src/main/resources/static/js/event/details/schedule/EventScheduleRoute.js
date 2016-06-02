@@ -1,19 +1,20 @@
 define([
-    'event/details/EventDetailsRoute',
+    'common/route/Route',
     'event/details/schedule/EventScheduleView'
-], function EventScheduleRoute(EventDetailsRoute, EventScheduleView) {
+], function EventScheduleRoute(Route, EventScheduleView) {
 
     'use strict';
 
-    return EventDetailsRoute.extend({
+    return Route.extend({
 
-        fetch: function () {
-            return this.model.fetch();
+        initialize: function (options) {
+            this.event     = options.event;
+            this.container = options.container
         },
 
         render: function () {
-            this.view.showScheduleTab(new EventScheduleView({
-                model: this.model
+            this.container.show(new EventScheduleView({
+                model: this.event
             }));
         }
     });
