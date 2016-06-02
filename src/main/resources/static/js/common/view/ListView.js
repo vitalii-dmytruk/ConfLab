@@ -1,7 +1,7 @@
 define([
     'text!common/view/ListTemplate.html',
     'backbone.marionette'
-], function ListComponentView(template) {
+], function ListView(template) {
     'use strict';
 
     return Marionette.LayoutView.extend({
@@ -11,6 +11,10 @@ define([
         ui: {
             title : '#table-title',
             addBtn: '#add-button'
+        },
+
+        triggers: {
+            'click @ui.addBtn': 'create:new'
         },
 
         regions: {
@@ -25,6 +29,10 @@ define([
 
         showTitle: function (title) {
             this.ui.title.text(title);
+        },
+
+        supportCreating: function () {
+            this.ui.addBtn.show();
         }
     });
 });
