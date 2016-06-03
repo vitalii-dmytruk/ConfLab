@@ -1,30 +1,35 @@
 define([
-    'event/details/EventDetailsRoute',
+    'common/route/Route',
     'event/details/partners/PartnerLevelRoute',
     'company/companyViewFactory',
     'company/CompanyCollection'
-], function (EventDetailsRoute, PartnerLevelRoute, companyViewFactory, CompanyCollection) {
+], function EventPartnersRoute(Route, PartnerLevelRoute, companyViewFactory, CompanyCollection) {
 
     'use strict';
 
-    return EventDetailsRoute.extend({
+    return Route.extend({
+
+        initialize: function (options) {
+            this.event     = options.event;
+            this.container = options.container
+        },
 
         fetch: function () {
             this.companies                 = new CompanyCollection();
-            this.companies.url             = this.model.url() + this.companies.url;
+            this.companies.url             = this.event.url() + this.companies.url;
             this.companiesSearchCollection = new CompanyCollection();
 
-            return $.when(this.model.fetch(), this.companies.fetch(), this.companiesSearchCollection.fetch());
+            return $.when(this.companies.fetch(), this.companiesSearchCollection.fetch());
         },
 
         render: function () {
             var eventView = companyViewFactory.newEventView({
-                model           : this.model,
+                model           : this.event,
                 collection      : this.companies,
                 searchCollection: this.companiesSearchCollection,
                 attachmentRoute : new PartnerLevelRoute()
             });
-            this.view.showPartnersTab(eventView);
+            this.container.show(eventView);
         }
     });
 });

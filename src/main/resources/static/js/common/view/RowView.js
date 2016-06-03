@@ -10,7 +10,7 @@ define([
 
         attributes: function () {
             return {
-                href: '#' + this.model.url()
+                href: '#' + this.model.url().substr(1)
             };
         },
 

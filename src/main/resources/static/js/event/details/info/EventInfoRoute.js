@@ -1,19 +1,20 @@
 define([
-    'event/details/EventDetailsRoute',
+    'common/route/Route',
     'event/eventViewFactory'
-], function (EventDetailsRoute, eventViewFactory) {
+], function (Route, eventViewFactory) {
 
     'use strict';
 
-    return EventDetailsRoute.extend({
+    return Route.extend({
 
-        fetch: function () {
-            return this.model.fetch();
+        initialize: function (options) {
+            this.event = options.event;
+            this.container = options.container
         },
 
         render: function () {
-            this.view.showInfoTab(new eventViewFactory.itemDetailsView({
-                model: this.model
+            this.container.show(new eventViewFactory.itemDetailsView({
+                model: this.event
             }));
         }
     });

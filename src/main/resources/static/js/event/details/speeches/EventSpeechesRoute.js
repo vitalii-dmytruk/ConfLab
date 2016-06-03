@@ -1,28 +1,34 @@
 define([
-    'event/details/EventDetailsRoute',
+    'common/route/Route',
     'event/details/EventItemAttachmentRoute',
     'speech/speechViewFactory',
     'speaker/speakerViewFactory',
     'speech/SpeechCollection',
     'speaker/SpeakerCollection'
-], function (EventDetailsRoute, EventItemAttachmentRoute, speechViewFactory, speakerViewFactory,
+], function (Route, EventItemAttachmentRoute, speechViewFactory, speakerViewFactory,
              SpeechCollection, SpeakerCollection) {
 
     'use strict';
 
-    return EventDetailsRoute.extend({
+    return Route.extend({
+
+
+        initialize: function (options) {
+            this.event     = options.event;
+            this.container = options.container
+        },
 
         fetch: function () {
             this.speeches                 = new SpeechCollection();
-            this.speeches.url             = this.model.url() + this.speeches.url;
+            this.speeches.url             = this.event.url() + this.speeches.url;
             this.speechesSearchCollection = new SpeechCollection();
 
-            return $.when(this.model.fetch(), this.speeches.fetch(), this.speechesSearchCollection.fetch());
+            return $.when(this.speeches.fetch(), this.speechesSearchCollection.fetch());
         },
 
         render: function () {
             var eventView = speechViewFactory.newEventView({
-                model           : this.model,
+                model           : this.event,
                 collection      : this.speeches,
                 searchCollection: this.speechesSearchCollection,
                 attachmentRoute : new EventItemAttachmentRoute({
@@ -30,7 +36,7 @@ define([
                     attachmentView        : speakerViewFactory.attachedItemTableView
                 })
             });
-            this.view.showSpeechesTab(eventView);
+            this.container.show(eventView);
         }
     });
 });
