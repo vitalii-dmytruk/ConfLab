@@ -7,16 +7,31 @@ define([
 
     return Route.extend({
 
+        props: [
+            'container', 'rowView', 'collection', 'collectionClass', 'title', 'EditView'
+        ],
+
+        constructor: function (options) {
+            this.mergeOptions(options, this.props)
+        },
+
+        fetch: function () {
+            if (this.collectionClass && !this.collection) {
+                this.collection = new this.collectionClass();
+                return this.collection.fetch({reset: true});
+            }
+        },
+
         render: function () {
             var listView    = new ListView();
             this.editRegion = listView.editRegion;
 
-            this.options.container.show(listView);
+            this.container.show(listView);
 
-            listView.showTitle(this.options.title);
-            listView.showChildView('listRegion', createCollectionView(this.options.collection,
-                                                                      this.options.rowView));
-            if (this.options.EditView) {
+            listView.showTitle(this.title);
+            listView.showChildView('listRegion', createCollectionView(this.collection, this.rowView));
+
+            if (this.EditView) {
                 listView.supportCreating();
                 listView.on('create:new', showEditView, this);
             }
@@ -31,13 +46,11 @@ define([
     }
 
     function showEditView() {
-        var EditView   = this.options.EditView,
-            Model      = this.options.collection.model,
-            collection = this.options.collection,
+        var collection = this.collection,
             editRegion = this.editRegion;
 
-        var editView = new EditView({
-            model: new Model()
+        var editView = new this.EditView({
+            model: new this.collection.model()
         });
 
         var hideEditView = function () {
