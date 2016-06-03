@@ -31,7 +31,10 @@ define([
                 searchCollection: this.speakersSearchCollection,
                 attachmentRoute : new EventItemAttachmentRoute({
                     attachedCollectionType: SpeechCollection,
-                    attachmentView        : speechViewFactory.attachedItemTableView
+                    title                 : speakerViewFactory.tableTitle,
+                    searchLabelAttribute  : speechViewFactory.searchLabelAttribute,
+                    EditView              : speechViewFactory.itemEditView,
+                    rowView               : speechViewFactory.itemRowView
                 })
             });
 
