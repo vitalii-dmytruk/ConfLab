@@ -8,10 +8,6 @@ define([
 
     return Marionette.Object.extend({
 
-        constructor: function () {
-            this.initialize.apply(this, arguments);
-        },
-
         requireAuth: true,
 
         enter: function (args) {

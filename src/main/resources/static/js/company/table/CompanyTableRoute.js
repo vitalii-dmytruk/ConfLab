@@ -1,13 +1,16 @@
 define([
-    'common/route/ItemTableRoute',
+    'common/ListController',
     'company/companyViewFactory',
     'company/CompanyCollection'
-], function (ItemTableRoute, companyViewFactory, CompanyCollection) {
+], function (ListController, companyViewFactory, CompanyCollection) {
 
     'use strict';
 
-    return ItemTableRoute.extend({
+    return ListController.extend({
         collectionClass: CompanyCollection,
-        tableView      : companyViewFactory.itemTableView
+
+        title  : 'Companies',
+        rowView: companyViewFactory.itemRowView,
+        EditView: companyViewFactory.itemEditView
     });
 });

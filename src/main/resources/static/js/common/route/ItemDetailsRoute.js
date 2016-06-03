@@ -39,10 +39,10 @@ define([
 
     function showAttachment(container, attachedCollectionTitle, attachedRowView, collection) {
         new ListController({
-            title          : attachedCollectionTitle,
-            container      : container,
-            attachedRowView: attachedRowView,
-            collection     : collection
+            title     : attachedCollectionTitle,
+            container : container,
+            rowView   : attachedRowView,
+            collection: collection
         }).enter();
     }
 });
