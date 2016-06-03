@@ -1,12 +1,12 @@
 define([
-    'common/route/ItemTableRoute',
+    'common/ListController',
     'speaker/speakerViewFactory',
     'speaker/SpeakerCollection'
-], function (ItemTableRoute, speakerViewFactory, SpeakerCollection) {
+], function (ListController, speakerViewFactory, SpeakerCollection) {
 
     'use strict';
 
-    return ItemTableRoute.extend({
+    return ListController.extend({
         collectionClass: SpeakerCollection,
 
         title   : 'Speakers',

@@ -1,12 +1,12 @@
 define([
-    'common/route/ItemTableRoute',
+    'common/ListController',
     'event/eventViewFactory',
     'event/EventCollection'
-], function (ItemTableRoute, eventViewFactory, EventCollection) {
+], function (ListController, eventViewFactory, EventCollection) {
 
     'use strict';
 
-    return ItemTableRoute.extend({
+    return ListController.extend({
         collectionClass: EventCollection,
 
         title   : 'Conferences',

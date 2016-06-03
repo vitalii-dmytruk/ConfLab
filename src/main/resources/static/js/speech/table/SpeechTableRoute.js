@@ -1,12 +1,12 @@
 define([
-    'common/route/ItemTableRoute',
+    'common/ListController',
     'speech/speechViewFactory',
     'speech/SpeechCollection'
-], function (ItemTableRoute, speechViewFactory, SpeechCollection) {
+], function (ListController, speechViewFactory, SpeechCollection) {
 
     'use strict';
 
-    return ItemTableRoute.extend({
+    return ListController.extend({
         collectionClass: SpeechCollection,
 
         title  : 'Speeches',
