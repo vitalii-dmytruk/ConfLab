@@ -18,7 +18,8 @@ define([
         fetch: function (container, eventModel, itemModel) {
             this.collection       =
                 getCollection(this.attachedCollectionType, eventModel.url() + itemModel.url());
-            this.searchCollection = getCollection(this.attachedCollectionType, itemModel.url());
+            this.searchCollection =
+                createSearchCollection(this.attachedCollectionType, eventModel.get('id'));
             return $.when(this.collection.fetch(), this.searchCollection.fetch());
         },
 
@@ -38,6 +39,12 @@ define([
     function getCollection(Collection, url) {
         var collection = new Collection();
         collection.url = url + collection.url;
+        return collection;
+    }
+
+    function createSearchCollection(Collection, eventId) {
+        var collection = new Collection();
+        collection.url = collection.url + '?eventId=' + eventId;
         return collection;
     }
 });

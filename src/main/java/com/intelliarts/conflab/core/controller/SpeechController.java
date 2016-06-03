@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -97,8 +99,12 @@ public class SpeechController {
     @RequestMapping(value = "/speeches",
                     method = GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Speech> findAll() {
-        return speechService.findAll();
+    public List<Speech> getSpeeches(@RequestParam(value = "eventId", required = false) Event event) {
+        if (event != null) {
+            return new ArrayList<>(speechService.findByEvent(event));
+        } else {
+            return speechService.findAll();
+        }
     }
 
     @RequestMapping(value = "/speeches/{speechId}",
