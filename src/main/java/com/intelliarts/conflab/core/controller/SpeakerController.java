@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -100,12 +101,8 @@ public class SpeakerController {
     @RequestMapping(value = "/speakers",
                     method = GET,
                     produces = APPLICATION_JSON_VALUE)
-    public List<Speaker> getSpeakers(@RequestParam(value = "eventId", required = false) Event event) {
-        if (event != null) {
-            return new ArrayList<>(speakerService.findByEvent(event));
-        } else {
-            return speakerService.findAll();
-        }
+    public Collection<Speaker> getSpeakers(@RequestParam(value = "eventId", required = false) Event event) {
+        return event != null ? speakerService.findByEvent(event) : speakerService.findAll();
     }
 
     @RequestMapping(value = "/speeches/{speechId}/speakers",

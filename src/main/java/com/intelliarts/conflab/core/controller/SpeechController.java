@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -99,12 +100,8 @@ public class SpeechController {
     @RequestMapping(value = "/speeches",
                     method = GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Speech> getSpeeches(@RequestParam(value = "eventId", required = false) Event event) {
-        if (event != null) {
-            return new ArrayList<>(speechService.findByEvent(event));
-        } else {
-            return speechService.findAll();
-        }
+    public Collection<Speech> getSpeeches(@RequestParam(value = "eventId", required = false) Event event) {
+        return event != null ? speechService.findByEvent(event) : speechService.findAll();
     }
 
     @RequestMapping(value = "/speeches/{speechId}",
