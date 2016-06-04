@@ -59,16 +59,7 @@ public class SpeechController {
                     produces = APPLICATION_JSON_VALUE)
     public Collection<Speech> getSpeeches(@RequestParam(value = "eventId", required = false) Event event,
             @RequestParam(value = "speakerId", required = false) Speaker speaker) {
-
-        if (event != null && speaker != null) {
-            return speechService.findByEventAndSpeaker(event, speaker);
-        } else if (event != null) {
-            return speechService.findByEvent(event);
-        } else if (speaker != null) {
-            return speechService.findBySpeaker(speaker);
-        } else {
-            return speechService.findAll();
-        }
+        return speechService.find(event, speaker);
     }
 
     @RequestMapping(value = "/speeches/{speechId}",
