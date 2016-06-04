@@ -19,10 +19,8 @@ public interface SpeechRepository extends BaseRepository<Speech, Long> {
     Set<Speech> findBySpeakerId(@Param("speakerId") Long speakerId);
 
     @Query(value = "SELECT speech " +
-                   "FROM EventSpeechSpeaker eventSpeechSpeaker " +
-                   "JOIN eventSpeechSpeaker.speechSpeaker speechSpeaker " +
-                   "JOIN speechSpeaker.speech speech " +
-                   "WHERE eventSpeechSpeaker.event.id=:eventId " +
-                   "AND speechSpeaker.speaker.id =:speakerId")
+                   "FROM Speech speech " +
+                   "   JOIN speech.speechSpeakers speechSpeaker " +
+                   "WHERE speech.event.id= :eventId AND speechSpeaker.speaker.id = :speakerId")
     Set<Speech> findByEventAndSpeaker(@Param("eventId") Long eventId, @Param("speakerId") Long speakerId);
 }
