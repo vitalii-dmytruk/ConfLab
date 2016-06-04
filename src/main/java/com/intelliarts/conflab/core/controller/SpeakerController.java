@@ -25,6 +25,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.MediaType.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
@@ -47,7 +49,7 @@ public class SpeakerController {
                     method = POST,
                     consumes = APPLICATION_JSON_VALUE,
                     produces = APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(CREATED)
     public Speaker create(@RequestBody @Validated Speaker speaker) {
         return speakerService.create(speaker);
     }
@@ -61,11 +63,25 @@ public class SpeakerController {
         return speakerService.update(speaker);
     }
 
+    @RequestMapping(value = "/speakers",
+                    method = GET,
+                    produces = APPLICATION_JSON_VALUE)
+    public Collection<Speaker> getSpeakers(@RequestParam(value = "eventId", required = false) Event event) {
+        return event != null ? speakerService.findByEvent(event) : speakerService.findAll();
+    }
+
+    @RequestMapping(value = "/speakers/{speakerId}",
+                    method = GET,
+                    produces = APPLICATION_JSON_VALUE)
+    public Speaker getById(@PathVariable("speakerId") Speaker speaker) {
+        return speaker;
+    }
+
     @RequestMapping(value = "/speakers/{speakerId}/avatar",
                     method = POST,
                     consumes = MULTIPART_FORM_DATA_VALUE,
                     produces = APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(CREATED)
     public String createAvatar(@PathVariable("speakerId") Speaker speaker, @RequestPart("image") MultipartFile file) {
         if (file == null) {
             throw new IllegalArgumentException("Avatar file is not specified.");
@@ -86,35 +102,23 @@ public class SpeakerController {
 
     @RequestMapping(value = "/speakers/{speakerId}/avatar",
                     method = DELETE,
-                    produces = MediaType.APPLICATION_JSON_VALUE)
+                    produces = APPLICATION_JSON_VALUE)
     public void deleteAvatar(@PathVariable("speakerId") Speaker speaker) {
         speakerService.deleteImage(speaker);
     }
 
-    @RequestMapping(value = "/speakers/{speakerId}",
-                    method = GET,
-                    produces = APPLICATION_JSON_VALUE)
-    public Speaker getById(@PathVariable("speakerId") Speaker speaker) {
-        return speaker;
-    }
-
-    @RequestMapping(value = "/speakers",
-                    method = GET,
-                    produces = APPLICATION_JSON_VALUE)
-    public Collection<Speaker> getSpeakers(@RequestParam(value = "eventId", required = false) Event event) {
-        return event != null ? speakerService.findByEvent(event) : speakerService.findAll();
-    }
-
+    //TODO investigate whether should be removed?
     @RequestMapping(value = "/speeches/{speechId}/speakers",
                     method = POST,
                     consumes = APPLICATION_JSON_VALUE,
                     produces = APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(CREATED)
     public Speaker createAndLinkToSpeech(@PathVariable("speechId") Speech speech,
             @RequestBody @Validated Speaker speaker) {
         return speakerService.createAndLinkToSpeech(speaker, speech);
     }
 
+    //TODO should be removed
     @RequestMapping(value = "/speeches/{speechId}/speakers/{speakerId}",
                     method = PUT,
                     consumes = APPLICATION_JSON_VALUE,
@@ -123,11 +127,12 @@ public class SpeakerController {
         speakerService.linkToSpeech(speaker, speech);
     }
 
+    //TODO should be removed
     @RequestMapping(value = "/events/{eventId}/speakers",
                     method = POST,
                     consumes = APPLICATION_JSON_VALUE,
                     produces = APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(CREATED)
     public Speaker createAndLinkToEvent(@PathVariable("eventId") Event event, @RequestBody @Validated Speaker speaker)
             throws IOException {
         speaker = speakerService.create(speaker);
@@ -135,6 +140,7 @@ public class SpeakerController {
         return speaker;
     }
 
+    //TODO should be removed
     @RequestMapping(value = "/events/{eventId}/speakers/{speakerId}",
                     method = PUT,
                     consumes = APPLICATION_JSON_VALUE,
@@ -143,6 +149,7 @@ public class SpeakerController {
         speakerService.linkToEvent(speaker, event);
     }
 
+    //TODO should be removed
     @RequestMapping(value = "/events/{eventId}/speakers/{speakerId}",
                     method = DELETE,
                     produces = APPLICATION_JSON_VALUE)
@@ -150,6 +157,7 @@ public class SpeakerController {
         speakerService.unlinkFromEvent(speaker, event);
     }
 
+    //TODO should be removed
     @RequestMapping(value = "/speeches/{speechId}/speakers",
                     method = GET,
                     produces = APPLICATION_JSON_VALUE)
@@ -157,6 +165,7 @@ public class SpeakerController {
         return speakerService.findBySpeech(speech);
     }
 
+    //TODO should be removed
     @RequestMapping(value = "/events/{eventId}/speakers",
                     method = GET,
                     produces = APPLICATION_JSON_VALUE)
@@ -164,6 +173,7 @@ public class SpeakerController {
         return speakerService.findByEvent(event);
     }
 
+    //TODO should be removed
     @RequestMapping(value = "/events/{eventId}/speeches/{speechId}/speakers",
                     method = GET,
                     produces = APPLICATION_JSON_VALUE)
@@ -172,6 +182,7 @@ public class SpeakerController {
         return speakerService.findByEventAndSpeech(event, speech);
     }
 
+    //TODO should be removed
     @RequestMapping(value = "/events/{eventId}/speeches/{speechId}/speakers",
                     method = POST,
                     consumes = APPLICATION_JSON_VALUE,
@@ -181,6 +192,7 @@ public class SpeakerController {
         return speakerService.createAndLinkToEventSpeech(speaker, speech, event);
     }
 
+    //TODO should be removed
     @RequestMapping(value = "/events/{eventId}/speeches/{speechId}/speakers/{speakerId}",
                     method = PUT,
                     produces = APPLICATION_JSON_VALUE)
@@ -189,6 +201,7 @@ public class SpeakerController {
         speakerService.linkToEventSpeech(speaker, speech, event);
     }
 
+    //TODO should be removed
     @RequestMapping(value = "/events/{eventId}/speeches/{speechId}/speakers/{speakerId}",
                     method = DELETE,
                     produces = APPLICATION_JSON_VALUE)
