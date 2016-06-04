@@ -1,6 +1,7 @@
 define([
-    'common/route/Route'
-], function (Route) {
+    'common/route/Route',
+    'common/ListController'
+], function (Route, ListController) {
 
     'use strict';
 
@@ -9,19 +10,29 @@ define([
         initialize: function (options) {
             this.attachedCollectionType = options.attachedCollectionType;
             this.attachmentView         = options.attachmentView;
+            this.rowView                = options.rowView;
+            this.EditView               = options.EditView;
+            this.searchLabelAttribute   = options.searchLabelAttribute;
         },
 
         fetch: function (container, eventModel, itemModel) {
-            this.collection       = getCollection(this.attachedCollectionType, eventModel.url() + itemModel.url());
-            this.searchCollection = getCollection(this.attachedCollectionType, itemModel.url());
+            this.collection       =
+                getCollection(this.attachedCollectionType, eventModel.url() + itemModel.url());
+            this.searchCollection =
+                createSearchCollection(this.attachedCollectionType, eventModel.get('id'));
             return $.when(this.collection.fetch(), this.searchCollection.fetch());
         },
 
         render: function (container) {
-            container.show(new this.attachmentView({
-                collection      : this.collection,
-                searchCollection: this.searchCollection
-            }));
+            new ListController({
+                container           : container,
+                collection          : this.collection,
+                title               : this.title,
+                rowView             : this.rowView,
+                searchLabelAttribute: this.searchLabelAttribute,
+                searchCollection    : this.searchCollection,
+                EditView            : this.EditView
+            }).enter();
         }
     });
 
@@ -31,4 +42,9 @@ define([
         return collection;
     }
 
+    function createSearchCollection(Collection, eventId) {
+        var collection = new Collection();
+        collection.url = collection.url + '?eventId=' + eventId;
+        return collection;
+    }
 });

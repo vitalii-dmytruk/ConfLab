@@ -1,18 +1,23 @@
 define([
     'common/route/Route',
-    'common/view/ListView'
-], function ListController(Route, ListView) {
+    'common/view/ListView',
+    'common/search/SearchView',
+    'backbone'
+], function ListController(Route, ListView, SearchView) {
 
     'use strict';
 
     return Route.extend({
 
         props: [
-            'container', 'rowView', 'collection', 'collectionClass', 'title', 'EditView'
+            'container', 'rowView', 'collection', 'collectionClass', 'title',
+            'EditView',
+            'searchCollection', 'searchLabelAttribute'
         ],
 
         constructor: function (options) {
-            this.mergeOptions(options, this.props)
+            this.mergeOptions(options, this.props);
+            Route.apply(this, arguments);
         },
 
         fetch: function () {
@@ -23,8 +28,9 @@ define([
         },
 
         render: function () {
-            var listView    = new ListView();
-            this.editRegion = listView.editRegion;
+            var listView          = new ListView();
+            this.editRegion       = listView.editRegion;
+            this.selectItemRegion = listView.selectItemRegion;
 
             this.container.show(listView);
 
@@ -34,6 +40,9 @@ define([
             if (this.EditView) {
                 listView.supportCreating();
                 listView.on('create:new', showEditView, this);
+            }
+            if (this.searchCollection && this.searchLabelAttribute) {
+                showSelectView(this);
             }
         }
     });
@@ -64,6 +73,21 @@ define([
         editView.onCancel = hideEditView;
 
         editRegion.show(editView);
+    }
+
+
+    function showSelectView(route) {
+        var searchView = new SearchView({
+            model         : new Backbone.Model(),
+            labelAttribute: route.searchLabelAttribute,
+            collection    : route.searchCollection
+        });
+
+        searchView.onFound = function (model) {
+            addItemIfNotExist(route.collection, model);
+        };
+
+        route.selectItemRegion.show(searchView);
     }
 
     function addItemIfNotExist(collection, model) {
