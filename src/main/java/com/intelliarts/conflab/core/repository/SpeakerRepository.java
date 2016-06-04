@@ -10,11 +10,11 @@ import java.util.Set;
 @Repository
 public interface SpeakerRepository extends ImageAwareRepository<Speaker, Long> {
 
-    @Query(value = "SELECT DISTINCT speaker.* " +
-                   "FROM speech " +
-                   "  INNER JOIN speech_speaker ON speech.id = speech_speaker.speech_id " +
-                   "  INNER JOIN speaker AS speaker ON speaker.id = speech_speaker.speaker_id " +
-                   "WHERE event_id = :eventId", nativeQuery = true)
+    @Query(value = "SELECT DISTINCT speaker " +
+                   "FROM Speech speech " +
+                   "   JOIN speech.speechSpeakers speechSpeaker " +
+                   "   JOIN speechSpeaker.speaker speaker " +
+                   "WHERE speech.event.id = :eventId")
     Set<Speaker> findByEventId(@Param("eventId") Long eventId);
 
     @Query(value = "SELECT speaker " +
