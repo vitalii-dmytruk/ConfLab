@@ -6,16 +6,24 @@ import com.intelliarts.conflab.core.entity.Speech;
 import com.intelliarts.conflab.core.entity.SpeechSpeaker;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.Set;
 
 
 public interface SpeechService extends BaseService<Speech, Long> {
+
+    @Transactional(readOnly = true)
+    Collection<Speech> find(Event event, Speaker speaker);
+
+    //TODO investigate whether this method should be removed.
     @Transactional(readOnly = true)
     Set<Speech> findBySpeaker(Speaker speaker);
 
+    //TODO investigate whether this method should be removed.
     @Transactional(readOnly = true)
     Set<Speech> findByEvent(Event event);
 
+    //TODO investigate whether this method should be removed.
     @Transactional(readOnly = true)
     Set<Speech> findByEventAndSpeaker(Event event, Speaker speaker);
 

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
 
@@ -23,6 +24,19 @@ public class SpeechServiceImpl extends DefaultService<Speech, Long> implements S
         super(speechRepository);
         this.speechRepository = speechRepository;
         this.eventSpeechSpeakerService = eventSpeechSpeakerService;
+    }
+
+    @Override
+    public Collection<Speech> find(Event event, Speaker speaker) {
+        if (event != null && speaker != null) {
+            return speechRepository.findByEventAndSpeaker(event.getId(), speaker.getId());
+        } else if (event != null) {
+            return speechRepository.findByEventId(event.getId());
+        } else if (speaker != null) {
+            return speechRepository.findBySpeakerId(speaker.getId());
+        } else {
+            return speechRepository.findAll();
+        }
     }
 
     @Override
