@@ -17,12 +17,11 @@ define([
             var options = {
                 cellHeight    : 50,
                 verticalMargin: 10,
-                float: true
+                float         : true
             };
-            this.ui.grid.gridstack(options)
-
+            this.ui.grid.addClass('grid-stack-' + this.options.tracks.length);
+            this.ui.grid.gridstack(options);
         }
-
     });
 
 });
