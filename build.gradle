@@ -69,11 +69,13 @@ bower {
             source 'ui/widget.js' >> '/jquery-ui/'
             source 'ui/draggable.js' >> '/jquery-ui/'
             source 'ui/mouse.js' >> '/jquery-ui/'
+            source 'ui/droppable.js' >> '/jquery-ui/'
             source 'ui/minified/core.min.js' >> '/jquery-ui/'
             source 'ui/minified/resizable.min.js' >> '/jquery-ui/'
             source 'ui/minified/widget.min.js' >> '/jquery-ui/'
             source 'ui/minified/draggable.min.js' >> '/jquery-ui/'
             source 'ui/minified/mouse.min.js' >> '/jquery-ui/'
+            source 'ui/minified/droppable.min.js' >> '/jquery-ui/'
         }
 
         'croppie'('git://github.com/approce/Croppie') {
@@ -142,7 +144,7 @@ bower {
             source 'dist/locales/*' >> 'locales/'
         }
 
-        'gridstack'('0.2.x') {
+        'gridstack'('git://github.com/approce/gridstack.js') {
             source 'dist/*'
 
             excludes 'lodash'
