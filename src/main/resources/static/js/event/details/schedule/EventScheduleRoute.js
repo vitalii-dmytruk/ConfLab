@@ -2,11 +2,12 @@ define([
     'common/route/Route',
     'event/details/schedule/view/ScheduleLayoutView',
     'event/details/schedule/view/GridstackView',
+    'event/details/schedule/view/TracksScheduleCollectionView',
     'text!event/details/schedule/template/SpeechScheduleTemplate.html',
     'track/TracksCollection',
     'speech/SpeechCollection'
-], function EventScheduleRoute(Route, ScheduleLayoutView, GridstackView, SpeechScheduleTemplate, TracksCollection,
-                               SpeechCollection) {
+], function EventScheduleRoute(Route, ScheduleLayoutView, GridstackView, TracksScheduleCollectionView,
+                               SpeechScheduleTemplate, TracksCollection, SpeechCollection) {
 
     'use strict';
 
@@ -28,6 +29,7 @@ define([
 
         render: function () {
             var scheduleLayoutView = new ScheduleLayoutView(),
+                tracksHeaderView   = new TracksScheduleCollectionView({collection: this.tracks}),
                 scheduleView       = new GridstackView({
                     float    : true,
                     rowsCount: 8,
@@ -38,6 +40,7 @@ define([
                 });
 
             this.container.show(scheduleLayoutView);
+            scheduleLayoutView.showChildView('tracksHeader', tracksHeaderView);
             scheduleLayoutView.showChildView('schedule', scheduleView);
             scheduleLayoutView.showChildView('speeches', speechesView);
             showSpeeches(this.speeches, speechesView);

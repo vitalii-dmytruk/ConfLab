@@ -321,3 +321,8 @@ div[data-descendant-region] * #table-title {
     text-align: center;
     background-color: #18bc9c;
 }
+
+.tracks-header{
+    height: 20px;
+    margin-bottom: 5px;
+}

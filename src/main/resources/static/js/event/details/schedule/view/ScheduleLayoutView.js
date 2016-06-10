@@ -10,9 +10,9 @@ define([
         template: _.template(template),
 
         regions: {
-            header  : '[data-schedule-header]',
-            speeches: '[data-schedule-speeches]',
-            schedule: '[data-schedule]'
+            tracksHeader: '[data-tracks-header]',
+            speeches    : '[data-schedule-speeches]',
+            schedule    : '[data-schedule]'
         }
     });
 });
