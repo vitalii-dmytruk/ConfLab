@@ -144,6 +144,8 @@ bower {
             source 'dist/locales/*' >> 'locales/'
         }
 
+        'bootstrap-datetimepicker'('Eonasdan/bootstrap-datetimepicker#4.17.x')
+
         'gridstack'('git://github.com/approce/gridstack.js') {
             source 'dist/*'
 

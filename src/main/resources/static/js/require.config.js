@@ -1,76 +1,80 @@
 var require = {
     baseUrl: '../',
     paths  : {
-        "core"                  : 'js/core',
-        "account"               : 'js/account',
-        "common"                : 'js/common',
-        "header"                : 'js/header',
-        "company"               : 'js/company',
-        "speaker"               : 'js/speaker',
-        "speech"                : 'js/speech',
-        "track"                 : 'js/track',
-        "event"                 : 'js/event',
-        "auth"                  : 'js/auth',
-        "text"                  : 'lib/requirejs-text/text',
-        "jquery"                : 'lib/jquery/jquery.min',
-        "jquery-ui"             : 'lib/jquery-ui/',
-        "croppie"               : 'lib/croppie/js/croppie.min',
-        "toastr"                : 'lib/toastr/toastr.min',
-        "select2"               : 'lib/select2/js/select2',
-        "underscore"            : 'lib/underscore/underscore',
-        "backbone"              : 'lib/backbone/backbone-min',
-        "backbone.marionette"   : 'lib/marionette/backbone.marionette',
-        "backbone.babysitter"   : 'lib/backbone.babysitter/backbone.babysitter',
-        "backbone.radio"        : 'lib/backbone.radio/backbone.radio',
-        "backbone.stickit"      : 'lib/backbone.stickit/backbone.stickit',
-        "backbone.nested.models": 'lib/backbone-nested-models/backbone-nested-models',
-        "backbone.validation"   : 'lib/backbone-validation/backbone-validation-min',
-        "bootstrap"             : 'lib/bootstrap/js/bootstrap.min',
-        "bootstrap.datepicker"  : 'lib/bootstrap-datepicker/js/bootstrap-datepicker',
-        "moment"                : 'lib/moment/moment',
-        "gridstack"             : 'lib/gridstack/gridstack'
+        "core"                    : 'js/core',
+        "account"                 : 'js/account',
+        "common"                  : 'js/common',
+        "header"                  : 'js/header',
+        "company"                 : 'js/company',
+        "speaker"                 : 'js/speaker',
+        "speech"                  : 'js/speech',
+        "track"                   : 'js/track',
+        "event"                   : 'js/event',
+        "auth"                    : 'js/auth',
+        "text"                    : 'lib/requirejs-text/text',
+        "jquery"                  : 'lib/jquery/jquery.min',
+        "jquery-ui"               : 'lib/jquery-ui/',
+        "croppie"                 : 'lib/croppie/js/croppie.min',
+        "toastr"                  : 'lib/toastr/toastr.min',
+        "select2"                 : 'lib/select2/js/select2',
+        "underscore"              : 'lib/underscore/underscore',
+        "backbone"                : 'lib/backbone/backbone-min',
+        "backbone.marionette"     : 'lib/marionette/backbone.marionette',
+        "backbone.babysitter"     : 'lib/backbone.babysitter/backbone.babysitter',
+        "backbone.radio"          : 'lib/backbone.radio/backbone.radio',
+        "backbone.stickit"        : 'lib/backbone.stickit/backbone.stickit',
+        "backbone.nested.models"  : 'lib/backbone-nested-models/backbone-nested-models',
+        "backbone.validation"     : 'lib/backbone-validation/backbone-validation-min',
+        "bootstrap"               : 'lib/bootstrap/js/bootstrap.min',
+        "bootstrap.datepicker"    : 'lib/bootstrap-datepicker/js/bootstrap-datepicker',
+        "bootstrap.datetimepicker": 'lib/bootstrap-datetimepicker/bootstrap-datetimepicker.min',
+        "moment"                  : 'lib/moment/moment',
+        "gridstack"               : 'lib/gridstack/gridstack'
     },
     shim   : {
-        "jquery"                : {
+        "jquery"                  : {
             exports: "$"
         },
-        "select2"               : {
+        "select2"                 : {
             "deps": ['jquery']
         },
-        "bootstrap"             : {
+        "bootstrap"               : {
             "deps": ['jquery']
         },
-        "bootstrap.datepicker"  : {
+        "bootstrap.datepicker"    : {
             "deps": ['jquery']
         },
-        "toastr"                : {
+        "bootstrap.datetimepicker": {
+            "deps:": ['jquery']
+        },
+        "toastr"                  : {
             "deps": ['jquery']
         },
-        "underscore"            : {
+        "underscore"              : {
             "exports": "_"
         },
-        "backbone"              : {
+        "backbone"                : {
             "deps"   : ['underscore'],
             "exports": "Backbone"
         },
-        "backbone.marionette"   : {
+        "backbone.marionette"     : {
             "deps"   : ['backbone', 'backbone.babysitter', 'backbone.radio', "jquery"],
             "exports": "Marionette"
         },
-        "backbone.nested.models": {
+        "backbone.nested.models"  : {
             "deps": ["backbone"]
         },
-        "backbone.stickit"      : {
+        "backbone.stickit"        : {
             "deps": ['backbone', 'underscore', 'jquery']
         },
-        "backbone.validation"   : {
+        "backbone.validation"     : {
             "deps": ['backbone', 'underscore']
         },
-        "gridstack"             : {
-            "deps": ['jquery',  'underscore']
+        "gridstack"               : {
+            "deps": ['jquery', 'underscore']
         }
     },
-    map: {
+    map    : {
         '*': {
             'lodash': 'underscore'
         }
