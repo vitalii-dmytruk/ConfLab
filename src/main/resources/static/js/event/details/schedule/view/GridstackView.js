@@ -20,6 +20,9 @@ define([
             'change @ui.gridstack': function (event, items) {
                 //TODO workaround cause triggers doesn't work.
                 this.triggerMethod('gridstack:change', event, items);
+            },
+            'added @ui.gridstack' : function (events, items) {
+                this.triggerMethod('gridstack:added', events, items);
             }
         },
 

@@ -68,6 +68,14 @@ define([
             scheduleLayoutView.showChildView('axis', axisView);
             showSpeeches(this.speeches, speechesView);
 
+            speechesView.on('gridstack:change', function (event, items) {
+                items.forEach(function (item) {
+                    if (item.height > 1 || item.width > 1) {
+                        item._grid.resize(item.el, 1, 1);
+                    }
+                });
+            });
+
             scheduleView.on('gridstack:change', function (event, items) {
                 scheduleView.getSnapshot();
             });
