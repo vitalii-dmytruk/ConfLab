@@ -326,7 +326,6 @@ div[data-descendant-region] * #table-title {
 }
 
 .schedule-axis-space {
-    opacity: 0.9;
     margin-left: 40px;
 }
 
@@ -335,15 +334,18 @@ div[data-descendant-region] * #table-title {
     position: absolute;
     left: 0;
     width: 100%;
-    border: black;
+    border: rgba(0, 0, 0, 0.15);
     border-style: solid;
-    z-index: 0;
-    opacity: 0.9;
+    z-index: 1;
     border-width: 1px 0;
 }
 
 .grid-axis-container {
     position: relative;
+}
+
+.grid-stack-item{
+    z-index: 2;
 }
 
 /* schedule tab */
