@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -17,7 +18,7 @@ import java.util.Set;
 public class SpeechServiceImpl extends DefaultService<Speech, Long> implements SpeechService {
 
     private EventSpeechSpeakerService eventSpeechSpeakerService;
-    private SpeechRepository speechRepository;
+    private SpeechRepository          speechRepository;
 
     @Autowired
     public SpeechServiceImpl(SpeechRepository speechRepository, EventSpeechSpeakerService eventSpeechSpeakerService) {
@@ -140,6 +141,13 @@ public class SpeechServiceImpl extends DefaultService<Speech, Long> implements S
     @Transactional
     public void unlinkFromEvent(Speech speech, Event event) {
         eventSpeechSpeakerService.deleteEventSpeechSpeakerLinks(event, speech);
+    }
+
+    //TODO refactor:
+    @Override
+    public List<Speech> update(List<Speech> speeches) {
+        speeches.forEach(speechRepository::update);
+        return speeches;
     }
 
     private boolean hasSpeakers(Set<SpeechSpeaker> speechSpeakers) {

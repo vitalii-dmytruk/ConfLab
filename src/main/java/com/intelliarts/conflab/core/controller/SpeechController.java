@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import static org.springframework.http.HttpStatus.CREATED;
@@ -67,6 +68,14 @@ public class SpeechController {
                     produces = APPLICATION_JSON_VALUE)
     public Speech findById(@PathVariable("speechId") Long speechId) {
         return speechService.findById(speechId);
+    }
+
+    @RequestMapping(value = "/speeches",
+                    method = PUT,
+                    consumes = APPLICATION_JSON_VALUE,
+                    produces = APPLICATION_JSON_VALUE)
+    public List<Speech> update(@RequestBody @Validated List<Speech> speeches) {
+        return speechService.update(speeches);
     }
 
     //TODO should be removed
