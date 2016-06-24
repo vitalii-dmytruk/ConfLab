@@ -9,6 +9,14 @@ define([
 
         template: _.template(template),
 
+        ui: {
+            'saveBtn': '.btn-primary'
+        },
+
+        triggers: {
+            'click @ui.saveBtn': 'schedule:save'
+        },
+
         regions: {
             tracksHeader: '[data-tracks-header]',
             speeches    : '[data-schedule-speeches]',

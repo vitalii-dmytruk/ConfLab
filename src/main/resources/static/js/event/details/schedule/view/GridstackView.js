@@ -26,25 +26,6 @@ define([
             }
         },
 
-        getSnapshot: function () {
-            var selector = '.grid-stack-' + this.options.width + ' .grid-stack-item:visible';
-            var filtered = _.filter($(selector), function (el) {
-                return $(el).data('_gridstack_node');
-            });
-            var res      = _.map(filtered, function (el) {
-                el       = $(el);
-                var node = $(el).data('_gridstack_node');
-                return {
-                    id    : el.attr('data-gs-id'),
-                    x     : node.x,
-                    y     : node.y,
-                    width : node.width,
-                    height: node.height
-                };
-            });
-            console.log(JSON.stringify(res));
-        },
-
         onShow: onShow,
 
         addWidget: addWidget
