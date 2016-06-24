@@ -13,7 +13,11 @@ define([
                 id         : null,
                 title      : '',
                 description: '',
-                lang       : null
+                lang       : null,
+                position   : null,
+                duration   : null,
+                track      : null,
+                allTracks  : false
             }
         },
         validation: {
