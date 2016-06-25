@@ -41,6 +41,8 @@ define([
         },
 
         render: function () {
+            var tracks             = this.tracks,
+                speeches           = this.speeches;
             var scheduleLayoutView = new ScheduleLayoutView(),
                 tracksHeaderView   = new TracksScheduleCollectionView({collection: this.tracks}),
                 scheduleView       = new GridstackView({
@@ -62,30 +64,66 @@ define([
                 });
 
             this.container.show(scheduleLayoutView);
+
+            scheduleLayoutView.on('schedule:save', function () {
+                speeches.updateAll();
+            });
+
             scheduleLayoutView.showChildView('tracksHeader', tracksHeaderView);
             scheduleLayoutView.showChildView('schedule', scheduleView);
             scheduleLayoutView.showChildView('speeches', speechesView);
             scheduleLayoutView.showChildView('axis', axisView);
-            showSpeeches(this.speeches, speechesView);
+            showSpeeches(speeches, tracks, speechesView, scheduleView);
+
+            scheduleView.on('gridstack:change', function (event, items) {
+                items.forEach(function (item) {
+                    var id     = item.el.attr('data-gs-id');
+                    var speech = speeches.get(id);
+                    speech.set('track', tracks.at(item.x));
+                    speech.set('position', item.y);
+                    speech.set('duration', item.height);
+                    speech.set('allTracks', item.width == tracks.length)
+                });
+            });
 
             speechesView.on('gridstack:change', function (event, items) {
                 items.forEach(function (item) {
+                    var id     = item.el.attr('data-gs-id');
+                    var speech = speeches.get(id);
+                    speech.set('track', null);
+                    speech.set('position', null);
+                    speech.set('duration', null);
+
                     if (item.height > 1 || item.width > 1) {
                         item._grid.resize(item.el, 1, 1);
                     }
                 });
             });
-
-            scheduleView.on('gridstack:change', function (event, items) {
-                scheduleView.getSnapshot();
-            });
         }
     });
 
-    function showSpeeches(speeches, speechView) {
+    function showSpeeches(speeches, tracks, speechView, scheduleView) {
         speeches.each(function (speech, i) {
-            speechView.addWidget($(_.template(SpeechScheduleTemplate)({title: speech.get('title')})), 0, i, 1, 1,
-                                 undefined, undefined, undefined, undefined, undefined, speech.get('id'));
+            var el       = $(_.template(SpeechScheduleTemplate)({title: speech.get('title')})),
+                column   = 0,
+                position = i,
+                height   = 1,
+                width    = 1;
+
+            //if speech have been already scheduled:
+            if (speech.get('track')) {
+                column   = tracks.indexOf(tracks.get(speech.get('track').id));
+                position = speech.get('position');
+                height   = speech.get('duration');
+                width    = speech.get('allTracks') ? tracks.length : 1;
+
+                scheduleView.addWidget(el, column, position, width, height,
+                                       undefined, undefined, undefined, undefined, undefined, speech.get('id'));
+
+            } else {
+                speechView.addWidget(el, column, position, width, height,
+                                     undefined, undefined, undefined, undefined, undefined, speech.get('id'));
+            }
         });
     }
 
