@@ -49,12 +49,14 @@ define([
                     cellHeight    : this.cellHeight,
                     verticalMargin: this.cellMargin,
                     float         : true,
-                    rowsCount     : this.intervalCollection.length,
+                    minRowsCount  : this.intervalCollection.length,
+                    fixed         : true,
                     width         : this.tracks.length
                 }),
                 speechesView       = new GridstackView({
                     cellHeight    : this.cellHeight * 2,
                     verticalMargin: this.cellMargin,
+                    minRowsCount  : 1,
                     width         : 1
                 }),
                 axisView           = new RowAxisCollectionView({
