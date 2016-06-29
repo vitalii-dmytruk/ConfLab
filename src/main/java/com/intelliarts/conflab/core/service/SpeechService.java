@@ -7,6 +7,7 @@ import com.intelliarts.conflab.core.entity.SpeechSpeaker;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 
@@ -57,4 +58,7 @@ public interface SpeechService extends BaseService<Speech, Long> {
 
     @Transactional
     void unlinkFromEvent(Speech speech, Event event);
+
+    @Transactional
+    List<Speech> update(List<Speech> speeches);
 }

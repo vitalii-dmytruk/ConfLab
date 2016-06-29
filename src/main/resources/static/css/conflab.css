@@ -309,9 +309,7 @@ div[data-descendant-region] * #table-title {
     text-overflow: ellipsis;
 }
 
-
-/* test */
-
+/* schedule tab */
 .grid-stack {
     background: lightgoldenrodyellow;
 }
@@ -321,3 +319,33 @@ div[data-descendant-region] * #table-title {
     text-align: center;
     background-color: #18bc9c;
 }
+
+.tracks-header {
+    height: 20px;
+    margin-bottom: 5px;
+}
+
+.schedule-axis-space {
+    margin-left: 40px;
+}
+
+.row-axis {
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    border: rgba(0, 0, 0, 0.15);
+    border-style: solid;
+    z-index: 1;
+    border-width: 1px 0;
+}
+
+.grid-axis-container {
+    position: relative;
+}
+
+.grid-stack-item{
+    z-index: 2;
+}
+
+/* schedule tab */

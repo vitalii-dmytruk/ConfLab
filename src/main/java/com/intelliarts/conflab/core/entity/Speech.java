@@ -44,4 +44,16 @@ public class Speech extends AbstractPersistable<Long> {
     @JoinColumn(name = "event_id", updatable = false)
     private Event event;
 
+    @ManyToOne
+    @JoinColumn(name = "track_id")
+    private Track track;
+
+    @Column
+    private Integer position;
+
+    @Column
+    private Integer duration;
+
+    @Column(name = "all_tracks")
+    private Boolean allTracks;
 }
