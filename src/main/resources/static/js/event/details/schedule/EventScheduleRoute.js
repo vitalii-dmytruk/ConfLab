@@ -129,6 +129,7 @@ define([
         });
     }
 
+
     function createIntervalCollection(period, from, to) {
         return intervalCollectionGenerator.generate({
             from  : from,
