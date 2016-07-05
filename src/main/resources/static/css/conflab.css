@@ -347,5 +347,8 @@ div[data-descendant-region] * #table-title {
 .grid-stack-item{
     z-index: 2;
 }
+.schedule-container{
+    padding-left: 40px
+}
 
 /* schedule tab */

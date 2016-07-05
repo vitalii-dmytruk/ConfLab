@@ -18,6 +18,7 @@ define([
         },
 
         regions: {
+            days        : '[data-schedule-days]',
             tracksHeader: '[data-tracks-header]',
             speeches    : '[data-schedule-speeches]',
             schedule    : '[data-schedule]',
