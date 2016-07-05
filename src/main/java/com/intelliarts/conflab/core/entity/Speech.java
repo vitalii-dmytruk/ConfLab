@@ -56,4 +56,7 @@ public class Speech extends AbstractPersistable<Long> {
 
     @Column(name = "all_tracks")
     private Boolean allTracks;
+
+    @Column
+    private Integer day;
 }
