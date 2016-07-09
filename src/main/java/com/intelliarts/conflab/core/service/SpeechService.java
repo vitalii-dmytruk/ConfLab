@@ -61,4 +61,7 @@ public interface SpeechService extends BaseService<Speech, Long> {
 
     @Transactional
     List<Speech> update(List<Speech> speeches);
+
+    @Transactional
+    void resetSpeechesWithHigherDay(Integer maxDay);
 }

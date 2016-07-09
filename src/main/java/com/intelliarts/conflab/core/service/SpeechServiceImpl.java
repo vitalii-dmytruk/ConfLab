@@ -150,6 +150,11 @@ public class SpeechServiceImpl extends DefaultService<Speech, Long> implements S
         return speeches;
     }
 
+    @Override
+    public void resetSpeechesWithHigherDay(Integer maxDay) {
+        speechRepository.resetSpeechesWithHigherDay(maxDay);
+    }
+
     private boolean hasSpeakers(Set<SpeechSpeaker> speechSpeakers) {
         return speechSpeakers.size() > 1;
     }
