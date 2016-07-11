@@ -29,7 +29,9 @@ define([
                 float         : true,
                 minRowsCount  : this.intervalCollection.length,
                 fixed         : true,
-                width         : this.tracks.length
+                columns       : this.tracks.map(function (track) {
+                    return track.get('name')
+                })
             });
 
             this.container.show(this.scheduleView);

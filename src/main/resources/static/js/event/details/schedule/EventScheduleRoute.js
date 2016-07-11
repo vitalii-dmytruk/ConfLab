@@ -3,13 +3,12 @@ define([
     'common/navigation/NavigationView',
     'event/EventTabView',
     'event/details/schedule/view/ScheduleLayoutView',
-    'event/details/schedule/view/TracksScheduleCollectionView',
     'track/TracksCollection',
     'speech/SpeechCollection',
     'event/details/schedule/FreeSpeechesRoute',
     'event/details/schedule/ScheduleGridRoute',
     'moment'
-], function EventScheduleRoute(Route, NavigationView, EventTabView, ScheduleLayoutView, TracksCollectionView,
+], function EventScheduleRoute(Route, NavigationView, EventTabView, ScheduleLayoutView,
                                TracksCollection, SpeechCollection, FreeSpeechesRoute, ScheduleGridRoute, moment) {
 
     'use strict';
@@ -43,7 +42,6 @@ define([
                 });
 
             this.container.show(scheduleLayoutView);
-            scheduleLayoutView.showChildView('tracksHeader', new TracksCollectionView({collection: this.tracks}));
             scheduleLayoutView.showChildView('days', tabsView);
 
             createFreeSpeechesRoute(scheduleLayoutView.getRegion('speeches'), this.speeches);

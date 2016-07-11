@@ -338,16 +338,19 @@ div[data-descendant-region] * #table-title {
     border-style: solid;
     z-index: 1;
     border-width: 1px 0;
+    height: 20px;
+    margin-top: 25px
 }
 
 .grid-axis-container {
     position: relative;
 }
 
-.grid-stack-item{
+.grid-stack-item {
     z-index: 2;
 }
-.schedule-container{
+
+.schedule-container {
     padding-left: 40px
 }
 
