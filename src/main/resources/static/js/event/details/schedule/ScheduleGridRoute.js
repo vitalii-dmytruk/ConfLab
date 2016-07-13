@@ -1,48 +1,35 @@
 define([
     'common/route/Route',
     'event/details/schedule/view/GridstackView',
-    'text!event/details/schedule/template/SpeechScheduleTemplate.html',
-    'event/details/schedule/model/IntervalCollectionGenerator',
-    'event/details/schedule/view/RowAxisCollectionView'
-], function ScheduleGridRoute(Route, GridstackView, SpeechScheduleTemplate, intervalCollectionGenerator,
-                              RowAxisCollectionView) {
+    'text!event/details/schedule/template/SpeechScheduleTemplate.html'
+], function ScheduleGridRoute(Route, GridstackView, SpeechScheduleTemplate) {
 
     'use strict';
 
     return Route.extend({
 
-        intervalPeriod: 15,
-        //TODO hardcoded event interval. Should be replaced with proper event start - end dates.
-        from          : new Date(2016, 6, 20, 8, 0, 0, 0),
-        to            : new Date(2016, 6, 20, 20, 0, 0, 0),
+        rowsCount   : 49,
+        hourStart   : 8,
+        timeInterval: 15,
 
         initialize: function (options) {
-            this.tracks             = options.tracks;
-            this.container          = options.container;
-            this.intervalCollection = createIntervalCollection(this.intervalPeriod, this.from, this.to);
+            this.tracks    = options.tracks;
+            this.container = options.container;
         },
 
         render: function () {
             this.scheduleView = new GridstackView({
-                cellHeight    : 20,
-                verticalMargin: 5,
-                float         : true,
-                minRowsCount  : this.intervalCollection.length,
-                fixed         : true,
-                columns       : this.tracks.map(function (track) {
-                    return track.get('name')
-                })
+                float          : true,
+                width          : 4,
+                rowsCount      : this.rowsCount,
+                cellHeight     : 20,
+                verticalMargin : 5,
+                rowTitles      : this.createRowTitles(),
+                columnTitles   : this.createColumnTitles(),
+                rowTitlesOffset: 40
             });
 
             this.container.show(this.scheduleView);
-
-            var axisView = new RowAxisCollectionView({
-                collection: createIntervalCollection(this.intervalPeriod, this.from, this.to),
-                cellHeight: 20,
-                cellMargin: 5
-            });
-
-            this.options.axisContainer.show(axisView);
         },
 
         showSpeeches: showSpeeches,
@@ -53,7 +40,11 @@ define([
 
         removeAll: function () {
             this.scheduleView.ui.gridstack.data('gridstack').removeAll();
-        }
+        },
+
+        createColumnTitles: createColumnTitles,
+
+        createRowTitles: createRowTitles
     });
 
     function showSpeeches(speeches) {
@@ -71,11 +62,30 @@ define([
         }, this);
     }
 
-    function createIntervalCollection(period, from, to) {
-        return intervalCollectionGenerator.generate({
-            from  : from,
-            to    : to,
-            period: period
-        });
+    function createColumnTitles() {
+        return this.tracks.map(function (track) {
+            return track.get('name');
+        })
+    }
+
+    function createRowTitles() {
+        var offset = this.hourStart * 60,
+            minutesCount,
+            hour,
+            minutes,
+            result = [];
+
+        var normalize = function (num) {
+            return num < 10 ? ('0' + num) : num;
+        };
+
+        for (var i = 0; i < this.rowsCount; i++) {
+            minutesCount = offset + this.timeInterval * i;
+            hour         = (minutesCount / 60).toFixed(0);
+            minutes      = minutesCount % 60;
+            result.push(normalize(hour) + ':' + normalize(minutes));
+        }
+
+        return result;
     }
 });

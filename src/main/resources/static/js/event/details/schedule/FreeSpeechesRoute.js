@@ -12,7 +12,6 @@ define([
             this.gridstackView = new GridstackView({
                 cellHeight    : 40,
                 verticalMargin: 5,
-                minRowsCount  : 1,
                 width         : 1
             });
 

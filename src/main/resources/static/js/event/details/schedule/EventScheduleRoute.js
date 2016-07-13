@@ -46,8 +46,7 @@ define([
 
             createFreeSpeechesRoute(scheduleLayoutView.getRegion('speeches'), this.speeches);
 
-            var scheduleGridRoute = createScheduleGridRoute(scheduleLayoutView.getRegion('schedule'),
-                                                            scheduleLayoutView.getRegion('axis'), this);
+            var scheduleGridRoute = createScheduleGridRoute(scheduleLayoutView.getRegion('schedule'), this);
 
             tabsView.on('childview:clicked', function (args) {
                 scheduleGridRoute.removeAll();
@@ -102,10 +101,9 @@ define([
         return freeSpeechesRoute;
     }
 
-    function createScheduleGridRoute(container, axisContainer, route) {
+    function createScheduleGridRoute(container, route) {
         var scheduleGridRoute = new ScheduleGridRoute({
             container    : container,
-            axisContainer: axisContainer,
             tracks       : route.tracks
         });
 
