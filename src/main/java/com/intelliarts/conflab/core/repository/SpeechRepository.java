@@ -30,4 +30,10 @@ public interface SpeechRepository extends BaseRepository<Speech, Long> {
                    "SET s.track = NULL, s.duration = NULL, s.position = NULL, s.day = NULL, s.allTracks = false " +
                    "WHERE s.day > :maxDay")
     void resetSpeechesWithHigherDay(@Param("maxDay") Integer maxDay);
+
+    @Modifying
+    @Query(value = "UPDATE Speech s " +
+                   "SET s.track = NULL, s.duration = NULL, s.position = NULL, s.day = NULL, s.allTracks = false " +
+                   "WHERE s.track.id = :trackId")
+    void resetSpeechesWithTrackId(@Param("trackId") Integer trackId);
 }

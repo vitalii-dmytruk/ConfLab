@@ -20,7 +20,7 @@ define([
         render: function () {
             this.scheduleView = new GridstackView({
                 float          : true,
-                width          : 4,
+                width          : this.tracks.length,
                 rowsCount      : this.rowsCount,
                 cellHeight     : 20,
                 verticalMargin : 5,

@@ -64,4 +64,7 @@ public interface SpeechService extends BaseService<Speech, Long> {
 
     @Transactional
     void resetSpeechesWithHigherDay(Integer maxDay);
+
+    @Transactional
+    void resetSpeechesWithTrackId(Integer trackId);
 }

@@ -12,11 +12,13 @@ import java.util.List;
 public class TrackServiceImpl extends DefaultService<Track, Integer> implements TrackService {
 
     private TrackRepository trackRepository;
+    private SpeechService   speechService;
 
     @Autowired
-    public TrackServiceImpl(TrackRepository trackRepository) {
+    public TrackServiceImpl(TrackRepository trackRepository, SpeechService speechService) {
         super(trackRepository);
         this.trackRepository = trackRepository;
+        this.speechService = speechService;
     }
 
     @Override
@@ -27,6 +29,7 @@ public class TrackServiceImpl extends DefaultService<Track, Integer> implements 
     @Override
     @Transactional
     public void delete(Long eventId, Integer trackId) {
+        speechService.resetSpeechesWithTrackId(trackId);
         trackRepository.deleteByEventIdAndId(eventId, trackId);
     }
 }
