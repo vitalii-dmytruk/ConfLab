@@ -22,7 +22,7 @@ define([
 
         render: function () {
             var eventView = trackViewFactory.newEventView({
-                model          : this.model,
+                model          : this.event,
                 collection     : this.tracks,
                 attachmentRoute: {
                     enter: function () {
