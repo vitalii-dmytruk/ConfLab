@@ -150,8 +150,26 @@ public class SpeechServiceImpl extends DefaultService<Speech, Long> implements S
         return speeches;
     }
 
+    @Override
+    public void resetSpeechesWithHigherDay(Integer maxDay) {
+        speechRepository.findSpeechesWithHigherDay(maxDay).stream().forEach(this::resetScheduleInfo);
+    }
+
+    @Override
+    public void resetSpeechesWithTrackId(Integer trackId) {
+        speechRepository.findSpeechesWithTrackId(trackId).stream().forEach(this::resetScheduleInfo);
+    }
+
     private boolean hasSpeakers(Set<SpeechSpeaker> speechSpeakers) {
         return speechSpeakers.size() > 1;
     }
 
+    private void resetScheduleInfo(Speech speech) {
+        speech.setDay(null);
+        speech.setAllTracks(false);
+        speech.setDuration(null);
+        speech.setPosition(null);
+        speech.setTrack(null);
+        speechRepository.update(speech);
+    }
 }

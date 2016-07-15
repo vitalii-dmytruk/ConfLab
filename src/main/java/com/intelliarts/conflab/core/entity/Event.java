@@ -6,6 +6,7 @@ import com.intelliarts.conflab.core.entity.converter.LocalDateConverter;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Column;
@@ -13,6 +14,7 @@ import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -33,11 +35,13 @@ public class Event extends AbstractPersistable<Long> {
     @JsonFormat(pattern = "dd-MMM-yyyy")
     @Column(name = "start_date")
     @Convert(converter = LocalDateConverter.class)
+    @NotNull
     private LocalDate startDate;
 
     @JsonFormat(pattern = "dd-MMM-yyyy")
     @Column(name = "end_date")
     @Convert(converter = LocalDateConverter.class)
+    @NotNull
     private LocalDate endDate;
 
     @Column

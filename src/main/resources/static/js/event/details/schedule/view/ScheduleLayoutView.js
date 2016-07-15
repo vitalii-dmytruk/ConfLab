@@ -18,10 +18,9 @@ define([
         },
 
         regions: {
-            tracksHeader: '[data-tracks-header]',
-            speeches    : '[data-schedule-speeches]',
-            schedule    : '[data-schedule]',
-            axis        : '[data-grid-axis]'
+            days    : '[data-schedule-days]',
+            speeches: '[data-schedule-speeches]',
+            schedule: '[data-schedule]'
         }
     });
 });

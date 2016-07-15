@@ -48,9 +48,15 @@ define([
                 maxLength: 255
             },
             startDate: function (value) {
+                if (!value) {
+                    return 'Start date is required';
+                }
                 return validateDate(value);
             },
             endDate  : function (value, attr, computedState) {
+                if (!value) {
+                    return 'End date is required';
+                }
                 var validateMsg = validateDate(value);
                 if (validateMsg) {
                     return validateMsg;

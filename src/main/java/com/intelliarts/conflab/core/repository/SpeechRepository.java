@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Set;
 
 @Repository
@@ -24,4 +23,10 @@ public interface SpeechRepository extends BaseRepository<Speech, Long> {
                    "   JOIN speech.speechSpeakers speechSpeaker " +
                    "WHERE speech.event.id= :eventId AND speechSpeaker.speaker.id = :speakerId")
     Set<Speech> findByEventAndSpeaker(@Param("eventId") Long eventId, @Param("speakerId") Long speakerId);
+
+    @Query(value = "SELECT speech from Speech speech WHERE speech.day > :maxDay")
+    Set<Speech> findSpeechesWithHigherDay(@Param("maxDay") Integer maxDay);
+
+    @Query(value = "SELECT speech from Speech speech WHERE speech.track.id = :trackId")
+    Set<Speech> findSpeechesWithTrackId(@Param("trackId") Integer trackId);
 }

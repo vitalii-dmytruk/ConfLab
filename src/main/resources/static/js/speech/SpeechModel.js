@@ -17,7 +17,8 @@ define([
                 position   : null,
                 duration   : null,
                 track      : null,
-                allTracks  : false
+                allTracks  : false,
+                day        : 1
             }
         },
         validation: {
