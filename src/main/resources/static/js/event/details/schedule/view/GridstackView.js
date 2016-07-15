@@ -35,8 +35,9 @@ define([
         }, this.options));
     }
 
-    function addWidget() {
+    function addWidget(options) {
         var gridstack = this.ui.gridstack.data('gridstack');
-        gridstack.addWidget.apply(gridstack, arguments);
+        gridstack.addWidget(options.el, options.column, options.position, options.width, options.height,
+                            undefined, undefined, undefined, undefined, undefined, options.id);
     }
 });

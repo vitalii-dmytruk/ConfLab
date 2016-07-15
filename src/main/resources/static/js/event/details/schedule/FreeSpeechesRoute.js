@@ -19,14 +19,20 @@ define([
         },
 
         onChange: function (cb) {
-            this.gridstackView.on('gridstack:change', cb);
+            this.gridstackView.listenTo(this.gridstackView, 'gridstack:change', cb);
         },
 
         showSpeeches: function (speeches) {
             speeches.each(function (speech, i) {
                 var el = $(_.template(SpeechScheduleTemplate)({title: speech.get('title')}));
-                this.gridstackView.addWidget(el, 0, i, 1, 1,
-                                             undefined, undefined, undefined, undefined, undefined, speech.get('id'));
+                this.gridstackView.addWidget({
+                    el      : el,
+                    column  : 0,
+                    width   : 1,
+                    height  : 1,
+                    position: 1,
+                    id      : speech.get('id')
+                });
             }, this);
         }
     });

@@ -1,7 +1,6 @@
 package com.intelliarts.conflab.core.repository;
 
 import com.intelliarts.conflab.core.entity.Speech;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -25,15 +24,9 @@ public interface SpeechRepository extends BaseRepository<Speech, Long> {
                    "WHERE speech.event.id= :eventId AND speechSpeaker.speaker.id = :speakerId")
     Set<Speech> findByEventAndSpeaker(@Param("eventId") Long eventId, @Param("speakerId") Long speakerId);
 
-    @Modifying
-    @Query(value = "UPDATE Speech s " +
-                   "SET s.track = NULL, s.duration = NULL, s.position = NULL, s.day = NULL, s.allTracks = false " +
-                   "WHERE s.day > :maxDay")
-    void resetSpeechesWithHigherDay(@Param("maxDay") Integer maxDay);
+    @Query(value = "SELECT speech from Speech speech WHERE speech.day > :maxDay")
+    Set<Speech> findSpeechesWithHigherDay(@Param("maxDay") Integer maxDay);
 
-    @Modifying
-    @Query(value = "UPDATE Speech s " +
-                   "SET s.track = NULL, s.duration = NULL, s.position = NULL, s.day = NULL, s.allTracks = false " +
-                   "WHERE s.track.id = :trackId")
-    void resetSpeechesWithTrackId(@Param("trackId") Integer trackId);
+    @Query(value = "SELECT speech from Speech speech WHERE speech.track.id = :trackId")
+    Set<Speech> findSpeechesWithTrackId(@Param("trackId") Integer trackId);
 }

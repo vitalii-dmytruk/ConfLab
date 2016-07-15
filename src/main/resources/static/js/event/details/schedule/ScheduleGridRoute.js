@@ -35,11 +35,7 @@ define([
         showSpeeches: showSpeeches,
 
         onChange: function (cb) {
-            this.scheduleView.on('gridstack:change', cb);
-        },
-
-        removeAll: function () {
-            this.scheduleView.ui.gridstack.data('gridstack').removeAll();
+            this.scheduleView.listenTo(this.scheduleView, 'gridstack:change', cb);
         },
 
         createColumnTitles: createColumnTitles,
@@ -48,6 +44,7 @@ define([
     });
 
     function showSpeeches(speeches) {
+        removeAll(this);
         this.speeches = speeches;
 
         speeches.forEach(function (speech) {
@@ -57,8 +54,14 @@ define([
                 height   = speech.get('duration'),
                 width    = speech.get('allTracks') ? this.tracks.length : 1;
 
-            this.scheduleView.addWidget(el, column, position, width, height,
-                                        undefined, undefined, undefined, undefined, undefined, speech.get('id'));
+            this.scheduleView.addWidget({
+                el      : el,
+                column  : column,
+                position: position,
+                width   : width,
+                height  : height,
+                id      : speech.get('id')
+            });
         }, this);
     }
 
@@ -87,5 +90,9 @@ define([
         }
 
         return result;
+    }
+
+    function removeAll(route) {
+        route.scheduleView.ui.gridstack.data('gridstack').removeAll();
     }
 });

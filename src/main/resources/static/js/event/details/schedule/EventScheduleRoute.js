@@ -34,7 +34,8 @@ define([
         },
 
         render: function () {
-            var scheduleLayoutView = new ScheduleLayoutView(),
+            var route              = this,
+                scheduleLayoutView = new ScheduleLayoutView(),
                 tabsView           = new NavigationView({
                     className : 'nav nav-tabs',
                     childView : EventTabView,
@@ -48,17 +49,15 @@ define([
 
             var scheduleGridRoute = createScheduleGridRoute(scheduleLayoutView.getRegion('schedule'), this);
 
-            tabsView.on('childview:clicked', function (args) {
-                scheduleGridRoute.removeAll();
+            tabsView.listenTo(tabsView, 'childview:clicked', function (args) {
+                route.currentDay = args.model;
 
-                this.currentDay = args.model;
+                showScheduledDaySpeeches(tabsView, scheduleGridRoute, route.currentDay, route.speeches);
+            });
 
-                showScheduledDaySpeeches(tabsView, scheduleGridRoute, this.currentDay, this.speeches);
-            }, this);
-
-            scheduleLayoutView.on('schedule:save', function () {
-                this.speeches.updateAll();
-            }, this);
+            scheduleLayoutView.listenTo(scheduleLayoutView, 'schedule:save', function () {
+                route.speeches.updateAll();
+            });
 
             showScheduledDaySpeeches(tabsView, scheduleGridRoute, this.currentDay, this.speeches);
         }
@@ -103,8 +102,8 @@ define([
 
     function createScheduleGridRoute(container, route) {
         var scheduleGridRoute = new ScheduleGridRoute({
-            container    : container,
-            tracks       : route.tracks
+            container: container,
+            tracks   : route.tracks
         });
 
         scheduleGridRoute.enter();
