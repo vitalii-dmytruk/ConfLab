@@ -1,6 +1,5 @@
 package com.intelliarts.conflab.core.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Email;
@@ -12,9 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.Set;
 
 @Entity
 @Table(name = "speaker")
@@ -51,9 +48,9 @@ public class Speaker extends AbstractImageAwareEntity<Long> {
     @Setter
     private Company company;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "speaker")
-    @Getter
-    @Setter
-    private Set<SpeechSpeaker> speechSpeakers;
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "speaker")
+//    @Getter
+//    @Setter
+//    private Set<SpeechSpeaker> speechSpeakers;
 }

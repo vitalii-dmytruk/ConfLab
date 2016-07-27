@@ -13,6 +13,7 @@ define([
             this.rowView                = options.rowView;
             this.EditView               = options.EditView;
             this.searchLabelAttribute   = options.searchLabelAttribute;
+            this.title                  = options.title;
         },
 
         fetch: function (container, eventModel, itemModel) {

@@ -1,45 +1,45 @@
 define([
-    'common/route/Route',
-    'event/details/EventItemAttachmentRoute',
-    'speech/speechViewFactory',
-    'speaker/speakerViewFactory',
+    'event/details/ModelManagementRoute',
+    'event/details/speeches/SpeechPillView',
+    'speech/details/SpeechDetailsRoute',
     'speech/SpeechCollection',
-    'speaker/SpeakerCollection'
-], function (Route, EventItemAttachmentRoute, speechViewFactory, speakerViewFactory,
-             SpeechCollection, SpeakerCollection) {
+    'speech/speechViewFactory'
+], function (NavigationRoute, SpeechPillView, SpeechDetailsRoute, SpeechCollection,
+             speechViewFactory) {
 
     'use strict';
 
-    return Route.extend({
+    return NavigationRoute.extend({
+        className: 'nav nav-pills nav-stacked',
+        childView: SpeechPillView,
 
+        getRouteClass: function () {
+            return SpeechDetailsRoute;
+        },
+
+        routeOptions: function (options) {
+            return {event: options.event}
+        },
 
         initialize: function (options) {
-            this.event     = options.event;
-            this.container = options.container
+            this.event = options.event;
         },
 
         fetch: function () {
-            this.speeches                 = new SpeechCollection();
-            this.speeches.url             = this.event.url() + this.speeches.url;
-            this.speechesSearchCollection = new SpeechCollection();
-
-            return $.when(this.speeches.fetch(), this.speechesSearchCollection.fetch());
+            this.navsCollection = new SpeechCollection();
+            return this.navsCollection.fetch({data: {eventId: this.event.get('id')}});
         },
 
-        render: function () {
-            var eventView = speechViewFactory.newEventView({
-                model           : this.event,
-                collection      : this.speeches,
-                searchCollection: this.speechesSearchCollection,
-                attachmentRoute : new EventItemAttachmentRoute({
-                    attachedCollectionType: SpeakerCollection,
-                    title                 : speechViewFactory.tableTitle,
-                    searchLabelAttribute  : speakerViewFactory.searchLabelAttribute,
-                    EditView              : speakerViewFactory.itemEditView,
-                    rowView               : speakerViewFactory.itemRowView
-                })
+        create: function (model) {
+            model.set('event', this.event);
+            return model.save();
+        },
+
+        getCreationView: function () {
+            return new speechViewFactory.itemEditView({
+                model: new this.navsCollection.model()
             });
-            this.container.show(eventView);
         }
     });
+
 });

@@ -10,24 +10,23 @@ import java.util.Set;
 @Repository
 public interface SpeakerRepository extends ImageAwareRepository<Speaker, Long> {
 
-    @Query(value = "SELECT DISTINCT speaker " +
+    @Query(value = "SELECT DISTINCT speakers " +
                    "FROM Speech speech " +
-                   "   JOIN speech.speechSpeakers speechSpeaker " +
-                   "   JOIN speechSpeaker.speaker speaker " +
+                   "   JOIN speech.speakers speakers " +
                    "WHERE speech.event.id = :eventId")
     Set<Speaker> findByEventId(@Param("eventId") Long eventId);
 
-    @Query(value = "SELECT speaker " +
-                   "FROM Speaker speaker " +
-                   "JOIN speaker.speechSpeakers speechSpeaker " +
-                   "WHERE speechSpeaker.speech.id = :speechId")
-    Set<Speaker> findBySpeechId(@Param("speechId") Long speechId);
-
-    @Query(value = "SELECT speaker " +
-                   "FROM EventSpeechSpeaker eventSpeechSpeaker " +
-                   "JOIN eventSpeechSpeaker.speechSpeaker speechSpeaker " +
-                   "JOIN speechSpeaker.speaker speaker " +
-                   "WHERE eventSpeechSpeaker.event.id=:eventId " +
-                   "AND speechSpeaker.speech.id =:speechId")
-    Set<Speaker> findByEventAndSpeech(@Param("eventId") Long eventId, @Param("speechId") Long speechId);
+    //    @Query(value = "SELECT speaker " +
+    //                   "FROM Speaker speaker " +
+    //                   "JOIN speaker.speechSpeakers speechSpeaker " +
+    //                   "WHERE speechSpeaker.speech.id = :speechId")
+    //    Set<Speaker> findBySpeechId(@Param("speechId") Long speechId);
+    //
+    //    @Query(value = "SELECT speaker " +
+    //                   "FROM EventSpeechSpeaker eventSpeechSpeaker " +
+    //                   "JOIN eventSpeechSpeaker.speechSpeaker speechSpeaker " +
+    //                   "JOIN speechSpeaker.speaker speaker " +
+    //                   "WHERE eventSpeechSpeaker.event.id=:eventId " +
+    //                   "AND speechSpeaker.speech.id =:speechId")
+    //    Set<Speaker> findByEventAndSpeech(@Param("eventId") Long eventId, @Param("speechId") Long speechId);
 }

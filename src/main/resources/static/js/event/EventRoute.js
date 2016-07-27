@@ -28,8 +28,8 @@ define([
             new EventTabsRoute({
                 baseUrl         : this.baseUrl + '/' + eventId,
                 event           : this.event,
-                tabsRegion      : eventView.getRegion('tabsRegion'),
-                currentTabRegion: eventView.getRegion('currentTabRegion')
+                navsRegion      : eventView.getRegion('tabsRegion'),
+                currentNavRegion: eventView.getRegion('currentTabRegion')
             }).enter([path]);
 
         }

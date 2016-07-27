@@ -69,111 +69,124 @@ public class SpeechController {
         return speechService.findById(speechId);
     }
 
-    //TODO should be removed
-    @RequestMapping(value = "/speakers/{speakerId}/speeches",
-                    method = POST,
-                    consumes = APPLICATION_JSON_VALUE,
-                    produces = APPLICATION_JSON_VALUE)
-    @ResponseStatus(CREATED)
-    public Speech createAndLinkToSpeaker(@PathVariable("speakerId") Speaker speaker,
-            @RequestBody @Validated Speech speech) {
-        speech.setId(null);
-        return speechService.createAndLinkToSpeaker(speech, speaker);
+
+    @RequestMapping(value = "/speeches/{speechId}",
+                    method = DELETE)
+    public void delete(@PathVariable("speechId") Speech existedSpeech) {
+        speechService.delete(existedSpeech);
     }
 
-    //TODO should be removed
-    @RequestMapping(value = "/speakers/{speakerId}/speeches/{speechId}",
-                    method = PUT,
-                    consumes = APPLICATION_JSON_VALUE,
-                    produces = APPLICATION_JSON_VALUE)
-    public void linkToSpeaker(@PathVariable("speakerId") Speaker speaker, @PathVariable("speechId") Speech speech) {
-        speechService.linkToSpeaker(speech, speaker);
-    }
 
-    //TODO should be removed
-    @RequestMapping(value = {"/speakers/{speakerId}/speeches/{speechId}", "/speeches/{speechId}/speakers/{speakerId}"},
-                    method = DELETE,
-                    produces = APPLICATION_JSON_VALUE)
-    public void unlinkFromSpeaker(@PathVariable("speakerId") Speaker speaker, @PathVariable("speechId") Long speechId) {
-        speechService.unlinkFromSpeaker(speechId, speaker);
-    }
-
-    //TODO should be removed
-    @RequestMapping(value = "/events/{eventId}/speeches",
-                    method = POST,
-                    consumes = APPLICATION_JSON_VALUE,
-                    produces = APPLICATION_JSON_VALUE)
-    @ResponseStatus(CREATED)
-    public Speech createAndLinkToEvent(@PathVariable("eventId") Event event, @RequestBody @Validated Speech speech) {
-        return speechService.createAndLinkToEvent(speech, event);
-    }
-
-    //TODO should be removed
-    @RequestMapping(value = "/events/{eventId}/speeches/{speechId}",
-                    method = PUT,
-                    consumes = APPLICATION_JSON_VALUE,
-                    produces = APPLICATION_JSON_VALUE)
-    public void linkToEvent(@PathVariable("eventId") Event event, @PathVariable("speechId") Speech speech) {
-        speechService.linkToEvent(speech, event);
-    }
-
-    //TODO should be removed
-    @RequestMapping(value = "/events/{eventId}/speeches/{speechId}",
-                    method = DELETE,
-                    produces = APPLICATION_JSON_VALUE)
-    public void removeFromEvent(@PathVariable("eventId") Event event, @PathVariable("speechId") Speech speech) {
-        speechService.unlinkFromEvent(speech, event);
-    }
-
-    //TODO should be removed
-    @RequestMapping(value = "/speakers/{speakerId}/speeches",
-                    method = GET,
-                    produces = APPLICATION_JSON_VALUE)
-    public Set<Speech> findBySpeaker(@PathVariable("speakerId") Speaker speaker) {
-        return speechService.findBySpeaker(speaker);
-    }
-
-    //TODO should be removed
-    @RequestMapping(value = "/events/{eventId}/speeches",
-                    method = GET,
-                    produces = APPLICATION_JSON_VALUE)
-    public Set<Speech> findByEvent(@PathVariable("eventId") Event event) {
-        return speechService.findByEvent(event);
-    }
-
-    //TODO should be removed
-    @RequestMapping(value = "/events/{eventId}/speakers/{speakerId}/speeches",
-                    method = GET,
-                    produces = APPLICATION_JSON_VALUE)
-    public Set<Speech> findByEventAndSpeaker(@PathVariable("eventId") Event event,
-            @PathVariable("speakerId") Speaker speaker) {
-        return speechService.findByEventAndSpeaker(event, speaker);
-    }
-
-    //TODO should be removed
-    @RequestMapping(value = "/events/{eventId}/speakers/{speakerId}/speeches",
-                    method = POST,
-                    produces = APPLICATION_JSON_VALUE)
-    public Speech createAndLinkToEventSpeaker(@PathVariable("eventId") Event event,
-            @PathVariable("speakerId") Speaker speaker, @RequestBody @Validated Speech speech) {
-        return speechService.createAndLinkToEventSpeaker(speech, speaker, event);
-    }
-
-    //TODO should be removed
-    @RequestMapping(value = "/events/{eventId}/speakers/{speakerId}/speeches/{speechId}",
-                    method = PUT,
-                    produces = APPLICATION_JSON_VALUE)
-    public void linkToEventSpeaker(@PathVariable("eventId") Event event, @PathVariable("speakerId") Speaker speaker,
-            @PathVariable("speechId") Speech speech) {
-        speechService.linkToEventSpeaker(speech, speaker, event);
-    }
-
-    //TODO should be removed
-    @RequestMapping(value = "/events/{eventId}/speakers/{speakerId}/speeches/{speechId}",
-                    method = DELETE,
-                    produces = APPLICATION_JSON_VALUE)
-    public void removeFromEventSpeaker(@PathVariable("eventId") Event event, @PathVariable("speakerId") Speaker speaker,
-            @PathVariable("speechId") Speech speech) {
-        speechService.unlinkFromEventSpeaker(speech, speaker, event);
-    }
+    //    //TODO should be removed
+    //    @RequestMapping(value = "/speakers/{speakerId}/speeches",
+    //                    method = POST,
+    //                    consumes = APPLICATION_JSON_VALUE,
+    //                    produces = APPLICATION_JSON_VALUE)
+    //    @ResponseStatus(CREATED)
+    //    public Speech createAndLinkToSpeaker(@PathVariable("speakerId") Speaker speaker,
+    //            @RequestBody @Validated Speech speech) {
+    //        speech.setId(null);
+    //        return speechService.createAndLinkToSpeaker(speech, speaker);
+    //    }
+    //
+    //    //TODO should be removed
+    //    @RequestMapping(value = "/speakers/{speakerId}/speeches/{speechId}",
+    //                    method = PUT,
+    //                    consumes = APPLICATION_JSON_VALUE,
+    //                    produces = APPLICATION_JSON_VALUE)
+    //    public void linkToSpeaker(@PathVariable("speakerId") Speaker speaker, @PathVariable("speechId") Speech
+    // speech) {
+    //        speechService.linkToSpeaker(speech, speaker);
+    //    }
+    //
+    //    //TODO should be removed
+    //    @RequestMapping(value = {"/speakers/{speakerId}/speeches/{speechId}",
+    // "/speeches/{speechId}/speakers/{speakerId}"},
+    //                    method = DELETE,
+    //                    produces = APPLICATION_JSON_VALUE)
+    //    public void unlinkFromSpeaker(@PathVariable("speakerId") Speaker speaker, @PathVariable("speechId") Long
+    // speechId) {
+    //        speechService.unlinkFromSpeaker(speechId, speaker);
+    //    }
+    //
+    //    //TODO should be removed
+    //    @RequestMapping(value = "/events/{eventId}/speeches",
+    //                    method = POST,
+    //                    consumes = APPLICATION_JSON_VALUE,
+    //                    produces = APPLICATION_JSON_VALUE)
+    //    @ResponseStatus(CREATED)
+    //    public Speech createAndLinkToEvent(@PathVariable("eventId") Event event, @RequestBody @Validated Speech
+    // speech) {
+    //        return speechService.createAndLinkToEvent(speech, event);
+    //    }
+    //
+    //    //TODO should be removed
+    //    @RequestMapping(value = "/events/{eventId}/speeches/{speechId}",
+    //                    method = PUT,
+    //                    consumes = APPLICATION_JSON_VALUE,
+    //                    produces = APPLICATION_JSON_VALUE)
+    //    public void linkToEvent(@PathVariable("eventId") Event event, @PathVariable("speechId") Speech speech) {
+    //        speechService.linkToEvent(speech, event);
+    //    }
+    //
+    //    //TODO should be removed
+    //    @RequestMapping(value = "/events/{eventId}/speeches/{speechId}",
+    //                    method = DELETE,
+    //                    produces = APPLICATION_JSON_VALUE)
+    //    public void removeFromEvent(@PathVariable("eventId") Event event, @PathVariable("speechId") Speech speech) {
+    //        speechService.unlinkFromEvent(speech, event);
+    //    }
+    //
+    //    //TODO should be removed
+        @RequestMapping(value = "/speakers/{speakerId}/speeches",
+                        method = GET,
+                        produces = APPLICATION_JSON_VALUE)
+        public Set<Speech> findBySpeaker(@PathVariable("speakerId") Speaker speaker) {
+            return speechService.findBySpeaker(speaker);
+        }
+    //
+    //    //TODO should be removed
+        @RequestMapping(value = "/events/{eventId}/speeches",
+                        method = GET,
+                        produces = APPLICATION_JSON_VALUE)
+        public Set<Speech> findByEvent(@PathVariable("eventId") Event event) {
+            return speechService.findByEvent(event);
+        }
+    //
+    //    //TODO should be removed
+    //    @RequestMapping(value = "/events/{eventId}/speakers/{speakerId}/speeches",
+    //                    method = GET,
+    //                    produces = APPLICATION_JSON_VALUE)
+    //    public Set<Speech> findByEventAndSpeaker(@PathVariable("eventId") Event event,
+    //            @PathVariable("speakerId") Speaker speaker) {
+    //        return speechService.findByEventAndSpeaker(event, speaker);
+    //    }
+    //
+    //    //TODO should be removed
+    //    @RequestMapping(value = "/events/{eventId}/speakers/{speakerId}/speeches",
+    //                    method = POST,
+    //                    produces = APPLICATION_JSON_VALUE)
+    //    public Speech createAndLinkToEventSpeaker(@PathVariable("eventId") Event event,
+    //            @PathVariable("speakerId") Speaker speaker, @RequestBody @Validated Speech speech) {
+    //        return speechService.createAndLinkToEventSpeaker(speech, speaker, event);
+    //    }
+    //
+    //    //TODO should be removed
+    //    @RequestMapping(value = "/events/{eventId}/speakers/{speakerId}/speeches/{speechId}",
+    //                    method = PUT,
+    //                    produces = APPLICATION_JSON_VALUE)
+    //    public void linkToEventSpeaker(@PathVariable("eventId") Event event, @PathVariable("speakerId") Speaker
+    // speaker,
+    //            @PathVariable("speechId") Speech speech) {
+    //        speechService.linkToEventSpeaker(speech, speaker, event);
+    //    }
+    //
+    //    //TODO should be removed
+    //    @RequestMapping(value = "/events/{eventId}/speakers/{speakerId}/speeches/{speechId}",
+    //                    method = DELETE,
+    //                    produces = APPLICATION_JSON_VALUE)
+    //    public void removeFromEventSpeaker(@PathVariable("eventId") Event event, @PathVariable("speakerId") Speaker speaker,
+    //            @PathVariable("speechId") Speech speech) {
+    //        speechService.unlinkFromEventSpeaker(speech, speaker, event);
+    //    }
 }

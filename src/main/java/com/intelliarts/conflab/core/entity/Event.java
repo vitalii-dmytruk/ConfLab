@@ -54,9 +54,5 @@ public class Event extends AbstractPersistable<Long> {
 
     @JsonIgnore
     @OneToMany(mappedBy = "event")
-    private Set<EventSpeechSpeaker> eventSpeechSpeakers;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "event")
     private Set<Partner> partners;
 }

@@ -1,21 +1,29 @@
 define([
     'common/Model',
+    'speaker/SpeakerCollection',
     'backbone'
-], function (Model) {
+], function (Model, SpeakerCollection) {
 
     'use strict';
 
     return Model.extend({
         urlRoot: '/speeches',
 
-        defaults  : function () {
+        defaults: function () {
             return {
                 id         : null,
                 title      : '',
                 description: '',
-                lang       : null
+                lang       : null,
+                speakers   : new SpeakerCollection()
             }
         },
+
+        parse: function (response) {
+            response.speakers = new SpeakerCollection(response.speakers)
+            return response;
+        },
+
         validation: {
             title: {
                 required : true,
